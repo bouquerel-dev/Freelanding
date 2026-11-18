@@ -2,6 +2,9 @@ import { afterEach, describe, expect, it } from "bun:test";
 import { JSDOM } from "jsdom";
 import { act, createElement, useRef } from "react";
 import { createRoot } from "react-dom/client";
+import { hasReducedMotionListener, prefersReducedMotion } from "motion-dom";
+
+import { useAfficheDepixelisee, useDepixelisation } from "./useDepixelisation";
 
 /**
  * La pixelisation est un ÉTAT DE CHARGEMENT : rien de pixelisé quand l'image
@@ -10,8 +13,6 @@ import { createRoot } from "react-dom/client";
  * décider de l'entrée dans l'écran et lire les miniatures.
  */
 let entrerDansEcran = () => {};
-let reduitCourant = false;
-let changerReduit = () => {};
 
 function installerDom({ reduit = false, largeur = 400 } = {}) {
   const dom = new JSDOM("<!doctype html><html><body></body></html>", {
@@ -23,20 +24,10 @@ function installerDom({ reduit = false, largeur = 400 } = {}) {
     document: globalThis.document,
     IntersectionObserver: globalThis.IntersectionObserver,
   };
-  // `motion` n'interroge `prefers-reduced-motion` qu'une fois par module, puis
-  // suit l'événement `change` : on le lui envoie à chaque test.
-  reduitCourant = reduit;
-  dom.window.matchMedia = (query) => ({
-    get matches() {
-      return reduitCourant && query.includes("prefers-reduced-motion");
-    },
-    media: query,
-    addEventListener(_type, rappel) {
-      changerReduit = rappel;
-    },
-    removeEventListener() {},
-  });
-  changerReduit();
+  // `motion` garde sa préférence dans un état de module, lu au rendu : on la
+  // pose directement, comme le ferait son écoute de `prefers-reduced-motion`.
+  hasReducedMotionListener.current = true;
+  prefersReducedMotion.current = reduit;
   dom.window.HTMLElement.prototype.getBoundingClientRect = () => ({ width: largeur });
   dom.window.HTMLCanvasElement.prototype.getContext = () => ({ drawImage() {} });
   dom.window.HTMLCanvasElement.prototype.toDataURL = function () {
@@ -56,20 +47,12 @@ function installerDom({ reduit = false, largeur = 400 } = {}) {
   return () => Object.assign(globalThis, precedent);
 }
 
-// `motion` décide à l'import s'il tourne dans un navigateur : sans `window`
-// à ce moment, `prefers-reduced-motion` ne serait jamais lu.
-const avantImport = { window: globalThis.window, document: globalThis.document };
-const domImport = new JSDOM("").window;
-globalThis.window ??= domImport;
-globalThis.document ??= domImport.document;
-const { useAfficheDepixelisee, useDepixelisation } = await import("./useDepixelisation");
-Object.assign(globalThis, avantImport);
 
 const dormir = (ms) => new Promise((fin) => setTimeout(fin, ms));
 
-function Image({ estChargee, charger, src = "/work/projet.jpg" }) {
+function Image({ estChargee, charger, src = "/work/projet.jpg", actif = true }) {
   const cible = useRef(null);
-  const etape = useDepixelisation({ cible, src, actif: true, estChargee, charger });
+  const etape = useDepixelisation({ cible, src, actif, estChargee, charger });
   return createElement("div", { ref: cible, "data-etape": etape ?? "" });
 }
 
@@ -157,6 +140,26 @@ describe("useDepixelisation", () => {
     ]);
     expect(etape(conteneur)).toBe("");
     await act(async () => racine.unmount());
+  });
+
+  it("image prioritaire (effet inactif) ou vignette de moins de 80 px : jamais d'étape", async () => {
+    for (const cas of [{ actif: false, largeur: 400 }, { actif: true, largeur: 60 }]) {
+      restaurer = installerDom({ largeur: cas.largeur });
+      const { conteneur, racine } = await monter(
+        createElement(Image, {
+          actif: cas.actif,
+          estChargee: () => false,
+          charger: () => new Promise(() => {}),
+        }),
+      );
+      await act(async () => {
+        entrerDansEcran();
+        await dormir(260);
+      });
+      expect(etape(conteneur)).toBe("");
+      await act(async () => racine.unmount());
+      restaurer();
+    }
   });
 
   it("source changée pendant l'attente : le placeholder s'efface", async () => {

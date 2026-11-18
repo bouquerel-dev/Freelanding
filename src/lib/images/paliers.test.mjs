@@ -69,6 +69,41 @@ describe("deroulerChargement", () => {
     expect(montrees).toEqual([{ type: "attente" }, null]);
   });
 
+  test("annulé pendant les étapes : on s'arrête, sans rien montrer de plus", async () => {
+    const montrees = [];
+    let annule = false;
+    await deroulerChargement({
+      estChargee: () => false,
+      charger: () => dormir(GRACE * 3).then(() => IMG),
+      attendre,
+      montrer: (etape) => {
+        montrees.push(etape);
+        if (etape?.type === "arrivee") annule = true;
+      },
+      estAnnule: () => annule,
+      grace: GRACE,
+    });
+    expect(montrees).toEqual([
+      { type: "attente" },
+      { type: "arrivee", img: IMG, colonnes: ETAPES_ARRIVEE[0] },
+    ]);
+  });
+
+  test("annulé pendant le délai de grâce : rien de pixelisé", async () => {
+    const montrees = [];
+    let annule = false;
+    const issue = await deroulerChargement({
+      estChargee: () => false,
+      charger: () => new Promise(() => {}),
+      attendre: (ms) => attendre(ms).then(() => { annule = true; }),
+      montrer: (etape) => montrees.push(etape),
+      estAnnule: () => annule,
+      grace: GRACE,
+    });
+    expect(issue).toBe("nette");
+    expect(montrees).toEqual([]);
+  });
+
   test("délai de grâce par défaut entre 150 et 250 ms", () => {
     expect(DELAI_GRACE).toBeGreaterThanOrEqual(150);
     expect(DELAI_GRACE).toBeLessThanOrEqual(250);
