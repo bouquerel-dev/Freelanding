@@ -97,6 +97,8 @@ export function useDepixelisation({
       annule = true;
       observateur.disconnect();
       minuteries.forEach((id) => window.clearTimeout(id));
+      // Source changée pendant l'attente : pas de placeholder figé.
+      setEtape(null);
     };
     // `estChargee` et `charger` sont lus au moment du jeu, pas suivis.
     // eslint-disable-next-line react-hooks/exhaustive-deps
