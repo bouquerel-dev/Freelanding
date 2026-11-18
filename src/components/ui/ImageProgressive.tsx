@@ -10,13 +10,14 @@ import {
 } from "@/components/motion/useDepixelisation";
 
 /**
- * `next/image` qui se DÉPIXELISE à sa première apparition à l'écran (voir
- * `useDepixelisation`). MÊME CONTRAT que `next/image` : on remplace l'import,
+ * `next/image` pixelisé SEULEMENT S'IL TARDE : déjà chargé ou arrivé dans le
+ * délai de grâce, il s'affiche net ; sinon sa version de 32 px en pixels tient
+ * lieu d'image jusqu'à son arrivée (voir `useDepixelisation`). MÊME CONTRAT que `next/image` : on remplace l'import,
  * rien d'autre, et le chargement reste différé (`loading="lazy"` par défaut).
  *
  * SANS ÉLÉMENT AJOUTÉ. Chaque étape est posée en `background-image` de
  * l'`<img>` lui-même, agrandie en `image-rendering: pixelated`. Pendant
- * l'effet, `object-position` pousse le contenu de l'image hors de sa boîte :
+ * l'attente, `object-position` pousse le contenu de l'image hors de sa boîte :
  * seul le fond se voit. Rien à envelopper, donc identique en `fill` comme en
  * dimensions fixes.
  *

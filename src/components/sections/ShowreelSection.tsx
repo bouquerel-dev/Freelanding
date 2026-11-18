@@ -169,7 +169,7 @@ export function ShowreelSection({ showreel }: { showreel: ShowreelContent }) {
   const posterFrame = useRef<HTMLDivElement>(null);
   // 0.06 : la source pose ce calque en `top:-6%; height:calc(100% + 12%)`.
   const posterY = useParallaxLayerY(posterFrame, 0.06);
-  // Dépixelisation à la première apparition, comme les `<ImageProgressive>`.
+  // Pixelisée seulement si elle tarde, comme les `<ImageProgressive>`.
   const posterImg = useRef<HTMLImageElement>(null);
   const etape = useDepixelisation({
     cible: posterImg,

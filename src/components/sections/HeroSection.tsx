@@ -230,7 +230,7 @@ function Fondateur({ person }: { person: HeroContent["person"] }) {
 export function HeroVideo({ src, poster }: { src: string; poster?: string }) {
   const [monter, setMonter] = useState(false);
   const [joue, setJoue] = useState(false);
-  // Téléphone en profil complet : affiche dépixelisée puis vidéo. Décidé
+  // Téléphone en profil complet : affiche (pixelisée si elle tarde) puis vidéo. Décidé
   // après l'hydratation, le serveur ne connaît ni l'écran ni l'appareil.
   const [mobile, setMobile] = useState(false);
   const calque = useRef<HTMLCanvasElement>(null);
@@ -264,8 +264,8 @@ export function HeroVideo({ src, poster }: { src: string; poster?: string }) {
     // SOUS 810 PX, RIEN DANS LE HTML. L'affiche y était l'élément LCP, peinte
     // près de 2 s après le texte par le processeur lent de PageSpeed, et la
     // vidéo dans le HTML menait à un LCP de 10,2 s. Ici tout arrive APRÈS le
-    // premier rendu : l'affiche se dépixelise (miniatures de moins de 0,05 bit
-    // par pixel, que Chrome ne retient pas comme LCP), puis la vidéo, montée
+    // premier rendu : l'affiche, peinte dans une toile (jamais candidate au LCP), se
+    // montre nette ou, si elle tarde, pixelisée jusqu'à son arrivée, puis la vidéo, montée
     // au `load` comme sur grand écran, prend le relais en fondu dès qu'elle
     // joue. Le texte du héros reste l'élément LCP.
     const petitEcran = !window.matchMedia("(min-width: 810px)").matches;
@@ -402,7 +402,7 @@ export function HeroVideo({ src, poster }: { src: string; poster?: string }) {
         <video
           className={
             "absolute inset-0 h-full w-full object-cover transition-opacity duration-500 " +
-            // Sur téléphone, la vidéo attend la fin de la dépixelisation.
+            // Sur téléphone, la vidéo attend que l'affiche soit nette.
             (joue && !etape ? "opacity-100" : "opacity-0")
           }
           /* Décor pur, sans piste audio : sorti de l'arbre d'accessibilité pour

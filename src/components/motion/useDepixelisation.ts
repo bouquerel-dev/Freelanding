@@ -4,15 +4,12 @@ import { useEffect, useState, type CSSProperties, type RefObject } from "react";
 import { useReducedMotion } from "motion/react";
 import { urlImageFond } from "@/lib/image-fond";
 import {
-  DUREE_ETAPE,
   LARGEUR_ATTENTE,
   LARGEUR_MIN_EFFET,
-  etapesAJouer,
+  deroulerChargement,
   tailleMiniature,
+  type Etape,
 } from "@/lib/images/paliers";
-
-/** Images déjà dépixelisées pendant la visite : l'effet ne se joue qu'une fois. */
-const DEJA_VUES = new Set<string>();
 
 /** L'image chargée, réduite à `colonnes` colonnes, en PNG. */
 function miniature(img: HTMLImageElement, colonnes: number): string {
@@ -29,20 +26,23 @@ function miniature(img: HTMLImageElement, colonnes: number): string {
 }
 
 /**
- * Dépixelisation d'une image à sa première apparition à l'écran : 8, 16, 32,
- * 48, 96 puis 128 colonnes, 100 ms par étape. Motif de locomotive.ca
- * (`data-depixelate`), qui joue l'effet APRÈS le chargement.
+ * Pixelisation comme ÉTAT DE CHARGEMENT, pas comme animation (déroulé dans
+ * `deroulerChargement`, `@/lib/images/paliers`).
  *
- * Rend l'étape courante (une miniature en `data:` ou, si l'image n'est pas
- * encore arrivée, sa version de 32 px servie par l'optimiseur), ou `null`
- * quand il n'y a rien à montrer d'autre que l'image elle-même. Le composant la
- * pose en fond pixelisé (`image-rendering: pixelated`).
+ * À l'entrée dans l'écran : image déjà chargée, ou arrivée dans le délai de
+ * grâce (200 ms), elle s'affiche nette, sans aucune étape. Sinon sa version de
+ * 32 px, agrandie en pixels, tient lieu d'image ; à l'arrivée de la vraie,
+ * trois étapes de 60 ms (48, 96, 128 colonnes) mènent à la version nette.
+ *
+ * Rend ce qui tient lieu d'image (l'adresse de l'attente en 32 px, ou une
+ * miniature en `data:`), ou `null` quand l'image elle-même se montre. Le
+ * composant la pose en fond pixelisé (`image-rendering: pixelated`).
  *
  * `charger` rend l'image décodée, `null` en cas d'échec ; `estChargee` dit si
- * elle l'est déjà, auquel cas toutes les étapes se jouent sans attente.
+ * elle l'est déjà.
  *
- * Pas d'effet : `actif` faux, mouvement réduit, cible de moins de 80 px de
- * large, image déjà dépixelisée pendant la visite.
+ * Jamais de pixels : `actif` faux, mouvement réduit (l'image nette à son
+ * arrivée), cible de moins de 80 px de large.
  */
 export function useDepixelisation({
   cible,
@@ -62,7 +62,7 @@ export function useDepixelisation({
 
   useEffect(() => {
     const element = cible.current;
-    if (!element || !actif || reduit || DEJA_VUES.has(src)) return;
+    if (!element || !actif || reduit) return;
 
     let annule = false;
     const minuteries: number[] = [];
@@ -70,27 +70,11 @@ export function useDepixelisation({
       new Promise<void>((fin) => {
         minuteries.push(window.setTimeout(fin, ms));
       });
-
-    const jouer = async () => {
-      DEJA_VUES.add(src);
-      let dejaAffichee: number | null = null;
-      if (!estChargee()) {
+    const montrer = (suivante: Etape<HTMLImageElement> | null) => {
+      if (suivante === null) setEtape(null);
+      else if (suivante.type === "attente")
         setEtape(urlImageFond(src, LARGEUR_ATTENTE));
-        dejaAffichee = LARGEUR_ATTENTE;
-      }
-      const img = await charger();
-      try {
-        if (img) {
-          for (const colonnes of etapesAJouer(dejaAffichee)) {
-            if (annule) break;
-            setEtape(miniature(img, colonnes));
-            await attendre(DUREE_ETAPE);
-          }
-        }
-      } catch {
-        // Toile illisible (image d'une autre origine) : on montre l'image nette.
-      }
-      if (!annule) setEtape(null);
+      else setEtape(miniature(suivante.img, suivante.colonnes));
     };
 
     const observateur = new IntersectionObserver(
@@ -98,7 +82,13 @@ export function useDepixelisation({
         if (!entrees.some((entree) => entree.isIntersecting)) return;
         observateur.disconnect();
         if (element.getBoundingClientRect().width < LARGEUR_MIN_EFFET) return;
-        void jouer();
+        void deroulerChargement({
+          estChargee,
+          charger,
+          attendre,
+          montrer,
+          estAnnule: () => annule,
+        });
       },
       { threshold: 0.15 },
     );
@@ -141,14 +131,24 @@ export function chargementUrl(url: string): Promise<HTMLImageElement | null> {
 }
 
 /**
- * Affiche d'une `<video>` dépixelisée à sa première apparition, comme une
+ * Image déjà dans le cache du navigateur : une `Image` neuve sur la même
+ * adresse est complète dès l'affectation de `src`.
+ */
+export function urlEnCache(url: string): boolean {
+  const img = new window.Image();
+  img.src = url;
+  return imgChargee(img);
+}
+
+/**
+ * Affiche d'une `<video>` pixelisée seulement si elle tarde, comme une
  * `<ImageProgressive>`. `src` est le chemin du fichier (clé de l'effet, et
  * source de l'attente en 32 px), `url` l'adresse réellement posée en `poster` :
  * c'est elle qu'on charge, pour ne rien télécharger deux fois.
  *
  * Même mécanique que `styleEtape` : `object-position` pousse l'affiche et les
  * images de la vidéo hors de la boîte, le fond pixelisé se voit. Si la vidéo
- * démarre pendant l'effet, elle n'apparaît qu'à la dernière étape.
+ * démarre pendant l'attente, elle n'apparaît qu'à l'image nette.
  */
 export function useAfficheDepixelisee({
   video,
@@ -167,7 +167,7 @@ export function useAfficheDepixelisee({
     cible: video,
     src,
     actif,
-    estChargee: () => false,
+    estChargee: () => urlEnCache(url),
     charger: () => chargementUrl(url),
   });
   return styleEtape(etape, className);

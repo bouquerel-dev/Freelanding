@@ -109,7 +109,7 @@ export function ParallaxCover({
     height: 1,
     sizes,
   }).props;
-  // Dépixelisation à la première apparition, comme les `<ImageProgressive>`.
+  // Pixelisée seulement si elle tarde, comme les `<ImageProgressive>`.
   const img = useRef<HTMLImageElement>(null);
   const etape = useDepixelisation({
     cible: img,
