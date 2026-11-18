@@ -37,7 +37,7 @@ import { EVENEMENT_PRECHARGEMENT } from "@/lib/prechargement";
  * rendu, où qu'elle soit dans la page : le navigateur ne sait pas la différer.
  * Le calque ne pose donc son image qu'une fois chargée, à l'approche de
  * l'écran ou quand la page est au repos (`EVENEMENT_PRECHARGEMENT`), et se
- * dépixelise à sa première apparition comme les `<img>` (`useDepixelisation`).
+ * pixelise seulement s'il tarde, comme les `<img>` (`useDepixelisation`).
  * `prioritaire` rétablit l'image dans le HTML serveur, pour un calque visible
  * au chargement.
  */
