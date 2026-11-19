@@ -1,0 +1,97 @@
+Un logiciel de traçabilité relie chaque lot de matière que vous recevez aux lots que vous fabriquez, puis aux clients que vous livrez. Le jour où un lot pose problème, il sort en une recherche la liste des clients à prévenir, là où un tableur vous fait rouvrir une à une vos fiches de fabrication et vos bons de livraison. Le règlement européen sur la sécurité des denrées vous demande de savoir de qui vous tenez vos produits et à qui vous les avez vendus ([règlement (CE) n° 178/2002, articles 18 et 19](https://eur-lex.europa.eu/eli/reg/2002/178/oj/fra)). Les applications du marché tiennent bien les relevés d’hygiène, environ 20 € HT par mois pour un point de vente. Quand vos recettes, vos lots et vos livraisons suivent des règles qui vous sont propres, un outil construit pour vous se paie une fois et vous appartient.
+
+Je conçois et je code seul des logiciels métier pour des PME, du cadrage à la mise en production. Pendant [un appel en visio](/rdv?sujet=logiciel), racontez-moi le dernier lot que vous avez dû retrouver : je vous dis ce qu’un outil peut faire seul à votre place.
+
+## Que dit la loi, et que doit pouvoir sortir votre outil ?
+
+L’article 18 du règlement impose de pouvoir identifier chaque personne qui vous a fourni un produit, chaque entreprise à qui vous en avez fourni, et de communiquer ces informations aux autorités quand elles les demandent. L’article 19 vous oblige, dès que vous avez de bonnes raisons de croire qu’un produit n’est pas sûr, à engager son retrait et à prévenir les autorités ; si le produit a pu arriver chez le consommateur, vous l’informez aussi.
+
+Le texte parle du fournisseur et du client. Ce qui se passe entre les deux, c’est-à-dire vos lots de fabrication, n’y est pas détaillé : c’est à vous de relier chaque matière reçue à chaque produit vendu. Votre outil doit donc répondre à trois questions, dans l’ordre où un contrôleur ou un client les pose :
+
+| La question | Ce que l’outil doit sortir |
+| --- | --- |
+| De qui tenez-vous ce lot ? | Le fournisseur, la date de réception, le numéro de lot et la date limite de la matière |
+| Qu’en avez-vous fait ? | Les fabrications qui l’ont utilisé, avec leur numéro de lot interne |
+| À qui l’avez-vous livré ? | Les bons de livraison et les clients qui ont reçu ces fabrications |
+
+<Figure src="/images/blog/corps/logiciel-de-tracabilite-1.jpg" alt="Trois lots de matière à gauche dont un vert, seize carrés de fabrication au centre dont neuf reliés au lot vert, vingt cercles de clients à droite dont quatorze cerclés de vert" caption="Un seul lot de matière touche neuf fabrications sur seize et quatorze clients sur vingt : ce sont ces quatorze-là qu’il faut prévenir." />
+
+## Combien de pièces faut-il ouvrir pour retrouver vos clients ?
+
+Prenons une biscuiterie de dix personnes. Cet exemple chiffré est inventé pour compter ce qu’un rappel coûte en temps. Un lot de farine arrive le 3 du mois. Pendant les deux semaines suivantes, il entre dans neuf fabrications. Ces fabrications partent dans 31 bons de livraison, chez 14 clients.
+
+| Étape à la main | Pièces à ouvrir | Durée à 3 minutes la pièce |
+| --- | --- | --- |
+| Retrouver les fabrications qui ont utilisé le lot | 9 fiches de fabrication | 27 minutes |
+| Retrouver les livraisons de ces fabrications | 31 bons de livraison | 93 minutes |
+| Total | 40 pièces | 2 heures |
+
+Les trois minutes par pièce sont une hypothèse de travail : chronométrez-vous sur un lot récent, le résultat vous dira si votre propre chiffre est plus proche de deux minutes ou de cinq. Avec un outil qui relie les lots à l’enregistrement, la même recherche part du numéro de lot de la farine et rend la liste des 14 clients d’un coup.
+
+<Figure src="/images/blog/corps/logiciel-de-tracabilite-2.jpg" alt="Une longue barre grise de quarante segments sur une échelle de zéro à cent vingt minutes, et sous elle un petit segment vert unique" caption="Quarante pièces pointées à la main remplissent deux heures ; la recherche par numéro de lot tient dans le petit segment vert." />
+
+Les rappels sont courants. J’ai compté les fiches du dispositif national [RappelConso](https://data.economie.gouv.fr/explore/dataset/rappelconso-v2-gtin-espaces/) le 9 novembre 2026 : en 2025, il a publié environ 2 300 rappels de produits alimentaires, dont plus de 750 pour la bactérie Listeria. Chacune de ces fiches est l’histoire d’une entreprise qui a dû retrouver ses lots, ses clients, et le dire vite.
+
+## Pourquoi les comparatifs ne vous aident pas à choisir ?
+
+J’ai lu les deux premiers comparatifs que Bing affiche sur « logiciel de traçabilité », le 9 novembre 2026. Le premier présente une dizaine d’outils sans donner un seul prix. Le second parle de systèmes d’atelier et d’intelligence artificielle industrielle. Aucun des deux ne cite le règlement 178/2002, et aucun ne donne de prix.
+
+Ce qui manque à ces pages, c’est la question du dirigeant : « Mon fournisseur m’appelle, un lot est douteux, qu’est-ce que je fais dans l’heure ? » Avant de comparer des logiciels, comparez leurs réponses à cette question.
+
+## Quelles fonctions pour un outil de lots ?
+
+Quatre écrans suffisent à tenir la chaîne, à condition qu’ils partagent la même base :
+
+1. **La réception** : fournisseur, numéro de lot, date limite, contrôle à réception, photo de l’étiquette.
+2. **La fabrication** : quelles matières, de quels lots, dans quelle recette, en quelle quantité, et le numéro de lot attribué au produit fini.
+3. **L’expédition** : quel lot de produit fini est parti sur quel bon de livraison, chez quel client.
+4. **Le rappel** : à partir d’un lot, vers l’amont (d’où vient-il ?) ou vers l’aval (qui l’a reçu ?), avec le message déjà rédigé pour chaque client.
+
+Deux détails séparent un outil utile d’un outil de façade : l’étiquette imprimée au bon numéro de lot, et un exercice de rappel que vous pouvez lancer pour tester votre chaîne sans attendre un vrai incident.
+
+## Application du marché ou outil construit pour vos recettes ?
+
+Les deux se défendent, selon votre taille et la complexité de vos fabrications.
+
+| Critère | Application du marché | Outil construit pour vos recettes |
+| --- | --- | --- |
+| Prix | environ 20 € HT par mois en entrée de gamme, pour un point de vente et deux utilisateurs (grille publique d’une application HACCP, relevée le 9 novembre 2026) | Un prix fixé au devis, payé une fois |
+| Un site pendant cinq ans | Environ 1 200 € HT, puis l’abonnement continue | Le logiciel est à vous, seul l’hébergement reste à payer |
+| Lots de fabrication | Selon ce que l’éditeur a prévu | Vos recettes, vos pertes, vos sous-produits |
+| Lien avec vos bons de livraison et votre stock | Export à faire | Une seule base, avec [votre gestion de stock](/blog/logiciel-gestion-de-stock) |
+| Données | Chez l’éditeur | Dans votre base, export libre |
+
+Un artisan qui travaille sur un seul site avec peu de références trouvera son compte dans une application du marché. Dès que vous avez plusieurs recettes qui partagent des matières, plusieurs sites, ou un lien à tenir avec votre [suivi de production](/blog/logiciel-gestion-de-production), le sur mesure devient le meilleur calcul.
+
+Pour comparer, une agence facture couramment de 8 000 à 10 000 € HT un premier outil sur mesure (La Fabrique du Net, ordres de grandeur relevés le 15 octobre 2026). Je fais le même travail, du cadrage à la mise en production, à un prix fixé au devis, et vous parlez directement à la personne qui conçoit et qui code. Le code source est livré dans votre dépôt, avec sa documentation. Le détail de l’offre est sur la page [Logiciel métier sur mesure](/services/logiciel-metier).
+
+## Ce que l’IA fait déjà dans mon propre outil
+
+Je n’ai pas encore livré de logiciel de traçabilité. J’utilise en revanche chaque jour un outil que j’ai construit pour mon activité, et son principe est celui d’un lot : de n’importe quel message qui part, je remonte à sa source. Chaque message préparé garde la trace de ce qui l’a rédigé (un modèle d’IA), de la personne qui l’a validé (moi) et du moment où il est parti.
+
+Chez vous, l’IA ferait le travail ingrat de la réception. Elle lirait le bon de livraison du fournisseur, qu’il arrive en PDF ou en photo, en extrairait le numéro de lot et la date limite, et vous les proposerait à la saisie. Rien ne s’enregistre sans votre clic, comme chez moi. Si vous faites aujourd’hui ces saisies à la main dans un classeur, l’article sur [remplacer Excel par un logiciel](/blog/remplacer-excel-par-un-logiciel) montre comment avancer sans tout perdre.
+
+## Que préparer avant un premier échange ?
+
+<Steps items={[
+  "**Choisissez un lot récent** et retrouvez à la main, chronomètre en main, les fabrications et les clients concernés. Notez le temps.",
+  "**Listez vos fournisseurs** et la forme de leur bon de livraison : PDF, papier, mail.",
+  "**Décrivez vos recettes** : quelles matières, quelles quantités, quels sous-produits.",
+  "**Prenez une heure en visio** pour parcourir ensemble votre dernier lot : vous repartez avec ce qui peut se faire seul et un ordre de prix."
+]} />
+
+## Questions fréquentes
+
+**Un logiciel de traçabilité suffit-il pour être en règle ?**
+Il vous donne les moyens de répondre à une demande des autorités. La conformité dépend aussi de votre plan de maîtrise sanitaire et de vos contrôles, que l’outil documente sans les remplacer.
+
+**Peut-on garder l’application HACCP que nous utilisons déjà ?**
+Oui. L’outil de lots peut tourner à côté, et reprendre vos relevés quand l’application permet un export.
+
+**Mes données restent-elles chez moi ?**
+Oui. La base est la vôtre, hébergée à votre nom, et vous pouvez tout exporter à tout moment.
+
+**Combien de temps pour un premier outil ?**
+Le premier module utile, en général la réception et le lien lot-fabrication, se livre en quelques semaines. L’expédition et le rappel s’ajoutent ensuite, à partir de ce que votre équipe utilise vraiment.
+
+Pour regarder votre cas, [prenez rendez-vous en visio](/rdv?sujet=logiciel) avec les papiers de votre dernier lot.
