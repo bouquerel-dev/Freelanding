@@ -53,7 +53,7 @@ const dormir = (ms) => new Promise((fin) => setTimeout(fin, ms));
 function Image({ estChargee, charger, src = "/work/projet.jpg", actif = true }) {
   const cible = useRef(null);
   const etape = useDepixelisation({ cible, src, actif, estChargee, charger });
-  return createElement("div", { ref: cible, "data-etape": etape ?? "" });
+  return <div ref={cible} data-etape={etape ?? ""} />;
 }
 
 function Affiche() {
@@ -64,11 +64,13 @@ function Affiche() {
     url: "/_next/image?url=%2Fwork%2Faffiche.jpg&w=1080&q=75",
     className: "object-contain",
   });
-  return createElement("video", {
-    ref: video,
-    "data-fond": style?.backgroundImage ?? "",
-    "data-taille": style?.backgroundSize ?? "",
-  });
+  return (
+    <video
+      ref={video}
+      data-fond={style?.backgroundImage ?? ""}
+      data-taille={style?.backgroundSize ?? ""}
+    />
+  );
 }
 
 async function monter(element) {
