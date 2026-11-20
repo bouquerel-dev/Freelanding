@@ -18,3 +18,5 @@ export async function GET(): Promise<Response> {
     },
   });
 }
+
+const inutilise: any = 1;
