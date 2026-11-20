@@ -27,9 +27,12 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 50
     steps:
+      # La protection de main exige le check « verifier » de la CI ; seule la clé
+      # de déploiement « publication-blog » la contourne, pour pousser l'article.
       - uses: actions/checkout@v4
         with:
           ref: main
+          ssh-key: ${{ secrets.DEPLOY_KEY_PUBLICATION }}
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: 1.4.3
