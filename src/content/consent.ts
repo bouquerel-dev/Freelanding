@@ -42,7 +42,7 @@ export const consentCopy = {
   categories: {
     necessary: {
       title: "Strictement nécessaire",
-      body: "Mémorise le choix que vous faites ici, pour six mois, afin de ne pas vous le redemander à chaque page. Les visites sont aussi comptées sans cookie ni identifiant durable : page vue et provenance, rien d’autre.",
+      body: "Mémorise le choix que vous faites ici, pour six mois, afin de ne pas vous le redemander à chaque page. Les visites sont aussi comptées sans cookie ni identifiant durable : page vue, provenance et étapes de la prise de rendez-vous, rien d’autre.",
     },
     analytics: {
       title: "Mesure d’audience",

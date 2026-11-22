@@ -83,12 +83,16 @@ export const ANALYTICS_EVENTS = {
      identifiants inexistants ; le cockpit depuis le 2026-11-02), le prospect ne voit aucun créneau et repart. Sans cet
      événement, l'entonnoir montre une chute à l'étape 2 et rien ne dit qu'elle
      vient d'une panne plutôt que d'un désintérêt. */
+  /** Bloc de réservation vu (première visibilité), quelle que soit la page. */
+  rdvViewed: "rdv_viewed",
   rdvTypeSelected: "rdv_type_selected",
   rdvSlotsLoaded: "rdv_slots_loaded",
   rdvSlotsFailed: "rdv_slots_failed",
   rdvSlotSelected: "rdv_slot_selected",
   /** Cadrage rempli, coordonnées comprises : le visiteur passe au créneau (2026-11-10). */
   rdvQuestionnaireCompleted: "rdv_questionnaire_completed",
+  /** Première saisie dans les coordonnées (frappe ou remplissage automatique). */
+  rdvFormStarted: "rdv_form_started",
   rdvConfirmed: "rdv_confirmed",
   rdvFailed: "rdv_failed",
 
@@ -197,20 +201,18 @@ export const RECOMMENDED_FUNNELS: readonly FunnelDefinition[] = [
   },
   {
     id: "rendez-vous",
-    label: "Section RDV vue → sujet → créneaux → questionnaire → créneau → envoi → confirmé",
+    label: "Réservation vue → créneaux → heure → coordonnées → confirmé",
     steps: [
-      ANALYTICS_EVENTS.sectionViewed,
-      ANALYTICS_EVENTS.rdvTypeSelected,
+      ANALYTICS_EVENTS.rdvViewed,
       ANALYTICS_EVENTS.rdvSlotsLoaded,
-      ANALYTICS_EVENTS.rdvQuestionnaireCompleted,
       ANALYTICS_EVENTS.rdvSlotSelected,
-      ANALYTICS_EVENTS.formSubmitted,
+      ANALYTICS_EVENTS.rdvFormStarted,
       ANALYTICS_EVENTS.rdvConfirmed,
     ],
     note:
       "L'entonnoir qui compte : il finit sur une réservation CONFIRMÉE par " +
-      "le cockpit, jamais sur un formulaire envoyé. Filtrer l'étape 1 sur " +
-      "`section = rendez-vous`. Fenêtre : 1 jour, la prise de rendez-vous se " +
+      "le cockpit, jamais sur un formulaire envoyé. Ces étapes partent aussi " +
+      "sans consentement (comptage sans cookie, aucune donnée saisie). Fenêtre : 1 jour, la prise de rendez-vous se " +
       "joue en une seule visite. Croiser la chute entre les étapes 2 et 3 avec " +
       "`rdv_slots_failed` avant de conclure à un désintérêt : une panne du cockpit " +
       "produit exactement la même courbe.",

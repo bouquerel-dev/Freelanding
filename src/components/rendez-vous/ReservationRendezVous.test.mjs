@@ -241,7 +241,7 @@ describe("ReservationRendezVous — un seul écran", () => {
     simulerServeur([]);
     montage = await monter();
     const { conteneur } = montage;
-    expect(PROSPECTS.map((t) => t.nom)).toEqual(["Logiciel", "Site", "IA", "Autre"]);
+    expect(PROSPECTS.map((t) => t.nom)).toEqual(["Logiciel", "Site", "IA", "À voir ensemble"]);
     expect(sujets(conteneur)).toEqual(["logiciel", "site", "ia", "decouverte"]);
     for (const type of PROSPECTS) expect(texte(conteneur)).toContain(type.nom);
     expect(texte(conteneur)).not.toContain("Démonstration");
@@ -292,7 +292,7 @@ describe("ReservationRendezVous — un seul écran", () => {
     expect(texte(conteneur)).toContain(C.succes.texte);
   });
 
-  it("changer de sujet recharge les créneaux et efface l'heure retenue", async () => {
+  it("changer de sujet recharge les créneaux et garde l'heure tant que le nouveau sujet la propose", async () => {
     contexte = installerDom();
     const demandes = [];
     const base = globalThis.fetch;
@@ -300,6 +300,10 @@ describe("ReservationRendezVous — un seul écran", () => {
     const intercepte = globalThis.fetch;
     globalThis.fetch = async (url, options) => {
       demandes.push(String(url));
+      // « site » n'a pas cette heure : l'agenda lui répond sans aucun jour.
+      if (String(url).includes("type=site")) {
+        return { ok: true, status: 200, json: async () => ({ ...CRENEAUX, jours: [] }) };
+      }
       return intercepte(url, options);
     };
     montage = await monter("logiciel");
@@ -311,8 +315,33 @@ describe("ReservationRendezVous — un seul écran", () => {
     await choisir(conteneur, "sujet", "ia");
     await act(async () => attendre(20));
     expect(demandes.some((u) => u.includes("type=ia"))).toBe(true);
+    expect(texte(conteneur)).toContain(C.recapitulatif);
+
+    await choisir(conteneur, "sujet", "site");
+    await act(async () => attendre(20));
     expect(texte(conteneur)).not.toContain(C.recapitulatif);
     globalThis.fetch = base;
+  });
+
+  it("sans sujet dans l'URL, le sujet par défaut montre les créneaux dès l'arrivée", async () => {
+    contexte = installerDom();
+    simulerServeur([]);
+    const conteneur = document.createElement("div");
+    document.body.appendChild(conteneur);
+    const racine = createRoot(conteneur);
+    await act(async () => {
+      racine.render(
+        createElement(ReservationRendezVous, {
+          types: PROSPECTS,
+          emailContact: "contact@exemple.fr",
+          typeParDefaut: "decouverte",
+        }),
+      );
+    });
+    await act(async () => attendre(20));
+    expect(texte(conteneur)).not.toContain(C.formulaire.choisirSujet);
+    expect(bouton(conteneur, "15:00")).toBeTruthy();
+    await act(async () => racine.unmount());
   });
 
   it("sans sujet, sans heure ou avec un faux téléphone, rien ne part et le champ est nommé", async () => {

@@ -28,18 +28,21 @@
 import { useSearchParams } from "next/navigation";
 import { ReservationRendezVous } from "@/components/rendez-vous/ReservationRendezVous";
 import { PARAM_SUJET } from "@/content/rendez-vous";
-import type { TypeRendezVous } from "@/content/rendez-vous";
+import type { IdRendezVous, TypeRendezVous } from "@/content/rendez-vous";
 import { resoudreSujet, typesClient, typesVisibles } from "@/lib/rendez-vous/config";
 
 export function ReservationAvecSujet({
   types,
   emailContact,
   client = false,
+  sujetParDefaut,
 }: {
   types: readonly TypeRendezVous[];
   emailContact: string;
   /** Page `/rdv/client` : les sujets de clients au lieu de ceux du premier rendez-vous. */
   client?: boolean;
+  /** Sujet pris quand l'URL n'en donne aucun : les créneaux s'affichent dès l'arrivée. */
+  sujetParDefaut?: IdRendezVous;
 }) {
   const demande = resoudreSujet(useSearchParams().get(PARAM_SUJET));
   // Deux filtres, pas un : le sujet doit être connu du contenu ET réellement
@@ -54,6 +57,11 @@ export function ReservationAvecSujet({
       types={proposes}
       emailContact={emailContact}
       typeInitial={typeInitial}
+      typeParDefaut={
+        sujetParDefaut && proposes.some((type) => type.id === sujetParDefaut)
+          ? sujetParDefaut
+          : undefined
+      }
     />
   );
 }
