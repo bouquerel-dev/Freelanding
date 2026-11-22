@@ -201,10 +201,9 @@ export const RECOMMENDED_FUNNELS: readonly FunnelDefinition[] = [
   },
   {
     id: "rendez-vous",
-    label: "Réservation vue → créneaux → heure → coordonnées → confirmé",
+    label: "Réservation vue → heure → coordonnées → confirmé",
     steps: [
       ANALYTICS_EVENTS.rdvViewed,
-      ANALYTICS_EVENTS.rdvSlotsLoaded,
       ANALYTICS_EVENTS.rdvSlotSelected,
       ANALYTICS_EVENTS.rdvFormStarted,
       ANALYTICS_EVENTS.rdvConfirmed,
@@ -212,7 +211,9 @@ export const RECOMMENDED_FUNNELS: readonly FunnelDefinition[] = [
     note:
       "L'entonnoir qui compte : il finit sur une réservation CONFIRMÉE par " +
       "le cockpit, jamais sur un formulaire envoyé. Ces étapes partent aussi " +
-      "sans consentement (comptage sans cookie, aucune donnée saisie). Fenêtre : 1 jour, la prise de rendez-vous se " +
+      "sans consentement (comptage sans cookie, aucune donnée saisie). " +
+      "`rdv_slots_loaded` n'est pas une étape : il peut précéder la vue, il " +
+      "sert à repérer un agenda vide ou en panne. Fenêtre : 1 jour, la prise de rendez-vous se " +
       "joue en une seule visite. Croiser la chute entre les étapes 2 et 3 avec " +
       "`rdv_slots_failed` avant de conclure à un désintérêt : une panne du cockpit " +
       "produit exactement la même courbe.",

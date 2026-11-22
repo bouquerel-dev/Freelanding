@@ -191,26 +191,19 @@ désintérêt alors qu'elle vient d'une panne.
 6. **Canal e-mail** — fenêtre 1 jour
    `$pageview` → `contact_email_clicked`
 7. **Prise de rendez-vous** — fenêtre 1 jour
-   `section_viewed` (filtrer `section = rendez-vous`) → `rdv_type_selected` →
-   `rdv_slots_loaded` → `rdv_questionnaire_completed` → `rdv_slot_selected` →
-   `form_submitted` → `rdv_confirmed`
+   `rdv_viewed` → `rdv_slot_selected` → `rdv_form_started` → `rdv_confirmed`
 
-   Depuis le 2026-11-10, les prospects (logiciel, découverte) remplissent le
-   cadrage et leurs coordonnées AVANT le créneau : `rdv_questionnaire_completed`
-   marque ce passage. La chute entre `rdv_slots_loaded` et lui mesure ce que
-   coûte le questionnaire ; les sujets des clients (démonstration, point
-   d'étape) ne l'émettent pas.
+   Depuis le 2026-11-22 : `/rdv` montre les créneaux dès l'arrivée (sujet
+   « À voir ensemble » par défaut), le questionnaire n'existe plus, et ces
+   étapes partent aussi sans consentement (comptage sans cookie, rien de
+   saisi). Avant cette date, l'entonnoir ne voyait que les visiteurs qui
+   acceptaient la mesure : les deux périodes ne se comparent pas.
 
-   Depuis le 2026-10-16, `section = rendez-vous` est le double formulaire du
-   pied de page (seul formulaire du site, présent sur toutes les pages) : le
-   premier palier compte donc chaque pied de page vu, plus seulement les
-   visiteurs d'une section de réservation. Comparer avant et après cette date
-   n'a pas de sens sur ce palier.
-
-   Une chute entre les étapes 2 et 3 se lit à côté de `rdv_slots_failed` AVANT
-   d'être attribuée au désintérêt : une panne du cockpit dessine exactement la même
-   courbe. Le 2026-09-06, du temps de Cal.com, les quatre types pointaient sur des identifiants
-   inexistants et aucun créneau ne s'affichait ; rien ne le disait.
+   `rdv_slots_loaded` n'est pas une étape : il arrive parfois avant
+   `rdv_viewed`. Il se lit avec `rdv_slots_failed` pour repérer un agenda vide
+   ou une panne du cockpit, qui dessinent la même chute qu'un désintérêt.
+   `rdv_failed` porte `field` : `jetonCaptcha` = refus anti-robot, `creneau` =
+   heure prise entre-temps, autre = validation trop stricte.
 
 Avec quelques dizaines de visites par mois, **les taux ne veulent rien dire**.
 Ce qui vaut, c'est le rejeu de session du prospect qu'Eliott vient d'appeler,

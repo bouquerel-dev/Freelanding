@@ -284,3 +284,14 @@ describe("startAnalytics, chargement réel du SDK", () => {
     expect(resultat === null || typeof resultat.capture === "function").toBe(true);
   });
 });
+
+describe("entonnoir de la prise de rendez-vous", () => {
+  it("chaque étape part sans consentement, et `rdv_slots_loaded` n'en est pas une", async () => {
+    const { RECOMMENDED_FUNNELS } = await import("./events.ts");
+    const rdv = RECOMMENDED_FUNNELS.find((entonnoir) => entonnoir.id === "rendez-vous");
+    expect(rdv.steps).toEqual(["rdv_viewed", "rdv_slot_selected", "rdv_form_started", "rdv_confirmed"]);
+    for (const event of rdv.steps) {
+      expect(mesure.filtreSansConsentement({ event })).toEqual({ event });
+    }
+  });
+});

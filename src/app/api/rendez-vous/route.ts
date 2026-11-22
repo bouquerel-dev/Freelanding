@@ -175,6 +175,9 @@ export async function POST(requete: Request): Promise<Response> {
       {
         message:
           "La vérification anti-robot n’a pas abouti. Rechargez la page et réessayez.",
+        // Nommé pour la mesure : `rdv_failed.field = jetonCaptcha` sépare un
+        // refus anti-robot d'une validation trop stricte.
+        champ: "jetonCaptcha",
       },
       403,
     );

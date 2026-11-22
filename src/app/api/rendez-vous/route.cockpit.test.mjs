@@ -78,6 +78,22 @@ function reserver(corps = {}) {
 }
 
 describe("POST /api/rendez-vous : jusqu’au cockpit", () => {
+  it("un refus anti-robot nomme son champ pour la mesure, sans rien envoyer au cockpit", async () => {
+    const envois = [];
+    globalThis.fetch = async (url, options = {}) => {
+      if (String(url).includes("challenges.cloudflare.com")) {
+        return new Response(JSON.stringify({ success: false, "error-codes": ["invalid-input-response"] }), { status: 200 });
+      }
+      if (String(url).endsWith("/api/rdv/types?prive=1")) return new Response(JSON.stringify(TYPES), { status: 200 });
+      envois.push({ url: String(url), options });
+      return new Response("{}", { status: 500 });
+    };
+    const reponse = await reserver();
+    expect(reponse.status).toBe(403);
+    expect((await reponse.json()).champ).toBe("jetonCaptcha");
+    expect(envois).toHaveLength(0);
+  });
+
   it("réserve et garde le téléphone en première ligne des notes", async () => {
     const envois = simuler([{ id: "rdv_1", jetonGestion: "x" }, 201]);
     const reponse = await reserver();
