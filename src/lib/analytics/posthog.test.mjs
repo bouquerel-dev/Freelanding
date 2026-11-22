@@ -58,6 +58,12 @@ describe("filtreSansConsentement, sans consentement", () => {
     });
   });
 
+  it("laisse partir les étapes de la prise de rendez-vous", () => {
+    for (const event of ["rdv_viewed", "rdv_slots_loaded", "rdv_slot_selected", "rdv_form_started", "rdv_confirmed", "rdv_failed"]) {
+      expect(mesure.filtreSansConsentement({ event })).toEqual({ event });
+    }
+  });
+
   it("jette la lecture, les clics et le rejeu", () => {
     for (const event of [
       "$pageleave",

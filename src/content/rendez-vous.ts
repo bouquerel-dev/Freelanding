@@ -137,6 +137,8 @@ export interface ContenuRendezVous {
     readonly messagePlaceholderClient: string;
     readonly envoyer: string;
     readonly envoiEnCours: string;
+    /** Sous le bouton : ce qui se passe une fois le rendez-vous confirmé. */
+    readonly apres: string;
     /** Sous les boutons de sujet, tant qu'aucun n'est choisi : pourquoi le calendrier manque. */
     readonly choisirSujet: string;
     /** Sous le calendrier, tant qu'aucune heure n'est retenue. */
@@ -222,7 +224,7 @@ export const rendezVousContent: ContenuRendezVous = {
   eyebrow: "Prendre rendez-vous",
   titre: "Réserver un créneau",
   chapeau:
-    "Un sujet, un créneau, vos coordonnées. Le lien de visio part par e-mail dans la foulée.",
+    "Choisissez une heure, laissez vos coordonnées : le lien de visio part par e-mail dans la foulée.",
   noteFuseau: "Heures affichées à l’heure de Paris.",
   garanties: [
     "Gratuit et sans engagement",
@@ -295,7 +297,7 @@ export const rendezVousContent: ContenuRendezVous = {
     },
     {
       id: "decouverte",
-      nom: "Autre",
+      nom: "À voir ensemble",
       duree: "15, 30 ou 45 minutes",
       description:
         "Autre chose, ou le problème sans la solution : on en parle. Si ce n’est pas pour moi, je vous le dis pendant l’appel.",
@@ -390,6 +392,7 @@ export const rendezVousContent: ContenuRendezVous = {
     messagePlaceholderClient: "Un point précis, une question, un document à regarder.",
     envoyer: "Confirmer le rendez-vous",
     envoiEnCours: "Confirmation en cours…",
+    apres: "Le lien de visio arrive par e-mail dès la confirmation.",
     choisirSujet: "Choisissez un sujet pour voir les créneaux libres.",
     choisirHeure: "Choisissez un jour puis une heure pour confirmer.",
     confirmerCiDessous: "Heure retenue. Confirmez avec le bouton plus bas.",

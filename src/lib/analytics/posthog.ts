@@ -45,7 +45,26 @@ let consentGranted = false;
  * `consent_updated` y figure pour connaître la part de refus, sans identifiant.
  * `$pageleave` n'y est pas : il porte le temps de lecture et le défilement.
  */
-const EVENEMENTS_SANS_CONSENTEMENT = new Set(["$pageview", "consent_updated"]);
+const EVENEMENTS_SANS_CONSENTEMENT = new Set([
+  "$pageview",
+  "consent_updated",
+  /*
+   * LES ÉTAPES DE LA RÉSERVATION, depuis le 2026-11-22. Sans elles, l'entonnoir
+   * de `/rdv` ne voyait que les visiteurs qui acceptent la mesure : 4 sur 123
+   * en un mois, impossible de dire où les autres repartaient. Ces événements
+   * ne portent ni clic libre, ni défilement, ni rien de ce que le visiteur
+   * saisit : le sujet, un délai en jours, une durée, un motif d'échec. Ils
+   * restent sous le même hachage du jour, sans cookie.
+   */
+  "rdv_viewed",
+  "rdv_type_selected",
+  "rdv_slots_loaded",
+  "rdv_slots_failed",
+  "rdv_slot_selected",
+  "rdv_form_started",
+  "rdv_confirmed",
+  "rdv_failed",
+]);
 
 /**
  * Droit d'opposition au comptage sans cookie : le signal « Ne pas suivre » ou

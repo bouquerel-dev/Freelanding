@@ -245,7 +245,18 @@ export function Calendrier({
   onDecaler: (mois: number) => void;
 }) {
   const disponibles = new Map(donnees.jours.map((jour) => [jour.jour, jour]));
-  const cases = grilleMois(donnees.fenetre.mois);
+  /*
+   * LES SEMAINES DÉJÀ PASSÉES DISPARAISSENT (2026-11-22) : en fin de mois, trois
+   * rangées de jours grisés repoussaient les heures sous le pli du téléphone.
+   * Une semaine reste dès qu'un de ses jours atteint le début de la fenêtre.
+   */
+  const grille = grilleMois(donnees.fenetre.mois);
+  const cases = grille.filter((_, index) => {
+    const debutSemaine = index - (index % 7);
+    return grille
+      .slice(debutSemaine, debutSemaine + 7)
+      .some((jour) => jour !== null && jour >= donnees.fenetre.debut);
+  });
   // `aria-disabled` et non `disabled` : un bouton désactivé perd le focus, et
   // il le perdrait au moment précis où le clavier vient de l'actionner (le
   // chargement du mois suivant, ou l'arrivée au bout de la fenêtre).
@@ -395,13 +406,18 @@ function BoutonsSujet({
   types,
   choisi,
   onChoisir,
+  decrire,
 }: {
   prefixe: string;
   types: readonly TypeRendezVous[];
   choisi: IdRendezVous | undefined;
   onChoisir: (id: IdRendezVous) => void;
+  /** Faux tant que le sujet est celui par défaut : le calendrier passe avant l'explication. */
+  decrire: boolean;
 }) {
-  const description = types.find((type) => type.id === choisi)?.description;
+  const description = decrire
+    ? types.find((type) => type.id === choisi)?.description
+    : undefined;
   return (
     <fieldset className="m-0 flex min-w-0 flex-col gap-[12px] border-0 p-0">
       <legend className={`${CLASSE_LIBELLE} mb-[12px] p-0`}>{contenu.blocs.sujet}</legend>
@@ -444,6 +460,7 @@ export function ReservationRendezVous({
   types,
   emailContact,
   typeInitial,
+  typeParDefaut,
 }: {
   /** Types RÉELLEMENT configurés, résolus côté serveur. Jamais vide ici. */
   types: readonly TypeRendezVous[];
@@ -458,11 +475,24 @@ export function ReservationRendezVous({
    * titre.
    */
   typeInitial?: IdRendezVous;
+  /**
+   * Sujet retenu quand l'URL n'en donne aucun, pour montrer les créneaux dès
+   * l'arrivée (page `/rdv` seule, 2026-11-22). Contrairement à `typeInitial`,
+   * ce n'est pas un choix du visiteur : aucun `rdv_type_selected` ne part.
+   *
+   * POURQUOI. Le lien des mails mène à `/rdv` sans sujet. Tant qu'un sujet
+   * n'était pas choisi, le calendrier restait vide : 4 visiteurs sur 123 ont
+   * franchi cette marche en un mois, aucun n'a réservé.
+   */
+  typeParDefaut?: IdRendezVous;
 }) {
   // Préfixe des identifiants et des groupes de boutons radio : la page de
   // contact et le pied de page peuvent monter deux réservations à la fois.
   const instance = `rdv${useId().replace(/[^a-zA-Z0-9]/g, "")}`;
-  const [type, setType] = useState<IdRendezVous | undefined>(typeInitial);
+  const typeDepart = typeInitial ?? typeParDefaut;
+  const [type, setType] = useState<IdRendezVous | undefined>(typeDepart);
+  /** Vrai dès que le sujet vient du visiteur ou de son lien, pas du défaut. */
+  const [sujetChoisi, setSujetChoisi] = useState(typeInitial !== undefined);
   const [creneau, setCreneau] = useState<Creneau | undefined>(undefined);
   const [mois, setMois] = useState("");
   const [jourChoisi, setJourChoisi] = useState("");
@@ -495,6 +525,20 @@ export function ReservationRendezVous({
    */
   const jourActif =
     donnees?.jours.find((jour) => jour.jour === jourChoisi) ?? donnees?.jours[0];
+  /**
+   * L'heure retenue SURVIT À UN CHANGEMENT DE SUJET tant que le nouveau sujet
+   * la propose aussi (chaque type a ses plages et sa durée au cockpit). Pendant
+   * le rechargement, elle reste affichée ; si la réponse ne la contient pas,
+   * elle disparaît et le bouton redemande une heure.
+   */
+  const creneauRetenu =
+    creneau &&
+    (chargement ||
+      donnees?.jours.some((jour) =>
+        jour.creneaux.some((offert) => offert.debut === creneau.debut),
+      ))
+      ? creneau
+      : undefined;
 
   const [etatEnvoi, setEtatEnvoi] = useState<EtatEnvoi>("repos");
   const [messageEnvoi, setMessageEnvoi] = useState("");
@@ -528,10 +572,39 @@ export function ReservationRendezVous({
   const refSujet = useRef<HTMLDivElement | null>(null);
   const refCreneaux = useRef<HTMLDivElement | null>(null);
   const refSucces = useRef<HTMLParagraphElement | null>(null);
+  const refCoordonnees = useRef<HTMLDivElement | null>(null);
+  const refNom = useRef<HTMLInputElement | HTMLTextAreaElement | null>(null);
+  const saisieAnnoncee = useRef(false);
   /** Le focus va au succès : le formulaire disparaît, le clavier ne doit pas retomber sur le document. */
   useEffect(() => {
     if (etatEnvoi === "succes") refSucces.current?.focus();
   }, [etatEnvoi]);
+
+  /*
+   * PREMIÈRE ÉTAPE DE L'ENTONNOIR : le bloc vu, une fois, à sa première
+   * visibilité (sur `/rdv` dès l'arrivée, dans le pied de page quand on y
+   * descend). La garde par `ref` couvre le double montage du mode strict.
+   */
+  const vueAnnoncee = useRef(false);
+  useEffect(() => {
+    const annoncer = () => {
+      if (vueAnnoncee.current) return;
+      vueAnnoncee.current = true;
+      capture(ANALYTICS_EVENTS.rdvViewed, { rdv_type: typeDepart, preselected: typeInitial !== undefined });
+    };
+    const noeud = racine.current;
+    if (!noeud || typeof IntersectionObserver === "undefined") {
+      annoncer();
+      return;
+    }
+    const observateur = new IntersectionObserver((entrees) => {
+      if (!entrees.some((entree) => entree.isIntersecting)) return;
+      observateur.disconnect();
+      annoncer();
+    });
+    observateur.observe(noeud);
+    return () => observateur.disconnect();
+  }, [typeDepart, typeInitial]);
 
   /*
    * UN SUJET PRÉSÉLECTIONNÉ FRANCHIT LA MÊME MARCHE QU'UN SUJET CHOISI.
@@ -645,14 +718,10 @@ export function ReservationRendezVous({
         rdv_type: id,
         preselected: false,
       });
-      // Même sujet : rien à remettre à zéro, on reprend où on en était.
-      if (id !== type) {
-        setType(id);
-        // Chaque type a sa propre disponibilité : un créneau ne passe pas de l'un à l'autre.
-        setCreneau(undefined);
-        setMois("");
-        setJourChoisi("");
-      }
+      // Le mois, le jour et l'heure restent : `creneauRetenu` écarte l'heure
+      // si le nouveau sujet ne la propose pas.
+      if (id !== type) setType(id);
+      setSujetChoisi(true);
       setEtatEnvoi("repos");
       setMessageEnvoi("");
     },
@@ -679,11 +748,25 @@ export function ReservationRendezVous({
         days_ahead: delai,
         duration_min: donnees?.duree,
       });
+      const premiereHeure = creneau === undefined;
       setCreneau(choix);
       setEtatEnvoi("repos");
       setMessageEnvoi("");
+      /*
+       * L'HEURE CHOISIE, LE GESTE SUIVANT EST LE NOM : le bloc des coordonnées
+       * remonte et le champ prend le focus, ce qui ouvre le clavier sur mobile
+       * et la saisie automatique du navigateur. Une seule fois, champ vide :
+       * changer d'heure ensuite ne doit pas faire sauter la page.
+       */
+      if (premiereHeure && nom === "") {
+        refNom.current?.focus({ preventScroll: true });
+        refCoordonnees.current?.scrollIntoView({
+          block: "start",
+          behavior: mouvementReduit() ? "auto" : "smooth",
+        });
+      }
     },
-    [type, donnees],
+    [type, donnees, creneau, nom],
   );
 
   const decalerMois = useCallback(
@@ -696,7 +779,7 @@ export function ReservationRendezVous({
   );
 
   const recommencer = useCallback(() => {
-    setType(typeInitial);
+    setType(typeDepart);
     setCreneau(undefined);
     setMois("");
     setJourChoisi("");
@@ -705,7 +788,7 @@ export function ReservationRendezVous({
     setChampEnErreur(undefined);
     setMessage("");
     refDebut.current = Date.now();
-  }, [typeInitial]);
+  }, [typeDepart]);
 
   /** Refus avant envoi : le message s'annonce, et le bloc concerné revient en vue. */
   const refuser = (texte: string, champ: string) => {
@@ -723,6 +806,7 @@ export function ReservationRendezVous({
       refSujet.current?.scrollIntoView({ block: "center", behavior: mouvementReduit() ? "auto" : "smooth" });
       return;
     }
+    const creneau = creneauRetenu;
     if (!creneau) {
       refuser(contenu.formulaire.choisirHeure, "creneau");
       refCreneaux.current?.scrollIntoView({ block: "start", behavior: mouvementReduit() ? "auto" : "smooth" });
@@ -857,6 +941,29 @@ export function ReservationRendezVous({
 
   const enCours = etatEnvoi === "envoi";
 
+  /*
+   * LE SUJET PRIS PAR DÉFAUT PASSE SOUS LE CALENDRIER (2026-11-22) : les
+   * créneaux arrivent dans le premier écran du téléphone, et le sujet reste à
+   * portée juste avant les coordonnées. Déplacé dans le DOM et non par `order`,
+   * pour que le clavier suive le même ordre que l'œil.
+   */
+  const sujetApres = typeParDefaut !== undefined && typeInitial === undefined;
+  const blocSujet = sujetsProposes ? (
+    <div ref={refSujet}>
+      <BoutonsSujet
+        prefixe={instance}
+        types={types}
+        choisi={type}
+        onChoisir={choisirType}
+        decrire={sujetChoisi}
+      />
+    </div>
+  ) : (
+    <h3 className="m-0 text-[22px] font-medium leading-[1.1] tracking-[-0.02em] text-foreground tablet:text-[26px]">
+      {typeChoisi?.nom}
+    </h3>
+  );
+
   return (
     // `scroll-mt` : le haut du bloc ne doit pas finir sous l'en-tête fixe.
     <div ref={racine} className="flex scroll-mt-[100px] flex-col gap-[28px]">
@@ -874,20 +981,7 @@ export function ReservationRendezVous({
         /* Première interaction = chargement du script Turnstile. */
         onFocusCapture={protection.activer}
       >
-        {sujetsProposes ? (
-          <div ref={refSujet}>
-            <BoutonsSujet
-              prefixe={instance}
-              types={types}
-              choisi={type}
-              onChoisir={choisirType}
-            />
-          </div>
-        ) : (
-          <h3 className="m-0 text-[22px] font-medium leading-[1.1] tracking-[-0.02em] text-foreground tablet:text-[26px]">
-            {typeChoisi?.nom}
-          </h3>
-        )}
+        {sujetApres ? null : blocSujet}
 
         <div ref={refCreneaux} className="flex scroll-mt-[100px] flex-col gap-[16px]">
           <h3 className={`${CLASSE_LIBELLE} m-0`}>{contenu.blocs.creneau}</h3>
@@ -938,7 +1032,7 @@ export function ReservationRendezVous({
                     chargement ? "pointer-events-none opacity-40" : ""
                   }`}
                 >
-                  <Heures jour={jourActif} choisi={creneau} onChoisir={choisirCreneau} />
+                  <Heures jour={jourActif} choisi={creneauRetenu} onChoisir={choisirCreneau} />
                 </div>
               ) : (
                 <p className={`${CLASSE_TEXTE} m-0 desktop:pt-[50px]`}>{contenu.creneaux.vide}</p>
@@ -950,19 +1044,33 @@ export function ReservationRendezVous({
 
           {/* La région existe avant son contenu : le choix d'une heure s'annonce. */}
           <div aria-live="polite">
-            {creneau ? (
+            {creneauRetenu ? (
               <div className="flex flex-col gap-[6px] border border-accent bg-accent/[0.07] px-[16px] py-[12px]">
                 <p className={`${CLASSE_LIBELLE} m-0`}>{contenu.recapitulatif}</p>
                 <span className="sr-only">{contenu.formulaire.confirmerCiDessous}</span>
                 <p className="m-0 text-[16px] font-medium leading-[1.3] tracking-[-0.01em] text-foreground">
-                  {creneau.resume}
+                  {creneauRetenu.resume}
                 </p>
               </div>
             ) : null}
           </div>
         </div>
 
-        <div className="flex flex-col gap-[14px]">
+        {sujetApres ? blocSujet : null}
+
+        <div
+          ref={refCoordonnees}
+          className="flex scroll-mt-[100px] flex-col gap-[14px]"
+          /* Première saisie (frappe ou remplissage automatique) : étape de l'entonnoir. */
+          onInputCapture={() => {
+            if (saisieAnnoncee.current) return;
+            saisieAnnoncee.current = true;
+            capture(ANALYTICS_EVENTS.rdvFormStarted, {
+              rdv_type: type,
+              slot_selected: creneauRetenu !== undefined,
+            });
+          }}
+        >
           <h3 className={`${CLASSE_LIBELLE} m-0`}>{contenu.blocs.coordonnees}</h3>
           <ChampTexte
             id={`${instance}-nom`}
@@ -970,6 +1078,7 @@ export function ReservationRendezVous({
             legende={contenu.formulaire.nomLabel}
             valeur={nom}
             onChanger={setNom}
+            refChamp={refNom}
             placeholder={contenu.formulaire.nomPlaceholder}
             invalide={champEnErreur === "nom"}
             autoComplete="name"
@@ -1022,6 +1131,7 @@ export function ReservationRendezVous({
           <button type="submit" disabled={enCours} className={CLASSE_BOUTON_PRINCIPAL}>
             {enCours ? contenu.formulaire.envoiEnCours : contenu.formulaire.envoyer}
           </button>
+          <p className={`${CLASSE_TEXTE} m-0`}>{contenu.formulaire.apres}</p>
           <p className="m-0 text-[12px] font-medium leading-[1.3] tracking-[-0.01em] text-foreground-60">
             {contenu.formulaire.mention}{" "}
             <Link

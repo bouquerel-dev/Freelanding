@@ -22,6 +22,12 @@ import { resoudreConfiguration, typesVisibles } from "@/lib/rendez-vous/config";
 
 const contenu = rendezVousContent;
 
+/**
+ * Sujet retenu sans `?sujet` : le lien des mails n'en porte pas, et le visiteur
+ * doit voir les créneaux sans rien choisir. « Premier échange » au cockpit.
+ */
+const SUJET_PAR_DEFAUT = "decouverte";
+
 export const metadata: Metadata = {
   title: { absolute: "Prendre rendez-vous · Eliott Bouquerel" },
   description:
@@ -41,11 +47,11 @@ export default async function Rdv() {
       <Header site={site} />
       {/* Cible du lien d'évitement (voir SkipLink.tsx et focus.css). */}
       <main id="main-content" tabIndex={-1}>
-        <section className="relative bg-background px-[20px] pb-[90px] pt-[130px] text-foreground tablet:px-[24px] desktop:px-[30px]">
-          <div className="mx-auto flex w-full max-w-[860px] flex-col gap-[32px]">
-            <div className="flex flex-col gap-[14px]">
+        <section className="relative bg-background px-[20px] pb-[90px] pt-[104px] text-foreground tablet:pt-[130px] tablet:px-[24px] desktop:px-[30px]">
+          <div className="mx-auto flex w-full max-w-[860px] flex-col gap-[28px] tablet:gap-[32px]">
+            <div className="flex flex-col gap-[12px] tablet:gap-[14px]">
               <span className={CLASSE_LIBELLE}>{contenu.eyebrow}</span>
-              <h1 className="m-0 text-[40px] font-semibold uppercase leading-[0.9] tracking-[-0.05em] tablet:text-[62px]">
+              <h1 className="m-0 text-[34px] font-semibold uppercase leading-[0.9] tracking-[-0.05em] tablet:text-[62px]">
                 {contenu.titre}
               </h1>
               <p className={`${CLASSE_TEXTE} m-0 max-w-[560px]`}>{contenu.chapeau}</p>
@@ -60,10 +66,18 @@ export default async function Rdv() {
             {types.length > 0 ? (
               <Suspense
                 fallback={
-                  <ReservationRendezVous types={typesVisibles(types)} emailContact={email} />
+                  <ReservationRendezVous
+                    types={typesVisibles(types)}
+                    emailContact={email}
+                    typeParDefaut={SUJET_PAR_DEFAUT}
+                  />
                 }
               >
-                <ReservationAvecSujet types={types} emailContact={email} />
+                <ReservationAvecSujet
+                  types={types}
+                  emailContact={email}
+                  sujetParDefaut={SUJET_PAR_DEFAUT}
+                />
               </Suspense>
             ) : (
               <p className={`${CLASSE_TEXTE} m-0`}>{contenu.creneaux.indisponible}</p>
