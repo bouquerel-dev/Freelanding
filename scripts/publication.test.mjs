@@ -140,9 +140,10 @@ describe("publierAuto : la validation d'Eliott vaut feu vert", () => {
     expect(traces).toEqual(["lecture du cockpit"]);
   });
 
-  it("un article par jour ouvré : rien le week-end, rien si un article est parti aujourd'hui", async () => {
-    const weekEnd = monde({ articles: [article("a")], maintenant: SAMEDI });
-    expect((await publierAuto(weekEnd.outils)).etat).toBe("repos");
+  it("un article par jour, week-end compris : rien si un article est parti aujourd'hui", async () => {
+    const weekEnd = monde({ articles: [article("a")], maintenant: SAMEDI, enLigne: () => true });
+    expect((await publierAuto(weekEnd.outils)).etat).toBe("publie");
+    expect(weekEnd.traces.some((t) => t.startsWith("ecrire a 2026-10-17"))).toBe(true);
     const dejaFait = monde({ articles: [article("a")], registre: [entree("ce-matin", "2026-10-15")] });
     expect((await publierAuto(dejaFait.outils)).etat).toBe("deja-publie");
     expect(dejaFait.traces.some((t) => t.startsWith("ecrire"))).toBe(false);
@@ -284,10 +285,13 @@ describe("la page par métier : son quota, sa chaîne, ses échecs à elle", () 
     expect(traces).toEqual([]);
   });
 
-  it("le week-end, rien pour personne", async () => {
-    const { outils, traces } = monde({ articles: LES_DEUX, maintenant: SAMEDI });
-    expect(await publierAuto(outils)).toEqual({ etat: "repos", confirmes: [], ignores: [] });
-    expect(traces).toEqual([]);
+  it("le week-end, l'article part, la page attend lundi", async () => {
+    const { outils, traces } = monde({ articles: LES_DEUX, maintenant: SAMEDI, enLigne: () => true });
+    const issue = await publierAuto(outils);
+    expect(issue.etat).toBe("publie");
+    expect(issue.page).toBeUndefined();
+    expect(traces.some((t) => t.startsWith("ecrire un-article"))).toBe(true);
+    expect(traces.some((t) => t.startsWith("ecrirePage"))).toBe(false);
   });
 
   it("l'échec de l'article n'empêche pas la page", async () => {

@@ -44,9 +44,10 @@ hébergé par GitHub, gratuit pour un dépôt public. Il lance
 1. marque « Publié » au cockpit tout article récent du registre, et toute page
    récente de `src/content/metiers.json`, qui répond en ligne sans l'avoir encore
    été ;
-2. s'arrête le week-end, et dès qu'un article est déjà parti aujourd'hui :
-   **un article par jour ouvré**, le plus anciennement validé d'abord. La page
-   par métier a son propre quota (voir « Les pages par métier ») ;
+2. s'arrête dès qu'un article est déjà parti aujourd'hui : **un article par
+   jour, week-end compris** (depuis le 2026-11-23), l'actualité encore fraîche
+   d'abord puis le plus anciennement validé. La page par métier a son propre
+   quota, jours ouvrés seulement (voir « Les pages par métier ») ;
 3. écrit l'article dans le site : `src/content/articles/<slug>.mdx`, son entrée
    dans `src/content/articles-cockpit.json`, et son visuel (le SVG que le
    rédacteur a conçu et qu'Eliott a vu dans l'aperçu) rendu en trois JPG par
@@ -212,7 +213,8 @@ d'`offre.ts` au rendu.
 
 ### Le circuit de publication
 
-Depuis le 2026-10-31, **un article ET une page par jour ouvré, chacun son quota**.
+Depuis le 2026-10-31, **un article ET une page par jour, chacun son quota** : l'article
+tous les jours depuis le 2026-11-23, la page les jours ouvrés seulement.
 Une page se valide au cockpit comme un article : une validation `ARTICLE_BLOG`
 avec `contexte.article.kind = "metier"`, `slug` et `visuel`. Une page qui vise un besoin plutôt qu'un métier porte `"nature": "fonction"` dans son corps : même circuit, même contrôle, mais elle rejoint la liste « Par besoin » du hub. Sans `kind`, c'est un
 article, et rien ne change pour lui. Le corps est le JSON d'une entrée de
