@@ -1,0 +1,105 @@
+Un logiciel de planification de production place chaque opération de vos ordres de fabrication sur une machine et sur un créneau, en tenant compte des heures que cette machine a vraiment dans la semaine. Quand une commande urgente arrive, il la case, recalcule tout le planning et vous montre quelles commandes glissent, avant que vous disiez oui au client. Un tableur garde la liste de vos ordres, mais il ne sait pas qu’un tour ne fait que 35 heures par semaine. La surcharge se découvre alors le jeudi, quand l’opérateur finit tard.
+
+Je conçois et je code seul des logiciels métier pour des PME, du cadrage à la mise en production. Pendant [un appel en visio](/rdv?sujet=logiciel), montrez-moi le planning de votre atelier tel qu’il est aujourd’hui : je vous dis ce qu’un outil peut recalculer à votre place.
+
+## Planifier, ordonnancer : quelle différence dans un atelier ?
+
+Les deux mots se mélangent dans les comparatifs, et ils ne répondent pas à la même question.
+
+| | Plan de charge | Ordonnancement |
+| --- | --- | --- |
+| La question | Avons-nous assez d’heures machine sur les semaines à venir ? | Dans quel ordre passent les opérations, machine par machine, heure par heure ? |
+| L’horizon | Plusieurs semaines | La semaine en cours, parfois la journée |
+| Ce qu’on en tire | Accepter une commande, embaucher, sous-traiter | La feuille de route de chaque poste |
+| Qui le regarde | Le dirigeant, le commercial | Le chef d’atelier, les opérateurs |
+
+Un logiciel de planification sérieux fait les deux à partir des mêmes données : vos gammes (les opérations de chaque pièce, sur quelle machine, en combien de temps) et le calendrier de chaque machine. Si votre question porte sur tout le suivi de l’atelier, des devis aux temps réels, l’article sur le [logiciel de gestion de production](/blog/logiciel-gestion-de-production) couvre l’ensemble. Ici, on reste sur le planning.
+
+## Que se passe-t-il quand une commande urgente arrive ?
+
+Prenons un atelier d’usinage de quatorze personnes avec trois machines : un tour à commande numérique, un centre d’usinage et une rectifieuse. L’exemple est construit pour le calcul, les chiffres sont ceux d’un atelier type. Chaque machine tourne sur un poste de 7 heures, cinq jours par semaine : 35 heures disponibles.
+
+Lundi matin, la semaine est déjà chargée : 30 heures sur le tour, 33 sur le centre d’usinage, 21 sur la rectifieuse. À 10 heures, un client demande 40 pièces pour vendredi. Leur gamme : 12 minutes de tournage par pièce, 9 minutes de fraisage, 3 minutes de rectification.
+
+| Machine | Déjà prévu | Commande urgente | Total | Disponible |
+| --- | --- | --- | --- | --- |
+| Tour | 30 h | 8 h | 38 h | 35 h |
+| Centre d’usinage | 33 h | 6 h | 39 h | 35 h |
+| Rectifieuse | 21 h | 2 h | 23 h | 35 h |
+
+<Figure src="/images/blog/corps/logiciel-planification-production-1.jpg" alt="Trois barres verticales grises côte à côte sous une ligne horizontale ; sur les deux premières, un bloc vert posé au sommet dépasse la ligne, la troisième reste en dessous" caption="Avec la commande urgente, le tour et le centre d’usinage passent au-dessus de leurs 35 heures ; la rectifieuse garde de la marge." />
+
+Il manque 7 heures dans la semaine. Dans un tableur, la ligne de la commande s’ajoute en haut de la liste avec la date de vendredi, et rien ne signale le dépassement : ça se voit le jeudi, au pied de la machine.
+
+Un logiciel qui calcule à capacité finie place les 8 heures de tournage, puis le fraisage seulement après le tournage, puisque la pièce passe d’une machine à l’autre. Il repousse ensuite deux ordres déjà prévus derrière la fin de semaine et affiche les deux clients concernés. Vous avez trois réponses possibles, à choisir avant de rappeler : accepter et prévenir ces deux clients, proposer lundi au client pressé, ou ouvrir 7 heures le samedi.
+
+<Figure src="/images/blog/corps/logiciel-planification-production-2.jpg" alt="Trois lignes de blocs gris sur cinq colonnes de jours, un bloc vert sur chaque ligne relié au suivant en escalier, et deux blocs en pointillés poussés au-delà d’un trait vertical de fin de semaine" caption="Le logiciel case l’urgence, respecte l’ordre tournage puis fraisage, et vous montre les deux ordres qui passent à la semaine suivante." />
+
+## Pourquoi le tableur ne voit pas la surcharge ?
+
+Un tableur de planning travaille à capacité infinie : il accepte autant de lignes que vous en tapez, sur la date que vous choisissez. Je lui vois trois angles morts.
+
+- **Les heures de chaque machine.** Le total par semaine existe si quelqu’un a écrit la formule, et il casse dès qu’on insère une ligne au mauvais endroit.
+- **L’enchaînement des opérations.** Le fraisage ne commence pas avant la fin du tournage. Dans une feuille, rien ne relie ces deux lignes.
+- **Les données du reste de l’entreprise.** La commande arrive par mail, la matière est dans un autre fichier, les temps réels sont sur des fiches papier. Chaque information se recopie à la main.
+
+D’après la Direction générale des entreprises, 60 % des entreprises industrielles de dix personnes ou plus utilisaient un progiciel de gestion intégré en 2023 ([Les Thémas de la DGE n° 24, novembre 2024](https://www.entreprises.gouv.fr/files/files/Publications/2024/themas/20241113-themas-N24-numerisation.pdf), d’après l’enquête TIC de l’Insee). Quatre sur dix n’en avaient donc pas, et leur planning se tient avec d’autres moyens.
+
+## Ce que l’outil doit savoir faire, et rien de plus
+
+Un atelier de dix à cinquante personnes n’a pas besoin d’un moteur d’optimisation de grand groupe. Il lui faut six fonctions, et qu’elles marchent :
+
+1. **Les gammes** : pour chaque pièce, les opérations, la machine et le temps, avec le temps de réglage à part.
+2. **Le calendrier des ressources** : postes, jours fériés, maintenance prévue, absence d’un opérateur qualifié.
+3. **Le calcul à capacité finie**, qui respecte l’ordre des opérations et les dates promises.
+4. **Le recalcul en un clic** quand une urgence arrive ou qu’une machine tombe, avec la liste des commandes qui glissent.
+5. **La vue de l’atelier** : sur une tablette au poste, la liste du jour, et un bouton pour dire « commencé » et « terminé ».
+6. **Le retour des temps réels**, pour corriger les gammes : un temps prévu à 12 minutes qui prend 15 fausse tous les plannings suivants.
+
+La sixième, c’est celle qu’on oublie. Sans elle, le calcul repose sur des temps théoriques, et l’atelier cesse de croire l’écran au bout de trois semaines.
+
+## Logiciel du marché ou outil construit autour de vos gammes ?
+
+| Critère | Logiciel du marché | Outil construit pour votre atelier |
+| --- | --- | --- |
+| Prix | 69 € HT par mois en entrée de gamme pour un ERP industriel avec plan de charge (annonce relevée sur Bing le 23 novembre 2026), davantage pour un module d’ordonnancement dédié | Un prix fixé au devis, payé une fois |
+| Paramétrage | Vos gammes entrent dans les champs prévus par l’éditeur | L’outil suit vos gammes, vos postes et vos règles de priorité |
+| Lien avec vos commandes et votre stock | Selon les modules souscrits | Une seule base avec vos commandes et votre stock |
+| Données | Chez l’éditeur | Dans votre base, export libre |
+
+Je vous conseille un logiciel du marché si vos pièces suivent des gammes standard et que vos règles de priorité tiennent dans ses menus. Le sur mesure prend l’avantage quand vos règles n’appartiennent qu’à vous : un client prioritaire, des séries qu’on regroupe pour limiter les réglages, une machine qu’un seul opérateur sait conduire.
+
+Pour comparer, une agence facture couramment de 8 000 à 10 000 € HT un premier outil sur mesure (La Fabrique du Net, ordres de grandeur relevés le 15 octobre 2026). Je fais le même travail, du cadrage à la mise en production, à un prix fixé au devis, et vous parlez directement à la personne qui conçoit et qui code. Le détail de l’offre est sur la page [Logiciel métier sur mesure](/services/logiciel-metier), et la version qui couvre toute l’entreprise sur la page [ERP sur mesure](/services/logiciel-metier/erp-sur-mesure).
+
+## Ce que m’a appris l’ordonnanceur de ce blog
+
+Je n’ai pas encore livré de logiciel de planification d’atelier. Ce blog, en revanche, est publié par un petit ordonnanceur que j’ai construit : chaque heure ouvrée, il prend l’article validé le plus ancien, le publie s’il passe les contrôles du site, et s’arrête à un article par jour. C’est un ordonnancement à capacité finie, avec un seul poste et une seule règle de priorité.
+
+Le 11 novembre, deux articles validés étaient refusés par un contrôle et attendaient une correction. Le troisième, validé après eux, est parti quand même : l’ordonnanceur saute un ordre bloqué au lieu d’arrêter la file. Sans cette règle, un seul article refusé aurait retenu tous les autres. Dans votre atelier, c’est la même question : quand la matière d’un ordre n’est pas arrivée, le poste attend-il, ou passe-t-il au suivant ? Je vous pose ces questions au cadrage, une par une, et l’outil applique vos réponses.
+
+L’IA a sa place dans ce travail, à un endroit précis. Elle lit la commande du client, en PDF ou dans le corps d’un mail, retrouve la référence et la quantité, et vous propose l’ordre de fabrication avec sa gamme. Le calcul du planning, lui, reste un calcul : il doit donner le même résultat à chaque fois. Si votre planning tient aujourd’hui dans un classeur, l’article sur [remplacer Excel par un logiciel](/blog/remplacer-excel-par-un-logiciel) montre comment migrer sans arrêter l’atelier.
+
+## Par où commencer ?
+
+<Steps items={[
+  "**Notez la capacité réelle de chaque machine** : postes, heures par jour, arrêts réguliers.",
+  "**Écrivez la gamme de vos dix pièces les plus fréquentes**, avec un temps de réglage à part.",
+  "**Pendant deux semaines, notez chaque urgence** et ce qu’elle a fait glisser.",
+  "**Prenez une heure en visio** avec ces trois feuilles : vous repartez avec ce qu’un outil peut recalculer seul et un ordre de prix."
+]} />
+
+## Questions fréquentes
+
+**Un logiciel de planification remplace-t-il le chef d’atelier ?**
+Non. Il lui retire le recalcul à la main et lui montre les conséquences d’un choix. Les arbitrages entre clients, ça reste son travail.
+
+**Peut-on commencer par une seule machine ?**
+Oui, par la machine goulot, celle dont la charge décide de vos délais. Les autres s’ajoutent ensuite.
+
+**Faut-il des capteurs sur les machines ?**
+Pas pour commencer. Un bouton « commencé, terminé » sur une tablette au poste suffit à remonter les temps réels.
+
+**Mes données restent-elles chez moi ?**
+Oui. La base est la vôtre, hébergée à votre nom, et vous pouvez tout exporter à tout moment.
+
+Pour regarder votre cas, [prenez rendez-vous en visio](/rdv?sujet=logiciel) avec le planning de la semaine dernière.

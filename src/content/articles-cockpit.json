@@ -1,5 +1,22 @@
 [
   {
+    "slug": "logiciel-planification-production",
+    "title": "Logiciel de planification de production quand Excel déborde",
+    "date": "2026-11-23",
+    "category": "Outils métier",
+    "description": "Une commande urgente arrive et votre planning d’atelier se refait à la main dans Excel : ce qu’un logiciel de planification recalcule pour vous, et à quel prix.",
+    "readingTime": "9 min de lecture",
+    "tags": [
+      "logiciel planification production",
+      "logiciel ordonnancement production",
+      "logiciel ordonnancement",
+      "planning de production excel",
+      "logiciel ordonnancement atelier"
+    ],
+    "alt": "Tableau de planning à fiches, cinq rangées de cartes grises ; une carte verte descend dans la troisième rangée et deux cartes en pointillés sortent après le trait de fin de semaine",
+    "validationId": "37d4ec68-e960-41eb-b2a4-78ebaa8296c5"
+  },
+  {
     "slug": "logiciel-de-tracabilite",
     "title": "Rappel de lot : quel logiciel de traçabilité pour une PME ?",
     "date": "2026-11-20",
