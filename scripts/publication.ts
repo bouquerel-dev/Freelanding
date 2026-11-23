@@ -1,19 +1,21 @@
 /**
  * LA PUBLICATION AUTOMATIQUE DE CE QU'ELIOTT VALIDE DANS LE COCKPIT : UN ARTICLE
- * ET UNE PAGE PAR MÉTIER PAR JOUR OUVRÉ, CHACUN SON QUOTA (décision du 2026-10-31).
+ * PAR JOUR, WEEK-END COMPRIS (décision du 2026-11-23), ET UNE PAGE PAR MÉTIER
+ * PAR JOUR OUVRÉ, CHACUN SON QUOTA (décision du 2026-10-31).
  *
  * Eliott valide au cockpit (hub Blog) : sa validation vaut feu vert. Une page
  * par métier est une validation de même nature, avec `article.kind = "metier"`,
  * et son corps est une donnée : le JSON d'une entrée de `metiers.json`, sans sa
  * date, jamais compilé. Le travail planifié `.github/workflows/publier-article.yml`
- * lance `bun scripts/publier-articles.ts --auto` chaque heure ouvrée, et ce
+ * lance `bun scripts/publier-articles.ts --auto` chaque heure de journée, et ce
  * module fait le reste, dans l'ordre :
  *
  *   1. marque « Publié » au cockpit tout article du registre et toute page de
  *      `metiers.json` qui répond en ligne et ne l'était pas encore (un
  *      déploiement lent la veille, par exemple) ;
- *   2. s'arrête le samedi et le dimanche ; un article déjà parti aujourd'hui
- *      n'arrête que les articles, une page datée d'aujourd'hui que les pages ;
+ *   2. laisse les pages au repos le samedi et le dimanche ; un article déjà
+ *      parti aujourd'hui n'arrête que les articles, une page datée
+ *      d'aujourd'hui que les pages ;
  *   3. prend le validé le plus ancien de chaque nature, l'écrit dans le site
  *      avec son visuel, et passe les contrôles du site : types, lint, tests, build ;
  *   4. pousse sur `main` : Coolify déploie seul à chaque poussée ;
@@ -330,7 +332,7 @@ async function conclure(o: Outils, v: Volet | Partie, enLigne: ReadonlySet<strin
   return { etat: "publie", url, ignores };
 }
 
-/** La chaîne complète : au plus un article et au plus une page par jour ouvré, chacun son quota. */
+/** La chaîne complète : au plus un article par jour et une page par jour ouvré, chacun son quota. */
 export async function publierAuto(o: Outils): Promise<Issue> {
   // L'annulation remet le dossier à son état de départ (`reset --hard`, `clean`) :
   // sur un dossier déjà modifié, elle effacerait un travail en cours. Rien ne part.
@@ -341,11 +343,12 @@ export async function publierAuto(o: Outils): Promise<Issue> {
   const confirmes = await confirmerEnLigne(o);
   const maintenant = o.maintenant();
   const date = jourDeParis(maintenant);
-  if (estWeekEnd(maintenant)) return { etat: "repos", confirmes, ignores: [] };
+  // Un article par jour, week-end compris (2026-11-23) ; les pages par métier gardent les jours ouvrés.
+  const pagesAuRepos = estWeekEnd(maintenant);
 
   const articleDuJour = o.registre().some((a) => a.date === date);
   const pageDuJour = o.pages().some((p) => p.date === date);
-  const validations = articleDuJour && pageDuJour ? [] : await o.cockpit.articles();
+  const validations = articleDuJour && (pageDuJour || pagesAuRepos) ? [] : await o.cockpit.articles();
 
   const volet = async (deja: boolean, envoi: Envoi | null, ignores: string[]): Promise<Volet | Partie> => {
     if (deja) return { etat: "deja-publie", ignores: [] };
@@ -364,7 +367,7 @@ export async function publierAuto(o: Outils): Promise<Issue> {
     ignores,
   );
 
-  const { page, ignores: ignoresPages } = choisirPage(validations, o, maintenant);
+  const { page, ignores: ignoresPages } = pagesAuRepos ? { page: null, ignores: [] } : choisirPage(validations, o, maintenant);
   const pourPage = await volet(
     pageDuJour,
     page && {
