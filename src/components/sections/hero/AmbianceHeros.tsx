@@ -81,7 +81,7 @@ export function AmbianceHeros() {
         if (visible) cadre = window.requestAnimationFrame(dessiner);
         return;
       }
-      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      const dpr = Math.min(window.devicePixelRatio, 1.5);
       const l = c.clientWidth;
       const h = c.clientHeight;
       if (!l || !h) return;
