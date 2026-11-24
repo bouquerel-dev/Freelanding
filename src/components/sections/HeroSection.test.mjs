@@ -60,11 +60,13 @@ describe("HeroSection", () => {
     expect(html).toContain('<link rel="preload" href="/images/eliott-portrait-trame.webp" as="image" type="image/webp"/>');
   });
 
-  it("habille les deux boutons comme celui de l'en-tête, logo compris", () => {
+  it("habille les deux boutons avec le bouton partagé de l'en-tête, logo compris", () => {
     const cta = html.match(/<a[^>]*data-part="hero-cta"[^>]*>/u)?.[0] ?? "";
-    expect(cta).toContain("header-cta");
-    expect(html).toContain("header-cta-fleche");
-    expect(html).toContain("hero-cta-grille");
+    const secondaire = html.match(/<a[^>]*data-part="hero-cta-secondaire"[^>]*>/u)?.[0] ?? "";
+    expect(cta).toContain("bouton-appel");
+    expect(cta).toContain('data-ton="volt"');
+    expect(secondaire).toContain('data-ton="encre"');
+    expect(html.match(/bouton-appel-fleche/gu)).toHaveLength(2);
   });
 
   it("dit le titre en une phrase blanche, coupée en deux lignes", () => {

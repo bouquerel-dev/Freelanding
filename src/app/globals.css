@@ -1243,13 +1243,6 @@ html[data-consent-choisi] [data-consent-attente] {
   to { stroke-dashoffset: 0; }
 }
 
-/* Bouton secondaire : la grille s'allume au survol. */
-.hero-cta-grille { transition: transform 240ms cubic-bezier(0.23, 1, 0.32, 1); }
-@media (hover: hover) and (pointer: fine) {
-  .hero-cta-secondaire:hover .hero-cta-grille { transform: rotate(90deg); }
-}
-.hero-cta-secondaire { transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1), border-color 200ms ease; }
-.hero-cta-secondaire:active { transform: scale(0.97); }
 
 @media (prefers-reduced-motion: reduce) {
   .hero-photo {
@@ -1262,7 +1255,6 @@ html[data-consent-choisi] [data-consent-attente] {
   .hero-repere-point,
   .hero-scene::before { animation: none; }
   .hero-trait-ligne { animation: none; stroke-dashoffset: 0; }
-  .hero-cta-grille { transition: none; }
 }
 
 /* ---------------------------------------------------------------------------
