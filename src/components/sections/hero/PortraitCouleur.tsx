@@ -77,10 +77,9 @@ export function animerPortrait(t: HTMLCanvasElement | null, src: string): (() =>
       const reste = depuis ? Math.max(0, ATTENTE_TRAME_MS - (performance.now() - depuis)) : 0;
       minuteurs.push(window.setTimeout(montrer, reste));
     };
-    const suivi = new window.MutationObserver(() => {
-      if (scene?.dataset.trameDepuis) passer();
-    });
-    if (scene?.dataset.trameDepuis) {
+    // Seul `data-trame-depuis` est suivi : il n'est posé qu'à la naissance.
+    const suivi = new window.MutationObserver(passer);
+    if (sc.dataset.trameDepuis) {
       passer();
       return;
     }
