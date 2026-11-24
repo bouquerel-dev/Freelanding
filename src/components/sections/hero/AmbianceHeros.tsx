@@ -78,7 +78,7 @@ export function AmbianceHeros() {
       if (debut === null) debut = maintenant;
       // Au doigt, une image sur deux une fois les fils tissés : la batterie d'abord.
       if (!souris && images % 2 === 0 && maintenant - debut > TISSAGE_MS) {
-        if (visible) cadre = window.requestAnimationFrame(dessiner);
+        cadre = window.requestAnimationFrame(dessiner);
         return;
       }
       const dpr = Math.min(window.devicePixelRatio, 1.5);
