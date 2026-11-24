@@ -24,6 +24,8 @@ import type { NoeudSchema, SchemaContent } from "@/content/schema";
  */
 
 const PAS_MS = 1400;
+/** Durée de la cascade d'entrée : dernier décalage (680 ms) plus l'animation (760 ms). */
+const CASCADE_MS = 1500;
 
 /** Décalage d'entrée en cascade (ordinateur), lu par `.schema-entree`. */
 function delai(ms: number) {
@@ -72,15 +74,29 @@ export function SchemaSection({ schema }: { schema: SchemaContent }) {
     const s = section.current;
     if (!s) return;
     const reduit = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (!reduit && window.matchMedia("(min-width: 1200px)").matches) s.dataset.vu = "0";
+    // La cascade n'attend que si la section est encore sous l'écran : déjà
+    // visible au montage, elle reste telle que le serveur l'a rendue.
+    const sousEcran = s.getBoundingClientRect().top > window.innerHeight;
+    if (!reduit && sousEcran && window.matchMedia("(min-width: 1200px)").matches) s.dataset.vu = "0";
+    let fin = 0;
     const obs = new IntersectionObserver(([e]) => {
       const dedans = Boolean(e?.isIntersecting);
       setVisible(dedans);
       s.dataset.schema = dedans ? "" : "pause";
-      if (dedans && s.dataset.vu === "0") s.dataset.vu = "1";
+      if (dedans && s.dataset.vu === "0") {
+        s.dataset.vu = "1";
+        // Cascade jouée (1,5 s au plus) : on la retire, pour qu'un changement
+        // d'onglet n'éteigne pas les cartes neuves le temps de la rejouer.
+        fin = window.setTimeout(() => {
+          s.dataset.vu = "2";
+        }, CASCADE_MS);
+      }
     }, { rootMargin: "0px 0px -15% 0px" });
     obs.observe(s);
-    return () => obs.disconnect();
+    return () => {
+      obs.disconnect();
+      window.clearTimeout(fin);
+    };
   }, []);
 
   useEffect(() => {
@@ -175,8 +191,8 @@ export function SchemaSection({ schema }: { schema: SchemaContent }) {
         >
           <span aria-hidden className="hero-viseur pointer-events-none absolute inset-[10px] hidden desktop:block" />
           <svg aria-hidden className="pointer-events-none absolute inset-0 hidden h-full w-full desktop:block">
-            {liens.map((d) => (
-              <path key={d} d={d} className="schema-lien" fill="none" stroke="currentColor" />
+            {liens.map((d, i) => (
+              <path key={i} d={d} className="schema-lien" fill="none" stroke="currentColor" />
             ))}
           </svg>
           <div className="relative grid gap-[14px] desktop:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)_minmax(0,1fr)] desktop:items-center desktop:gap-[72px]">

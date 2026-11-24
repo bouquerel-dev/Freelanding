@@ -67,10 +67,10 @@ export function AmbianceHeros() {
       pos.x += dx * AMORTI;
       pos.y += dy * AMORTI;
       poser();
-      cadre = requestAnimationFrame(avancer);
+      cadre = window.requestAnimationFrame(avancer);
     };
     const relancer = () => {
-      if (!cadre && visible && vivant) cadre = requestAnimationFrame(avancer);
+      if (!cadre && visible) cadre = window.requestAnimationFrame(avancer);
     };
 
     const suivre = (e: PointerEvent) => {
@@ -94,7 +94,7 @@ export function AmbianceHeros() {
       visible = Boolean(entree?.isIntersecting);
       section.dataset.ambiance = visible ? "" : "pause";
       if (!visible && cadre) {
-        cancelAnimationFrame(cadre);
+        window.cancelAnimationFrame(cadre);
         cadre = 0;
       }
     });
@@ -108,7 +108,7 @@ export function AmbianceHeros() {
       obs.disconnect();
       section.removeEventListener("pointermove", suivre);
       section.removeEventListener("pointerleave", quitter);
-      if (cadre) cancelAnimationFrame(cadre);
+      if (cadre) window.cancelAnimationFrame(cadre);
     };
   }, []);
 
