@@ -57,11 +57,11 @@ function installer({ reduit = false, ordinateur = true } = {}) {
   etat.restaurer = () => Object.assign(globalThis, precedent);
 }
 
-async function monter() {
+async function monter(schema = schemaAccueil) {
   const hote = document.createElement("div");
   document.body.append(hote);
   const racine = createRoot(hote);
-  await act(async () => racine.render(createElement(SchemaSection, { schema: schemaAccueil })));
+  await act(async () => racine.render(createElement(SchemaSection, { schema })));
   etat.racine = racine;
   etat.section = hote.querySelector("section");
   return hote;
@@ -142,6 +142,13 @@ describe("SchemaSection, en vrai DOM", () => {
     await voir(true);
     expect(etat.section.dataset.vu).toBeUndefined();
     expect(actives()).toHaveLength(0);
+  });
+
+  it("ne rend rien et n'observe rien sans onglet", async () => {
+    installer();
+    const hote = await monter({ ...schemaAccueil, modes: [] });
+    expect(hote.innerHTML).toBe("");
+    expect(etat.visibilite).toHaveLength(0);
   });
 
   it("ne cache rien sous 1200 px, où il n'y a pas de cascade", async () => {
