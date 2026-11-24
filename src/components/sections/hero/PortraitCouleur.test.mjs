@@ -3,14 +3,15 @@ import { JSDOM } from "jsdom";
 import { act, createElement } from "react";
 import { createRoot } from "react-dom/client";
 
-import { ATTENTE_TRAME_MS, animerPortrait, PASSAGE_MS, PortraitCouleur } from "./PortraitCouleur";
+import { ATTENTE_TRAME_MS, animerPortrait, PASSAGE_MS, PortraitCouleur, TRAME_MAX_MS } from "./PortraitCouleur";
 
 /**
  * Le portrait couleur dans jsdom. Ce que ces tests gardent :
  *   - la photo est demandée à toutes les tailles, téléphone compris ;
  *   - peinte dans la toile, elle attend la fin de la vague de la trame, puis la
  *     scène passe à « photo » et, le passage fini, à « lampe » ;
- *   - arrivée avant la trame, ou en mouvement réduit, elle passe sans attendre ;
+ *   - arrivée avant la trame, elle attend sa naissance (plafond `TRAME_MAX_MS`) ;
+ *   - en mouvement réduit, elle passe sans attendre ;
  *   - sans contexte 2D ou démontée avant la fin, rien ne casse, rien ne reste.
  */
 
@@ -100,18 +101,40 @@ describe("PortraitCouleur", () => {
     expect(etat.scene.dataset.scene).toBe("lampe");
   });
 
-  it("passe sans attendre quand la trame n'est pas née, ou en mouvement réduit", async () => {
+  it("chargée avant la trame, attend sa naissance puis sa vague", async () => {
     installer();
+    const t = await monter();
+    etat.images[0].onload();
+    expect(t.dataset.pret).toBeUndefined();
+    expect(etat.minuteurs[0].ms).toBe(TRAME_MAX_MS);
+    // La trame naît : la photo attend encore la vague.
+    etat.scene.dataset.trameDepuis = String(performance.now());
+    await new Promise((fin) => queueMicrotask(fin));
+    const vague = etat.minuteurs.at(-1);
+    expect(vague.ms).toBeGreaterThan(ATTENTE_TRAME_MS - 100);
+    vague.f();
+    expect(t.dataset.pret).toBe("1");
+    // Le plafond, arrivé après, ne rejoue rien.
+    etat.minuteurs[0].f();
+    expect(etat.minuteurs.filter((m) => m.ms === PASSAGE_MS)).toHaveLength(1);
+  });
+
+  it("sans trame au bout du plafond, la photo passe seule", async () => {
+    installer();
+    const t = await monter();
+    etat.images[0].onload();
+    etat.minuteurs.shift().f();
+    expect(etat.minuteurs[0].ms).toBe(0);
+    attendre();
+    expect(t.dataset.pret).toBe("1");
+    expect(etat.scene.dataset.scene).toBe("lampe");
+  });
+
+  it("en mouvement réduit, passe sans attendre la trame", async () => {
+    installer({ reduit: true });
     await monter();
     etat.images[0].onload();
-    expect(etat.minuteurs[0].ms).toBe(0);
-    await act(async () => etat.racine.unmount());
-    etat.racine = null;
-    etat.restaurer();
-
-    installer({ reduit: true });
-    await monter({ trameDepuis: performance.now() });
-    etat.images[0].onload();
+    expect(etat.scene.dataset.scene).toBe("photo");
     expect(etat.minuteurs[0].ms).toBe(0);
     attendre();
     expect(etat.scene.dataset.scene).toBe("lampe");
