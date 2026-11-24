@@ -437,7 +437,7 @@ function Resultat({
             <div
               role="group"
               aria-labelledby={idDuree}
-              className="flex overflow-hidden rounded-control border border-accent-ink/80"
+              className="flex rounded-control border border-accent-ink/80"
             >
               <span id={idDuree} className="sr-only">
                 {r.abonnement.choixDuree}
@@ -448,7 +448,7 @@ function Resultat({
                   type="button"
                   aria-pressed={duree === i}
                   onClick={() => setDuree(i === 0 ? 0 : 1)}
-                  className="min-h-[44px] min-w-[72px] px-[10px] text-[12px] font-semibold uppercase tracking-[0.02em] transition-colors aria-pressed:bg-accent-ink aria-pressed:text-accent motion-reduce:transition-none"
+                  className="min-h-[44px] min-w-[72px] px-[10px] text-[12px] font-semibold uppercase first:rounded-l-control last:rounded-r-control tracking-[0.02em] transition-colors aria-pressed:bg-accent-ink aria-pressed:text-accent motion-reduce:transition-none"
                 >
                   {r.abonnement.engagement(a.duree)}
                 </button>
