@@ -11,6 +11,10 @@ import { useId, useState, useSyncExternalStore, type ReactNode } from "react";
  * restent montés : changer d'onglet ne perd ni la saisie ni le créneau choisi.
  *
  * Sans rendez-vous configuré, il ne reste qu'une porte : pas d'onglets.
+ *
+ * L'APPEL EST OUVERT PAR DÉFAUT depuis le 2026-11-24 (Eliott) : l'onglet
+ * « Réserver un appel » passe en premier et montre les créneaux sans clic.
+ * « Écrire un message » reste à côté pour qui ne veut pas d'appel.
  */
 const ANCRE_RENDEZ_VOUS = "#rendez-vous";
 
@@ -62,12 +66,12 @@ export function FooterContact({
   modes,
   message,
   rendezVous,
-  ongletInitial = "message",
+  ongletInitial = "rendezVous",
 }: {
   modes?: { label: string; message: string; rendezVous: string };
   message: ReactNode;
   rendezVous?: ReactNode;
-  /** « rendezVous » quand l'adresse porte un sujet (`?sujet=`). */
+  /** Onglet ouvert à l'arrivée : le rendez-vous, sauf demande contraire. */
   ongletInitial?: "message" | "rendezVous";
 }) {
   // Un lien vers `#rendez-vous` (boutons « Réserver » des pages) ouvre
@@ -93,8 +97,8 @@ export function FooterContact({
   if (!rendezVous || !modes) return <div className="neo neo-carte w-full">{message}</div>;
 
   const onglets = [
-    { id: "message", libelle: modes.message },
     { id: "rendezVous", libelle: modes.rendezVous },
+    { id: "message", libelle: modes.message },
   ] as const;
 
   return (
@@ -108,7 +112,7 @@ export function FooterContact({
         onKeyDown={(evenement) => {
           if (evenement.key !== "ArrowLeft" && evenement.key !== "ArrowRight") return;
           evenement.preventDefault();
-          const suivant = onglet === "message" ? "rendezVous" : "message";
+          const suivant = onglet === "rendezVous" ? "message" : "rendezVous";
           setOnglet(suivant);
           document.getElementById(`${base}-onglet-${suivant}`)?.focus();
         }}
@@ -119,7 +123,7 @@ export function FooterContact({
         <span
           aria-hidden
           className="neo-mode-pastille absolute inset-y-[5px] left-[5px] w-[calc(50%-5px)]"
-          style={{ transform: onglet === "message" ? "translateX(0)" : "translateX(100%)" }}
+          style={{ transform: onglet === "rendezVous" ? "translateX(0)" : "translateX(100%)" }}
         />
         {onglets.map(({ id, libelle }) => {
           const actif = onglet === id;

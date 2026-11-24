@@ -1,22 +1,20 @@
 /**
  * Vérification du jeton anti-robot, derrière une interface.
  *
- * ARBITRAGE (2026-08-28). Le fournisseur retenu est **Cloudflare Turnstile**,
- * pas reCAPTCHA v3, et la raison est de conformité plus que technique : le site
- * publie par ailleurs une bannière de consentement soignée, et reCAPTCHA v3
- * charge un script Google sur chaque page portant un formulaire, dépose des
- * cookies et transmet des signaux comportementaux à Google. C'est un traceur
- * tiers non exempté : il faudrait le soumettre au consentement, sur un
- * formulaire de contact où refuser le consentement rendrait le formulaire
- * inutilisable. Turnstile rend le même service (score de risque, invisible par
- * défaut, épreuve interactive seulement au besoin), gratuit, sans cookie de
- * suivi ni profilage publicitaire.
+ * DEUX FOURNISSEURS DEPUIS LE 2026-11-24. Eliott veut Google reCAPTCHA v3 :
+ * la case Turnstile apparaissait sous le bouton chez trop de visiteurs. v3 ne
+ * montre rien et rend un score, comparé ici à `SEUIL_RECAPTCHA`. Turnstile
+ * reste en repli tant que `RECAPTCHA_SECRET_KEY` manque : jamais un formulaire
+ * sans protection le temps que les clefs Google soient posées.
  *
- * L'INTERFACE EXISTE POUR QUE CE CHOIX RESTE RÉVERSIBLE. Basculer sur reCAPTCHA
- * v3 revient à écrire un second `VerificateurCaptcha` (une trentaine de lignes,
- * même forme de requête, un `score` à comparer à un seuil en plus) et à changer
- * la ligne de `resoudreVerificateur`. Rien d'autre dans le projet ne connaît le
- * fournisseur.
+ * Le navigateur dit avec quel fournisseur il a pris son jeton
+ * (`fournisseurCaptcha`) ; le serveur suit ce choix s'il en a la clef secrète,
+ * sinon il prend celui qu'il sait vérifier. Pendant un déploiement où une seule
+ * des deux clefs reCAPTCHA serait posée, le jeton reste ainsi vérifiable.
+ *
+ * CONSENTEMENT. reCAPTCHA charge un script Google qui lit des signaux du
+ * navigateur. Il n'est chargé qu'à la première interaction avec un formulaire,
+ * et la politique de confidentialité le nomme (`src/content/legal.ts`).
  *
  * ABSENCE DE CLEF = REFUS EXPLICITE, jamais un laissez-passer. Un formulaire
  * qui accepte tout parce qu'une variable d'environnement manque est le pire des
@@ -31,7 +29,8 @@ export type ResultatCaptcha =
       /**
        * `non_configure` : clefs absentes, le service refuse de servir.
        * `jeton_absent` : le client n'a envoyé aucun jeton.
-       * `jeton_refuse` : Cloudflare a répondu « non ».
+       * `jeton_refuse` : le fournisseur a répondu « non », ou le score est
+       *   sous le seuil, ou l'action ne correspond pas au formulaire.
        * `indisponible` : le fournisseur n'a pas répondu (réseau, panne).
        */
       readonly raison: "non_configure" | "jeton_absent" | "jeton_refuse" | "indisponible";
@@ -129,15 +128,114 @@ export const VERIFICATEUR_ABSENT: VerificateurCaptcha = {
   },
 };
 
+const URL_RECAPTCHA = "https://www.google.com/recaptcha/api/siteverify";
+
 /**
- * Choisit le vérificateur à partir de l'environnement.
+ * Score minimal accepté, de 0 (robot) à 1 (humain). 0,5 est la valeur que
+ * Google recommande pour démarrer ; `RECAPTCHA_SEUIL` l'ajuste sans
+ * redéploiement de code si les journaux montrent des refus d'humains.
+ */
+export const SEUIL_RECAPTCHA = 0.5;
+
+interface ReponseRecaptcha {
+  readonly success: boolean;
+  readonly score?: number;
+  readonly action?: string;
+  readonly codes: readonly string[];
+}
+
+function litReponseRecaptcha(charge: unknown): ReponseRecaptcha | undefined {
+  if (typeof charge !== "object" || charge === null) return undefined;
+  const objet = charge as Record<string, unknown>;
+  if (typeof objet.success !== "boolean") return undefined;
+  const codes = objet["error-codes"];
+  return {
+    success: objet.success,
+    ...(typeof objet.score === "number" ? { score: objet.score } : {}),
+    ...(typeof objet.action === "string" ? { action: objet.action } : {}),
+    codes: Array.isArray(codes) ? codes.filter((c): c is string => typeof c === "string") : [],
+  };
+}
+
+export function creerVerificateurRecaptcha(
+  cleSecrete: string,
+  options: { readonly seuil?: number; readonly action?: string } = {},
+): VerificateurCaptcha {
+  const seuil = options.seuil ?? SEUIL_RECAPTCHA;
+  return {
+    nom: "recaptcha",
+    async verifier(jeton, adresse) {
+      if (!jeton || jeton.trim().length === 0) {
+        return { ok: false, raison: "jeton_absent" };
+      }
+      const corps = new URLSearchParams({ secret: cleSecrete, response: jeton });
+      if (adresse && adresse !== "sans-adresse") corps.set("remoteip", adresse);
+      try {
+        const reponse = await fetch(URL_RECAPTCHA, {
+          method: "POST",
+          body: corps,
+          signal: AbortSignal.timeout(8_000),
+        });
+        if (!reponse.ok) {
+          return { ok: false, raison: "indisponible", codes: [String(reponse.status)] };
+        }
+        const analyse = litReponseRecaptcha(await reponse.json());
+        if (!analyse) return { ok: false, raison: "indisponible" };
+        if (!analyse.success) {
+          return { ok: false, raison: "jeton_refuse", codes: analyse.codes };
+        }
+        if (options.action && analyse.action !== options.action) {
+          return { ok: false, raison: "jeton_refuse", codes: [`action:${analyse.action ?? ""}`] };
+        }
+        if (analyse.score === undefined || analyse.score < seuil) {
+          return { ok: false, raison: "jeton_refuse", codes: [`score:${analyse.score ?? "absent"}`] };
+        }
+        return { ok: true };
+      } catch {
+        return { ok: false, raison: "indisponible" };
+      }
+    },
+  };
+}
+
+/** Lit le seuil de l'environnement ; une valeur hors de ]0, 1] garde le défaut. */
+export function lireSeuil(brut: string | undefined): number {
+  const valeur = Number(brut);
+  return brut && Number.isFinite(valeur) && valeur > 0 && valeur <= 1 ? valeur : SEUIL_RECAPTCHA;
+}
+
+/** Le fournisseur annoncé par le navigateur, ou `undefined`. */
+export function lireFournisseur(corps: unknown): "recaptcha" | "turnstile" | undefined {
+  if (typeof corps !== "object" || corps === null) return undefined;
+  const valeur = (corps as Record<string, unknown>).fournisseurCaptcha;
+  return valeur === "recaptcha" || valeur === "turnstile" ? valeur : undefined;
+}
+
+/**
+ * Choisit le vérificateur à partir de l'environnement et du fournisseur
+ * annoncé par le navigateur.
  *
  * Lu à chaque appel et non au chargement du module : en développement, poser la
  * clef puis relancer le serveur suffit, sans avoir à raisonner sur l'ordre
  * d'évaluation des modules.
+ *
+ * @param demande `fournisseur` : celui du jeton ; `action` : celle que le
+ *   jeton reCAPTCHA doit porter (`contact`, `rendez_vous`, `estimation`).
  */
-export function resoudreVerificateur(): VerificateurCaptcha {
-  const secret = process.env.TURNSTILE_SECRET_KEY?.trim();
-  if (!secret) return VERIFICATEUR_ABSENT;
-  return creerVerificateurTurnstile(secret);
+export function resoudreVerificateur(
+  demande: { readonly fournisseur?: "recaptcha" | "turnstile"; readonly action?: string } = {},
+  env: Readonly<Record<string, string | undefined>> = process.env,
+): VerificateurCaptcha {
+  const recaptcha = env.RECAPTCHA_SECRET_KEY?.trim();
+  const turnstile = env.TURNSTILE_SECRET_KEY?.trim();
+  const versRecaptcha = (cle: string) =>
+    creerVerificateurRecaptcha(cle, {
+      seuil: lireSeuil(env.RECAPTCHA_SEUIL),
+      ...(demande.action ? { action: demande.action } : {}),
+    });
+  if (demande.fournisseur === "recaptcha" && recaptcha) return versRecaptcha(recaptcha);
+  if (demande.fournisseur === "turnstile" && turnstile) return creerVerificateurTurnstile(turnstile);
+  if (recaptcha) return versRecaptcha(recaptcha);
+  if (turnstile) return creerVerificateurTurnstile(turnstile);
+  return VERIFICATEUR_ABSENT;
 }

@@ -1,5 +1,7 @@
 "use client";
 
+import { mentionRecaptcha } from "@/content/protection";
+import { RECAPTCHA_ACTIF } from "./protection";
 import type { EtatEnvoi } from "./useEnvoiFormulaire";
 import { NOM_CHAMP_PIEGE } from "./useEnvoiFormulaire";
 import type { RefObject } from "react";
@@ -79,7 +81,7 @@ export function MessageEtat({
 }) {
   const couleur =
     etat === "erreur"
-      ? "text-accent"
+      ? "text-[var(--neo-erreur-texte,#ff8c7f)]"
       : ton === "clair"
         ? "text-foreground"
         : "text-background";
@@ -89,7 +91,7 @@ export function MessageEtat({
       role="status"
       aria-live="polite"
       data-etat={etat}
-      className={`text-[12px] font-medium leading-[1.3] tracking-[-0.01em] empty:hidden ${couleur} ${className}`}
+      className={`text-[13px] font-medium leading-[1.3] tracking-[-0.01em] empty:hidden ${couleur} ${className}`}
     >
       {message}
     </p>
@@ -119,5 +121,28 @@ export function ReplisSansScript({ emailContact }: { emailContact: string }) {
         <a href={`mailto:${emailContact}`}>{emailContact}</a>.
       </p>
     </noscript>
+  );
+}
+
+/**
+ * Mention reCAPTCHA, exigée par Google puisque son badge est masqué. Rien
+ * quand Turnstile protège le formulaire.
+ */
+export function MentionRecaptcha({ className = "" }: { className?: string }) {
+  if (!RECAPTCHA_ACTIF) return null;
+  const lien =
+    "text-foreground no-underline transition-colors duration-200 hover:text-accent motion-reduce:transition-none";
+  return (
+    <p className={`m-0 text-[11px] font-medium leading-[1.4] tracking-[-0.01em] text-foreground-60 ${className}`}>
+      {mentionRecaptcha.avant}
+      <a href={mentionRecaptcha.confidentialite.href} target="_blank" rel="noopener noreferrer" className={lien}>
+        {mentionRecaptcha.confidentialite.label}
+      </a>
+      {mentionRecaptcha.entre}
+      <a href={mentionRecaptcha.conditions.href} target="_blank" rel="noopener noreferrer" className={lien}>
+        {mentionRecaptcha.conditions.label}
+      </a>
+      {mentionRecaptcha.apres}
+    </p>
   );
 }

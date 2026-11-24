@@ -23,10 +23,6 @@ export function FooterContactAvecSujet(
 ) {
   const sujet = resoudreSujet(useSearchParams().get(PARAM_SUJET));
   return (
-    <FooterContact
-      key={sujet ?? ""}
-      {...props}
-      ongletInitial={sujet ? "rendezVous" : "message"}
-    />
+    <FooterContact key={sujet ?? ""} {...props} ongletInitial="rendezVous" />
   );
 }

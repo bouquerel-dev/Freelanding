@@ -26,7 +26,7 @@ import {
 } from "react";
 import type { FormEvent, ReactNode } from "react";
 import { ChampsProtection } from "@/components/forms/ProtectionFormulaire";
-import { useProtectionTurnstile } from "@/components/forms/turnstile";
+import { useProtectionFormulaire } from "@/components/forms/protection";
 import { CHAMP_PIEGE } from "@/lib/chiffrage/validation";
 import type { ChampEstimation } from "@/lib/chiffrage/validation";
 import { LONGUEUR_DESCRIPTION_MAX } from "@/lib/chiffrage/extraction";
@@ -555,7 +555,7 @@ export function OutilEstimation() {
   const debut = useRef(0);
   const refListe = useRef<HTMLOListElement | null>(null);
   const refFormulaire = useRef<HTMLFormElement | null>(null);
-  const protection = useProtectionTurnstile();
+  const protection = useProtectionFormulaire("estimation");
   const reduit = useReducedMotion();
   const idDescription = useId();
   const idAideDescription = useId();
@@ -634,6 +634,7 @@ export function OutilEstimation() {
           // La mention affichée sous le bouton vaut accord : envoyer est l'acte.
           consentement: true,
           jetonCaptcha,
+          fournisseurCaptcha: protection.fournisseur,
           debutMs: debut.current,
           [CHAMP_PIEGE]: typeof piege === "string" ? piege : "",
         }),

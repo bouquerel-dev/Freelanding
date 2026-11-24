@@ -433,3 +433,20 @@ schéma, le modèle Framer « Maël Blanc » pour la présence de la personne).
 | emil-design-eng · entrée liée au défilement | Encadré blanc de « Moi, c'est Eliott » (`animation-timeline: view()`) | Rien quand le navigateur ne le gère pas |
 | taste-skill · formes | Coins arrondis partout (tokens `--radius-tag/control/card/panel`) | L'ADN carré est abandonné, couleurs et typo inchangées |
 | li-human | Textes du héros et du schéma | Contrôle local passé avant intégration |
+
+## Bloc contact du pied de page, 2026-11-24 : appel d'abord, en trois étapes
+
+Demande d'Eliott : le bloc rendez-vous / message était pénible (sujet à choisir
+avant de voir un créneau, case Turnstile sous le bouton, message en trois
+étapes de questionnaire). Captures avant / après dans
+`docs/captures/contact-stepper/` (bureau 1440, mobile 390, chaque étape).
+
+| Skill · règle | Où | Effet |
+|---|---|---|
+| impeccable · détecteur (`impeccable detect`) | Composants du bloc | Aucun motif signalé |
+| impeccable · copie : pas de titre répété | Étape 2 | Le titre « De quoi voulez-vous parler ? » porte la question, la légende du champ passe en lecture d'écran seule |
+| impeccable · charge cognitive, divulgation progressive | Réservation | Une décision par écran : créneau, sujet, coordonnées ; indicateur discret « Étape 2 sur 3 » et trois traits |
+| impeccable · états d'erreur | Message et réservation | Erreur écrite sous le champ fautif, dans le rouge de la carte (`--neo-erreur-texte`) et non dans le vert de la marque, focus sur le premier champ fautif |
+| impeccable · responsive | Mobile 390 | Bouton « Réserver l’appel » sur une ligne, champs nom / e-mail en pleine largeur, vide sous le calendrier réduit |
+| emil-design-eng · entrée d'étape | `.rdv-etape` | 180 ms, fondu et 6 px, `cubic-bezier(0.23, 1, 0.32, 1)` ; fondu seul en mouvement réduit |
+| emil-design-eng · retour à l'appui | Boutons d'étape | `scale(0.97)` à l'appui |

@@ -18,15 +18,9 @@ import { ReservationRendezVous } from "@/components/rendez-vous/ReservationRende
 import { CLASSE_LIBELLE, CLASSE_TEXTE } from "@/components/rendez-vous/ReservationRendezVous";
 import { CHEMIN_RDV, rendezVousContent } from "@/content/rendez-vous";
 import { content } from "@/lib/content";
-import { resoudreConfiguration, typesVisibles } from "@/lib/rendez-vous/config";
+import { resoudreConfiguration, SUJET_PAR_DEFAUT, typesVisibles } from "@/lib/rendez-vous/config";
 
 const contenu = rendezVousContent;
-
-/**
- * Sujet retenu sans `?sujet` : le lien des mails n'en porte pas, et le visiteur
- * doit voir les créneaux sans rien choisir. « Premier échange » au cockpit.
- */
-const SUJET_PAR_DEFAUT = "decouverte";
 
 export const metadata: Metadata = {
   title: { absolute: "Prendre rendez-vous · Eliott Bouquerel" },

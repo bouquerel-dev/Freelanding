@@ -4,13 +4,13 @@
  * MÊME ORDRE DE CONTRÔLES que `/api/contact`, du moins cher au plus cher :
  *   origine → type de contenu → débit → corps → piège/temps/champs → captcha →
  *   écriture. Vérifier le captcha avant le débit ferait payer notre quota
- *   Cloudflare à chaque requête d'un robot.
+ *   anti-robot à chaque requête d'un robot.
  *
  * POURQUOI LE CAPTCHA. Une réservation n'est pas un e-mail de plus dans une boîte : elle POSE un
  * événement dans l'agenda d'Eliott, envoie deux messages et bloque un créneau
  * que personne d'autre ne pourra prendre. Un robot qui remplirait quinze
  * créneaux d'affilée ne coûterait pas du bruit, il coûterait une semaine
- * d'agenda. Absence de clef Turnstile = 503, comme sur le formulaire : jamais
+ * d'agenda. Absence de clef anti-robot = 503, comme sur le formulaire : jamais
  * un laissez-passer.
  *
  * PAS DE `GET` ICI, et il ne faut jamais en ajouter : la lecture des créneaux a
@@ -19,7 +19,7 @@
 import { rendezVousContent } from "@/content/rendez-vous";
 import { siteConfig } from "@/content/site";
 import { creerJournal, empreinte, json, origineEtrangere } from "@/lib/api/reponse";
-import { resoudreVerificateur } from "@/lib/contact/captcha";
+import { lireFournisseur, resoudreVerificateur } from "@/lib/contact/captcha";
 import { EMAIL_CONTACT_PAR_DEFAUT } from "@/lib/contact/mailer";
 import { adresseAppelante, creerLimiteur } from "@/lib/contact/rate-limit";
 import { creerReservation, obtenirDurees } from "@/lib/rendez-vous/cockpit";
@@ -154,7 +154,10 @@ export async function POST(requete: Request): Promise<Response> {
       ? ((corps as Record<string, unknown>).jetonCaptcha as string)
       : undefined;
 
-  const verificateur = resoudreVerificateur();
+  const verificateur = resoudreVerificateur({
+    fournisseur: lireFournisseur(corps),
+    action: "rendez_vous",
+  });
   const captcha = await verificateur.verifier(jeton, adresse);
   if (!captcha.ok) {
     journaliser("captcha_refuse", {

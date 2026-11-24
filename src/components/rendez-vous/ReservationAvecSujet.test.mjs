@@ -23,53 +23,42 @@ function rendre(recherche, client = false) {
   );
 }
 
-describe("ReservationAvecSujet : sujets proposés selon `?sujet`", () => {
-  it("sans sujet, les quatre sujets publics sont proposés, ni la démonstration ni le point d'étape", () => {
+/*
+ * DEPUIS LE 2026-11-24, UN PREMIER RENDEZ-VOUS N'A PLUS DE BOUTONS DE SUJET :
+ * le visiteur écrit son sujet à la deuxième étape. `?sujet=` choisit seulement
+ * le type envoyé au cockpit, sans rien afficher.
+ */
+const BOUTON_SUJET = /type="radio"/u;
+
+describe("ReservationAvecSujet : sujets selon `?sujet`", () => {
+  it("sans sujet, aucun bouton de sujet : les créneaux d'abord, aucun sujet privé", () => {
     const html = rendre("");
-    for (const id of ["logiciel", "site", "ia", "decouverte"]) expect(html).toContain(nom(id));
+    expect(html).not.toMatch(BOUTON_SUJET);
+    expect(html).toContain(C.etapes.titres[0]);
     expect(html).not.toContain(nom("demonstration"));
     expect(html).not.toContain(nom("point-d-etape"));
   });
 
-  it("`?sujet=demonstration` l'ouvre, seul sujet proposé", () => {
+  it("`?sujet=demonstration` l'ouvre et le nomme, seul sujet", () => {
     const html = rendre("sujet=demonstration");
     expect(html).toContain(nom("demonstration"));
-    expect(html).toContain(C.blocs.creneau);
-    expect(html).not.toContain(nom("logiciel"));
+    expect(html).not.toMatch(BOUTON_SUJET);
     expect(html).not.toContain(nom("point-d-etape"));
   });
 
-  it("`?sujet=point-d-etape` l'ouvre, seul sujet proposé", () => {
+  it("`?sujet=point-d-etape` l'ouvre et le nomme, seul sujet", () => {
     const html = rendre("sujet=point-d-etape");
     expect(html).toContain(nom("point-d-etape"));
-    expect(html).not.toContain(nom("logiciel"));
     expect(html).not.toContain(nom("demonstration"));
   });
 
-  it("`?sujet=site` et `?sujet=ia` laissent les sujets publics, sans les sujets privés", () => {
-    for (const sujet of ["site", "ia"]) {
+  it("un sujet public, ancien ou inconnu ne montre ni bouton ni sujet privé", () => {
+    for (const sujet of ["site", "ia", "logiciel", "outil", "cto", "autre", "nimporte-quoi"]) {
       const html = rendre(`sujet=${sujet}`);
-      expect(html, sujet).toContain(nom(sujet));
-      expect(html, sujet).toContain(nom("logiciel"));
+      expect(html, sujet).not.toMatch(BOUTON_SUJET);
       expect(html, sujet).not.toContain(nom("demonstration"));
       expect(html, sujet).not.toContain(nom("point-d-etape"));
     }
-  });
-
-  it("un ancien sujet (`outil`, `cto`, `autre`) est traduit, les sujets privés restent cachés", () => {
-    for (const sujet of ["outil", "cto", "autre"]) {
-      const html = rendre(`sujet=${sujet}`);
-      expect(html, sujet).toContain(nom("logiciel"));
-      expect(html, sujet).not.toContain(nom("demonstration"));
-      expect(html, sujet).not.toContain(nom("point-d-etape"));
-    }
-  });
-
-  it("un sujet inconnu est ignoré en silence", () => {
-    const html = rendre("sujet=nimporte-quoi");
-    expect(html).toContain(nom("logiciel"));
-    expect(html).not.toContain(nom("demonstration"));
-    expect(html).not.toContain(nom("point-d-etape"));
   });
 });
 
@@ -80,7 +69,7 @@ describe("ReservationAvecSujet : la page client", () => {
       expect(html).toContain(nom(id));
     }
     for (const id of ["logiciel", "site", "ia", "decouverte"]) expect(html).not.toContain(`>${nom(id)}<`);
-    expect(html).toContain(C.formulaire.telephoneLabel);
+    expect(html).toMatch(BOUTON_SUJET);
   });
 
   it("`?sujet=proposition` présélectionne le bouton, un sujet de prospect est ignoré", () => {

@@ -100,6 +100,19 @@ export interface ContenuRendezVous {
     readonly creneau: string;
     readonly coordonnees: string;
   };
+  /**
+   * Les trois étapes de la réservation (2026-11-24) : le créneau, le sujet en
+   * texte libre, les coordonnées.
+   */
+  readonly etapes: {
+    readonly titres: readonly [string, string, string];
+    /** « Étape 2 sur 3 », lu avec le titre de l'étape. */
+    readonly compteur: (numero: number, total: number) => string;
+    readonly continuer: string;
+    readonly retour: string;
+    /** Sur le rappel du créneau, aux étapes 2 et 3 : ramène au calendrier. */
+    readonly modifier: string;
+  };
   readonly actions: {
     readonly reessayer: string;
     readonly moisPrecedent: string;
@@ -131,6 +144,8 @@ export interface ContenuRendezVous {
     readonly telephonePlaceholder: string;
     readonly messageLabel: string;
     readonly messagePlaceholder: string;
+    /** Refus quand le sujet du premier rendez-vous est laissé vide. */
+    readonly messageErreur: string;
     /** Rendez-vous de client : le téléphone et la ligne libre sont facultatifs. */
     readonly telephoneLabelClient: string;
     readonly messageLabelClient: string;
@@ -354,6 +369,14 @@ export const rendezVousContent: ContenuRendezVous = {
     coordonnees: "Vos coordonnées",
   },
 
+  etapes: {
+    titres: ["Choisissez un créneau", "De quoi voulez-vous parler ?", "Vos coordonnées"],
+    compteur: (numero, total) => `Étape ${numero} sur ${total}`,
+    continuer: "Continuer",
+    retour: "Retour",
+    modifier: "Modifier",
+  },
+
   actions: {
     reessayer: "Réessayer",
     moisPrecedent: "Mois précédent",
@@ -385,16 +408,17 @@ export const rendezVousContent: ContenuRendezVous = {
     telephoneAide: "Pour vous joindre si la visio ne démarre pas.",
     telephoneErreur: "Indiquez un numéro où vous joindre le jour du rendez-vous.",
     telephonePlaceholder: "06 12 34 56 78",
-    messageLabel: "Votre projet en une ligne (facultatif)",
-    messagePlaceholder: "Ce que vous voulez améliorer ou construire.",
+    messageLabel: "Votre sujet, avec vos mots",
+    messagePlaceholder: "Un site à refaire, un tableur qui déborde, une idée d’outil…",
+    messageErreur: "Dites en quelques mots de quoi vous voulez parler.",
     telephoneLabelClient: "Votre téléphone (facultatif)",
     messageLabelClient: "De quoi parler (facultatif)",
     messagePlaceholderClient: "Un point précis, une question, un document à regarder.",
-    envoyer: "Confirmer le rendez-vous",
+    envoyer: "Réserver l’appel",
     envoiEnCours: "Confirmation en cours…",
     apres: "Le lien de visio arrive par e-mail dès la confirmation.",
     choisirSujet: "Choisissez un sujet pour voir les créneaux libres.",
-    choisirHeure: "Choisissez un jour puis une heure pour confirmer.",
+    choisirHeure: "Choisissez un jour puis une heure pour continuer.",
     confirmerCiDessous: "Heure retenue. Confirmez avec le bouton plus bas.",
     mention:
       "Votre nom, votre adresse et votre numéro sont enregistrés dans mon outil de gestion et dans mon agenda, dans le seul but de créer ce rendez-vous. Détail dans la",

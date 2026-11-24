@@ -25,7 +25,7 @@ import { composantsParDefaut, estimer, indicesTexte } from "@/lib/chiffrage/gril
 import type { Composants } from "@/lib/chiffrage/grille";
 import { messageSecours } from "@/lib/chiffrage/recap";
 import { validerDemande } from "@/lib/chiffrage/validation";
-import { resoudreVerificateur } from "@/lib/contact/captcha";
+import { lireFournisseur, resoudreVerificateur } from "@/lib/contact/captcha";
 import { resoudreExpediteur } from "@/lib/contact/mailer";
 import { adresseAppelante, creerLimiteur } from "@/lib/contact/rate-limit";
 import { estimationContent } from "@/content/estimation";
@@ -78,7 +78,10 @@ export async function POST(requete: Request): Promise<Response> {
   }
   const { demande } = validation;
 
-  const verificateur = resoudreVerificateur();
+  const verificateur = resoudreVerificateur({
+    fournisseur: lireFournisseur(corps),
+    action: "estimation",
+  });
   const captcha = await verificateur.verifier(demande.jetonCaptcha, adresse);
   if (!captcha.ok) {
     journaliser("captcha_refuse", {
