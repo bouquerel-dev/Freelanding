@@ -1196,9 +1196,12 @@ html[data-consent-choisi] [data-consent-attente] {
 }
 
 /* Les traits attendent que la trame naisse (`data-scene` passe de « true » à
-   « trame ») : le visage d'abord, puis ce qu'on en dit. */
-[data-scene="true"] :is(.hero-etiquette, .hero-repere-point, .hero-trait-ligne) {
-  animation-play-state: paused;
+   « trame ») : le visage d'abord, puis ce qu'on en dit. Sans script, rien
+   n'attend. */
+@media (scripting: enabled) {
+  [data-scene="true"] :is(.hero-etiquette, .hero-repere-point, .hero-trait-ligne) {
+    animation-play-state: paused;
+  }
 }
 
 /* Étiquettes des traits : colonne gauche alignée à droite, colonne droite à

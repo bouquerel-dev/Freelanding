@@ -332,4 +332,20 @@ describe("VisageTrame", () => {
     jouer();
     expect(etat.conteneur.dataset.scene).toBe("photo");
   });
+
+  it("annonce la trame en mouvement réduit, et quand son image ne charge pas", async () => {
+    installer({ reduit: true });
+    await monter({}, { scene: true });
+    charger();
+    jouer();
+    expect(etat.conteneur.dataset.scene).toBe("trame");
+    await act(async () => etat.racine.unmount());
+    etat.racine = null;
+    etat.restaurer();
+
+    installer();
+    await monter({}, { scene: true });
+    etat.images.at(-1).onerror();
+    expect(etat.conteneur.dataset.scene).toBe("trame");
+  });
 });

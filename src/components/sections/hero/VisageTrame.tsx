@@ -92,22 +92,22 @@ export function VisageTrame({ src }: { src: string }) {
     // en images quand il ne le donne pas.
     let naissance: number | null = immobile ? -Infinity : null;
     let images = 0;
+    // La scène apprend que la trame est née (ou qu'elle ne viendra pas) : les
+    // traits la suivent, la photo compte son attente à partir d'ici.
+    const annoncer = () => {
+      const scene = c.closest<HTMLElement>("[data-scene]");
+      if (scene?.dataset.scene !== "true") return;
+      scene.dataset.scene = "trame";
+      scene.dataset.trameDepuis = String(performance.now());
+    };
 
     const dessiner = (instant?: number) => {
       cadre = 0;
       if (!rapport) return;
       images += 1;
       const maintenant = typeof instant === "number" ? instant : images * IMAGE_MS;
-      if (naissance === null) {
-        naissance = maintenant;
-        // La scène sait que la trame est née : les traits la suivent, la photo
-        // compte son attente à partir d'ici (`PortraitCouleur`).
-        const scene = c.closest<HTMLElement>("[data-scene]");
-        if (scene && scene.dataset.scene === "true") {
-          scene.dataset.scene = "trame";
-          scene.dataset.trameDepuis = String(performance.now());
-        }
-      }
+      if (naissance === null) naissance = maintenant;
+      annoncer();
       const age = maintenant - naissance;
       // Le coin le plus loin du visage est à 0,78 : son retard vaut 1,25 vague.
       const naissant = age < VAGUE_MS * 1.3 + NAISSANCE_MS;
@@ -161,6 +161,7 @@ export function VisageTrame({ src }: { src: string }) {
       rapport = img.naturalHeight / img.naturalWidth;
       relancer();
     };
+    img.onerror = annoncer;
     img.src = src;
 
     const suivre = (e: PointerEvent) => {
@@ -182,6 +183,7 @@ export function VisageTrame({ src }: { src: string }) {
       taille.disconnect();
       vue.disconnect();
       img.onload = null;
+      img.onerror = null;
     };
   }, [src]);
   return <canvas ref={toile} aria-hidden data-part="hero-visage" className="block h-full w-full text-accent" />;
