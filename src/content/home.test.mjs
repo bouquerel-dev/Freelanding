@@ -118,9 +118,12 @@ describe("accueil", () => {
   test("le haut de page dit qui, quoi et comment : sites, logiciels et IA au même rang", () => {
     expect(homeContent.hero.eyebrow).toBe("Bonjour, je suis Eliott Bouquerel");
     expect(homeContent.hero.buildItems).toEqual(["des sites internet", "des logiciels métier", "des automatisations IA"]);
-    // Une seule personne en face, des agents qui écrivent, Eliott qui décide.
-    expect(homeContent.hero.subtitle).toMatch(/une seule personne/u);
-    expect(homeContent.hero.subtitle).toMatch(/je décide et je vérifie/u);
+    // Comment il travaille et pourquoi lui : les agents écrivent, il teste,
+    // un seul interlocuteur, le temps gagné va dans les finitions.
+    expect(homeContent.hero.subtitle).toMatch(/agents d’IA écrivent le code/u);
+    expect(homeContent.hero.subtitle).toMatch(/je teste chaque ligne/u);
+    expect(homeContent.hero.subtitle).toMatch(/qu’un interlocuteur/u);
+    expect(homeContent.hero.faceNotes).toEqual(["Un seul interlocuteur", "Les agents écrivent", "Je teste chaque ligne"]);
   });
 
   test("le héros dit ce qui explique le prix, sans montant", () => {

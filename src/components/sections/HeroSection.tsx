@@ -23,6 +23,12 @@ import { VisageTrame } from "./hero/VisageTrame";
  * décalé par `--d`), en CSS, hors du fil principal.
  */
 
+/**
+ * Où tombent les trois repères, en pourcentage du cadre : une colonne calée à
+ * droite, le trait tourné vers le visage, pour ne jamais toucher le texte.
+ */
+const POSITIONS_REPERES = ["top-[20%]", "top-[46%]", "top-[72%]"] as const;
+
 function delai(ms: number): CSSProperties {
   return { "--d": `${ms}ms` } as CSSProperties;
 }
@@ -54,9 +60,27 @@ export function HeroSection({ hero }: { hero: HeroContent }) {
         {hero.person?.avatar ? (
           <div
             aria-hidden
-            className="hero-visage pointer-events-none relative z-0 -mx-[20px] h-[clamp(240px,40svh,360px)] tablet:-mx-[30px] tablet:h-[clamp(300px,40svh,440px)] desktop:absolute desktop:bottom-0 desktop:right-0 desktop:top-[96px] desktop:mx-0 desktop:h-auto desktop:max-h-[960px] desktop:w-[60%]"
+            className="pointer-events-none relative z-0 -mx-[20px] h-[clamp(240px,40svh,360px)] tablet:-mx-[30px] tablet:h-[clamp(300px,40svh,440px)] desktop:absolute desktop:right-[30px] desktop:top-1/2 desktop:mx-0 desktop:h-[min(66vh,620px)] desktop:w-[50%] desktop:-translate-y-[40%]"
           >
-            <VisageTrame src="/images/eliott-portrait-large.jpg" />
+            {/* Champ de points d'où sort le visage : la trame continue au-delà de
+                lui, en très pâle, pour qu'il ne soit plus un bloc posé. */}
+            <span className="hero-champ absolute -inset-x-[8%] -inset-y-[18%] hidden desktop:block" />
+            <div className="hero-visage absolute inset-0">
+              <VisageTrame src="/images/eliott-portrait-large.jpg" centreOrdinateur={0.44} />
+            </div>
+            {/* Repères de viseur aux quatre coins du cadre. */}
+            <span className="hero-viseur absolute inset-0 hidden desktop:block" />
+            {hero.faceNotes?.map((note, i) => (
+              <span
+                key={note}
+                data-part="hero-repere"
+                className={`hero-fond hero-repere absolute right-0 hidden items-center gap-[10px] whitespace-nowrap font-mono text-[11px] uppercase leading-none tracking-[0.04em] text-foreground-60 desktop:flex ${POSITIONS_REPERES[i] ?? ""}`}
+                style={delai(700 + i * 120)}
+              >
+                <span className="text-accent">{String(i + 1).padStart(2, "0")}</span>
+                {note}
+              </span>
+            ))}
           </div>
         ) : null}
 
@@ -93,7 +117,7 @@ export function HeroSection({ hero }: { hero: HeroContent }) {
           {sousTitre ? (
             <p
               data-part="hero-pour-qui"
-              className="hero-fond m-0 mt-[16px] max-w-[46ch] text-[16px] font-medium leading-[1.45] tracking-[-0.01em] text-foreground-60 tablet:mt-[20px] tablet:text-[18px]"
+              className="hero-fond m-0 mt-[16px] max-w-[48ch] text-[16px] font-medium leading-[1.45] tracking-[-0.01em] text-foreground-60 tablet:mt-[20px] tablet:text-[18px]"
               style={delai(420)}
             >
               {sousTitre}

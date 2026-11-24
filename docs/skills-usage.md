@@ -456,3 +456,12 @@ leur coût.
 | emil-design-eng · bouton qui répond | Bouton de l'en-tête : bloc volt plaqué de 30 px | 40 px, rayon `control`, pastille encre concentrique (`tag`) avec flèche qui avance au survol, appui à 97 %, anneau volt au clavier, survol réservé aux pointeurs fins |
 
 LCP vérifié au navigateur à 1440 et 390 : le h1 (`hero-titre`), jamais la toile.
+
+### Retour d'Eliott le même jour : « ma tête est trop grosse » sur ordinateur
+
+| Skill · règle | Constat sur le rendu | Ce qui a changé |
+|---|---|---|
+| impeccable · quieter | Visage de 800 px de haut à 1440, il prenait toute la moitié droite | Cadre ramené à 66 % de la hauteur d'écran (620 px au plus) et à la moitié de la colonne ; le mobile, qu'Eliott trouvait propre, ne bouge pas |
+| taste-skill · le point focal se décline | Le visage restait un bloc posé | La trame continue autour en champ de points pâle, et quatre angles de viseur cadrent le visage : deux motifs tirés de la trame elle-même |
+| impeccable · clarify | Le sous-titre ne disait pas pourquoi lui | Sous-titre réécrit (agents qui écrivent, lui qui teste, un seul interlocuteur, finitions), passé par li-human (73,7, PASSE) ; trois repères numérotés autour du visage en reprennent les temps |
+| emil-design-eng · décalage court | Repères | Fondu d'entrée décalé de 120 ms, après le texte ; rien en mouvement réduit |
