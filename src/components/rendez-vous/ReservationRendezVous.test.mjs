@@ -775,6 +775,22 @@ describe("ReservationRendezVous — états du créneau", () => {
     }
   });
 
+  it("sous 1200 px, la date puis l'heure : le jour touché ouvre ses heures, « Changer de date » ramène au calendrier", async () => {
+    etat.contexte = installerDom();
+    globalThis.fetch = async () => ({ ok: true, status: 200, json: async () => CRENEAUX });
+    etat.montage = await monter();
+    const { conteneur } = etat.montage;
+    const enveloppeCalendrier = () => calendrier(conteneur).parentElement.parentElement;
+    expect(enveloppeCalendrier().className).not.toContain("hidden");
+    await cliquer(conteneur.querySelector('button[aria-label="mardi 3 novembre"]'));
+    expect(enveloppeCalendrier().className).toContain("hidden desktop:block");
+    const retour = bouton(conteneur, C.etapes.changerDate);
+    expect(retour).toBeDefined();
+    expect(bouton(conteneur, "15:00")).toBeDefined();
+    await cliquer(retour);
+    expect(enveloppeCalendrier().className).not.toContain("hidden");
+  });
+
   it("le calendrier enchaîne sur le mois suivant, son 1er porte le nom du mois, ses jours s'ouvrent", async () => {
     etat.contexte = installerDom();
     const DECEMBRE = {

@@ -481,3 +481,4 @@ avant de voir un créneau, case Turnstile sous le bouton, message en trois
 | impeccable · « nested cards are always wrong », pas de conteneur par réflexe | Carte néomorphique du bloc | Retirée : le bloc se pose à plat sous le titre, filets à 12 %, coins `control`, aucune ombre, comme le reste du site |
 | impeccable · rythme, densité | Étape 3 | E-mail et téléphone côte à côte (`@container`, dès 448 px), l'étape tient en trois rangées |
 | impeccable · un repère plutôt qu'un écran de plus | Calendrier | La grille enchaîne sur le mois suivant ; le 1er porte « déc. » en volt, l'en-tête dit « novembre et décembre 2026 » |
+| impeccable · adapt (mobile d'abord) | Créneau sous 1200 px | La date puis l'heure : le calendrier seul, puis les heures du jour touché avec « Changer de date » ; le focus suit. Bureau inchangé, côte à côte |

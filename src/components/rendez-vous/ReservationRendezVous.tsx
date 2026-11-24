@@ -871,6 +871,17 @@ export function ReservationRendezVous({
     return () => controleur.abort();
   }, [cleSuite, type, moisSuivant, proche]);
 
+  /** Sous 1200 px : vrai quand les heures du jour remplacent le calendrier. */
+  const [vueHeures, setVueHeures] = useState(false);
+  const refChangerDate = useRef<HTMLButtonElement | null>(null);
+  const ouvrirJour = (jour: string) => {
+    setJourChoisi(jour);
+    setVueHeures(true);
+    // Le jour touché disparaît : le focus passe au retour, en tête des heures.
+    if (typeof window.matchMedia === "function" && window.matchMedia("(min-width: 1200px)").matches) return;
+    window.requestAnimationFrame(() => refChangerDate.current?.focus({ preventScroll: true }));
+  };
+
   const effacerEtat = () => {
     setEtatEnvoi("repos");
     setMessageEnvoi("");
@@ -931,6 +942,7 @@ export function ReservationRendezVous({
     setMois("");
     setJourChoisi("");
     setEtape(0);
+    setVueHeures(false);
     refEtapeVue.current = 0;
     setEtatEnvoi("repos");
     setMessageEnvoi("");
@@ -1201,21 +1213,37 @@ export function ReservationRendezVous({
                 (mois), simplement estompés : les faire disparaître déplacerait
                 la grille sous le curseur du prospect. */}
             {donnees ? (
+              /* SOUS 1200 PX, LA DATE PUIS L'HEURE (2026-11-24, Eliott : « super
+                 long » sur téléphone) : le calendrier seul, puis, au jour
+                 touché, ses heures seules avec un retour au calendrier. Au-delà,
+                 les deux restent côte à côte. Masqués par CSS, jamais démontés :
+                 le bureau garde ses deux colonnes sans état de plus. */
               <div className="grid grid-cols-1 gap-[24px] desktop:grid-cols-[minmax(0,1fr)_minmax(0,0.8fr)]">
-                <Calendrier
-                  donnees={donnees}
-                  suite={suite}
-                  jourActif={jourActif}
-                  chargement={chargement}
-                  onChoisirJour={setJourChoisi}
-                  onDecaler={decalerMois}
-                />
+                <div className={vueHeures ? "hidden desktop:block" : undefined}>
+                  <Calendrier
+                    donnees={donnees}
+                    suite={suite}
+                    jourActif={jourActif}
+                    chargement={chargement}
+                    onChoisirJour={ouvrirJour}
+                    onDecaler={decalerMois}
+                  />
+                </div>
                 {jourActif ? (
                   <div
-                    className={`transition-opacity motion-reduce:transition-none desktop:min-h-[230px] ${
+                    className={`flex flex-col gap-[12px] transition-opacity motion-reduce:transition-none desktop:min-h-[230px] ${
                       chargement ? "pointer-events-none opacity-40" : ""
-                    }`}
+                    } ${vueHeures ? "" : "hidden desktop:flex"}`}
                   >
+                    <button
+                      ref={refChangerDate}
+                      type="button"
+                      onClick={() => setVueHeures(false)}
+                      className={`${CLASSE_BOUTON_RETOUR} h-[40px] self-start desktop:hidden`}
+                    >
+                      <Icon name="arrow" size={14} className="rotate-180" />
+                      {contenu.etapes.changerDate}
+                    </button>
                     <Heures jour={jourActif} choisi={creneauRetenu} onChoisir={choisirCreneau} />
                   </div>
                 ) : (

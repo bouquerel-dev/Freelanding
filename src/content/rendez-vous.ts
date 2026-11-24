@@ -112,6 +112,8 @@ export interface ContenuRendezVous {
     readonly retour: string;
     /** Sur le rappel du créneau, aux étapes 2 et 3 : ramène au calendrier. */
     readonly modifier: string;
+    /** Sous 1200 px, au-dessus des heures d'un jour : ramène au calendrier. */
+    readonly changerDate: string;
   };
   readonly actions: {
     readonly reessayer: string;
@@ -375,6 +377,7 @@ export const rendezVousContent: ContenuRendezVous = {
     continuer: "Continuer",
     retour: "Retour",
     modifier: "Modifier",
+    changerDate: "Changer de date",
   },
 
   actions: {
