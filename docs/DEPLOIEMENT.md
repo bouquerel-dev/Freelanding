@@ -47,6 +47,9 @@ erreur dans les journaux.
 | `NEXT_PUBLIC_SITE_URL` | **oui** | adresse canonique, sitemap, données structurées | replis sur `http://localhost:3000`, ce qui casse le sitemap en production |
 | `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | **oui** | widget anti-robot du formulaire | formulaire désactivé, message honnête affiché |
 | `TURNSTILE_SECRET_KEY` | non | vérification du jeton côté serveur | idem |
+| `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` | **oui** | reCAPTCHA v3, sans case (2026-11-24) | Turnstile reste la protection |
+| `RECAPTCHA_SECRET_KEY` | non | vérification du score côté serveur | Turnstile reste la protection |
+| `RECAPTCHA_SEUIL` | non | score minimal, 0.5 par défaut | 0.5 |
 | `NEXT_PUBLIC_POSTHOG_KEY` | **oui** | mesure d'audience | aucune mesure, aucune erreur |
 | `NEXT_PUBLIC_POSTHOG_HOST` | **oui** | hôte d'ingestion | replis sur l'Union européenne |
 | `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` | **oui** | preuve de propriété Search Console | balise absente |
