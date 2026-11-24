@@ -25,6 +25,7 @@ import {
   useState,
 } from "react";
 import type { FormEvent, ReactNode } from "react";
+import { BoutonAppel } from "@/components/ui/BoutonAppel";
 import { ChampsProtection } from "@/components/forms/ProtectionFormulaire";
 import { useProtectionFormulaire } from "@/components/forms/protection";
 import { CHAMP_PIEGE } from "@/lib/chiffrage/validation";
@@ -336,22 +337,19 @@ function Resultat({
   const sousLibelle = "m-0 text-[14px] font-medium leading-[1.3] opacity-75";
 
   /**
-   * Prise de rendez-vous. En haut, bouton plein ; en bas, juste sous l'aplat
-   * volt de l'abonnement, un bouton plein s'y fondrait : contour seul.
+   * Prise de rendez-vous, par le bouton d'appel partagé. En haut, volt ; en
+   * bas, juste sous l'aplat volt de l'abonnement, un fond volt s'y fondrait :
+   * ton encre, la pastille garde le volt.
    */
   const action = (plein: boolean) => (
     <div className="flex flex-col gap-[10px] tablet:flex-row tablet:items-center tablet:gap-[20px]">
-      <Link
+      <BoutonAppel
         href={lienRendezVous(estimation.type)}
-        className={
-          plein
-            ? `${CLASSE_PRINCIPAL} no-underline`
-            : `${CLASSE_PRINCIPAL.replace("bg-accent", "border border-accent bg-transparent").replace("text-accent-ink", "text-accent")} no-underline`
-        }
-      >
-        {plein ? r.rendezVous : r.rendezVousBas}
-        <span aria-hidden>→</span>
-      </Link>
+        label={plein ? r.rendezVous : r.rendezVousBas}
+        taille="grand"
+        ton={plein ? "volt" : "encre"}
+        largeur="pleine-mobile"
+      />
       <p className="m-0 text-[14px] font-medium text-foreground/70">
         {r.rendezVousNote}
       </p>

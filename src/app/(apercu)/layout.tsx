@@ -10,6 +10,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import "../globals.css";
 import "../focus.css";
+import "../interactions.css";
 import { SiteDocument } from "../(site)/SiteDocument";
 
 export const metadata: Metadata = {

@@ -24,12 +24,27 @@ describe("Header", () => {
   });
 
   it("porte le bouton de rendez-vous, au rayon des boutons du site, avec sa flèche", () => {
-    const debut = html.indexOf('data-part="header-cta"');
+    const debut = html.indexOf('data-part="bouton-appel"');
     expect(debut).toBeGreaterThan(-1);
     const bouton = html.slice(debut, html.indexOf("</a>", debut));
     expect(bouton).toContain(siteConfig.primaryCta.label);
     expect(bouton).toContain("rounded-control");
     expect(bouton).toContain("<svg");
+  });
+
+  it("n'affiche plus le blog, qui reste au pied de page", () => {
+    expect(siteConfig.nav.map((l) => l.href)).not.toContain("/blog");
+    expect(siteConfig.menuNav.map((l) => l.href)).not.toContain("/blog");
+    expect(siteConfig.footerNav.map((l) => l.href)).toContain("/blog");
+    expect(html).not.toContain('href="/blog"');
+  });
+
+  it("chaque lien porte sa copie volt masquée aux lecteurs d'écran et son trait", () => {
+    for (const lien of siteConfig.nav) {
+      expect(html).toContain(`<span class="nav-lien-texte">${lien.label}</span>`);
+      expect(html).toContain(`<span aria-hidden="true" class="nav-lien-copie">${lien.label}</span>`);
+    }
+    expect(html.split('class="nav-lien-trait"').length - 1).toBe(siteConfig.nav.length);
   });
 
   it("sans forme courte, le bouton porte le libellé entier partout", () => {

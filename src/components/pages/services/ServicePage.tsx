@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BoutonAppel } from "@/components/ui/BoutonAppel";
 import { SvgSprite } from "@/components/SvgSprite";
 import { FloatingNav, Footer, Header } from "@/components/layout";
 import { FaqSection } from "@/components/sections/FaqSection";
@@ -140,12 +141,7 @@ export function OffreDetail({
 
       <div className="flex flex-col gap-[20px] tablet:pl-[30px] desktop:pl-[40px]">
         <ListeOffre titre={servicePageLabels.faitMonter} lignes={offre.faitMonter} />
-        <Link
-          href={href}
-          className="flex h-[30px] w-fit flex-none items-center justify-center rounded-control bg-accent px-[10px] text-[12px] font-semibold uppercase leading-[1.2] tracking-[-0.01em] text-background no-underline transition-opacity duration-200 hover:opacity-80 motion-reduce:transition-none"
-        >
-          <span className="accent-room">{servicePageLabels.cta}</span>
-        </Link>
+        <BoutonAppel href={href} label={servicePageLabels.cta} taille="grand" />
       </div>
     </div>
   );
@@ -593,12 +589,11 @@ export function ServicePage({
               {/* LE BOUTON SUIT LES QUESTIONS qu'il vient d'annoncer : placé
                   à gauche, il se lisait avant elles. Plein, à l'accent, comme
                   le bouton de l'offre. */}
-              <Link
+              <BoutonAppel
                 href={lienRendezVous("logiciel")}
-                className="flex h-[30px] w-fit flex-none items-center justify-center rounded-control bg-accent px-[10px] text-[12px] font-semibold uppercase leading-[1.2] tracking-[-0.01em] text-background no-underline transition-opacity duration-200 hover:opacity-80 motion-reduce:transition-none"
-              >
-                <span className="accent-room">{surMesureBloc.cta}</span>
-              </Link>
+                label={surMesureBloc.cta}
+                taille="grand"
+              />
             </div>
           </div>
         </section>

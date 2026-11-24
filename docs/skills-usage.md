@@ -579,3 +579,20 @@ la photo partagent le même carré : la lampe couvre toute la photo, sans bord.
 - Six descriptions ramenées à 20 signes au plus, vouvoiement, sans tiret long.
   `detect.py` juge le texte trop court pour noter le rythme ; aucun mot du
   lexique, aucune empreinte typographique.
+
+### En-tête, bouton d'appel et étincelles, 2026-11-24
+
+Captures : `assets-site-eliottbouquerel/captures-2026-11-24/header/` (`avant-*`, `apres-*`, numérotées).
+
+| Skill · règle | Constat sur le rendu | Ce qui a changé |
+|---|---|---|
+| impeccable · cohérence de composant | Neuf boutons de rendez-vous, quatre formes (30 px plat, 48 px plat, contour, flèche en texte) | Un seul `BoutonAppel` (libellé qui permute, pastille encre portant la flèche), en compact (36/40 px) ou grand (48 px) ; ton encre sous l'aplat volt de l'estimation |
+| emil-design-eng · ease-out fort, moins de 300 ms | Survol des liens : simple recoloration | Le libellé sort par le haut, sa copie volt entre par le bas (240 ms), un trait volt se dessine de gauche à droite (260 ms) et repart vers la droite ; courbe `cubic-bezier(0.23, 1, 0.32, 1)` |
+| emil-design-eng · rien au doigt | — | Survols derrière `(hover: hover) and (pointer: fine)` ; au clavier, même état au focus |
+| emil-design-eng · mouvement réduit | — | Transitions coupées, couleur gardée ; étincelles absentes |
+| impeccable · délice mesuré | Clic sans retour hors des boutons | Huit traits volt en 400 ms au point cliqué (d'après le Click Spark de reactbits.dev), souris seulement ; canevas créé au premier clic, boucle arrêtée hors éclat, jamais candidat LCP |
+| impeccable · hiérarchie de navigation | Blog au même rang que Réalisations | Blog retiré de l'en-tête et du menu mobile, gardé au pied de page et au plan du site |
+
+Défaut trouvé sur le rendu capturé : le canevas, élément remplacé, gardait la
+taille de son tampon (×2 en Retina) malgré `inset: 0`, les étincelles partaient
+hors écran. Corrigé par `width/height: 100%`.

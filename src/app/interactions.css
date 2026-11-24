@@ -1,0 +1,136 @@
+/* ============================================================
+   Interactions de pointeur — bouton d'appel, liens de l'en-tête, étincelles
+
+   Hors de toute couche CSS, comme `focus.css` : ces règles battent les
+   utilitaires Tailwind sans `!important`. Tous les survols sont gardés derrière
+   `(hover: hover) and (pointer: fine)` : au doigt, un tap déclencherait un
+   survol collé. Le mouvement réduit coupe les déplacements et garde la couleur.
+   Une seule courbe, ease-out forte, et rien au-delà de 260 ms.
+   ============================================================ */
+
+:root {
+  --ease-vif: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* ---------- Bouton d'appel (`BoutonAppel`) ----------
+   Le fond s'éclaircit à peine, la flèche avance d'un cran, l'appui tasse le
+   bouton. Le ton encre (posé sur un aplat volt) s'éclaircit vers le gris. */
+/* `.header-cta` et `.header-cta-fleche` : anciens noms, gardés pour les
+   boutons du héros qui les portent encore (ils passeront à `BoutonAppel`). */
+.bouton-appel,
+.header-cta {
+  transition:
+    transform 160ms var(--ease-vif),
+    background-color 200ms ease;
+}
+.bouton-appel:active,
+.header-cta:active {
+  transform: scale(0.97);
+}
+.bouton-appel-fleche,
+.header-cta-fleche {
+  transition: transform 240ms var(--ease-vif);
+}
+@media (hover: hover) and (pointer: fine) {
+  .bouton-appel[data-ton="volt"]:hover,
+  .header-cta:hover {
+    background-color: color-mix(in oklab, var(--accent) 88%, white);
+  }
+  .bouton-appel[data-ton="encre"]:hover {
+    background-color: color-mix(in oklab, var(--background) 86%, white);
+  }
+  .bouton-appel:hover .bouton-appel-fleche,
+  .header-cta:hover .header-cta-fleche {
+    transform: translate(1.5px, -1.5px);
+  }
+}
+
+/* ---------- Liens de l'en-tête (`Header`) ----------
+   Au survol, le libellé blanc sort par le haut pendant que sa copie volt
+   entre par le bas, et un trait volt se dessine de gauche à droite sous le
+   mot. À la sortie, le trait repart vers la droite : il traverse le mot au
+   lieu de rebrousser chemin. La course (140 %) dépasse la place d'accent du
+   masque, sinon le bas de la copie sortante resterait visible dans cette
+   bande. */
+.nav-lien-masque {
+  position: relative;
+  display: block;
+  overflow: hidden;
+}
+.nav-lien-texte,
+.nav-lien-copie {
+  display: block;
+  transition: translate 240ms var(--ease-vif);
+}
+.nav-lien-copie {
+  position: absolute;
+  left: 0;
+  top: var(--accent-room, 0.32em);
+  color: var(--accent);
+  translate: 0 140%;
+}
+.nav-lien-trait {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 1.5px;
+  border-radius: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform 260ms var(--ease-vif);
+  pointer-events: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  .nav-lien:hover .nav-lien-texte {
+    translate: 0 -140%;
+  }
+  .nav-lien:hover .nav-lien-copie {
+    translate: 0 0;
+  }
+  .nav-lien:hover .nav-lien-trait {
+    transform: scaleX(1);
+    transform-origin: left center;
+  }
+}
+/* Au clavier, le même état que le survol, sans attendre de souris. */
+.nav-lien:focus-visible .nav-lien-texte {
+  translate: 0 -140%;
+}
+.nav-lien:focus-visible .nav-lien-copie {
+  translate: 0 0;
+}
+.nav-lien:focus-visible .nav-lien-trait {
+  transform: scaleX(1);
+}
+
+/* ---------- Étincelles au clic (`EtincellesClic`) ----------
+   Le canevas couvre la fenêtre sans jamais capter un clic. Il n'existe que sur
+   un pointeur fin (le composant ne le monte pas ailleurs). */
+.etincelles-clic {
+  position: fixed;
+  inset: 0;
+  /* Un canevas est un élément remplacé : `inset` seul ne l'étire pas, il
+     garderait la taille de son tampon (×2 sur écran Retina) et les étincelles
+     partiraient deux fois trop loin du curseur. */
+  width: 100%;
+  height: 100%;
+  z-index: 2147483000;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bouton-appel,
+  .bouton-appel-fleche,
+  .header-cta,
+  .header-cta-fleche,
+  .nav-lien-texte,
+  .nav-lien-copie,
+  .nav-lien-trait {
+    transition: none;
+  }
+  .etincelles-clic {
+    display: none;
+  }
+}

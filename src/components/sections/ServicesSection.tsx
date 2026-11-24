@@ -1,5 +1,6 @@
 "use client";
 
+import { BoutonAppel } from "@/components/ui/BoutonAppel";
 import Link from "next/link";
 import { useId, useRef, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
@@ -455,17 +456,13 @@ function ServiceRow({
                       ligne à l'autre : le contexte est dans le nom accessible,
                       composé avec le nom de la prestation. */}
                   {service.rdvHref ? (
-                    <Link
+                    <BoutonAppel
                       href={service.rdvHref}
+                      label={uiLabels.services.rdvLabel}
                       aria-label={`${uiLabels.services.rdvAriaPrefix}${service.title}`}
                       tabIndex={open ? undefined : -1}
                       aria-hidden={!open}
-                      className="group relative flex h-[30px] flex-none flex-row items-center justify-center overflow-hidden rounded-control bg-accent px-[10px] no-underline"
-                    >
-                      <span className="accent-room whitespace-pre text-[12px] font-semibold uppercase leading-[1.2] tracking-[-0.01em] text-background">
-                        {uiLabels.services.rdvLabel}
-                      </span>
-                    </Link>
+                    />
                   ) : null}
                   {service.cta ? (
                     <Link
