@@ -16,7 +16,7 @@ import { Logo } from "./Logo";
  *     pas de bordure, pas de blur). Container `framer-1nqx0rw` : z-9, top:0,
  *     inset-x:0 ; padding 30px (≥1200) / 20px (mobile), sans padding bas.
  *   - Gauche : le logo seul (baseline et séparateur retirés le 2026-11-24).
- *   - Droite `framer-beg1hm` (gap 28→36px) : nav "WORKS / BLOG / ABOUT / CONTACT"
+ *   - Droite `framer-beg1hm` (gap 28→36px) : nav "ACCUEIL / RÉALISATIONS / À PROPOS / CONTACT" (Blog retiré le 2026-11-24)
  *     (séparateurs "/" opacity .2) visible dès 810px, puis le CTA
  *     « Réserver un appel » (toujours visible), le `BoutonAppel` partagé.
  *
@@ -32,7 +32,7 @@ import { Logo } from "./Logo";
  * (« la marque d'origine ») + le bouton orange « START A PROJECT ». PAS de burger, PAS de menu
  * hamburger. Le `Container framer-12ut4h8` (« 1 »/« 2 ») n'est pas un burger : ce
  * sont les 2 copies du libellé « START A PROJECT » pour le swap vertical au survol.
- * Sur mobile, la nav (Works/Blog/About/Contact) n'est donc accessible que via le
+ * Sur mobile, la nav (Accueil/Réalisations/À propos/Contact) n'est donc accessible que via le
  * footer et via le menu flottant séparé, invisible en haut puis affiché au scroll.
  */
 

@@ -11,7 +11,7 @@ import { SwapCopies } from "@/components/ui/SwapCopies";
  * verticalement au survol (`SwapCopies`), et une pastille au rayon
  * concentrique (`rounded-tag`) qui porte la flèche. Au survol, le fond
  * s'éclaircit à peine et la flèche avance d'un cran ; à l'appui, le bouton se
- * tasse à 97 %. Les règles de mouvement vivent dans `globals.css`
+ * tasse à 97 %. Les règles de mouvement vivent dans `interactions.css`
  * (`.bouton-appel`), gardées derrière `(hover: hover) and (pointer: fine)` et
  * coupées en mouvement réduit.
  *

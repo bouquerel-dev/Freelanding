@@ -61,7 +61,12 @@ function fichiersDe(dossier, filtre = () => true) {
  * sans exécuter le code.
  */
 const cites = new Map();
-for (const fichier of fichiersDe(CONTENU, (f) => /\.(ts|tsx|mjs|mdx)$/.test(f))) {
+// Les tests sont exclus : ils citent des chemins fictifs comme données
+// d'essai (`essai-2.jpg`, un article sans visuel), jamais servis.
+for (const fichier of fichiersDe(
+  CONTENU,
+  (f) => /\.(ts|tsx|mjs|mdx)$/.test(f) && !/\.test\.m?[jt]sx?$/.test(f),
+)) {
   const texte = readFileSync(fichier, "utf8");
   for (const m of texte.matchAll(/["'`](\/[^"'`\s${}]+)["'`]/g)) {
     const chemin = m[1];
