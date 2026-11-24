@@ -24,19 +24,18 @@ describe("HeroSection", () => {
     expect(h1).not.toContain("<canvas");
   });
 
-  it("pose les trois repères numérotés autour du visage", () => {
-    const reperes = html.match(/data-part="hero-repere"/gu) ?? [];
-    expect(reperes).toHaveLength(3);
-    for (const [i, note] of (homeContent.hero.faceNotes ?? []).entries()) {
-      expect(html).toContain(`>0${i + 1}</span>${note}`);
+  it("accroche six traits au visage, trois vers le titre, trois vers le bord", () => {
+    const reperes = html.match(/data-part="hero-repere" data-cote="(gauche|droite)"/gu) ?? [];
+    expect(reperes).toHaveLength(6);
+    expect(reperes.filter((r) => r.includes("gauche"))).toHaveLength(3);
+    for (const trait of homeContent.hero.faceNotes ?? []) {
+      expect(html).toContain(`>${trait.titre}</span>`);
+      expect(html).toContain(`>${trait.detail}</span>`);
     }
-  });
-
-  it("un quatrième repère reste rendu, sans position réservée", () => {
-    const hero = { ...homeContent.hero, faceNotes: ["Un", "Deux", "Trois", "Quatre"] };
-    const rendu = renderToStaticMarkup(createElement(HeroSection, { hero }));
-    expect(rendu.match(/data-part="hero-repere"/gu) ?? []).toHaveLength(4);
-    expect(rendu).toContain(">04</span>Quatre");
+    // Côté titre, le trait part de la colonne d'étiquettes et finit sur l'œil.
+    expect(html).toContain("left:calc(44% + -0.29 * min(66vh, 620px));width:calc(0.202 * min(66vh, 620px))");
+    // Côté bord, il part de l'oreille et finit à la colonne d'étiquettes.
+    expect(html).toContain("left:calc(44% + 0.228 * min(66vh, 620px));width:calc(0.202 * min(66vh, 620px))");
   });
 
   it("dit le titre en une phrase blanche, coupée en deux lignes", () => {

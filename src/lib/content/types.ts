@@ -574,6 +574,16 @@ export interface TeamMember extends Person {
 /** Un paragraphe de sous-titre de hero, avec ses fragments en emphase. */
 export type HeroSubtitleParagraph = EmphasizedText;
 
+/** Partie du visage où s'accroche un trait du héros. */
+export type PartieVisage = "front" | "oeil" | "bouche" | "oreille" | "epaule" | "coeur";
+
+/** Un trait de caractère posé sur le visage : le mot, et ce qu'il veut dire pour le client. */
+export interface HeroTraitVisage {
+  partie: PartieVisage;
+  titre: string;
+  detail: string;
+}
+
 export interface HeroContent {
   eyebrow?: string;
   title: string;
@@ -618,8 +628,8 @@ export interface HeroContent {
   buildPrefix?: string;
   /** Les prestations qui défilent après `buildPrefix`, la première rendue par le serveur. */
   buildItems?: readonly string[];
-  /** Repères posés autour du visage (ordinateur seulement) : comment il travaille, en trois temps. */
-  faceNotes?: readonly string[];
+  /** Traits accrochés au visage (ordinateur seulement) : chacun part d'une partie du visage. */
+  faceNotes?: readonly HeroTraitVisage[];
 }
 
 /**
