@@ -1347,3 +1347,48 @@ html[data-consent-choisi] [data-consent-attente] {
 @media (prefers-reduced-motion: reduce) {
   .header-cta, .header-cta-fleche { transition: none; }
 }
+
+/* ---------------------------------------------------------------------------
+   SQUIRCLES (2026-11-24). Les coins arrondis du site passent en squircle
+   (courbure continue) là où le navigateur sait les dessiner : `corner-shape`
+   de CSS Borders 4. Bordures, ombres, `overflow: hidden` et anneaux de focus
+   suivent la forme, sans masque ni SVG. Ailleurs, le `border-radius` reste
+   tel quel : rien ne casse, les coins sont juste ronds.
+
+   Un squircle de même rayon paraît plus serré qu'un arrondi : les rayons des
+   jetons montent sous `@supports` (cartes et panneaux d'environ 40 %,
+   contrôles et étiquettes un peu moins pour qu'un bouton de 30 px ne vire
+   pas à la pilule). Le thème est `inline` : on surcharge les classes, pas
+   les variables. Pastilles, pilules et ronds (`rounded-full`, `pill`,
+   `[50px]`) gardent un arc de cercle : en squircle, un rond devient carré.
+   --------------------------------------------------------------------------- */
+@supports (corner-shape: squircle) {
+  .rounded-tag { border-radius: 10px; }
+  .rounded-control, .neo-mode, .neo-champ, .neo-bouton { border-radius: 14px; }
+  .neo-mode-pastille { border-radius: 10px; }
+  .rounded-card { border-radius: 28px; }
+  .rounded-panel { border-radius: 34px; }
+  .rounded-t-card { border-radius: 28px 28px 0 0; }
+  .rounded-b-card { border-radius: 0 0 28px 28px; }
+  .rounded-l-control { border-radius: 14px 0 0 14px; }
+  .rounded-r-control { border-radius: 0 14px 14px 0; }
+  :where([class*="rounded"], .neo-mode, .neo-mode-pastille, .neo-champ, .neo-bouton) {
+    corner-shape: squircle;
+  }
+  :where(.rounded-full, .rounded-pill, [class*="rounded-[50px]"]) {
+    corner-shape: round;
+  }
+  :where([class*="rounded-[inherit]"]) {
+    corner-shape: inherit;
+  }
+}
+
+/* Cadre du schéma « Ce que je construis » : plus de trame de points. Une
+   lueur volt très basse sous le cœur et un reflet en haut du cadre, le grain
+   de la section fait le reste. */
+.schema-cadre {
+  background:
+    radial-gradient(ellipse 50% 60% at 50% 46%, color-mix(in oklab, var(--accent) 7%, transparent), transparent 75%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0) 40%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}

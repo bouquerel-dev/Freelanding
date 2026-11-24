@@ -1,4 +1,8 @@
-Un logiciel de traçabilité relie chaque lot de matière que vous recevez aux lots que vous fabriquez, puis aux clients que vous livrez. Le jour où un lot pose problème, il sort en une recherche la liste des clients à prévenir, là où un tableur vous fait rouvrir une à une vos fiches de fabrication et vos bons de livraison. Le règlement européen sur la sécurité des denrées vous demande de savoir de qui vous tenez vos produits et à qui vous les avez vendus ([règlement (CE) n° 178/2002, articles 18 et 19](https://eur-lex.europa.eu/eli/reg/2002/178/oj/fra)). Les applications du marché tiennent bien les relevés d’hygiène, environ 20 € HT par mois pour un point de vente. Quand vos recettes, vos lots et vos livraisons suivent des règles qui vous sont propres, un outil construit pour vous se paie une fois et vous appartient.
+Un logiciel de traçabilité relie chaque lot de matière que vous recevez aux lots que vous fabriquez, puis aux clients que vous livrez : le jour où un lot pose problème, il sort en une recherche la liste des clients à prévenir. Une application d’hygiène coûte environ 20 € HT par mois pour un point de vente, un logiciel de lots industriel de 49 $ par utilisateur à plus de 350 $ par mois, et un outil construit pour vos recettes se paie une fois, au devis.
+
+Le mot couvre trois besoins différents : la traçabilité alimentaire imposée par le règlement européen, la traçabilité des lots et des numéros de série en industrie, et la traçabilité informatique des actions dans un logiciel. Ce guide traite les deux premiers, ce que la loi impose, les fonctions à exiger et les prix du marché.
+
+Le règlement européen sur la sécurité des denrées vous demande de savoir de qui vous tenez vos produits et à qui vous les avez vendus ([règlement (CE) n° 178/2002, articles 18 et 19](https://eur-lex.europa.eu/eli/reg/2002/178/oj/fra)).
 
 Je conçois et je code seul des logiciels métier pour des PME, du cadrage à la mise en production. Pendant [un appel en visio](/rdv?sujet=logiciel), racontez-moi le dernier lot que vous avez dû retrouver : je vous dis ce qu’un outil peut faire seul à votre place.
 
@@ -49,6 +53,18 @@ Quatre écrans suffisent à tenir la chaîne, à condition qu’ils partagent la
 
 Deux détails séparent un outil utile d’un outil de façade : l’étiquette imprimée au bon numéro de lot, et un exercice de rappel que vous pouvez lancer pour tester votre chaîne sans attendre un vrai incident.
 
+## Quels logiciels de traçabilité, à quel prix ?
+
+Le marché se divise en trois familles. Les prix sont ceux des grilles publiques relevées en 2026 ; les éditeurs étrangers affichent souvent leurs tarifs en dollars.
+
+| Famille | Exemples | Prix affiché | Pour qui |
+| --- | --- | --- | --- |
+| Application d’hygiène (HACCP) | Applications de relevés pour la restauration et les commerces de bouche | Environ 20 € HT par mois pour un point de vente (grille relevée le 9 novembre 2026) | Relevés de températures, réceptions, plan de maîtrise sanitaire |
+| Logiciel de gestion de production avec lots | MRPeasy, Katana | 49 $ par utilisateur et par mois pour MRPeasy, 359 $ par mois pour Katana ([comparatif The Retail Exec](https://theretailexec.com/fr/tools/meilleurs-logiciels-tracabilite-lots/), 3 juin 2026) | Ateliers qui fabriquent en lots ou en séries |
+| ERP avec traçabilité | Odoo (lots et numéros de série dans l’application Inventaire), SAP Business One, Sylob | 19,90 € en entrée par utilisateur pour Odoo, sur devis pour les autres | PME qui veut tout réunir dans un seul logiciel |
+
+Une application d’hygiène tient vos relevés, rarement le lien entre un lot de matière et vos clients. Un logiciel de production ou un ERP tient ce lien, à condition que vos fabrications y passent toutes, ce qui suppose de saisir chaque recette et chaque production.
+
 ## Application du marché ou outil construit pour vos recettes ?
 
 Les deux se défendent, selon votre taille et la complexité de vos fabrications.
@@ -61,7 +77,7 @@ Les deux se défendent, selon votre taille et la complexité de vos fabrications
 | Lien avec vos bons de livraison et votre stock | Export à faire | Une seule base, avec [votre gestion de stock](/blog/logiciel-gestion-de-stock) |
 | Données | Chez l’éditeur | Dans votre base, export libre |
 
-Un artisan qui travaille sur un seul site avec peu de références trouvera son compte dans une application du marché. Dès que vous avez plusieurs recettes qui partagent des matières, plusieurs sites, ou un lien à tenir avec votre [suivi de production](/blog/logiciel-gestion-de-production), le sur mesure devient le meilleur calcul.
+Un artisan qui travaille sur un seul site avec peu de références trouvera son compte dans une application du marché. Dès que vous avez plusieurs recettes qui partagent des matières, plusieurs sites, ou un lien à tenir avec votre [logiciel de gestion de production](/blog/logiciel-gestion-de-production), le sur mesure devient le meilleur calcul.
 
 Pour comparer, une agence facture couramment de 8 000 à 10 000 € HT un premier outil sur mesure (La Fabrique du Net, ordres de grandeur relevés le 15 octobre 2026). Je fais le même travail, du cadrage à la mise en production, à un prix fixé au devis, et vous parlez directement à la personne qui conçoit et qui code. Le code source est livré dans votre dépôt, avec sa documentation. Le détail de l’offre est sur la page [Logiciel métier sur mesure](/services/logiciel-metier).
 
@@ -81,6 +97,10 @@ Chez vous, l’IA ferait le travail ingrat de la réception. Elle lirait le bon 
 ]} />
 
 ## Questions fréquentes
+
+**Le logiciel peut-il prévenir les clients automatiquement en cas de rappel ?** Oui. À partir du numéro de lot, il sort la liste des clients livrés et prépare pour chacun un message avec les produits, les quantités et les dates. Je conseille de garder une validation humaine avant l’envoi : un rappel part au bon client, avec le bon texte, une seule fois.
+
+**Quelle différence entre traçabilité amont et traçabilité aval ?** L’amont remonte du produit vers ses matières et ses fournisseurs. L’aval descend du lot vers les fabrications et les clients livrés. Le règlement 178/2002 impose les deux bouts, votre outil doit relier le milieu.
 
 **Un logiciel de traçabilité suffit-il pour être en règle ?**
 Il vous donne les moyens de répondre à une demande des autorités. La conformité dépend aussi de votre plan de maîtrise sanitaire et de vos contrôles, que l’outil documente sans les remplacer.

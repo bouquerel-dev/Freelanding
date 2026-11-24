@@ -165,9 +165,9 @@ export const blogPosts: BlogPost[] = [
 
   {
     slug: "logiciel-sur-mesure-ou-odoo",
-    title: "Odoo ou logiciel sur mesure : comment choisir",
+    title: "Prix d’Odoo en 2026 : le vrai coût, ou le sur mesure",
     date: "2026-10-02",
-    updated: "2026-10-16",
+    updated: "2026-11-24",
     dateSource: "editorial",
     listedInIndex: true,
     category: "Outils métier",
@@ -200,17 +200,17 @@ export const blogPosts: BlogPost[] = [
       },
     },
     excerpt:
-      "Les licences Odoo sur 3 ans pour 5, 10 et 20 utilisateurs, ce que l’intégrateur ajoute, et les cas où Odoo reste meilleur qu’un logiciel sur mesure.",
-    readingTime: "8 min de lecture",
-    tags: ["Odoo", "ERP", "logiciel sur mesure"],
+      "Odoo coûte 0 €, 19,90 € ou 35,90 € par utilisateur et par mois, plus l’intégrateur : le coût sur 3 ans pour 5 à 20 utilisateurs, et quand le sur mesure gagne.",
+    readingTime: "11 min de lecture",
+    tags: ["odoo prix", "prix odoo", "odoo ou sur mesure", "alternative odoo sur mesure", "logiciel sur mesure"],
     seo: {
-      // Réécriture du 2026-10-16 (vault `blog-etat-articles.md`, n° 1) : le
-      // titre ne porte plus « prix » à côté de « logiciel sur mesure », pour
-      // rendre « logiciel sur mesure prix » à la page prix. Prix d'Odoo du
-      // corps relevés sur odoo.com le 2026-10-15.
-      title: "Odoo ou logiciel sur mesure : tarifs Odoo sur 3 ans",
+      // Réécriture du 2026-11-24 (vault `blog-etat-articles.md`) : l'article
+      // vise « odoo prix » et « odoo ou sur mesure ». « logiciel sur mesure
+      // prix » reste à la page prix, que l'article lie tôt avec cette ancre.
+      // Prix d'Odoo du corps relevés sur odoo.com le 2026-11-24.
+      title: "Odoo prix 2026 : tarifs réels et alternative sur mesure",
       description:
-        "Odoo se paie par utilisateur et par mois, plus l’intégrateur. Comparez le total sur 3 ans avec un logiciel sur mesure, et voyez quand Odoo reste meilleur.",
+        "Prix Odoo 2026 : 0 €, 19,90 € ou 35,90 € par utilisateur et par mois, plus l’intégrateur. Le coût réel sur 3 ans, et quand un logiciel sur mesure gagne.",
       ogImage: {
         src: "/images/og-blog-logiciel-sur-mesure-ou-odoo.jpg",
         alt: "Une grille de modules carrés identiques sur fond noir, et un groupe de forme libre qui ressort en vert",
@@ -277,9 +277,9 @@ export const blogPosts: BlogPost[] = [
 
   {
     slug: "refonte-site-internet-pme",
-    title: "Refonte de site internet : prix moyen et méthode",
+    title: "Refonte de site internet : prix moyen et plan de migration",
     date: "2026-10-02",
-    updated: "2026-10-16",
+    updated: "2026-11-24",
     dateSource: "editorial",
     listedInIndex: true,
     category: "Méthode",
@@ -313,15 +313,15 @@ export const blogPosts: BlogPost[] = [
     },
     excerpt:
       "Une refonte coûte 6 500 € de médiane en agence pour une PME. Voici ce qui fait varier votre devis, quand refondre plutôt que réparer, et comment garder votre référencement.",
-    readingTime: "6 min de lecture",
-    tags: ["refonte", "référencement", "redirections"],
+    readingTime: "9 min de lecture",
+    tags: ["refonte site internet prix", "plan de migration refonte", "redirections 301"],
     seo: {
-      // Réécrit le 2026-10-16 sur « refonte site internet prix » (fiche du
-      // vault `blog-etat-articles.md`, n° 7). « plan de migration refonte »
-      // reste en section ; « refonte site internet caen » va à la page Caen.
-      title: "Refonte de site internet : prix moyen 2026 et méthode",
+      // Réécrit le 2026-10-16 sur « refonte site internet prix », renforcé le
+      // 2026-11-24 sur « plan de migration refonte » (pos. 71,9 en GSC) :
+      // plan en 8 étapes et rétroplanning (vault `blog-etat-articles.md`, n° 7).
+      title: "Refonte de site internet : prix 2026 et plan de migration",
       description:
-        "Prix moyen d’une refonte de site en 2026, agence contre indépendant, ce qui fait varier le devis, et le plan de redirections qui garde votre référencement.",
+        "Prix moyen d’une refonte de site en 2026, ce qui fait varier le devis, et le plan de migration en 8 étapes avec rétroplanning, qui garde votre référencement.",
       ogImage: {
         src: "/images/og-blog-refonte-site-internet-pme.jpg",
         alt: "Deux colonnes d’adresses sur fond noir, reliées une à une par des courbes vertes",
