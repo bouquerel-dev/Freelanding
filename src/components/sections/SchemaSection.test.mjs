@@ -1,4 +1,5 @@
 import { describe, expect, it } from "bun:test";
+import { readFileSync } from "node:fs";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { schemaAccueil } from "@/content/schema";
@@ -39,5 +40,37 @@ describe("SchemaSection", () => {
     const noeuds = delais.slice(3);
     expect(noeuds.length).toBeGreaterThan(0);
     expect(html.match(/schema-entree/gu)?.length ?? 0).toBeGreaterThanOrEqual(3 + schemaAccueil.modes[0].entrees.length);
+  });
+
+  it("n'a plus de viseur ni de trame de points dans le cadre : un fond calme à la place", () => {
+    expect(html).not.toContain("hero-viseur");
+    expect(html).not.toContain("radial-gradient");
+    expect(html).not.toContain("background-size:22px");
+    expect(html).toMatch(/schema-cadre[^"]*rounded-panel/u);
+  });
+});
+
+/*
+ * Squircles (2026-11-24) : une seule règle globale, sous `@supports`, qui
+ * laisse les ronds et les pilules en arc de cercle.
+ */
+describe("squircles du site", () => {
+  const css = readFileSync(new URL("../../app/globals.css", import.meta.url), "utf8");
+  const bloc = css.slice(css.indexOf("@supports (corner-shape: squircle)"));
+
+  it("n'arrive que chez les navigateurs qui savent les dessiner", () => {
+    expect(bloc.length).toBeGreaterThan(0);
+    expect(css).toContain("@supports (corner-shape: squircle)");
+    expect(bloc).toMatch(/\[class\*="rounded"\][^{]*\{\s*corner-shape: squircle;/u);
+  });
+
+  it("garde les ronds, pilules et pastilles en arc de cercle", () => {
+    expect(bloc).toMatch(/\.rounded-full, \.rounded-pill, \[class\*="rounded-\[50px\]"\]\) \{\s*corner-shape: round;/u);
+  });
+
+  it("donne au cadre du schéma un fond sans trame", () => {
+    const cadre = css.slice(css.indexOf(".schema-cadre {"));
+    expect(cadre).toContain("radial-gradient(ellipse");
+    expect(cadre.slice(0, cadre.indexOf("}"))).not.toContain("background-size");
   });
 });

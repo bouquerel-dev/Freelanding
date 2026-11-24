@@ -37,7 +37,7 @@ function Noeud({ noeud, actif, fait, ordre }: { noeud: NoeudSchema; actif?: bool
     <div
       data-noeud
       style={delai(260 + ordre * 60)}
-      className={`schema-entree relative grid grid-cols-[auto_minmax(0,1fr)] items-center gap-x-[10px] rounded-[14px] border bg-surface-1 px-[12px] py-[10px] text-left transition-colors duration-300 ${
+      className={`schema-entree relative grid grid-cols-[auto_minmax(0,1fr)] items-center gap-x-[10px] rounded-control border bg-surface-1 px-[12px] py-[10px] text-left transition-colors duration-300 ${
         actif ? "border-accent/70" : "border-white/10"
       }`}
     >
@@ -162,7 +162,7 @@ export function SchemaSection({ schema }: { schema: SchemaContent }) {
             </h2>
             <p className="m-0 mt-[12px] max-w-[46ch] text-[15px] leading-[1.45] text-foreground-60">{schema.texte}</p>
           </div>
-          <div role="tablist" aria-label={schema.eyebrow} className="flex w-max gap-[4px] rounded-[14px] border border-white/10 p-[4px]">
+          <div role="tablist" aria-label={schema.eyebrow} className="flex w-max gap-[4px] rounded-control border border-white/10 p-[4px]">
             {schema.modes.map((x, i) => (
               <button
                 key={x.id}
@@ -190,9 +190,8 @@ export function SchemaSection({ schema }: { schema: SchemaContent }) {
           ref={plan}
           role="tabpanel"
           style={delai(140)}
-          className="schema-entree relative mt-[24px] overflow-hidden rounded-[24px] border border-white/10 bg-[radial-gradient(rgba(255,255,255,0.07)_1px,transparent_1px)] [background-size:22px_22px] p-[16px] tablet:p-[22px]"
+          className="schema-entree relative mt-[24px] overflow-hidden schema-cadre rounded-panel border border-white/10 p-[16px] tablet:p-[22px]"
         >
-          <span aria-hidden className="hero-viseur pointer-events-none absolute inset-[10px] hidden desktop:block" />
           <svg aria-hidden className="pointer-events-none absolute inset-0 hidden h-full w-full desktop:block">
             {liens.map((d, i) => (
               <path key={i} d={d} className="schema-lien" fill="none" stroke="currentColor" />
@@ -204,7 +203,7 @@ export function SchemaSection({ schema }: { schema: SchemaContent }) {
                 <Noeud key={n.titre} noeud={n} fait={schema.fait} ordre={i} />
               ))}
             </div>
-            <div ref={coeur} style={delai(380)} className="schema-entree rounded-[18px] border border-accent/45 bg-surface-2 p-[16px]">
+            <div ref={coeur} style={delai(380)} className="schema-entree rounded-card border border-accent/45 bg-surface-2 p-[16px]">
               <div className="flex items-center justify-between">
                 <span className="text-[16px] font-semibold tracking-[-0.02em] text-foreground">{m.coeur}</span>
                 <span className="flex items-center gap-[6px] font-mono text-[10px] uppercase text-accent">
