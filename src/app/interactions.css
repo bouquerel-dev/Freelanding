@@ -15,25 +15,32 @@
 /* ---------- Bouton d'appel (`BoutonAppel`) ----------
    Le fond s'éclaircit à peine, la flèche avance d'un cran, l'appui tasse le
    bouton. Le ton encre (posé sur un aplat volt) s'éclaircit vers le gris. */
-.bouton-appel {
+/* `.header-cta` et `.header-cta-fleche` : anciens noms, gardés pour les
+   boutons du héros qui les portent encore (ils passeront à `BoutonAppel`). */
+.bouton-appel,
+.header-cta {
   transition:
     transform 160ms var(--ease-vif),
     background-color 200ms ease;
 }
-.bouton-appel:active {
+.bouton-appel:active,
+.header-cta:active {
   transform: scale(0.97);
 }
-.bouton-appel-fleche {
+.bouton-appel-fleche,
+.header-cta-fleche {
   transition: transform 240ms var(--ease-vif);
 }
 @media (hover: hover) and (pointer: fine) {
-  .bouton-appel[data-ton="volt"]:hover {
+  .bouton-appel[data-ton="volt"]:hover,
+  .header-cta:hover {
     background-color: color-mix(in oklab, var(--accent) 88%, white);
   }
   .bouton-appel[data-ton="encre"]:hover {
     background-color: color-mix(in oklab, var(--background) 86%, white);
   }
-  .bouton-appel:hover .bouton-appel-fleche {
+  .bouton-appel:hover .bouton-appel-fleche,
+  .header-cta:hover .header-cta-fleche {
     transform: translate(1.5px, -1.5px);
   }
 }
@@ -116,6 +123,8 @@
 @media (prefers-reduced-motion: reduce) {
   .bouton-appel,
   .bouton-appel-fleche,
+  .header-cta,
+  .header-cta-fleche,
   .nav-lien-texte,
   .nav-lien-copie,
   .nav-lien-trait {
