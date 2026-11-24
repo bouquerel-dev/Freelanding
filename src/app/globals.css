@@ -1338,19 +1338,6 @@ html[data-consent-choisi] [data-consent-attente] {
   }
 }
 
-/* Bouton « Réserver un appel » de l'en-tête : le volt s'éclaircit à peine,
-   la flèche avance d'un cran, l'appui tasse le bouton. */
-.header-cta { transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1), background-color 200ms ease; }
-.header-cta:active { transform: scale(0.97); }
-.header-cta-fleche { transition: transform 240ms cubic-bezier(0.23, 1, 0.32, 1); }
-@media (hover: hover) and (pointer: fine) {
-  .header-cta:hover { background-color: color-mix(in oklab, var(--accent) 88%, white); }
-  .header-cta:hover .header-cta-fleche { transform: translate(1.5px, -1.5px); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .header-cta, .header-cta-fleche { transition: none; }
-}
-
 /* ---------------------------------------------------------------------------
    SQUIRCLES (2026-11-24). Les coins arrondis du site passent en squircle
    (courbure continue) là où le navigateur sait les dessiner : `corner-shape`

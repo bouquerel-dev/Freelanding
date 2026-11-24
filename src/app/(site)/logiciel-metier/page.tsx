@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { BoutonAppel } from "@/components/ui/BoutonAppel";
 import { JsonLd } from "@/components/JsonLd";
 import { SvgSprite } from "@/components/SvgSprite";
 import { GradientWaveBackdrop } from "@/components/effects/GradientWaveBackdrop";
@@ -61,12 +61,11 @@ export default async function HubMetiers() {
                 <p className="m-0 max-w-[46ch] text-[15px] font-medium leading-[1.45] tracking-[-0.01em] text-white/70">
                   {hubMetiers.autre.corps}
                 </p>
-                <Link
+                <BoutonAppel
                   href={lienRendezVous("logiciel")}
-                  className="flex h-[48px] items-center rounded-control bg-accent px-[20px] text-[13px] font-semibold uppercase leading-none tracking-[-0.01em] text-accent-ink no-underline"
-                >
-                  {hubMetiers.autre.cta}
-                </Link>
+                  label={hubMetiers.autre.cta}
+                  taille="grand"
+                />
               </div>
             </div>
           </div>

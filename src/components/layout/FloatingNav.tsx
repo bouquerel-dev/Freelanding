@@ -2,7 +2,7 @@
 
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
-import { SwapCopies } from "@/components/ui/SwapCopies";
+import { BoutonAppel } from "@/components/ui/BoutonAppel";
 /* Ce panneau est en `position: fixed` : ses liens ne quittent JAMAIS la fenêtre,
    donc le préchargement automatique tirait en permanence toutes les routes du
    site. Voir la note de `HoverPrefetchLink`. */
@@ -408,25 +408,16 @@ export function FloatingNav({ site }: { site: SiteConfig }) {
               </div>
             </div>
 
-            {/* CTA « START A PROJECT » — enfant du panneau, pleine largeur, fond #0b0b0b. */}
-            <HoverPrefetchLink
+            {/* Le bouton d'appel partagé, pleine largeur, le même volt que
+                celui de l'en-tête. */}
+            <BoutonAppel
               href={primaryCta.href}
+              label={primaryCta.label}
+              taille="grand"
+              largeur="pleine"
               tabIndex={tab}
               onClick={closeMenu}
-              className="group relative flex h-[50px] w-full items-center justify-center overflow-hidden rounded-control bg-background px-[16px] no-underline"
-            >
-              {/* 14,4 px et non 15 : le cadre clippant de la source mesure
-                  12,97 px sous l'échelle 0,9 du panneau, soit 14,41 px avant
-                  échelle (12 px × 1,2), comme le CTA du header. */}
-              <span className="relative block h-[14.4px] overflow-hidden">
-                <SwapCopies
-                  travel={22}
-                  textClassName="text-[12px] font-semibold uppercase leading-[1.2] tracking-[-0.01em] text-foreground"
-                >
-                  {primaryCta.label}
-                </SwapCopies>
-              </span>
-            </HoverPrefetchLink>
+            />
           </div>
         </div>
 

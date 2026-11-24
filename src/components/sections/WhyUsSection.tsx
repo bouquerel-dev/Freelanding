@@ -1,5 +1,6 @@
 "use client";
 
+import { BoutonAppel } from "@/components/ui/BoutonAppel";
 import { ImageProgressive } from "@/components/ui/ImageProgressive";
 import Link from "next/link";
 import type { HomeContent, Link as LinkData, Stat } from "@/lib/content/types";
@@ -330,7 +331,13 @@ export function WhyUsSection({ whyUs }: { whyUs: HomeContent["whyUs"] }) {
                         suffix={stat.suffix ?? ""}
                         colorClass={encre}
                       />
-                      {cta ? <SwapLink cta={cta} colorClass={encre} /> : null}
+                      {/* Un rendez-vous prend le bouton d'appel partagé ; tout
+                          autre lien garde le lien à permutation. */}
+                      {cta?.href.startsWith("/rdv") ? (
+                        <BoutonAppel href={cta.href} label={cta.label} />
+                      ) : cta ? (
+                        <SwapLink cta={cta} colorClass={encre} />
+                      ) : null}
                     </div>
                   </Reveal>
                 </div>

@@ -388,7 +388,13 @@ describe("OutilEstimation", () => {
 
     // Deux liens de rendez-vous vers le sujet du projet.
     const liens = [...conteneur.querySelectorAll("a")].filter((a) => a.getAttribute("href") === "/rdv?sujet=logiciel");
-    expect(liens.map((a) => a.textContent)).toEqual([`${C.resultat.rendezVous}→`, `${C.resultat.rendezVousBas}→`]);
+    // Le bouton d'appel partagé : le libellé et sa copie de permutation.
+    expect(liens.map((a) => a.textContent)).toEqual([
+      C.resultat.rendezVous.repeat(2),
+      C.resultat.rendezVousBas.repeat(2),
+    ]);
+    expect(liens.map((a) => a.dataset.part)).toEqual(["bouton-appel", "bouton-appel"]);
+    expect(liens.map((a) => a.dataset.ton)).toEqual(["volt", "encre"]);
 
     // Bascule 12 / 24 mois.
     const [douze, vingtQuatre] = [...conteneur.querySelectorAll("button[aria-pressed]")];

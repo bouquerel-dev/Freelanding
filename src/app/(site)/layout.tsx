@@ -20,6 +20,8 @@ import "../globals.css";
    Tailwind (tous en `@layer utilities`) sans un seul `!important`. Voir l'entête
    de `focus.css` pour la divergence assumée qu'elle porte. */
 import "../focus.css";
+// Bouton d'appel partagé, survol des liens de l'en-tête, étincelles au clic.
+import "../interactions.css";
 import { content } from "@/lib/content";
 import { buildSiteMetadata, SiteDocument } from "./SiteDocument";
 

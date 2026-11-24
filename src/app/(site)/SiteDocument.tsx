@@ -15,6 +15,7 @@ import type { ReactNode } from "react";
 import { SiteAnalytics } from "@/components/analytics/SiteAnalytics";
 import { PrechargementDiffere } from "@/components/perf/PrechargementDiffere";
 import { PageTransitions, SkipLink, SmoothScroll } from "@/components/layout";
+import { EtincellesClic } from "@/components/effects/EtincellesClic";
 import { MotionSettings } from "@/components/motion/MotionSettings";
 import { APPEAR_BOOT_SCRIPT } from "@/components/motion/appearAnimations";
 import { siteConfig } from "@/content/site";
@@ -135,6 +136,8 @@ export function SiteDocument({
         {/* Transitions de page via l'API native (voir PageTransitions.tsx et les
             animations `::view-transition-*` dans globals.css). */}
         <PageTransitions />
+        {/* Étincelles volt au clic, souris seulement ; rien avant le premier clic. */}
+        <EtincellesClic />
         <MotionSettings>{children}</MotionSettings>
         {/* Consentement et mesure. Dernier nœud de contenu du document : la
             barre de révocation se pose ainsi sous le pied de page de chaque

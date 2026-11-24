@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { BoutonAppel } from "@/components/ui/BoutonAppel";
 import { Reveal } from "@/components/motion/Reveal";
 import { lienRendezVous } from "@/content/rendez-vous";
 import { uiLabels } from "@/content/ui";
@@ -50,12 +50,11 @@ export function WorkRendezVous({ work }: { work: WorkItem }) {
               </span>
             ))}
           </h2>
-          <Link
+          <BoutonAppel
             href={lienRendezVous(work.sujetRendezVous ?? "decouverte")}
-            className="flex h-[30px] w-fit flex-none items-center justify-center rounded-control bg-accent px-[10px] text-[12px] font-semibold uppercase leading-[1.2] tracking-[-0.01em] text-background no-underline transition-opacity duration-200 hover:opacity-80 motion-reduce:transition-none"
-          >
-            {labels.rendezVousLabel}
-          </Link>
+            label={labels.rendezVousLabel}
+            taille="grand"
+          />
         </div>
       </div>
       {/* Filet vertical central, comme les autres sections sombres. */}

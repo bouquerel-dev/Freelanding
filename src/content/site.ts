@@ -26,10 +26,12 @@ export const siteConfig: SiteConfig = {
   // Le champ reste dans le type : un depot le remplirait en une ligne. Tous les
   // points d'appel concatenent `name + mark`, une chaine vide n'y casse rien.
   brand: { name: "Bouquerel", mark: "", given: "Eliott" },
+  // LE BLOG N'EST PLUS DANS L'EN-TÊTE NI DANS LE MENU MOBILE (2026-11-24,
+  // demande d'Eliott). Il reste un point d'entrée Google : le pied de page,
+  // le plan du site et les liens des articles y mènent toujours.
   nav: [
     { label: "Accueil", href: "/" },
     { label: "Réalisations", href: "/realisations" },
-    { label: "Blog", href: "/blog" },
     { label: "À propos", href: "/a-propos" },
     { label: "Contact", href: "/contact" },
   ],
@@ -39,7 +41,6 @@ export const siteConfig: SiteConfig = {
     { label: "Accueil", href: "/" },
     { label: "Réalisations", href: "/realisations" },
     { label: "À propos", href: "/a-propos" },
-    { label: "Blog", href: "/blog" },
     { label: "Contact", href: "/contact" },
   ],
   /*
