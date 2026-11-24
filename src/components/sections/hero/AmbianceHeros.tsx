@@ -6,7 +6,7 @@ import { useEffect, useRef } from "react";
 const AMORTI = 0.08;
 /** Écart entre deux fils, et entre deux points d'un fil, en pixels CSS. */
 const ECART_FILS = 22;
-const PAS_X = 14;
+const PAS_X = 10;
 /** Rayon d'écartement autour de la souris, et poussée maximale. */
 const RAYON = 150;
 const POUSSEE = 26;
@@ -120,13 +120,15 @@ export function AmbianceHeros() {
             const dx = x - pos.x;
             const dy = y - pos.y;
             const force = Math.exp(-(dx * dx + dy * dy) / (RAYON * RAYON)) * presence;
-            y += Math.sign(dy || 1) * force * POUSSEE;
+            // Écart souple de part et d'autre du curseur, sans coude sur sa ligne.
+            y += Math.tanh(dy / 20) * force * POUSSEE;
             lueur = Math.max(lueur, force);
           }
           if (x === 0) ctx.moveTo(x, y);
           else ctx.lineTo(x, y);
         }
-        ctx.globalAlpha = 0.075 + lueur * 0.32;
+        // Discrets, même sous la souris : le volt vif reste aux six traits.
+        ctx.globalAlpha = 0.06 + lueur * 0.18;
         ctx.stroke();
       }
       ctx.globalAlpha = 1;

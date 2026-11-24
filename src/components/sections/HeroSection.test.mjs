@@ -44,8 +44,8 @@ describe("HeroSection", () => {
     expect(html).toContain("hidden desktop:block");
     // Sur ordinateur, l'œil : colonne gauche à 30,2 %, point à 44,4 % et 40,6 %, trait horizontal.
     expect(html).toContain('x1="30.2%" y1="40.6%" x2="44.4%" y2="40.6%"');
-    // Au téléphone, l'épaule : l'étiquette monte à 50 %, le trait descend au point.
-    expect(html).toContain('x1="68%" y1="50%" x2="74.4%" y2="67.9%"');
+    // Au téléphone, l'épaule : le trait part sous l'étiquette (60 % + 4,5) et descend au point.
+    expect(html).toContain('x1="68%" y1="64.5%" x2="74.4%" y2="67.9%"');
   });
 
   it("tient chaque petite description sur une ligne : vingt signes au plus", () => {

@@ -3,9 +3,9 @@
 import { useEffect, useRef } from "react";
 
 /** Temps laissé à la trame pour naître avant que la photo la recouvre. */
-export const ATTENTE_TRAME_MS = 900;
+export const ATTENTE_TRAME_MS = 600;
 /** Durée du passage de la trame à la photo, avant que la lampe prenne la main. */
-export const PASSAGE_MS = 1000;
+export const PASSAGE_MS = 800;
 
 /**
  * PORTRAIT COULEUR DU HÉROS, TOUTES TAILLES (2026-11-24 : Eliott veut la vraie

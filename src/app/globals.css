@@ -1167,9 +1167,9 @@ html[data-consent-choisi] [data-consent-attente] {
   transform: scale(1.05);
   transition:
     opacity 500ms cubic-bezier(0.23, 1, 0.32, 1),
-    clip-path 1300ms cubic-bezier(0.16, 1, 0.3, 1),
-    filter 1100ms cubic-bezier(0.16, 1, 0.3, 1),
-    transform 1300ms cubic-bezier(0.16, 1, 0.3, 1);
+    clip-path 900ms cubic-bezier(0.16, 1, 0.3, 1),
+    filter 700ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 900ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 .hero-photo[data-pret="1"] {
   opacity: 1;
@@ -1177,7 +1177,7 @@ html[data-consent-choisi] [data-consent-attente] {
   filter: blur(0);
   transform: none;
 }
-.hero-visage { transition: opacity 900ms cubic-bezier(0.23, 1, 0.32, 1); }
+.hero-visage { transition: opacity 700ms cubic-bezier(0.23, 1, 0.32, 1); }
 [data-scene="photo"] .hero-visage,
 [data-scene="lampe"] .hero-visage { opacity: 0; }
 @media (hover: hover) and (pointer: fine) and (min-width: 1200px) {
@@ -1215,10 +1215,14 @@ html[data-consent-choisi] [data-consent-attente] {
 /* Traits du visage : un point volt posé sur le visage, cerclé d'un halo, et un
    trait fin qui se trace depuis le point vers l'étiquette. */
 .hero-repere-point {
+  top: var(--pt-m);
   background: var(--accent);
   box-shadow: 0 0 0 4px color-mix(in oklab, var(--accent) 18%, transparent);
-  animation: hero-point 520ms cubic-bezier(0.34, 1.4, 0.64, 1) both;
+  animation: hero-point 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
   animation-delay: var(--d, 0ms);
+}
+@media (min-width: 1200px) {
+  .hero-repere-point { top: var(--pt-d); }
 }
 @keyframes hero-point {
   from { scale: 0.4; opacity: 0; }

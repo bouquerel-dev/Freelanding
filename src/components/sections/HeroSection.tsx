@@ -13,18 +13,23 @@ import { VisageTrame } from "./hero/VisageTrame";
 /**
  * Héros de l'accueil, version 2 « trame géante » (retenue par Eliott le
  * 2026-11-24) : à gauche il se présente, dit comment il travaille et ce qu'il
- * construit ; à droite son visage en grand, en trame de points, qui suit la
- * souris et se fond vers le texte.
+ * construit ; à droite sa photo en grand, dont la trame de points ne revient
+ * que sous la lampe de la souris, et six traits accrochés au visage.
  *
  * LARGEUR BORNÉE. Tout tient dans la colonne de 1440 du site : au-delà, le
  * texte et le visage ne s'écartent plus, ils restent ensemble au centre. Le
  * visage garde son rapport (voir `VisageTrame`), il se recadre sans s'étirer.
  *
- * Sous 1200 px, le visage passe au-dessus du texte, plus petit, fondu vers le
- * bas.
+ * Sous 1200 px, le portrait (photo, trame et six traits) passe au-dessus du
+ * texte, à la largeur de l'écran, fondu vers le bas sous le titre.
  *
- * MOUVEMENT. L'entrée reste celle du bloc `.hero-*` de `globals.css` (fondu
- * décalé par `--d`), en CSS, hors du fil principal.
+ * HAUTEUR. Sur ordinateur, le héros laisse 270 px d'écran au schéma qui suit,
+ * pour qu'on le voie arriver et qu'on ait envie de descendre.
+ *
+ * MOUVEMENT. L'entrée du texte reste celle du bloc `.hero-*` de `globals.css`
+ * (fondu décalé par `--d`, jamais d'opacité nulle : le titre reste le LCP).
+ * Le portrait arrive en trois temps : lueur, trame qui naît en vague, photo du
+ * flou au net (voir `PortraitCouleur`).
  */
 
 /**
@@ -35,8 +40,8 @@ import { VisageTrame } from "./hero/VisageTrame";
  * souris n'a plus de bord.
  *
  * Taille du carré (`--s`, posée sur le conteneur) : la largeur de l'écran sur
- * téléphone, bornée à 460 px ; sur ordinateur, 92 % de la hauteur d'écran,
- * bornée à 820 px. Le bas de la photo se fond à 82 % du carré.
+ * téléphone, bornée à 460 px ; sur ordinateur, 86 % de la hauteur d'écran,
+ * bornée à 780 px. Le bas de la photo se fond à 82 % du carré.
  *
  * POINTS D'ACCROCHE, relevés sur la photo source : `u` en largeur, `v` en
  * hauteur. Les étiquettes s'alignent en deux colonnes (`colonne`) : côté titre
@@ -45,17 +50,18 @@ import { VisageTrame } from "./hero/VisageTrame";
  * point (trait horizontal) ; sur téléphone, les étiquettes se rangent plus haut
  * (`vMobile`) pour laisser le bas au titre, et le trait part en biais.
  */
-const POINTS_VISAGE: Record<PartieVisage, { u: number; v: number; vMobile: number; gauche: boolean }> = {
+const POINTS_VISAGE: Record<PartieVisage, { u: number; v: number; vMobile: number; vPointMobile?: number; gauche: boolean }> = {
   front: { u: 0.504, v: 0.353, vMobile: 0.3, gauche: true },
   oeil: { u: 0.444, v: 0.406, vMobile: 0.4, gauche: true },
   bouche: { u: 0.51, v: 0.502, vMobile: 0.5, gauche: true },
   oreille: { u: 0.66, v: 0.427, vMobile: 0.36, gauche: false },
-  epaule: { u: 0.744, v: 0.679, vMobile: 0.5, gauche: false },
-  coeur: { u: 0.58, v: 0.768, vMobile: 0.62, gauche: false },
+  epaule: { u: 0.744, v: 0.679, vMobile: 0.6, gauche: false },
+  // Au téléphone, le titre recouvre le bas de la photo : le cœur remonte.
+  coeur: { u: 0.58, v: 0.768, vMobile: 0.48, vPointMobile: 0.7, gauche: false },
 };
 const COLONNES = {
   ordinateur: { gauche: 0.302, droite: 0.794 },
-  mobile: { gauche: 0.33, droite: 0.68 },
+  mobile: { gauche: 0.38, droite: 0.68 },
 } as const;
 
 function pc(n: number) {
@@ -71,7 +77,8 @@ function Traits({ format }: { format: keyof typeof COLONNES }) {
       className={`hero-traits absolute inset-0 h-full w-full overflow-visible ${format === "ordinateur" ? "hidden desktop:block" : "desktop:hidden"}`}
     >
       {Object.entries(POINTS_VISAGE).map(([partie, p], i) => {
-        const y = format === "ordinateur" ? p.v : p.vMobile;
+        // Au téléphone, le trait part sous l'étiquette pour ne jamais la barrer.
+        const y = format === "ordinateur" ? p.v : p.vMobile + 0.045;
         const x = p.gauche ? colonne.gauche : colonne.droite;
         return (
           <line
@@ -79,7 +86,7 @@ function Traits({ format }: { format: keyof typeof COLONNES }) {
             x1={pc(x)}
             y1={pc(y)}
             x2={pc(p.u)}
-            y2={pc(p.v)}
+            y2={pc(format === "ordinateur" ? p.v : (p.vPointMobile ?? p.v))}
             pathLength={1}
             className="hero-trait-ligne"
             style={delai(420 + i * 90)}
@@ -133,12 +140,12 @@ export function HeroSection({ hero }: { hero: HeroContent }) {
       <Grain opacity={0.1} className="z-0" />
       <AmbianceHeros />
 
-      <div className="relative mx-auto flex w-full max-w-[1440px] flex-col px-[20px] pt-[20px] pb-[36px] [--s:min(calc(100vw/var(--zoom-ecran,1)),460px)] tablet:px-[30px] tablet:pt-[40px] desktop:min-h-[max(calc(100dvh/var(--zoom-ecran,1)_-_210px),600px)] desktop:justify-center desktop:pt-[104px] desktop:pb-[56px] desktop:[--s:min(92vh,820px)]">
+      <div className="relative mx-auto flex w-full max-w-[1440px] flex-col px-[20px] pt-[20px] pb-[36px] [--s:min(calc(100vw/var(--zoom-ecran,1)),460px)] tablet:px-[30px] tablet:pt-[40px] desktop:min-h-[max(calc(100dvh/var(--zoom-ecran,1)_-_270px),600px)] desktop:justify-center desktop:pt-[104px] desktop:pb-[56px] desktop:[--s:min(86vh,780px)]">
         {hero.person?.avatar ? (
           <div
             aria-hidden
             data-scene
-            className="hero-scene pointer-events-none relative z-0 h-[var(--s)] self-center w-[var(--s)] flex-none desktop:absolute desktop:left-[calc(70%_-_var(--s)/2)] desktop:top-0 desktop:self-auto"
+            className="hero-scene pointer-events-none relative z-0 h-[var(--s)] self-center w-[var(--s)] flex-none desktop:absolute desktop:left-[calc(72%_-_var(--s)/2)] desktop:top-0 desktop:self-auto"
           >
             {/* La photo couleur, puis la trame de la même photo par-dessus :
                 pendant le chargement, la trame naît seule ; la photo arrive
@@ -156,7 +163,7 @@ export function HeroSection({ hero }: { hero: HeroContent }) {
                 <span key={trait.partie} className="contents">
                   <span
                     className="hero-repere-point absolute h-[7px] w-[7px] -translate-x-1/2 -translate-y-1/2 rounded-full"
-                    style={{ left: pc(p.u), top: pc(p.v), ...delai(300 + i * 90) }}
+                    style={{ left: pc(p.u), "--pt-m": pc(p.vPointMobile ?? p.v), "--pt-d": pc(p.v), ...delai(300 + i * 90) } as CSSProperties}
                   />
                   <span
                     data-part="hero-repere"
@@ -173,7 +180,7 @@ export function HeroSection({ hero }: { hero: HeroContent }) {
           </div>
         ) : null}
 
-        <div className="relative z-[1] -mt-[calc(var(--s)*0.2)] flex flex-col items-start desktop:mt-0 desktop:max-w-[700px]">
+        <div className="relative z-[1] -mt-[calc(var(--s)*0.26)] flex flex-col items-start desktop:mt-0 desktop:max-w-[700px]">
           {hero.eyebrow ? (
             <p
               data-part="hero-salut"
@@ -189,7 +196,7 @@ export function HeroSection({ hero }: { hero: HeroContent }) {
           <h1
             id="services"
             data-part="hero-titre"
-            className="hero-fond m-0 mt-[14px] text-[clamp(28px,calc((100vw/var(--zoom-ecran,1)_-_40px)/10.9),48px)] font-semibold leading-[0.98] tracking-[-0.055em] text-foreground tablet:mt-[20px] tablet:text-[clamp(48px,calc(4.3vw/var(--zoom-ecran,1)),62px)]"
+            className="hero-fond m-0 mt-[14px] text-[clamp(28px,calc((100vw/var(--zoom-ecran,1)_-_40px)/10.9),48px)] font-semibold leading-[0.98] tracking-[-0.055em] text-foreground tablet:mt-[20px] tablet:text-[clamp(48px,calc(4vw/var(--zoom-ecran,1)),62px)]"
             style={delai(120)}
           >
             {avant}
