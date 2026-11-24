@@ -94,7 +94,7 @@ export const pagePrixLogiciel: PagePrix = {
   h1: "Prix d’un logiciel sur mesure",
   /* RÉPONSE DIRECTE EN TÊTE (carte SEO du 2026-10-15) : ce dont dépend le prix,
      puis le repère d'agence sourcé. */
-  resume: `Le prix d’un logiciel sur mesure dépend des modules, des outils à relier et de votre historique, jamais du nombre d’utilisateurs. Je le fixe au devis, avant de commencer, et il ne bouge plus. En agence, ${AGENCE.source.nom} relève un premier outil entre ${euros(AGENCE.premierOutilMin)} et ${euros(AGENCE.premierOutilMax)} (${AGENCE.source.releve}).`,
+  resume: `Le prix d’un logiciel sur mesure, pour une PME, dépend des modules, des outils à relier et de votre historique, jamais du nombre d’utilisateurs. Je le fixe au devis, avant de commencer, et il ne bouge plus. En agence, ${AGENCE.source.nom} relève un premier outil entre ${euros(AGENCE.premierOutilMin)} et ${euros(AGENCE.premierOutilMax)} (${AGENCE.source.releve}).`,
   marcheFilAriane: "Prix",
   libelleLien: "prix d’un logiciel sur mesure",
   noteLlms:
@@ -194,6 +194,11 @@ export const pagePrixLogiciel: PagePrix = {
             libelle: "Outil sur mesure ou abonnements SaaS",
             href: "/blog/outil-sur-mesure-ou-abonnements-saas",
             description: "La même question, posée en heures de travail gagnées.",
+          },
+          {
+            libelle: "Odoo ou logiciel sur mesure",
+            href: "/blog/logiciel-sur-mesure-ou-odoo",
+            description: "Les licences Odoo sur 3 ans face au sur mesure, et les cas où Odoo gagne.",
           },
         ],
       },

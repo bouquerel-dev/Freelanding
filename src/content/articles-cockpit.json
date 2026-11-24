@@ -34,16 +34,18 @@
   },
   {
     "slug": "logiciel-de-tracabilite",
-    "title": "Rappel de lot : quel logiciel de traçabilité pour une PME ?",
+    "title": "Logiciel de traçabilité des lots : guide et prix pour PME",
     "date": "2026-11-20",
+    "updated": "2026-11-24",
     "category": "Outils métier",
-    "description": "Un client signale un lot douteux et vous ouvrez dix tableurs pour savoir qui l’a reçu : ce qu’un logiciel de traçabilité doit tenir, et ce qu’il vous coûte.",
-    "readingTime": "8 min de lecture",
+    "description": "Logiciel de traçabilité pour PME : ce que la loi impose, les fonctions à exiger, les prix du marché et le temps qu’un rappel de lot vous coûte sans outil.",
+    "readingTime": "11 min de lecture",
     "tags": [
       "logiciel de traçabilité",
       "logiciel traçabilité",
       "logiciel traçabilité alimentaire",
-      "logiciel traçabilité agroalimentaire"
+      "logiciel traçabilité lots",
+      "rappel de lot logiciel"
     ],
     "alt": "Rouleau d’étiquettes à codes-barres vu de côté, une bande d’étiquettes qui en sort, l’une d’elles verte et décollée de la bande",
     "validationId": "57dc0c0b-8552-43e4-9683-93a9fdb06ede"
@@ -132,17 +134,18 @@
   },
   {
     "slug": "logiciel-relance-client",
-    "title": "Logiciel de relance client : être payé sans courir après",
+    "title": "Logiciel de relance client : comparatif, prix et scénario",
     "date": "2026-11-03",
+    "updated": "2026-11-24",
     "category": "Outils métier",
-    "description": "Relancer au bon moment, graduer jusqu’à la mise en demeure, s’arrêter dès le paiement : comment un logiciel de relance client protège votre trésorerie.",
-    "readingTime": "9 min de lecture",
+    "description": "Logiciel de relance client : comparatif et prix des outils, scénario gradué avec modèles de messages, ce que dit la loi et quand automatiser sur vos outils.",
+    "readingTime": "12 min de lecture",
     "tags": [
       "logiciel de relance client",
       "logiciel relance client",
-      "logiciel de relance clients",
-      "logiciel relance clients",
-      "logiciel relance facture"
+      "logiciel relance facture",
+      "relance client automatique",
+      "logiciel de recouvrement"
     ],
     "alt": "Écran de sonar à anneaux gradués, balayé par un faisceau, où un seul écho vert ressort parmi les échos gris",
     "validationId": "9e4bd466-32e3-4ad0-aae9-53813d8623d1"
@@ -183,16 +186,19 @@
   },
   {
     "slug": "logiciel-gestion-de-production",
-    "title": "Gestion de production : quel logiciel pour un atelier ?",
+    "title": "Logiciel de gestion de production : comparatif et prix 2026",
     "date": "2026-10-29",
+    "updated": "2026-11-24",
     "category": "Outils métier",
-    "description": "Ordres de fabrication, temps passés, matières : ce que coûte un logiciel de gestion de production par poste sur cinq ans, et quand un module maison gagne.",
-    "readingTime": "8 min de lecture",
+    "description": "Logiciel de gestion de production (GPAO) pour PME : fonctions, planification, suivi, prix sur 5 ans et cas d’atelier chiffré. Marché ou sur mesure ?",
+    "readingTime": "15 min de lecture",
     "tags": [
-      "logiciel gestion de production",
       "logiciel de gestion de production",
-      "logiciel de gestion de la production",
-      "gestion de production logiciel",
+      "logiciel gestion production",
+      "logiciel gestion fabrication",
+      "logiciel de pilotage de la production",
+      "logiciel suivi de production",
+      "erp gestion de production",
       "logiciel gpao"
     ],
     "alt": "Vue éclatée d’un assemblage en traits blancs sur fond noir : six pièces alignées sur leur axe de montage, une pièce et l’axe en vert",
@@ -200,16 +206,17 @@
   },
   {
     "slug": "logiciel-gestion-intervention",
-    "title": "Logiciel d’interventions : le vrai coût par technicien",
+    "title": "Logiciel de gestion des interventions : prix et comparatif",
     "date": "2026-10-28",
+    "updated": "2026-11-24",
     "category": "Outils métier",
-    "description": "Planning, bons d’intervention, signature du client : ce que coûte un logiciel de gestion des interventions par technicien, et quand le sur mesure le bat.",
-    "readingTime": "8 min de lecture",
+    "description": "Comparatif des logiciels de gestion des interventions et leurs prix par technicien, trajet d’un bon sans papier, cas chiffré et quand le sur mesure gagne.",
+    "readingTime": "13 min de lecture",
     "tags": [
-      "logiciel gestion intervention",
       "logiciel de gestion des interventions",
+      "logiciel gestion intervention",
+      "gestion des interventions",
       "logiciel gestion des interventions",
-      "logiciel gestion d'intervention",
       "logiciel gestion intervention gratuit"
     ],
     "alt": "Un carnet à souches en traits gris, et un seul bon d’intervention vert, signé, détaché à la perforation, qui part vers la droite",
@@ -217,15 +224,16 @@
   },
   {
     "slug": "logiciel-gestion-de-stock",
-    "title": "Logiciel de gestion de stock : lequel pour une PME ?",
+    "title": "Logiciel de gestion des stocks PME : comparatif et prix 2026",
     "date": "2026-10-27",
+    "updated": "2026-11-24",
     "category": "Outils métier",
-    "description": "Logiciel de gestion de stock pour votre PME : prix des abonnements sur cinq ans, limites des offres du marché et cas où un outil sur mesure vous coûte moins.",
-    "readingTime": "8 min de lecture",
+    "description": "Logiciel de gestion des stocks pour PME : comparatif et prix des offres, calcul des seuils de réapprovisionnement, coût sur cinq ans et cas d’un négoce.",
+    "readingTime": "12 min de lecture",
     "tags": [
+      "logiciel gestion des stocks pme",
       "logiciel de gestion de stock",
       "logiciel gestion de stock",
-      "logiciel pour gestion de stock",
       "logiciel gestion des stocks",
       "logiciel de gestion de stock gratuit"
     ],
@@ -234,17 +242,18 @@
   },
   {
     "slug": "crm-sur-mesure",
-    "title": "CRM sur mesure : prix réel et quand le choisir",
+    "title": "Coût d’un CRM en 2026 : marché ou CRM sur mesure ?",
     "date": "2026-10-26",
+    "updated": "2026-11-24",
     "category": "Outils métier",
-    "description": "CRM sur mesure ou CRM du marché : ce que coûtent les licences par utilisateur sur cinq ans, quand le sur mesure revient moins cher et comment démarrer.",
-    "readingTime": "8 min de lecture",
+    "description": "Coût d’un CRM : prix des éditeurs par utilisateur, les quatre postes d’un projet, calcul sur cinq ans et cas où un CRM sur mesure revient moins cher.",
+    "readingTime": "12 min de lecture",
     "tags": [
+      "coût crm",
+      "prix crm",
       "crm sur mesure",
       "développement crm sur mesure",
-      "agence développement crm sur mesure",
-      "logiciel crm sur mesure",
-      "pourquoi développer crm sur mesure"
+      "logiciel crm sur mesure"
     ],
     "alt": "Un fichier rotatif de fiches clients, vu de côté, dont une seule fiche en vert se lève hors du rouleau.",
     "validationId": "ba7fe063-bac6-4b4b-988f-b7ea24d47233"
@@ -271,17 +280,18 @@
   },
   {
     "slug": "erp-pme",
-    "title": "ERP pour PME : prix réel sur cinq ans et comment choisir",
+    "title": "ERP PME : comparatif, prix réel sur 5 ans et choix en 2026",
     "date": "2026-10-22",
+    "updated": "2026-11-24",
     "category": "Outils métier",
-    "description": "ERP pour PME : ce que coûtent les licences sur cinq ans, quand un progiciel vous suffit et quand un ERP sur mesure revient moins cher pour votre équipe.",
-    "readingTime": "8 min de lecture",
+    "description": "ERP pour PME : comparatif des solutions, dont les ERP français, prix par utilisateur, coût d’un projet sur cinq ans et cas chiffré d’une PME de 15 personnes.",
+    "readingTime": "12 min de lecture",
     "tags": [
       "erp pme",
+      "erp pme français",
+      "coût erp pme",
       "erp pour pme",
-      "meilleur erp pme",
-      "cout d un erp pour pme",
-      "logiciel erp pme"
+      "meilleur erp pme"
     ],
     "alt": "Un métier à tisser : des fils verticaux gris, des trames grises coupées qui n'en relient que quelques-uns, et une seule trame verte qui passe dans tous les fils.",
     "validationId": "6e528b7c-da79-4e14-b72f-5a0a8cf2162f"
