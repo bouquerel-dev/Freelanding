@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import type { HeroContent } from "@/lib/content/types";
+import type { HeroContent, PartieVisage } from "@/lib/content/types";
 import { Grain } from "@/components/effects/Grain";
 import { lienRendezVous } from "@/content/rendez-vous";
 import { uiLabels } from "@/content/ui";
@@ -28,7 +28,44 @@ import { VisageTrame } from "./hero/VisageTrame";
  * Où tombent les trois repères, en pourcentage du cadre : une colonne calée à
  * droite, le trait tourné vers le visage, pour ne jamais toucher le texte.
  */
-const POSITIONS_REPERES = ["top-[20%]", "top-[46%]", "top-[72%]"] as const;
+/**
+ * POINTS D'ACCROCHE DES TRAITS SUR LE PORTRAIT (ordinateur). La photo remplit
+ * la hauteur du cadre et son centre est posé à 44 % de sa largeur
+ * (`centreOrdinateur`) : un point du visage se place donc à 44 % plus `k` fois
+ * la hauteur du cadre, et à `v` fois cette hauteur depuis le haut. Relevés sur
+ * le rendu 1440 × 900.
+ *
+ * Les étiquettes s'alignent en deux colonnes, de part et d'autre du visage :
+ * côté titre elles finissent toutes à `COLONNE_GAUCHE`, côté bord elles
+ * commencent toutes à `COLONNE_DROITE` ; le trait va de la colonne au point.
+ */
+const HAUTEUR_CADRE = "min(66vh, 620px)";
+const COLONNE_GAUCHE = -0.29;
+const COLONNE_DROITE = 0.43;
+const POINTS_VISAGE: Record<PartieVisage, { k: number; v: number; gauche: boolean }> = {
+  front: { k: -0.01, v: 0.13, gauche: true },
+  oeil: { k: -0.1, v: 0.34, gauche: true },
+  bouche: { k: 0, v: 0.55, gauche: true },
+  oreille: { k: 0.26, v: 0.35, gauche: false },
+  epaule: { k: 0.32, v: 0.8, gauche: false },
+  coeur: { k: 0.1, v: 0.92, gauche: false },
+};
+
+function arrondi(n: number) {
+  return Math.round(n * 1000) / 1000;
+}
+
+/** Le trait, de la colonne d'étiquettes jusqu'au point du visage. */
+function placeTrait(partie: PartieVisage): CSSProperties {
+  const { k, v, gauche } = POINTS_VISAGE[partie];
+  const debut = gauche ? COLONNE_GAUCHE : k;
+  const longueur = arrondi(gauche ? k - COLONNE_GAUCHE : COLONNE_DROITE - k);
+  return {
+    top: `${v * 100}%`,
+    left: `calc(44% + ${debut} * ${HAUTEUR_CADRE})`,
+    width: `calc(${longueur} * ${HAUTEUR_CADRE})`,
+  };
+}
 
 function delai(ms: number): CSSProperties {
   return { "--d": `${ms}ms` } as CSSProperties;
@@ -69,17 +106,31 @@ export function HeroSection({ hero }: { hero: HeroContent }) {
             </div>
             {/* Repères de viseur aux quatre coins du cadre (ordinateur seulement). */}
             <span className="hero-viseur absolute inset-0 hidden desktop:block" />
-            {hero.faceNotes?.map((note, i) => (
-              <span
-                key={note}
-                data-part="hero-repere"
-                className={`hero-fond hero-repere absolute right-0 hidden items-center gap-[10px] whitespace-nowrap font-mono text-[11px] uppercase leading-none tracking-[0.04em] text-foreground-60 desktop:flex ${POSITIONS_REPERES[i] ?? ""}`}
-                style={delai(700 + i * 120)}
-              >
-                <span className="text-accent">{String(i + 1).padStart(2, "0")}</span>
-                {note}
-              </span>
-            ))}
+            {/* Six traits, chacun accroché à une partie du visage par un point
+                et un trait fin qui se trace depuis le visage. */}
+            {hero.faceNotes?.map((trait, i) => {
+              const gauche = POINTS_VISAGE[trait.partie].gauche;
+              return (
+                <span
+                  key={trait.partie}
+                  data-part="hero-repere"
+                  data-cote={gauche ? "gauche" : "droite"}
+                  className={`hero-fond absolute hidden h-px -translate-y-1/2 items-center desktop:flex ${gauche ? "flex-row" : "flex-row-reverse"}`}
+                  style={{ ...placeTrait(trait.partie), ...delai(700 + i * 110) }}
+                >
+                  <span
+                    className={`absolute top-1/2 flex -translate-y-1/2 flex-col gap-[4px] whitespace-nowrap [text-shadow:0_0_3px_rgb(10_10_10),0_1px_12px_rgb(10_10_10)] ${
+                      gauche ? "right-[calc(100%+12px)] items-end text-right" : "left-[calc(100%+12px)] items-start text-left"
+                    }`}
+                  >
+                    <span className="font-mono text-[11px] uppercase leading-none tracking-[0.04em] text-foreground">{trait.titre}</span>
+                    <span className="text-[12px] leading-none tracking-[-0.01em] text-foreground-60">{trait.detail}</span>
+                  </span>
+                  <span className="hero-repere-trait h-px flex-1" />
+                  <span className={`hero-repere-point h-[7px] w-[7px] flex-none rounded-full ${gauche ? "-mr-[3.5px]" : "-ml-[3.5px]"}`} />
+                </span>
+              );
+            })}
           </div>
         ) : null}
 

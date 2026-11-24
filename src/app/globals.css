@@ -1154,12 +1154,17 @@ html[data-consent-choisi] [data-consent-attente] {
   background-repeat: no-repeat;
 }
 
-/* Repère : un trait de 28 px relie l'étiquette au visage. */
-.hero-repere::before {
-  content: "";
-  width: 28px;
-  height: 1px;
-  background: color-mix(in oklab, var(--accent) 60%, transparent);
+/* Traits du visage : un point volt posé sur la trame, cerclé d'un halo, et un
+   trait fin qui s'éteint vers l'étiquette. */
+.hero-repere-point {
+  background: var(--accent);
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--accent) 18%, transparent);
+}
+.hero-repere-trait {
+  background: linear-gradient(to left, color-mix(in oklab, var(--accent) 70%, transparent), color-mix(in oklab, var(--accent) 15%, transparent));
+}
+[data-cote="droite"] .hero-repere-trait {
+  background: linear-gradient(to right, color-mix(in oklab, var(--accent) 70%, transparent), color-mix(in oklab, var(--accent) 15%, transparent));
 }
 
 /* ---------------------------------------------------------------------------
@@ -1246,9 +1251,10 @@ html[data-consent-choisi] [data-consent-attente] {
   50% { opacity: 1; transform: scale(1.06); }
 }
 
-/* Repère : le trait se trace vers le visage après l'entrée de l'étiquette. */
+/* Trait du visage : il part du point et se trace vers l'étiquette. */
 @media (min-width: 1200px) {
-  .hero-repere::before {
+  [data-cote="droite"] .hero-repere-trait { transform-origin: left; }
+  .hero-repere-trait {
     transform-origin: right;
     animation: hero-trait 900ms cubic-bezier(0.23, 1, 0.32, 1) both;
     animation-delay: calc(var(--d, 0ms) + 220ms);
@@ -1303,7 +1309,7 @@ html[data-consent-choisi] [data-consent-attente] {
   .amb-ronde > span,
   .amb-halo,
   .fil-suite::after,
-  .hero-repere::before {
+  .hero-repere-trait {
     animation: none;
   }
 }

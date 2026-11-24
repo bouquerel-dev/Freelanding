@@ -126,7 +126,7 @@ describe("accueil", () => {
     expect(sous).toMatch(/clients/u);
     expect(sous).not.toMatch(/\bIA\b|agents/u);
     expect(sous.length).toBeLessThan(150);
-    expect(homeContent.hero.faceNotes).toEqual(["Très réactif", "Tout à votre nom", "Utile avant beau"]);
+    expect(homeContent.hero.faceNotes?.map((t) => t.titre)).toEqual(["Curieux", "Exigeant", "Franc", "À l’écoute", "Fiable", "Passionné"]);
     expect(JSON.stringify(homeContent.hero)).not.toMatch(/interlocuteur|prix correct/iu);
   });
 
