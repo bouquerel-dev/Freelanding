@@ -59,10 +59,11 @@ const JOURS_BUREAU = SEMAINE.map(({ jour, tache, taches }) => {
  * tout à prouver, une agence non », `vault/wiki/business/copy-matiere-brute.md`).
  * Effet challenger : le manque de notoriété devient la raison de mieux faire.
  * Le métier est dit juste dessous (« Je construis… »), l'IA n'est plus en titre.
- * La troisième ligne, plus petite et en volt, transforme l'aveu en invitation
- * (demande d'Eliott : « complète un peu, genre confiez-moi votre projet »).
+ * Une seule phrase, en blanc, sur deux lignes : l'aveu puis l'invitation
+ * (demandes d'Eliott : « complète un peu, genre confiez-moi votre projet » ;
+ * « c'est une phrase, ça reste en blanc, fais-le en deux lignes »).
  */
-const LIGNES_TITRE = ["J’ai tout", "à prouver.", "Confiez-moi votre projet."] as const;
+const LIGNES_TITRE = ["J’ai tout à prouver,", "confiez-moi votre projet."] as const;
 const TITRE_ACCUEIL = LIGNES_TITRE.join(" ");
 
 /**

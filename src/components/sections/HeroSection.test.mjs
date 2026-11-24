@@ -39,10 +39,12 @@ describe("HeroSection", () => {
     expect(rendu).toContain(">04</span>Quatre");
   });
 
-  it("ajoute l'invitation en troisième ligne du titre", () => {
+  it("dit le titre en une phrase blanche, coupée en deux lignes", () => {
     const h1 = html.slice(html.indexOf("<h1"), html.indexOf("</h1>"));
-    expect(h1).toContain('data-part="hero-invitation"');
-    expect(h1).toContain("Confiez-moi votre projet.");
+    expect(h1).toContain("J’ai tout à prouver,");
+    expect(h1).toContain("confiez-moi votre projet.");
+    expect(h1).toContain("<br");
+    expect(h1).not.toContain("text-accent");
   });
 
   it("borne la largeur du héros sur la colonne de 1440 du site", () => {

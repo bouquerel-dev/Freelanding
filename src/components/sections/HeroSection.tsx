@@ -47,7 +47,7 @@ function Salutation({ texte, nom }: { texte: string; nom?: string }) {
 }
 
 export function HeroSection({ hero }: { hero: HeroContent }) {
-  const [avant, apres, invitation] = hero.titleLines ?? [hero.title];
+  const [avant, apres] = hero.titleLines ?? [hero.title];
   const sousTitre = hero.subtitleParagraphs?.[0]?.text ?? hero.subtitle;
   return (
     <section
@@ -84,7 +84,7 @@ export function HeroSection({ hero }: { hero: HeroContent }) {
           </div>
         ) : null}
 
-        <div className="relative z-[1] -mt-[28px] flex flex-col items-start tablet:-mt-[40px] desktop:mt-0 desktop:max-w-[660px]">
+        <div className="relative z-[1] -mt-[28px] flex flex-col items-start tablet:-mt-[40px] desktop:mt-0 desktop:max-w-[700px]">
           {hero.eyebrow ? (
             <p
               data-part="hero-salut"
@@ -100,17 +100,18 @@ export function HeroSection({ hero }: { hero: HeroContent }) {
           <h1
             id="services"
             data-part="hero-titre"
-            className="hero-fond m-0 mt-[14px] text-[clamp(40px,calc(11vw/var(--zoom-ecran,1)),64px)] font-semibold leading-[0.98] tracking-[-0.055em] text-foreground tablet:mt-[20px] tablet:text-[clamp(64px,calc(5.8vw/var(--zoom-ecran,1)),88px)]"
+            className="hero-fond m-0 mt-[14px] text-[clamp(34px,calc(9.4vw/var(--zoom-ecran,1)),48px)] font-semibold leading-[0.98] tracking-[-0.055em] text-foreground tablet:mt-[20px] tablet:text-[clamp(48px,calc(4.3vw/var(--zoom-ecran,1)),62px)]"
             style={delai(120)}
           >
             {avant}
-            <br />
-            {apres}
-            {/* Troisième ligne : l'invitation, plus petite et en volt. */}
-            {invitation ? (
-              <span data-part="hero-invitation" className="mt-[0.32em] block text-[0.5em] leading-[1.05] tracking-[-0.035em] text-accent">
-                {invitation}
-              </span>
+            {/* Une phrase sur deux lignes à partir de la tablette ; sur
+                téléphone, elle se coupe d'elle-même. */}
+            {apres ? (
+              <>
+                {" "}
+                <br className="hidden tablet:inline" />
+                {apres}
+              </>
             ) : null}
           </h1>
 
