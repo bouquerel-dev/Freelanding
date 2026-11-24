@@ -4,12 +4,6 @@ import { act, createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
 import { siteConfig } from "@/content/site";
-import {
-  OPTIONS_ECHEANCE,
-  optionsObjectif,
-  rendezVousDuTypeProjet,
-  tranchesBudget,
-} from "@/lib/rendez-vous/questionnaire";
 import { FooterContactForm, etatAdresse } from "./FooterContactForm";
 
 /**
@@ -82,6 +76,23 @@ function installerDom() {
   };
 }
 
+/** Remplit le formulaire de valeurs que le contrôle local accepte. */
+function remplir(conteneur) {
+  conteneur.querySelector('textarea[name="message"]').value = "Nos devis partent d'un tableur.";
+  conteneur.querySelector('input[name="nom"]').value = "Claire Martin";
+  conteneur.querySelector('input[name="email"]').value = "claire.martin@atelier.fr";
+  conteneur.querySelector('input[name="telephone"]').value = "06 12 34 56 78";
+}
+
+async function soumettre(conteneur, attenteMs = 300) {
+  await act(async () => {
+    conteneur
+      .querySelector("form")
+      .dispatchEvent(new window.Event("submit", { bubbles: true, cancelable: true }));
+    await new Promise((resoudre) => setTimeout(resoudre, attenteMs));
+  });
+}
+
 describe("FooterContactForm", () => {
   it("dessine chaque champ avec un contour lisible au repos et au survol", () => {
     const html = renderToStaticMarkup(
@@ -121,6 +132,8 @@ describe("FooterContactForm", () => {
         });
         const champRefuse = () => conteneur.querySelector(`${balise}[name="${champ}"]`);
         expect(champRefuse().getAttribute("aria-invalid")).toBeNull();
+        // Un formulaire valide pour le contrôle local : seul le serveur refuse.
+        remplir(conteneur);
         await act(async () => {
           conteneur
             .querySelector("form")
@@ -135,11 +148,6 @@ describe("FooterContactForm", () => {
         contexte.restaurer();
       }
     });
-  }
-
-  /** Valeurs des boutons radio d'un groupe, dans l'ordre affiché. */
-  function valeurs(racine, nom) {
-    return [...racine.querySelectorAll(`input[type="radio"][name="${nom}"]`)].map((radio) => radio.value);
   }
 
   async function monter(props = proprietes) {
@@ -160,40 +168,42 @@ describe("FooterContactForm", () => {
     };
   }
 
-  it("envoie les mêmes réponses qu'avec les listes, en pastilles radio", async () => {
+  it("un seul écran : le message d'abord, aucun questionnaire ni étape", async () => {
     const { conteneur, demonter } = await monter();
     try {
-      expect(conteneur.querySelector("select")).toBeNull();
-      const { selectOptions } = siteConfig.footerForm;
-      expect(valeurs(conteneur, "typeProjet")).toEqual(selectOptions);
-      expect(conteneur.querySelector('input[name="typeProjet"]:checked').value).toBe(selectOptions[0]);
-      expect(valeurs(conteneur, "objectif")).toEqual(
-        optionsObjectif(rendezVousDuTypeProjet(selectOptions[0])).map((option) => option.id),
-      );
-      expect(valeurs(conteneur, "budget")).toEqual(tranchesBudget().map((option) => option.id));
-      expect(valeurs(conteneur, "echeance")).toEqual(OPTIONS_ECHEANCE.map((option) => option.id));
-      // Requis comme l'étaient les listes, sauf l'échéance.
-      expect(conteneur.querySelector('input[name="objectif"]').required).toBe(true);
-      expect(conteneur.querySelector('input[name="budget"]').required).toBe(true);
-      expect(conteneur.querySelector('input[name="echeance"]').required).toBe(false);
+      const champs = [...conteneur.querySelectorAll("input:not([tabindex='-1']), textarea")].map((c) => c.name);
+      expect(champs).toEqual(["message", "nom", "email", "telephone"]);
+      expect(conteneur.querySelector('input[type="radio"]')).toBeNull();
+      expect(conteneur.querySelector("[data-etape]")).toBeNull();
+      expect(bouton(conteneur, siteConfig.footerForm.submitLabel).type).toBe("submit");
     } finally {
       await demonter();
     }
   });
 
-  it("change les objectifs proposés avec le type de projet", async () => {
+  it("refuse localement chaque champ manquant, l'écrit sous le champ et n'envoie rien", async () => {
     const { conteneur, demonter } = await monter();
+    const envois = [];
+    globalThis.fetch = async (_url, init) => {
+      envois.push(init);
+      return { ok: true, status: 200, json: async () => ({ ok: true }) };
+    };
     try {
-      const autre = siteConfig.footerForm.selectOptions.find(
-        (type) => rendezVousDuTypeProjet(type) !== rendezVousDuTypeProjet(siteConfig.footerForm.selectOptions[0]),
-      );
-      expect(autre).toBeDefined();
-      await act(async () => {
-        conteneur.querySelector(`input[name="typeProjet"][value="${autre}"]`).click();
-      });
-      expect(valeurs(conteneur, "objectif")).toEqual(
-        optionsObjectif(rendezVousDuTypeProjet(autre)).map((option) => option.id),
-      );
+      const { erreurs, emailInvalide } = siteConfig.footerForm;
+      conteneur.querySelector('input[name="telephone"]').value = "abc";
+      await soumettre(conteneur, 20);
+      expect(envois).toHaveLength(0);
+      const aide = (nom) => {
+        const champ = conteneur.querySelector(`[name="${nom}"]`);
+        expect(champ.getAttribute("aria-invalid"), nom).toBe("true");
+        return document.getElementById(champ.getAttribute("aria-describedby")).textContent;
+      };
+      expect(aide("message")).toBe(erreurs.message);
+      expect(aide("nom")).toBe(erreurs.nom);
+      expect(aide("email")).toBe(emailInvalide);
+      expect(aide("telephone")).toBe(erreurs.telephone);
+      // Le premier champ fautif reprend le focus.
+      expect(document.activeElement).toBe(conteneur.querySelector('textarea[name="message"]'));
     } finally {
       await demonter();
     }
@@ -228,10 +238,6 @@ describe("FooterContactForm", () => {
   /** Bouton dont le texte contient `libelle`. */
   function bouton(racine, libelle) {
     return [...racine.querySelectorAll("button")].find((b) => b.textContent.includes(libelle));
-  }
-
-  function etapeVisible(racine) {
-    return [...racine.querySelectorAll("[data-etape]")].find((e) => !e.hidden).dataset.etape;
   }
 
   it("signale l'adresse refusée sous le champ, puis la retire dès qu'elle est juste", async () => {
@@ -280,19 +286,19 @@ describe("FooterContactForm", () => {
     }
   });
 
-  it("se passe du téléphone et du message quand le contenu ne les demande pas", () => {
+  it("se passe du téléphone quand le contenu ne le demande pas", () => {
     const html = renderToStaticMarkup(
       createElement(FooterContactForm, {
         ...proprietes,
-        footerForm: { ...siteConfig.footerForm, telephoneLabel: undefined, messageLabel: undefined },
+        footerForm: { ...siteConfig.footerForm, telephoneLabel: undefined },
       }),
     );
     expect(html).toContain('name="nom"');
+    expect(html).toContain('name="message"');
     expect(html).not.toContain('name="telephone"');
-    expect(html).not.toContain('name="message"');
   });
 
-  it("mène d'étape en étape jusqu'à l'envoi des mêmes champs, puis repart au début", async () => {
+  it("envoie le message, les coordonnées et le fournisseur anti-robot, puis se vide", async () => {
     const { conteneur, demonter } = await monter();
     const envois = [];
     let repondre;
@@ -303,32 +309,9 @@ describe("FooterContactForm", () => {
       });
     };
     try {
-      const { etapes, submitLabel, selectOptions } = siteConfig.footerForm;
-      // Sans objectif choisi, l'étape ne se valide pas.
-      await act(async () => bouton(conteneur, etapes.continuer).click());
-      expect(etapeVisible(conteneur)).toBe("0");
-
-      const objectif = conteneur.querySelector('input[name="objectif"]');
-      const budget = conteneur.querySelector('input[name="budget"]');
-      const echeance = conteneur.querySelector('input[name="echeance"]');
-      await act(async () => objectif.click());
-      await act(async () => bouton(conteneur, etapes.continuer).click());
-      expect(etapeVisible(conteneur)).toBe("1");
-      await act(async () => budget.click());
-      await act(async () => echeance.click());
-      await act(async () => bouton(conteneur, etapes.continuer).click());
-      expect(etapeVisible(conteneur)).toBe("2");
-
-      conteneur.querySelector('input[name="nom"]').value = "Claire Martin";
-      conteneur.querySelector('input[name="email"]').value = "claire.martin@atelier.fr";
-      conteneur.querySelector('input[name="telephone"]').value = "06 12 34 56 78";
-      conteneur.querySelector('textarea[name="message"]').value = "Nos devis partent d'un tableur.";
-      await act(async () => {
-        conteneur
-          .querySelector("form")
-          .dispatchEvent(new window.Event("submit", { bubbles: true, cancelable: true }));
-        await new Promise((resoudre) => setTimeout(resoudre, 300));
-      });
+      const { submitLabel } = siteConfig.footerForm;
+      remplir(conteneur);
+      await soumettre(conteneur);
       // Pendant l'envoi, le bouton le dit.
       expect(bouton(conteneur, "Envoi…")).toBeDefined();
       expect(bouton(conteneur, submitLabel)).toBeUndefined();
@@ -338,20 +321,17 @@ describe("FooterContactForm", () => {
         nom: "Claire Martin",
         email: "claire.martin@atelier.fr",
         telephone: "06 12 34 56 78",
-        typeProjet: selectOptions[0],
-        objectif: objectif.value,
-        budget: budget.value,
-        echeance: echeance.value,
+        typeProjet: "",
         message: "Nos devis partent d'un tableur.",
+        fournisseurCaptcha: "turnstile",
       });
 
       await act(async () => {
         repondre();
         await new Promise((resoudre) => setTimeout(resoudre, 50));
       });
-      // Envoyé : le formulaire se vide et revient à la première étape.
-      expect(etapeVisible(conteneur)).toBe("0");
-      expect(conteneur.querySelector('input[name="typeProjet"]:checked').value).toBe(selectOptions[0]);
+      // Envoyé : le formulaire se vide.
+      expect(conteneur.querySelector('textarea[name="message"]').value).toBe("");
     } finally {
       await demonter();
     }

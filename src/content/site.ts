@@ -1,5 +1,5 @@
 import type { SiteConfig } from "@/lib/content/types";
-import { lienRendezVous, rendezVousContent } from "@/content/rendez-vous";
+import { lienRendezVous } from "@/content/rendez-vous";
 
 /**
  * Configuration globale du site.
@@ -253,35 +253,19 @@ export const siteConfig: SiteConfig = {
     emailInvalide: "Il manque quelque chose : exemple@email.com",
     telephoneLabel: "Téléphone (facultatif)",
     telephonePlaceholder: "06 12 34 56 78",
-    selectLabel: "Que cherchez-vous ?",
-    messageLabel: "Votre message, si vous voulez",
-    messagePlaceholder: "Deux lignes sur ce qui vous bloque suffisent.",
+    messageLabel: "Votre message",
+    messagePlaceholder: "Votre projet ou votre question, en deux lignes.",
+    erreurs: {
+      message: "Écrivez au moins une phrase : de quoi voulez-vous parler ?",
+      nom: "Indiquez votre nom.",
+      telephone: "Ce numéro ne semble pas valide. Il est facultatif : vous pouvez le laisser vide.",
+    },
     selectOptions: [
       "Un logiciel métier",
       "Je ne sais pas encore",
       "Une autre demande",
     ],
-    questionnaire: {
-      budget: {
-        label: rendezVousContent.questionnaire.budget.legende,
-        placeholder: "Choisissez une tranche",
-      },
-      objectif: {
-        label: rendezVousContent.questionnaire.objectif.legende,
-        placeholder: "Choisissez ce qui compte le plus",
-      },
-      echeance: {
-        // Facultative ici, exigée au cadrage du rendez-vous : légende propre.
-        label: "Votre échéance (facultatif)",
-        placeholder: "Choisissez une échéance",
-      },
-    },
-    etapes: {
-      titres: ["Votre projet", "Votre budget", "Vos coordonnées"],
-      continuer: "Continuer",
-      retour: "Retour",
-    },
-    submitLabel: "Envoyer",
+    submitLabel: "Envoyer le message",
     disclaimer:
       "En envoyant ce formulaire, vous acceptez mes conditions générales et ma politique de confidentialité.",
     // Le texte est rendu en trois morceaux autour de ses deux liens.

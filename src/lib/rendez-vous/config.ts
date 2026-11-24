@@ -151,3 +151,11 @@ export function typesVisibles(
   const prive = types.find((type) => type.prive && type.id === demande);
   return prive ? [prive] : types.filter((type) => !type.prive);
 }
+
+/**
+ * Sujet d'un premier rendez-vous quand l'adresse n'en donne aucun : « Premier
+ * échange » au cockpit. Depuis le 2026-11-24, le visiteur écrit son sujet avec
+ * ses mots au lieu de choisir un bouton : il part en notes et en
+ * `reponses.coince`, que le cockpit reprend dans le mail de confirmation.
+ */
+export const SUJET_PAR_DEFAUT: IdRendezVous = "decouverte";

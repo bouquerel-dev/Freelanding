@@ -291,23 +291,20 @@ export interface SiteConfig {
     /** Téléphone FACULTATIF, pour rappeler le visiteur au besoin (2026-11-02). */
     telephoneLabel?: string;
     telephonePlaceholder?: string;
-    /** Message court, facultatif. */
+    /** Le message, premier champ et seul obligatoire avec nom et e-mail (2026-11-24). */
     messageLabel?: string;
     messagePlaceholder?: string;
-    selectLabel: string;
+    /** Erreurs affichées sous chaque champ, avant tout envoi. */
+    erreurs: {
+      message: string;
+      nom: string;
+      telephone: string;
+    };
+    /**
+     * Types de projet encore acceptés par `POST /api/contact` (anciens
+     * formulaires, liens en cache). Le formulaire n'en propose plus.
+     */
     selectOptions: string[];
-    /** Mêmes questions que la prise de rendez-vous ; les listes en viennent. */
-    questionnaire: {
-      budget: ContactFieldContent;
-      objectif: ContactFieldContent;
-      echeance: ContactFieldContent;
-    };
-    /** Le formulaire se remplit en trois étapes, une seule affichée. */
-    etapes: {
-      titres: readonly [string, string, string];
-      continuer: string;
-      retour: string;
-    };
     submitLabel: string;
     disclaimer: string;
     /** Découpage du disclaimer autour de ses deux liens. */

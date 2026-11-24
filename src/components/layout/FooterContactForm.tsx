@@ -15,28 +15,28 @@
  * d'Eliott sans dupliquer une ligne de serveur.
  *
  * NÉOMORPHISME depuis le 2026-11-02 (maquette validée par Eliott) : la carte,
- * les pastilles, les champs et les boutons sont dessinés par les classes
- * `.neo-*` de `globals.css`. Les choix fermés (type, objectif, budget,
- * échéance) sont des boutons radio natifs à la place des `<select>` : mêmes
- * `name`, mêmes valeurs envoyées, et chaque réponse se voit sans ouvrir de liste.
+ * les champs et les boutons sont dessinés par les classes `.neo-*` de
+ * `globals.css`.
+ *
+ * UN SEUL ÉCRAN DEPUIS LE 2026-11-24 (Eliott trouvait le bloc pénible) : le
+ * message d'abord, puis nom, e-mail et téléphone facultatif, et un bouton
+ * « Envoyer le message ». Plus de questionnaire en trois étapes : qui veut
+ * cadrer son projet réserve un appel, l'onglet d'à côté. Chaque erreur
+ * s'écrit sous son champ, avant tout envoi.
  */
 
 import { SwapCopies } from "@/components/ui/SwapCopies";
 import { HoverPrefetchLink } from "@/components/ui/HoverPrefetchLink";
 import {
   ChampsProtection,
+  MentionRecaptcha,
   MessageEtat,
   ReplisSansScript,
 } from "@/components/forms/ProtectionFormulaire";
 import { useEnvoiFormulaire } from "@/components/forms/useEnvoiFormulaire";
-import { useEffect, useId, useRef, useState } from "react";
-import {
-  OPTIONS_ECHEANCE,
-  optionsObjectif,
-  rendezVousDuTypeProjet,
-  tranchesBudget,
-} from "@/lib/rendez-vous/questionnaire";
-import type { OptionQuestion } from "@/content/rendez-vous";
+import { useId, useState } from "react";
+import type { FormEvent } from "react";
+import { lireTelephone, LIMITES, MOTIF_EMAIL } from "@/lib/contact/validation";
 import type { SiteConfig } from "@/lib/content/types";
 
 /** Le pied de page ne rend ce composant que si la donnée existe. */
@@ -126,7 +126,7 @@ function FormField({
         className={`${CHAMP_CLS} h-[54px]`}
       />
       {aide !== undefined ? (
-        <p id={`${id}-aide`} aria-live="polite" className="neo-aide m-0 min-h-[1lh] text-[13px] leading-[1.3]">
+        <p id={`${id}-aide`} aria-live="polite" className="neo-aide m-0 text-[13px] leading-[1.3] empty:hidden">
           {aide}
         </p>
       ) : null}
@@ -168,74 +168,17 @@ function SubmitButton({
   );
 }
 
-/**
- * Question à choix, en pastilles en relief : une pastille choisie s'enfonce,
- * son point et son contour passent au vert. Ce sont des boutons radio natifs,
- * cachés sous la pastille : le clavier (flèches), le formulaire et la
- * validation du navigateur marchent sans une ligne de plus. Les valeurs sont
- * les identifiants de `questionnaire.ts`, vérifiés en liste fermée par le
- * serveur.
- */
-function ChoixField({
-  name,
-  legende,
-  options,
-  requis,
-  enErreur,
-  tuiles = false,
-  valeur,
-  onChoisir,
-}: {
-  name: string;
-  legende: string;
-  options: readonly OptionQuestion[];
-  requis: boolean;
-  enErreur: boolean;
-  /** Grandes tuiles côte à côte (le type de projet), lignes sur téléphone. */
-  tuiles?: boolean;
-  /** Présent = choix contrôlé (le type, qui règle la liste des objectifs). */
-  valeur?: string;
-  onChoisir?: (valeur: string) => void;
-}) {
-  return (
-    <fieldset className="m-0 min-w-0 border-0 p-0">
-      <legend className={`${LIBELLE_CLS} mb-[12px] p-0`}>{legende}</legend>
-      <div
-        role="radiogroup"
-        aria-invalid={enErreur || undefined}
-        className={tuiles ? "neo-choix neo-choix--tuiles" : "neo-choix"}
-      >
-        {options.map((option) => (
-          <label key={option.id}>
-            <input
-              type="radio"
-              name={name}
-              value={option.id}
-              required={requis}
-              {...(valeur !== undefined
-                ? {
-                    checked: valeur === option.id,
-                    onChange: () => onChoisir?.(option.id),
-                  }
-                : {})}
-            />
-            <span className="neo-pastille">{option.libelle}</span>
-          </label>
-        ))}
-      </div>
-    </fieldset>
-  );
-}
-
-/** Zone de message libre, en creux comme les autres champs. */
+/** Zone de message, en creux comme les autres champs, erreur dessous. */
 function FieldTexte({
   label,
   placeholder,
-  enErreur,
+  erreur,
+  onInput,
 }: {
   label: string;
   placeholder: string;
-  enErreur: boolean;
+  erreur: string;
+  onInput: () => void;
 }) {
   const id = useId();
   return (
@@ -246,81 +189,24 @@ function FieldTexte({
       <textarea
         id={id}
         name="message"
-        rows={3}
-        maxLength={4000}
+        rows={4}
+        required
+        maxLength={LIMITES.message.max}
         placeholder={placeholder}
-        aria-invalid={enErreur || undefined}
-        className={`${CHAMP_CLS} block min-h-[110px] resize-y py-[15px]`}
+        aria-invalid={erreur ? true : undefined}
+        aria-describedby={`${id}-aide`}
+        onInput={onInput}
+        className={`${CHAMP_CLS} block min-h-[128px] resize-y py-[15px]`}
       />
+      <p id={`${id}-aide`} aria-live="polite" className="neo-aide m-0 text-[13px] leading-[1.3] empty:hidden">
+        {erreur}
+      </p>
     </div>
   );
 }
 
-/** Étape qui porte chaque champ, pour y revenir quand le serveur le refuse. */
-const ETAPE_DU_CHAMP: Readonly<Record<string, number>> = {
-  typeProjet: 0,
-  objectif: 0,
-  budget: 1,
-  echeance: 1,
-  nom: 2,
-  email: 2,
-  telephone: 2,
-  message: 2,
-};
-
-const DERNIERE_ETAPE = 2;
-
-/**
- * Barre de progression : une piste creusée par étape, qui se remplit de volt
- * quand on l'atteint, un numéro et un titre dessous. Une étape franchie ramène
- * à elle ; une étape à venir ne s'atteint qu'en validant la courante.
- */
-function Progression({
-  titres,
-  etape,
-  onAller,
-}: {
-  titres: readonly string[];
-  etape: number;
-  onAller: (index: number) => void;
-}) {
-  return (
-    <ol className="m-0 grid w-full list-none grid-cols-3 gap-[10px] p-0">
-      {titres.map((titre, index) => {
-        const faite = index < etape;
-        const courante = index === etape;
-        const corps = (
-          <>
-            <span aria-hidden className="neo-piste" data-rempli={faite || courante}>
-              <span />
-            </span>
-            <span className="flex flex-col gap-[8px] pt-[10px] text-[12px] font-medium leading-[1.25]">
-              <span className={`text-[13px] font-semibold ${faite || courante ? "text-foreground" : "text-foreground-60"}`}>
-                {String(index + 1).padStart(2, "0")}
-              </span>
-              <span className={courante ? "text-foreground" : "text-foreground-60"}>{titre}</span>
-            </span>
-          </>
-        );
-        return (
-          <li key={titre} aria-current={courante ? "step" : undefined}>
-            {faite ? (
-              <button
-                type="button"
-                onClick={() => onAller(index)}
-                className="block w-full text-left transition-opacity hover:opacity-70 motion-reduce:transition-none"
-              >
-                {corps}
-              </button>
-            ) : (
-              <div>{corps}</div>
-            )}
-          </li>
-        );
-      })}
-    </ol>
-  );
-}
+/** Erreurs locales, par champ : vides tant que rien n'est refusé. */
+type ErreursLocales = Partial<Record<"message" | "nom" | "telephone", string>>;
 
 export function FooterContactForm({
   footerForm,
@@ -334,165 +220,86 @@ export function FooterContactForm({
   inlineLinkCls: string;
 }) {
   const envoi = useEnvoiFormulaire("footer", emailContact);
-  const { questionnaire, etapes } = footerForm;
-  const premierType = footerForm.selectOptions[0];
-  // Le type de projet est envoyé en clair : sa valeur est son libellé.
-  const optionsType = footerForm.selectOptions.map((libelle) => ({ id: libelle, libelle }));
-
-  /*
-   * TROIS ÉTAPES, UNE SEULE AFFICHÉE, depuis le 2026-10-16. Ce formulaire est
-   * devenu le seul du site et pose les questions de la prise de rendez-vous ;
-   * d'un bloc, ça faisait long (Eliott). Tous les champs restent dans le
-   * `<form>`, les étapes cachées par `hidden` : la soumission lit toujours le
-   * même `FormData`.
-   */
-  const [etape, setEtape] = useState(0);
-  // Le type choisi règle les listes, comme le sujet du rendez-vous.
-  const [typeProjet, setTypeProjet] = useState(premierType);
-  const idRendezVous = rendezVousDuTypeProjet(typeProjet);
   // L'adresse est vérifiée à la sortie du champ, pas à chaque frappe.
   const [etatEmail, setEtatEmail] = useState<EtatEmail>("repos");
-  const refFormulaire = useRef<HTMLFormElement>(null);
-  // Dernière étape focalisée : comparer l'étape plutôt qu'un drapeau de premier
-  // rendu, que le double effet du mode strict de React consommait (le premier
-  // choix prenait le focus dès l'affichage en développement).
-  const refEtapeVue = useRef(etape);
-
-  function conteneurEtape(index: number): HTMLElement | null | undefined {
-    return refFormulaire.current?.querySelector<HTMLElement>(`[data-etape="${index}"]`);
-  }
+  const [erreurs, setErreurs] = useState<ErreursLocales>({});
+  const textes = footerForm.erreurs;
 
   function verifierEmail(champ: HTMLInputElement) {
     setEtatEmail(etatAdresse(champ.value, champ.checkValidity()));
   }
 
-  // Le focus suit l'étape, sauf au premier affichage de la page.
-  useEffect(() => {
-    if (refEtapeVue.current === etape) return;
-    refEtapeVue.current = etape;
-    const conteneur = conteneurEtape(etape);
-    (
-      conteneur?.querySelector<HTMLElement>("input:checked") ??
-      conteneur?.querySelector<HTMLElement>("input, textarea")
-    )?.focus({ preventScroll: true });
-  }, [etape]);
-
-  // Un champ refusé par le serveur ramène à son étape (ajusté au rendu, sans
-  // effet : https://react.dev/learn/you-might-not-need-an-effect).
-  const [champVu, setChampVu] = useState(envoi.champEnErreur);
-  if (envoi.champEnErreur !== champVu) {
-    setChampVu(envoi.champEnErreur);
-    const cible = envoi.champEnErreur ? ETAPE_DU_CHAMP[envoi.champEnErreur] : undefined;
-    if (cible !== undefined) setEtape(cible);
+  /** Une erreur s'efface dès que le visiteur reprend le champ. */
+  function effacer(champ: keyof ErreursLocales) {
+    if (erreurs[champ]) setErreurs((courantes) => ({ ...courantes, [champ]: undefined }));
   }
 
-  /** Valide les champs de l'étape affichée, puis passe à la suivante. */
-  function continuer() {
-    const conteneur = conteneurEtape(etape);
-    const champs = conteneur
-      ? Array.from(
-          conteneur.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>(
-            "select, input, textarea",
-          ),
-        )
-      : [];
-    const invalide = champs.find((champ) => !champ.checkValidity());
-    if (invalide) {
-      invalide.reportValidity();
+  /**
+   * Contrôle local, mêmes règles que le serveur, avant tout envoi : chaque
+   * refus s'écrit sous son champ et le premier champ fautif prend le focus.
+   */
+  function soumettre(evenement: FormEvent<HTMLFormElement>) {
+    const formulaire = evenement.currentTarget;
+    const lire = (nom: string) => {
+      const valeur = new FormData(formulaire).get(nom);
+      return typeof valeur === "string" ? valeur.trim() : "";
+    };
+    const email = lire("email");
+    const nouvelles: ErreursLocales = {};
+    if (lire("message").length < LIMITES.message.min) nouvelles.message = textes.message;
+    if (lire("nom").length < LIMITES.nom.min) nouvelles.nom = textes.nom;
+    if (!lireTelephone(lire("telephone")).ok) nouvelles.telephone = textes.telephone;
+    const emailRefuse = !MOTIF_EMAIL.test(email);
+    if (emailRefuse) setEtatEmail("refuse");
+    if (Object.keys(nouvelles).length > 0 || emailRefuse) {
+      evenement.preventDefault();
+      setErreurs(nouvelles);
+      const premier = (["message", "nom", "email", "telephone"] as const).find((nom) =>
+        nom === "email" ? emailRefuse : nouvelles[nom] !== undefined,
+      );
+      if (premier) formulaire.querySelector<HTMLElement>(`[name="${premier}"]`)?.focus();
       return;
     }
-    setEtape((courante) => Math.min(courante + 1, DERNIERE_ETAPE));
+    setErreurs({});
+    void envoi.gererSoumission(evenement);
   }
 
   return (
     <form
-      ref={refFormulaire}
-      className="relative flex w-full flex-col items-start gap-[26px]"
+      className="relative flex w-full flex-col items-start gap-[20px]"
       /* Voir `ReplisSansScript` : en POST, jamais en GET, pour qu'une
          soumission sans script ne remonte pas les données dans l'URL. */
       method="post"
       action="/api/contact"
-      onSubmit={envoi.gererSoumission}
+      noValidate
+      onSubmit={soumettre}
       onReset={() => {
-        setTypeProjet(premierType);
         setEtatEmail("repos");
-        setEtape(0);
+        setErreurs({});
       }}
       onFocusCapture={envoi.protection.activer}
     >
-      <Progression titres={etapes.titres} etape={etape} onAller={setEtape} />
-
-      {/* 01 — le projet : ce qui est cherché, et pour obtenir quoi. */}
-      <div data-etape={0} hidden={etape !== 0} className="neo-etape flex w-full flex-col gap-[26px]">
-        <ChoixField
-          name="typeProjet"
-          legende={footerForm.selectLabel}
-          options={optionsType}
-          requis
-          tuiles
-          enErreur={envoi.champEnErreur === "typeProjet"}
-          valeur={typeProjet}
-          onChoisir={setTypeProjet}
+      <FieldTexte
+        label={footerForm.messageLabel ?? ""}
+        placeholder={footerForm.messagePlaceholder ?? ""}
+        erreur={erreurs.message ?? (envoi.champEnErreur === "message" ? envoi.message : "")}
+        onInput={() => effacer("message")}
+      />
+      <div className="neo-duo w-full">
+        <FormField
+          label={footerForm.nameLabel}
+          type="text"
+          name="nom"
+          autoComplete="name"
+          placeholder={footerForm.namePlaceholder ?? ""}
+          enErreur={envoi.champEnErreur === "nom" || erreurs.nom !== undefined}
+          aide={erreurs.nom ?? (envoi.champEnErreur === "nom" ? envoi.message : "")}
+          onInput={() => effacer("nom")}
         />
-        {/* `key` sur le type : changer de type remet la réponse à zéro,
-            puisque la liste change. */}
-        <ChoixField
-          key={`objectif-${idRendezVous}`}
-          name="objectif"
-          legende={questionnaire.objectif.label}
-          options={optionsObjectif(idRendezVous)}
-          requis
-          enErreur={envoi.champEnErreur === "objectif"}
-        />
-      </div>
-
-      {/* 02 — le budget et l'échéance. */}
-      <div data-etape={1} hidden={etape !== 1} className="neo-etape flex w-full flex-col gap-[26px]">
-        <ChoixField
-          name="budget"
-          legende={questionnaire.budget.label}
-          options={tranchesBudget()}
-          requis
-          enErreur={envoi.champEnErreur === "budget"}
-        />
-        <ChoixField
-          name="echeance"
-          legende={questionnaire.echeance.label}
-          options={OPTIONS_ECHEANCE}
-          requis={false}
-          enErreur={envoi.champEnErreur === "echeance"}
-        />
-      </div>
-
-      {/* 03 — les coordonnées, un message si l'on veut, puis l'envoi. */}
-      <div data-etape={2} hidden={etape !== 2} className="neo-etape flex w-full flex-col gap-[20px]">
-        <div className="neo-duo">
-          <FormField
-            label={footerForm.nameLabel}
-            type="text"
-            name="nom"
-            autoComplete="name"
-            placeholder={footerForm.namePlaceholder ?? ""}
-            enErreur={envoi.champEnErreur === "nom"}
-          />
-          {footerForm.telephoneLabel ? (
-            <FormField
-              label={footerForm.telephoneLabel}
-              type="tel"
-              name="telephone"
-              autoComplete="tel"
-              inputMode="tel"
-              requis={false}
-              placeholder={footerForm.telephonePlaceholder ?? ""}
-              enErreur={envoi.champEnErreur === "telephone"}
-            />
-          ) : null}
-        </div>
         <FormField
           label={footerForm.emailLabel}
-          /* `type="email"` et non `text` : le clavier des téléphones
-             bascule sur la disposition adaptée, et le navigateur
-             signale une adresse manifestement fausse avant l'envoi. */
+          /* `type="email"` : le clavier des téléphones bascule sur la
+             disposition adaptée. */
           type="email"
           name="email"
           autoComplete="email"
@@ -505,72 +312,48 @@ export function FooterContactForm({
           // qu'elle est juste, sans attendre de quitter le champ.
           onInput={etatEmail === "refuse" ? verifierEmail : undefined}
         />
-        {footerForm.messageLabel ? (
-          <FieldTexte
-            label={footerForm.messageLabel}
-            placeholder={footerForm.messagePlaceholder ?? ""}
-            enErreur={envoi.champEnErreur === "message"}
-          />
-        ) : null}
+      </div>
+      {footerForm.telephoneLabel ? (
+        <FormField
+          label={footerForm.telephoneLabel}
+          type="tel"
+          name="telephone"
+          autoComplete="tel"
+          inputMode="tel"
+          requis={false}
+          placeholder={footerForm.telephonePlaceholder ?? ""}
+          enErreur={envoi.champEnErreur === "telephone" || erreurs.telephone !== undefined}
+          aide={erreurs.telephone ?? (envoi.champEnErreur === "telephone" ? envoi.message : "")}
+          onInput={() => effacer("telephone")}
+        />
+      ) : null}
+
+      <div className="flex w-full flex-col gap-[16px]">
+        {/* État d'envoi, annoncé aussi aux lecteurs d'écran. */}
+        <MessageEtat etat={envoi.etat} message={envoi.message} ton="clair" className="max-w-[420px]" />
+        <SubmitButton label={footerForm.submitLabel} enCours={envoi.etat === "envoi"} />
+        <p className="m-0 w-full text-[12px] font-medium leading-[1.45] tracking-[-0.01em] text-foreground-60">
+          {/* Les trois morceaux de phrase encadrant les deux liens
+              viennent de la donnée (`disclaimerPrefix` / `Joiner` /
+              `Suffix`). */}
+          {footerForm.disclaimerPrefix}
+          {footerForm.disclaimerLinks?.[0] ? (
+            <HoverPrefetchLink href={footerForm.disclaimerLinks[0].href} className={inlineLinkCls}>
+              {footerForm.disclaimerLinks[0].label}
+            </HoverPrefetchLink>
+          ) : null}{" "}
+          {footerForm.disclaimerJoiner}
+          {footerForm.disclaimerLinks?.[1] ? (
+            <HoverPrefetchLink href={footerForm.disclaimerLinks[1].href} className={inlineLinkCls}>
+              {footerForm.disclaimerLinks[1].label}
+            </HoverPrefetchLink>
+          ) : null}
+          {footerForm.disclaimerSuffix}
+        </p>
+        <MentionRecaptcha />
       </div>
 
-      {/* Retour à gauche, la suite à droite ; la mention n'accompagne que l'envoi. */}
-      <div className="flex w-full flex-col gap-[20px]">
-        <div className="flex w-full items-center justify-between gap-[16px]">
-          {etape > 0 ? (
-            <button
-              type="button"
-              onClick={() => setEtape((courante) => Math.max(courante - 1, 0))}
-              className="neo-bouton neo-bouton--retour flex h-[52px] items-center justify-center px-[26px] text-[13px] font-semibold uppercase leading-[1.2] tracking-[-0.01em] text-foreground"
-            >
-              {etapes.retour}
-            </button>
-          ) : (
-            <span aria-hidden />
-          )}
-          {/* `key` distinctes : sans elles, React garde le même `<button>` et
-              le passe en `type="submit"` pendant le clic sur « Continuer »
-              de l'avant-dernière étape. Le navigateur soumettait alors le
-              formulaire et signalait le nom vide à peine affiché. */}
-          {etape < DERNIERE_ETAPE ? (
-            <SubmitButton key="continuer" label={etapes.continuer} onClick={continuer} />
-          ) : (
-            <SubmitButton key="envoyer" label={footerForm.submitLabel} enCours={envoi.etat === "envoi"} />
-          )}
-        </div>
-        {etape === DERNIERE_ETAPE ? (
-          <p className="m-0 w-full text-[12px] font-medium leading-[1.45] tracking-[-0.01em] text-foreground-60">
-            {/* Les trois morceaux de phrase encadrant les deux liens
-                viennent de la donnée (`disclaimerPrefix` / `Joiner` /
-                `Suffix`). */}
-            {footerForm.disclaimerPrefix}
-            {footerForm.disclaimerLinks?.[0] ? (
-              <HoverPrefetchLink href={footerForm.disclaimerLinks[0].href} className={inlineLinkCls}>
-                {footerForm.disclaimerLinks[0].label}
-              </HoverPrefetchLink>
-            ) : null}{" "}
-            {footerForm.disclaimerJoiner}
-            {footerForm.disclaimerLinks?.[1] ? (
-              <HoverPrefetchLink href={footerForm.disclaimerLinks[1].href} className={inlineLinkCls}>
-                {footerForm.disclaimerLinks[1].label}
-              </HoverPrefetchLink>
-            ) : null}
-            {footerForm.disclaimerSuffix}
-          </p>
-        ) : null}
-      </div>
-
-      {/* État d'envoi, annoncé aussi aux lecteurs d'écran. */}
-      <MessageEtat
-        etat={envoi.etat}
-        message={envoi.message}
-        ton="clair"
-        className="max-w-[420px]"
-      />
-
-      {/* Le piège du template comptait ONZE champs cachés, dont un
-          nommé `message` — et aucun n'était lu, faute de serveur. Un
-          seul champ suffit dès lors qu'il est VÉRIFIÉ : voir
+      {/* Un seul champ piège suffit dès lors qu'il est VÉRIFIÉ : voir
           `ChampsProtection`. */}
       <ReplisSansScript emailContact={emailContact} />
       <ChampsProtection refConteneur={envoi.protection.refConteneur} />

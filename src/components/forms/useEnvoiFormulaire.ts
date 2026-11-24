@@ -2,8 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { FormEvent } from "react";
-import { useProtectionTurnstile } from "./turnstile";
-import type { ProtectionTurnstile } from "./turnstile";
+import { useProtectionFormulaire } from "./protection";
+import type { ProtectionFormulaire } from "./protection";
 
 /**
  * Logique commune aux trois formulaires du site.
@@ -69,7 +69,7 @@ export interface EnvoiFormulaire {
   readonly message: string;
   /** Nom du champ fautif quand le serveur le désigne, pour le surligner. */
   readonly champEnErreur: string | undefined;
-  readonly protection: ProtectionTurnstile;
+  readonly protection: ProtectionFormulaire;
   /**
    * Gestionnaire de `onSubmit`. Nommé et exporté tel quel : un agent d'analyse
    * peut l'envelopper sans avoir à déterrer la logique.
@@ -90,7 +90,7 @@ export function useEnvoiFormulaire(
   const [etat, setEtat] = useState<EtatEnvoi>("repos");
   const [message, setMessage] = useState("");
   const [champEnErreur, setChampEnErreur] = useState<string | undefined>(undefined);
-  const protection = useProtectionTurnstile();
+  const protection = useProtectionFormulaire("contact");
 
   /**
    * Horodatage d'affichage, posé APRÈS le montage.
@@ -148,6 +148,7 @@ export function useEnvoiFormulaire(
         debutMs: refDebut.current,
         [NOM_CHAMP_PIEGE]: lire(NOM_CHAMP_PIEGE),
         ...(jetonCaptcha ? { jetonCaptcha } : {}),
+        fournisseurCaptcha: protection.fournisseur,
       };
       corps.nom = lire("nom");
       corps.typeProjet = lire("typeProjet");

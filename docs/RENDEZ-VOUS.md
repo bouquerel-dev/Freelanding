@@ -5,7 +5,7 @@ Cal.com. Le moteur de réservation est le cockpit d'Eliott
 (`admin.eliottbouquerel.fr`) : il calcule les créneaux libres depuis Google
 Agenda, pose l'événement avec un lien Meet, écrit au prospect, met la fiche
 client à jour et bloque les relances de prospection. Le site garde son interface
-(composant, questionnaire, Turnstile, limites) et n'a changé que de moteur.
+(composant, questionnaire, anti-robot, limites) et n'a changé que de moteur.
 
 Raison du changement : Cal.com voyait les données d'Eliott et de ses prospects,
 et deux réservations Cal.com n'avaient pas atteint le cockpit (une relance
@@ -29,15 +29,22 @@ navigateur ──> /api/rendez-vous          ──> cockpit POST /api/rdv
   `point-d-etape` pour les CLIENTS en cours (`IDS_CLIENT`). Le sujet choisi part
   comme type : le titre de l'agenda, la fiche et le mail de confirmation le
   suivent au cockpit, sans autre champ.
-- **UN SEUL LIEN DE PREMIER RENDEZ-VOUS depuis le 2026-11-12 : `/rdv`**, page
-  dédiée (`src/app/(site)/rdv/page.tsx`). Le visiteur choisit son sujet par un
-  bouton (Logiciel, Site, IA, Autre), `?sujet=logiciel|site|ia|autre`
-  présélectionne le bouton (liens des pages, de l'outil de chiffrage `/estimation`,
-  des mails). Un seul écran : sujet, créneau, nom, e-mail, téléphone (obligatoire),
-  une ligne libre facultative. La durée est celle du type au cockpit. Le cadrage
-  en dix questions de 2026-11-10 est retiré : il découragait la prise de
-  rendez-vous. Les anciens noms `outil`, `cto` et `autre` sont traduits par
-  `resoudreSujet`.
+- **TROIS ÉTAPES DEPUIS LE 2026-11-24** (pied de page et `/rdv`, même
+  composant `ReservationRendezVous`) : (1) le créneau, affiché sans clic
+  préalable ; (2) le sujet, écrit avec les mots du visiteur (plus de boutons
+  Logiciel / Site / IA / À voir ensemble), obligatoire, 3 caractères au moins ;
+  (3) nom, e-mail, téléphone. Retour arrière et « Modifier » sur le rappel du
+  créneau. Le type envoyé est celui du lien (`?sujet=logiciel|site|ia|autre`,
+  sans rien afficher) ou `SUJET_PAR_DEFAUT` (`decouverte`, « Premier échange »
+  au cockpit). Le sujet écrit est la ligne libre décrite plus bas : il arrive au
+  cockpit en `notes` et en `reponses.coince`. Le cockpit n'a rien eu à changer.
+  Dans le pied de page, l'onglet « Réserver un appel » est ouvert par défaut, et
+  les créneaux ne se chargent qu'à l'approche du bloc (800 px), pour ne pas
+  interroger l'agenda à chaque page vue.
+  Le calendrier enchaîne sur le mois suivant (second appel `mois=`, son 1er
+  porte le nom du mois). Créneaux : débuts tous les quarts d'heure
+  (`PAS_MINUTES` du cockpit), durée par défaut du type (30 minutes pour le
+  premier échange).
 - **UN SEUL LIEN POUR LES CLIENTS : `/rdv/client`** (non indexé,
   `src/app/(site)/rdv/client/page.tsx`). Quatre boutons : Point rapide,
   Démonstration, Proposition, Point d'étape ; `?sujet=point-rapide|demonstration|
@@ -100,6 +107,9 @@ sans nom ni e-mail affichés.
 | Variable | Valeur | Secret |
 |---|---|---|
 | `RDV_TOKEN` | le même jeton que `RDV_TOKEN` du cockpit | oui |
+| `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` | clef de site reCAPTCHA v3 (repli Turnstile si absente) | non |
+| `RECAPTCHA_SECRET_KEY` | clef secrète reCAPTCHA v3 | oui |
+| `RECAPTCHA_SEUIL` | facultatif, score minimal de 0 à 1, 0.5 par défaut | non |
 | `COCKPIT_URL` | facultative, `https://admin.eliottbouquerel.fr` par défaut | non |
 
 Sans `RDV_TOKEN`, le bloc de réservation ne se rend pas et les routes répondent

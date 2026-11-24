@@ -213,6 +213,17 @@ export function grilleMois(mois: string): readonly (string | null)[] {
   return cases;
 }
 
+/**
+ * Semaines entières, du lundi de la semaine de `depuis` : `semaines` × 7 jours,
+ * sans trou. Sert au calendrier qui enchaîne sur le mois suivant (2026-11-24) :
+ * en fin de mois, il ne reste plus une rangée vide mais les jours d'après.
+ */
+export function grilleSemaines(depuis: string, semaines: number): readonly string[] {
+  const decalage = (new Date(`${depuis}T12:00:00Z`).getUTCDay() + 6) % 7;
+  const lundi = ajouterJours(depuis, -decalage);
+  return Array.from({ length: semaines * 7 }, (_, i) => ajouterJours(lundi, i));
+}
+
 const FORMAT_HEURE = new Intl.DateTimeFormat("fr-FR", {
   timeZone: FUSEAU,
   hour: "2-digit",
@@ -278,6 +289,30 @@ const FORMAT_MOIS_ANNEE = new Intl.DateTimeFormat("fr-FR", {
   timeZone: FUSEAU,
   month: "long",
   year: "numeric",
+});
+
+const FORMAT_MOIS_COURT = new Intl.DateTimeFormat("fr-FR", {
+  timeZone: FUSEAU,
+  month: "short",
+});
+
+/** Mois abrégé d'un jour (« déc. »), posé sur le 1er du mois suivant au calendrier. */
+export function moisCourt(jour: string): string {
+  return FORMAT_MOIS_COURT.format(instantDeJour(jour));
+}
+
+/** « novembre et décembre 2026 », « décembre 2026 et janvier 2027 ». */
+export function formaterDeuxMois(mois: string, suivant: string): string {
+  if (mois.slice(0, 4) === suivant.slice(0, 4)) {
+    const premier = FORMAT_MOIS_COURT_LONG.format(instantDeJour(`${mois}-01`));
+    return `${premier} et ${formaterMois(suivant)}`;
+  }
+  return `${formaterMois(mois)} et ${formaterMois(suivant)}`;
+}
+
+const FORMAT_MOIS_COURT_LONG = new Intl.DateTimeFormat("fr-FR", {
+  timeZone: FUSEAU,
+  month: "long",
 });
 
 /** Libellé d'un mois (« octobre 2026 »), pour l'en-tête du calendrier. */

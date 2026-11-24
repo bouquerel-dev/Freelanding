@@ -8,15 +8,14 @@
  * cockpit côté serveur (`src/lib/rendez-vous/cockpit.ts`). `Calendrier` et
  * `Heures` sont exportés : la page `/rdv/gerer/[jeton]` les réutilise.
  *
- * UN SEUL ÉCRAN DEPUIS LE 2026-11-12. Le stepper de six écrans et ses dix
- * questions de cadrage (2026-11-10) découragent la prise de rendez-vous, et
- * Eliott veut un seul lien pour tout sujet : le visiteur choisit son sujet
- * (Logiciel, Site, IA, Autre), voit les créneaux libres, dépose nom, e-mail et
- * téléphone, et peut écrire son projet en une ligne. Le sujet part au cockpit
- * comme type de rendez-vous : titre de l'agenda, fiche et mail de
- * confirmation le suivent. Les clients en cours (`/rdv/client` : point rapide,
- * démonstration, proposition, point d'étape) voient le même écran, avec leurs
- * quatre sujets : seuls le nom et l'e-mail sont exigés.
+ * TROIS ÉTAPES DEPUIS LE 2026-11-24 (Eliott) : le créneau, affiché sans clic
+ * préalable ; le sujet, écrit avec les mots du visiteur (plus de boutons
+ * Logiciel / Site / IA) ; les coordonnées. Le sujet écrit part au cockpit en
+ * notes et en `reponses.coince`, que le mail de confirmation reprend. Le type
+ * envoyé est celui du lien (`?sujet=`) ou, à défaut, `SUJET_PAR_DEFAUT`
+ * (« Premier échange »). Les clients en cours (`/rdv/client`) gardent leurs
+ * quatre boutons de sujet à la première étape, et seuls le nom et l'e-mail
+ * leur sont exigés.
  *
  * LA DURÉE EST CELLE DU TYPE AU COCKPIT, par défaut : le visiteur n'a plus à la
  * choisir.
@@ -39,9 +38,10 @@ import { useCallback, useEffect, useId, useRef, useState } from "react";
 import type { FormEvent, RefObject } from "react";
 import {
   ChampsProtection,
+  MentionRecaptcha,
   MessageEtat,
 } from "@/components/forms/ProtectionFormulaire";
-import { useProtectionTurnstile } from "@/components/forms/turnstile";
+import { useProtectionFormulaire } from "@/components/forms/protection";
 import { NOM_CHAMP_PIEGE } from "@/components/forms/useEnvoiFormulaire";
 import type { EtatEnvoi } from "@/components/forms/useEnvoiFormulaire";
 import {
@@ -57,8 +57,12 @@ import { lireTelephone } from "@/lib/contact/validation";
 import type { IdRendezVous, TypeRendezVous } from "@/content/rendez-vous";
 import {
   ajouterMois,
+  ecartEnJours,
+  formaterDeuxMois,
   formaterJour,
   grilleMois,
+  grilleSemaines,
+  moisCourt,
   JOURS_SEMAINE,
   lireReponseCreneaux,
   numeroDuJour,
@@ -68,7 +72,7 @@ import type {
   JourDeCreneaux,
   ReponseCreneaux,
 } from "@/lib/rendez-vous/creneaux";
-import { estTypeClient } from "@/lib/rendez-vous/config";
+import { estTypeClient, SUJET_PAR_DEFAUT } from "@/lib/rendez-vous/config";
 import { LONGUEUR_LIGNE_MAX } from "@/lib/rendez-vous/questionnaire";
 
 const contenu = rendezVousContent;
@@ -111,6 +115,17 @@ export const CLASSE_TEXTE =
 export const CLASSE_BOUTON_SECONDAIRE =
   "flex min-h-[44px] items-center gap-[8px] text-[12px] font-medium uppercase leading-[1.2] tracking-[-0.01em] text-foreground-60 transition-colors hover:text-accent motion-reduce:transition-none";
 
+/** Contour d'un champ refusé : le rouge de la carte, pas le vert de la marque. */
+const CLASSE_BORDURE_ERREUR = "border-[var(--neo-erreur,#ff6b5a)]";
+
+/** Bouton d'étape (Continuer, Confirmer) : à droite, à sa largeur. */
+const CLASSE_BOUTON_ETAPE =
+  "flex h-[52px] items-center justify-center whitespace-nowrap rounded-control bg-accent px-[24px] text-[13px] font-semibold uppercase leading-[1.2] tracking-[-0.01em] text-accent-ink transition-[opacity,transform] duration-150 ease-out active:scale-[0.97] disabled:cursor-progress disabled:opacity-60 motion-reduce:transition-none";
+
+/** Retour à l'étape précédente : discret, à gauche. */
+const CLASSE_BOUTON_RETOUR =
+  "flex h-[52px] items-center gap-[8px] rounded-control px-[4px] text-[13px] font-medium uppercase leading-[1.2] tracking-[-0.01em] text-foreground-60 transition-colors hover:text-foreground motion-reduce:transition-none";
+
 export const CLASSE_BOUTON_PRINCIPAL =
   "flex h-[52px] w-full items-center justify-center rounded-control bg-accent px-[28px] text-[13px] font-semibold uppercase leading-[1.2] tracking-[-0.01em] text-accent-ink transition-[opacity,transform] duration-150 ease-out active:scale-[0.98] disabled:cursor-progress disabled:opacity-60 motion-reduce:transition-none tablet:w-fit";
 
@@ -146,6 +161,7 @@ function ChampTexte({
   inputMode,
   requis = false,
   invalide = false,
+  legendeMasquee = false,
 }: {
   id: string;
   nom: string;
@@ -164,6 +180,8 @@ function ChampTexte({
   requis?: boolean;
   /** Bordure d'erreur sans texte : le message du serveur s'affiche sous le formulaire. */
   invalide?: boolean;
+  /** Légende lue au lecteur d'écran seulement : le titre de l'étape la dit déjà. */
+  legendeMasquee?: boolean;
 }) {
   const idErreur = `${id}-erreur`;
   const idAide = `${id}-aide`;
@@ -184,7 +202,7 @@ function ChampTexte({
     // Le libellé ne porte que la légende : l'aide et l'erreur passent par
     // `aria-describedby`, sans être lues deux fois.
     <div className="flex w-full flex-col gap-[10px]">
-      <label htmlFor={id} className={CLASSE_LIBELLE}>
+      <label htmlFor={id} className={legendeMasquee ? "sr-only" : CLASSE_LIBELLE}>
         {legende}
       </label>
       {multiligne ? (
@@ -192,7 +210,7 @@ function ChampTexte({
           {...commun}
           ref={refChamp as RefObject<HTMLTextAreaElement | null> | undefined}
           onChange={(evenement) => onChanger(evenement.target.value)}
-          className={`min-h-[110px] w-full resize-y rounded-control border border-white/45 bg-white/[0.04] p-[16px] text-[16px] font-medium leading-[1.3] tracking-[-0.01em] text-foreground transition-colors placeholder:text-white/45 hover:border-white/60 focus:border-accent tablet:text-[15px] ${erreur || invalide ? "border-accent" : ""}`}
+          className={`min-h-[110px] w-full resize-y rounded-control border border-white/45 bg-white/[0.04] p-[16px] text-[16px] font-medium leading-[1.3] tracking-[-0.01em] text-foreground transition-colors placeholder:text-white/45 hover:border-white/60 focus:border-accent tablet:text-[15px] ${erreur || invalide ? CLASSE_BORDURE_ERREUR : ""}`}
         />
       ) : (
         <input
@@ -202,7 +220,7 @@ function ChampTexte({
           autoComplete={autoComplete}
           inputMode={inputMode}
           onChange={(evenement) => onChanger(evenement.target.value)}
-          className={`${CLASSE_CHAMP} ${erreur || invalide ? "border-accent" : ""}`}
+          className={`${CLASSE_CHAMP} ${erreur || invalide ? CLASSE_BORDURE_ERREUR : ""}`}
         />
       )}
       {aide ? (
@@ -213,7 +231,7 @@ function ChampTexte({
       {erreur ? (
         <span
           id={idErreur}
-          className="text-[12px] font-medium leading-[1.3] tracking-[-0.01em] text-accent"
+          className="text-[13px] font-medium leading-[1.3] tracking-[-0.01em] text-[var(--neo-erreur-texte,#ff8c7f)]"
         >
           {erreur}
         </span>
@@ -233,30 +251,50 @@ function ChampTexte({
  */
 export function Calendrier({
   donnees,
+  suite,
   jourActif,
   chargement,
   onChoisirJour,
   onDecaler,
 }: {
   donnees: ReponseCreneaux;
+  /**
+   * Créneaux du mois suivant (2026-11-24) : la grille enchaîne dessus au lieu
+   * de s'arrêter au dernier jour du mois, et le 1er porte le nom de son mois.
+   */
+  suite?: ReponseCreneaux;
   jourActif: JourDeCreneaux | undefined;
   chargement: boolean;
   onChoisirJour: (jour: string) => void;
   onDecaler: (mois: number) => void;
 }) {
-  const disponibles = new Map(donnees.jours.map((jour) => [jour.jour, jour]));
+  const disponibles = new Map(
+    [...donnees.jours, ...(suite?.jours ?? [])].map((jour) => [jour.jour, jour]),
+  );
   /*
    * LES SEMAINES DÉJÀ PASSÉES DISPARAISSENT (2026-11-22) : en fin de mois, trois
    * rangées de jours grisés repoussaient les heures sous le pli du téléphone.
    * Une semaine reste dès qu'un de ses jours atteint le début de la fenêtre.
+   *
+   * AVEC LE MOIS SUIVANT, cinq semaines pleines depuis la semaine du premier
+   * jour ouvert (au moins jusqu'à la fin du mois affiché) : les jours d'après
+   * remplissent la grille au lieu de laisser une rangée vide.
    */
   const grille = grilleMois(donnees.fenetre.mois);
-  const cases = grille.filter((_, index) => {
-    const debutSemaine = index - (index % 7);
-    return grille
-      .slice(debutSemaine, debutSemaine + 7)
-      .some((jour) => jour !== null && jour >= donnees.fenetre.debut);
-  });
+  const cases: readonly (string | null)[] = suite
+    ? grilleSemaines(
+        donnees.fenetre.debut,
+        Math.max(5, Math.ceil((ecartEnJours(grilleSemaines(donnees.fenetre.debut, 1)[0] ?? donnees.fenetre.debut, donnees.fenetre.fin) + 1) / 7)),
+      )
+    : grille.filter((_, index) => {
+        const debutSemaine = index - (index % 7);
+        return grille
+          .slice(debutSemaine, debutSemaine + 7)
+          .some((jour) => jour !== null && jour >= donnees.fenetre.debut);
+      });
+  const libelle = suite
+    ? formaterDeuxMois(donnees.fenetre.mois, suite.fenetre.mois)
+    : donnees.fenetre.libelle;
   // `aria-disabled` et non `disabled` : un bouton désactivé perd le focus, et
   // il le perdrait au moment précis où le clavier vient de l'actionner (le
   // chargement du mois suivant, ou l'arrivée au bout de la fenêtre).
@@ -269,7 +307,7 @@ export function Calendrier({
     <div className="flex flex-col gap-[14px]">
       <div className="flex items-center justify-between gap-[16px]">
         <p className="m-0 text-[14px] font-medium uppercase leading-[1.2] tracking-[-0.01em] text-foreground">
-          {donnees.fenetre.libelle}
+          {libelle}
         </p>
         <div className="flex items-center gap-[8px]">
           <button
@@ -321,6 +359,8 @@ export function Calendrier({
           if (jour === null) return <span key={`vide-${index}`} aria-hidden />;
           const disponible = disponibles.get(jour);
           const actif = disponible !== undefined && jour === jourActif?.jour;
+          /** Le 1er du mois suivant porte le nom de son mois, au-dessus du chiffre. */
+          const nouveauMois = suite !== undefined && jour.endsWith("-01") && jour > donnees.fenetre.debut;
           return (
             <button
               key={jour}
@@ -329,7 +369,7 @@ export function Calendrier({
               aria-pressed={disponible ? actif : undefined}
               aria-label={disponible ? disponible.libelle : formaterJour(jour)}
               onClick={() => onChoisirJour(jour)}
-              className={`flex h-[44px] items-center justify-center rounded-control border text-[14px] font-medium leading-none tracking-[-0.01em] transition-colors motion-reduce:transition-none ${
+              className={`relative flex h-[44px] flex-col items-center justify-center rounded-control border text-[14px] font-medium leading-none tracking-[-0.01em] transition-colors motion-reduce:transition-none ${
                 actif
                   ? "border-accent bg-accent text-accent-ink"
                   : disponible
@@ -337,6 +377,16 @@ export function Calendrier({
                     : "cursor-default border-transparent text-white/40"
               }`}
             >
+              {nouveauMois ? (
+                <span
+                  aria-hidden
+                  className={`mb-[3px] text-[9px] font-semibold uppercase leading-none tracking-[0.02em] ${
+                    actif ? "text-accent-ink" : "text-accent"
+                  }`}
+                >
+                  {moisCourt(jour)}
+                </span>
+              ) : null}
               {numeroDuJour(jour)}
             </button>
           );
@@ -456,6 +506,69 @@ function BoutonsSujet({
   );
 }
 
+/** Étape qui porte chaque champ, pour y revenir quand le serveur le refuse. */
+const ETAPE_DU_CHAMP: Readonly<Record<string, Etape>> = {
+  type: 0,
+  creneau: 0,
+  duree: 0,
+  message: 1,
+  nom: 2,
+  email: 2,
+  telephone: 2,
+};
+
+type Etape = 0 | 1 | 2;
+const NOMBRE_ETAPES = 3;
+
+/** Longueur minimale d'un sujet écrit : « Site » passe, une lettre non. */
+const SUJET_MIN = 3;
+
+/**
+ * Indicateur d'étape : trois traits, le titre de l'étape et « Étape 2 sur 3 ».
+ * Le titre prend le focus à chaque changement d'étape, et le compteur lui est
+ * relié : le lecteur d'écran annonce les deux.
+ */
+function EnteteEtape({
+  etape,
+  refTitre,
+  idCompteur,
+}: {
+  etape: Etape;
+  refTitre: RefObject<HTMLHeadingElement | null>;
+  idCompteur: string;
+}) {
+  return (
+    <div className="flex flex-col gap-[14px]">
+      <div aria-hidden className="grid grid-cols-3 gap-[6px]">
+        {contenu.etapes.titres.map((titre, index) => (
+          <span
+            key={titre}
+            className={`h-[3px] rounded-[2px] transition-colors duration-200 ease-out motion-reduce:transition-none ${
+              index <= etape ? "bg-accent" : "bg-white/15"
+            }`}
+          />
+        ))}
+      </div>
+      <div className="flex items-baseline justify-between gap-[16px]">
+        <h3
+          ref={refTitre}
+          tabIndex={-1}
+          aria-describedby={idCompteur}
+          className="m-0 text-[20px] font-medium leading-[1.15] tracking-[-0.02em] text-foreground outline-none tablet:text-[22px]"
+        >
+          {contenu.etapes.titres[etape]}
+        </h3>
+        <p
+          id={idCompteur}
+          className="m-0 shrink-0 text-[12px] font-medium leading-[1.2] tracking-[-0.01em] text-foreground-60"
+        >
+          {contenu.etapes.compteur(etape + 1, NOMBRE_ETAPES)}
+        </p>
+      </div>
+    </div>
+  );
+}
+
 export function ReservationRendezVous({
   types,
   emailContact,
@@ -467,32 +580,31 @@ export function ReservationRendezVous({
   /** Adresse publiée, affichée en repli quand la réservation ne peut aboutir. */
   emailContact: string;
   /**
-   * Sujet déjà choisi à l'arrivée, lu dans `?sujet` par l'appelant.
-   *
-   * VALEUR INITIALE, PAS VALEUR CONTRÔLÉE : le prospect reste libre d'en
-   * changer. Un sujet réservé aux clients (démonstration, point d'étape) est
-   * le seul proposé : le bloc des sujets disparaît et le sujet s'affiche en
-   * titre.
+   * Sujet déjà choisi à l'arrivée, lu dans `?sujet` par l'appelant (liens des
+   * mails `/rdv?sujet=logiciel`) : il part au cockpit comme type, sans bouton
+   * à l'écran. Un sujet de client seul s'affiche en titre.
    */
   typeInitial?: IdRendezVous;
   /**
-   * Sujet retenu quand l'URL n'en donne aucun, pour montrer les créneaux dès
-   * l'arrivée (page `/rdv` seule, 2026-11-22). Contrairement à `typeInitial`,
-   * ce n'est pas un choix du visiteur : aucun `rdv_type_selected` ne part.
-   *
-   * POURQUOI. Le lien des mails mène à `/rdv` sans sujet. Tant qu'un sujet
-   * n'était pas choisi, le calendrier restait vide : 4 visiteurs sur 123 ont
-   * franchi cette marche en un mois, aucun n'a réservé.
+   * Sujet retenu quand l'URL n'en donne aucun. Sans lui, un premier rendez-vous
+   * prend `SUJET_PAR_DEFAUT` (« Premier échange ») : les créneaux s'affichent
+   * sans clic préalable, dans le pied de page comme sur `/rdv`.
    */
   typeParDefaut?: IdRendezVous;
 }) {
   // Préfixe des identifiants et des groupes de boutons radio : la page de
   // contact et le pied de page peuvent monter deux réservations à la fois.
   const instance = `rdv${useId().replace(/[^a-zA-Z0-9]/g, "")}`;
-  const typeDepart = typeInitial ?? typeParDefaut;
+  /** Page `/rdv/client` : quatre sujets de clients, à choisir par bouton. */
+  const pageClient = types.length > 1 && types.every((entree) => estTypeClient(entree.id));
+  const defautPremier = types.some((entree) => entree.id === SUJET_PAR_DEFAUT)
+    ? SUJET_PAR_DEFAUT
+    : types.find((entree) => !estTypeClient(entree.id))?.id;
+  const typeDepart = typeInitial ?? typeParDefaut ?? (pageClient ? undefined : defautPremier);
   const [type, setType] = useState<IdRendezVous | undefined>(typeDepart);
   /** Vrai dès que le sujet vient du visiteur ou de son lien, pas du défaut. */
   const [sujetChoisi, setSujetChoisi] = useState(typeInitial !== undefined);
+  const [etape, setEtape] = useState<Etape>(0);
   const [creneau, setCreneau] = useState<Creneau | undefined>(undefined);
   const [mois, setMois] = useState("");
   const [jourChoisi, setJourChoisi] = useState("");
@@ -503,6 +615,14 @@ export function ReservationRendezVous({
     type: undefined,
     etat: "aucune",
   });
+  /**
+   * Le bloc approche de l'écran. Le pied de page est sur toutes les pages : sans
+   * cette garde, chaque page vue demanderait les créneaux au cockpit, donc à
+   * Google Agenda. Sans `IntersectionObserver` (tests), tout de suite.
+   */
+  const [proche, setProche] = useState(
+    () => typeof window !== "undefined" && typeof IntersectionObserver === "undefined",
+  );
 
   /**
    * Clef de la requête EN COURS DE VALIDITÉ.
@@ -520,21 +640,29 @@ export function ReservationRendezVous({
   const etatCreneaux: EtatCreneaux =
     resultat.type === type && resultat.cle === cle ? resultat.etat : "aucune";
   /**
-   * Jour affiché — DÉDUIT, jamais synchronisé : le jour retenu s'il existe
-   * encore dans la donnée, sinon le premier jour disponible du mois.
+   * Le mois suivant, chargé derrière le mois affiché : le calendrier enchaîne
+   * dessus (2026-11-24). Même clef que la question posée, pour écarter une
+   * réponse arrivée après un changement de mois.
    */
-  const jourActif =
-    donnees?.jours.find((jour) => jour.jour === jourChoisi) ?? donnees?.jours[0];
+  const [suiteBrute, setSuiteBrute] = useState<{ cle: string; donnees: ReponseCreneaux } | undefined>(undefined);
+  const moisSuivant =
+    donnees && !donnees.fenetre.derniere ? ajouterMois(donnees.fenetre.mois, 1) : undefined;
+  const cleSuite = type && moisSuivant ? `${type}|${moisSuivant}|${tentative}` : "";
+  const suite = suiteBrute && suiteBrute.cle === cleSuite ? suiteBrute.donnees : undefined;
+  const joursOuverts = [...(donnees?.jours ?? []), ...(suite?.jours ?? [])];
+  /**
+   * Jour affiché — DÉDUIT, jamais synchronisé : le jour retenu s'il existe
+   * encore dans la donnée, sinon le premier jour disponible.
+   */
+  const jourActif = joursOuverts.find((jour) => jour.jour === jourChoisi) ?? joursOuverts[0];
   /**
    * L'heure retenue SURVIT À UN CHANGEMENT DE SUJET tant que le nouveau sujet
-   * la propose aussi (chaque type a ses plages et sa durée au cockpit). Pendant
-   * le rechargement, elle reste affichée ; si la réponse ne la contient pas,
-   * elle disparaît et le bouton redemande une heure.
+   * la propose aussi (chaque type a ses plages et sa durée au cockpit).
    */
   const creneauRetenu =
     creneau &&
     (chargement ||
-      donnees?.jours.some((jour) =>
+      joursOuverts.some((jour) =>
         jour.creneaux.some((offert) => offert.debut === creneau.debut),
       ))
       ? creneau
@@ -543,7 +671,7 @@ export function ReservationRendezVous({
   const [etatEnvoi, setEtatEnvoi] = useState<EtatEnvoi>("repos");
   const [messageEnvoi, setMessageEnvoi] = useState("");
   const [champEnErreur, setChampEnErreur] = useState<string | undefined>(undefined);
-  const protection = useProtectionTurnstile();
+  const protection = useProtectionFormulaire("rendez_vous");
 
   /** Le créneau réservé, gardé pour l'écran de confirmation (le formulaire disparaît). */
   const [resumeSucces, setResumeSucces] = useState("");
@@ -553,7 +681,6 @@ export function ReservationRendezVous({
   const [message, setMessage] = useState("");
   /** Un client en cours (`/rdv/client`) ne donne que nom et e-mail : le reste est facultatif. */
   const client = estTypeClient(type);
-  const sujetsProposes = types.length > 1 || !typeInitial;
   const typeChoisi = types.find((entree) => entree.id === type);
 
   /**
@@ -569,21 +696,38 @@ export function ReservationRendezVous({
   }, []);
 
   const racine = useRef<HTMLDivElement | null>(null);
-  const refSujet = useRef<HTMLDivElement | null>(null);
-  const refCreneaux = useRef<HTMLDivElement | null>(null);
+  const refTitre = useRef<HTMLHeadingElement | null>(null);
   const refSucces = useRef<HTMLParagraphElement | null>(null);
-  const refCoordonnees = useRef<HTMLDivElement | null>(null);
-  const refNom = useRef<HTMLInputElement | HTMLTextAreaElement | null>(null);
   const saisieAnnoncee = useRef(false);
+  /** Dernière étape focalisée : le premier affichage ne vole pas le focus. */
+  const refEtapeVue = useRef<Etape>(0);
   /** Le focus va au succès : le formulaire disparaît, le clavier ne doit pas retomber sur le document. */
   useEffect(() => {
     if (etatEnvoi === "succes") refSucces.current?.focus();
   }, [etatEnvoi]);
 
   /*
+   * LE FOCUS SUIT L'ÉTAPE : le titre de la nouvelle étape le prend, le lecteur
+   * d'écran l'annonce avec son compteur, et le haut du bloc revient en vue sur
+   * téléphone (le bouton « Continuer » était en bas d'un long calendrier).
+   */
+  useEffect(() => {
+    if (refEtapeVue.current === etape) return;
+    refEtapeVue.current = etape;
+    refTitre.current?.focus({ preventScroll: true });
+    const haut = racine.current?.getBoundingClientRect().top;
+    if (haut !== undefined && haut < 0) {
+      racine.current?.scrollIntoView({
+        block: "start",
+        behavior: mouvementReduit() ? "auto" : "smooth",
+      });
+    }
+  }, [etape]);
+
+  /*
    * PREMIÈRE ÉTAPE DE L'ENTONNOIR : le bloc vu, une fois, à sa première
-   * visibilité (sur `/rdv` dès l'arrivée, dans le pied de page quand on y
-   * descend). La garde par `ref` couvre le double montage du mode strict.
+   * visibilité. Le même observateur, avec une marge large, autorise le
+   * chargement des créneaux un peu avant que le bloc n'arrive à l'écran.
    */
   const vueAnnoncee = useRef(false);
   useEffect(() => {
@@ -597,29 +741,32 @@ export function ReservationRendezVous({
       annoncer();
       return;
     }
+    const approche = new IntersectionObserver(
+      (entrees) => {
+        if (!entrees.some((entree) => entree.isIntersecting)) return;
+        approche.disconnect();
+        setProche(true);
+      },
+      { rootMargin: "800px 0px" },
+    );
     const observateur = new IntersectionObserver((entrees) => {
       if (!entrees.some((entree) => entree.isIntersecting)) return;
       observateur.disconnect();
       annoncer();
     });
+    approche.observe(noeud);
     observateur.observe(noeud);
-    return () => observateur.disconnect();
+    return () => {
+      approche.disconnect();
+      observateur.disconnect();
+    };
   }, [typeDepart, typeInitial]);
 
   /*
-   * UN SUJET PRÉSÉLECTIONNÉ FRANCHIT LA MÊME MARCHE QU'UN SUJET CHOISI.
-   *
-   * Sur `/rdv?sujet=…` et les liens des pages, le prospect n'appuie sur rien :
-   * la page décide pour lui. Sans cet envoi, l'entonnoir ne verrait jamais
-   * l'étape « sujet » pour ces visites-là. `preselected` distingue les deux
-   * populations.
-   *
-   * IL NE PART PAS AU MONTAGE MAIS À LA PREMIÈRE VISIBILITÉ DU BLOC : un
-   * entonnoir PostHog ordonné n'accepte une étape que si la précédente
-   * (`section_viewed`) l'a précédée dans le temps. Le délai de 500 ms rend
-   * l'ordre certain entre deux observateurs déclenchés par le même défilement.
-   * IL NE PART QU'UNE FOIS : `disconnect` sur la première intersection, et la
-   * garde par `ref` couvre le double montage du mode strict.
+   * UN SUJET PRÉSÉLECTIONNÉ FRANCHIT LA MÊME MARCHE QU'UN SUJET CHOISI : sur
+   * `/rdv?sujet=…`, le prospect n'appuie sur rien. L'événement part à la
+   * première visibilité du bloc, après `section_viewed` (entonnoir ordonné de
+   * PostHog), et une seule fois.
    */
   const sujetInitialAnnonce = useRef(false);
   useEffect(() => {
@@ -658,7 +805,7 @@ export function ReservationRendezVous({
 
   useEffect(() => {
     const typeDemande = type;
-    if (!typeDemande) return;
+    if (!typeDemande || !proche) return;
     const controleur = new AbortController();
 
     const parametres = new URLSearchParams({ type: typeDemande });
@@ -682,11 +829,8 @@ export function ReservationRendezVous({
         const charge = lireReponseCreneaux(await reponse.json());
         if (!charge) throw new Error("charge_illisible");
         setResultat({ cle, type: typeDemande, etat: "aucune", donnees: charge });
-        /*
-         * ZÉRO CRÉNEAU N'EST PAS UN CHARGEMENT RÉUSSI, du point de vue du
-         * prospect. L'événement part quand même, avec le compte à zéro, pour que
-         * l'entonnoir distingue « agenda vide » de « appel échoué ».
-         */
+        // Zéro créneau part aussi, compte à zéro : « agenda vide » n'est pas
+        // « appel échoué ».
         const creneauxOfferts = charge.jours.reduce(
           (total, jour) => total + jour.creneaux.length,
           0,
@@ -710,7 +854,39 @@ export function ReservationRendezVous({
       });
 
     return () => controleur.abort();
-  }, [type, mois, cle]);
+  }, [type, mois, cle, proche]);
+
+  useEffect(() => {
+    if (!cleSuite || !type || !moisSuivant || !proche) return;
+    const controleur = new AbortController();
+    const parametres = new URLSearchParams({ type, mois: moisSuivant });
+    fetch(`/api/rendez-vous/creneaux?${parametres.toString()}`, { signal: controleur.signal })
+      .then(async (reponse) => {
+        if (!reponse.ok) return;
+        const charge = lireReponseCreneaux(await reponse.json());
+        // Sans le mois suivant, le calendrier reste au mois seul : pas d'erreur.
+        if (charge) setSuiteBrute({ cle: cleSuite, donnees: charge });
+      })
+      .catch(() => {});
+    return () => controleur.abort();
+  }, [cleSuite, type, moisSuivant, proche]);
+
+  /** Sous 1200 px : vrai quand les heures du jour remplacent le calendrier. */
+  const [vueHeures, setVueHeures] = useState(false);
+  const refChangerDate = useRef<HTMLButtonElement | null>(null);
+  const ouvrirJour = (jour: string) => {
+    setJourChoisi(jour);
+    setVueHeures(true);
+    // Le jour touché disparaît : le focus passe au retour, en tête des heures.
+    if (typeof window.matchMedia === "function" && window.matchMedia("(min-width: 1200px)").matches) return;
+    window.requestAnimationFrame(() => refChangerDate.current?.focus({ preventScroll: true }));
+  };
+
+  const effacerEtat = () => {
+    setEtatEnvoi("repos");
+    setMessageEnvoi("");
+    setChampEnErreur(undefined);
+  };
 
   const choisirType = useCallback(
     (id: IdRendezVous) => {
@@ -718,8 +894,6 @@ export function ReservationRendezVous({
         rdv_type: id,
         preselected: false,
       });
-      // Le mois, le jour et l'heure restent : `creneauRetenu` écarte l'heure
-      // si le nouveau sujet ne la propose pas.
       if (id !== type) setType(id);
       setSujetChoisi(true);
       setEtatEnvoi("repos");
@@ -729,11 +903,8 @@ export function ReservationRendezVous({
   );
 
   /*
-   * LE CRÉNEAU RETENU, avec le DÉLAI qu'il représente et non son horaire.
-   *
-   * `days_ahead` dit si le prospect prend le premier créneau venu ou repousse.
-   * L'HEURE PRÉCISE N'EST PAS ENVOYÉE : elle identifierait la réservation, donc
-   * la personne, dès qu'on la croise avec l'agenda.
+   * LE CRÉNEAU RETENU, avec le DÉLAI qu'il représente et non son horaire :
+   * l'heure précise identifierait la personne, croisée avec l'agenda.
    */
   const choisirCreneau = useCallback(
     (choix: Creneau) => {
@@ -748,25 +919,12 @@ export function ReservationRendezVous({
         days_ahead: delai,
         duration_min: donnees?.duree,
       });
-      const premiereHeure = creneau === undefined;
       setCreneau(choix);
       setEtatEnvoi("repos");
       setMessageEnvoi("");
-      /*
-       * L'HEURE CHOISIE, LE GESTE SUIVANT EST LE NOM : le bloc des coordonnées
-       * remonte et le champ prend le focus, ce qui ouvre le clavier sur mobile
-       * et la saisie automatique du navigateur. Une seule fois, champ vide :
-       * changer d'heure ensuite ne doit pas faire sauter la page.
-       */
-      if (premiereHeure && nom === "") {
-        refNom.current?.focus({ preventScroll: true });
-        refCoordonnees.current?.scrollIntoView({
-          block: "start",
-          behavior: mouvementReduit() ? "auto" : "smooth",
-        });
-      }
+      setChampEnErreur(undefined);
     },
-    [type, donnees, creneau, nom],
+    [type, donnees],
   );
 
   const decalerMois = useCallback(
@@ -783,6 +941,9 @@ export function ReservationRendezVous({
     setCreneau(undefined);
     setMois("");
     setJourChoisi("");
+    setEtape(0);
+    setVueHeures(false);
+    refEtapeVue.current = 0;
     setEtatEnvoi("repos");
     setMessageEnvoi("");
     setChampEnErreur(undefined);
@@ -790,26 +951,56 @@ export function ReservationRendezVous({
     refDebut.current = Date.now();
   }, [typeDepart]);
 
-  /** Refus avant envoi : le message s'annonce, et le bloc concerné revient en vue. */
+  /** Refus : le message s'annonce, et l'étape du champ fautif revient. */
   const refuser = (texte: string, champ: string) => {
     setEtatEnvoi("erreur");
     setMessageEnvoi(texte);
     setChampEnErreur(champ);
+    const cible = ETAPE_DU_CHAMP[champ];
+    if (cible !== undefined) setEtape(cible);
+  };
+
+  /** Valide l'étape affichée, puis passe à la suivante. */
+  const continuer = () => {
+    if (etape === 0) {
+      if (!type) {
+        refuser(contenu.formulaire.choisirSujet, "type");
+        return;
+      }
+      if (!creneauRetenu) {
+        refuser(contenu.formulaire.choisirHeure, "creneau");
+        return;
+      }
+    }
+    if (etape === 1 && !client && message.trim().length < SUJET_MIN) {
+      refuser(contenu.formulaire.messageErreur, "message");
+      return;
+    }
+    effacerEtat();
+    setEtape((courante) => (courante < 2 ? ((courante + 1) as Etape) : courante));
+  };
+
+  const revenir = () => {
+    effacerEtat();
+    setEtape((courante) => (courante > 0 ? ((courante - 1) as Etape) : courante));
   };
 
   const gererSoumission = async (evenement: FormEvent<HTMLFormElement>) => {
     // Interdit la soumission native, donc toute donnée en chaîne de requête.
     evenement.preventDefault();
     if (etatEnvoi === "envoi") return;
+    // Entrée dans un champ d'une étape intermédiaire : on avance, on n'envoie pas.
+    if (etape < 2) {
+      continuer();
+      return;
+    }
     if (!type) {
       refuser(contenu.formulaire.choisirSujet, "type");
-      refSujet.current?.scrollIntoView({ block: "center", behavior: mouvementReduit() ? "auto" : "smooth" });
       return;
     }
     const creneau = creneauRetenu;
     if (!creneau) {
       refuser(contenu.formulaire.choisirHeure, "creneau");
-      refCreneaux.current?.scrollIntoView({ block: "start", behavior: mouvementReduit() ? "auto" : "smooth" });
       return;
     }
 
@@ -834,11 +1025,7 @@ export function ReservationRendezVous({
 
     if (!protection.configure) {
       refuser(messageProtectionAbsente(emailContact), "protection");
-      /*
-       * ÉCHEC LE PLUS COÛTEUX DE TOUS, et le plus silencieux : Turnstile mal
-       * configuré a tenu le formulaire de contact hors service pendant des
-       * semaines sans qu'aucune mesure ne le dise (relevé le 2026-09-08).
-       */
+      // Échec le plus coûteux et le plus silencieux (relevé le 2026-09-08).
       capture(ANALYTICS_EVENTS.rdvFailed, {
         rdv_type: type,
         reason: "protection_absente",
@@ -862,6 +1049,7 @@ export function ReservationRendezVous({
           debutMs: refDebut.current,
           [NOM_CHAMP_PIEGE]: piege,
           jetonCaptcha,
+          fournisseurCaptcha: protection.fournisseur,
         }),
       });
       const charge: unknown = await reponse.json().catch(() => null);
@@ -884,11 +1072,7 @@ export function ReservationRendezVous({
         estMessage(charge) ? charge.message : messageEchecInconnu(emailContact),
         champ ?? "",
       );
-      /*
-       * `field` EST LE NOM DU CHAMP FAUTIF, jamais ce que le prospect y a
-       * écrit : `creneau` = course entre deux réservations, `jetonCaptcha` =
-       * protection mal réglée, le reste = validation trop stricte.
-       */
+      // `field` est le NOM du champ fautif, jamais ce que le prospect y a écrit.
       capture(ANALYTICS_EVENTS.rdvFailed, {
         rdv_type: type,
         reason: "refus_serveur",
@@ -901,8 +1085,7 @@ export function ReservationRendezVous({
         setCreneau(undefined);
         setTentative((valeur) => valeur + 1);
       }
-      // Le jeton est à usage unique : sans réinitialisation, la deuxième
-      // tentative échouerait en boucle sur un jeton déjà consommé.
+      // Le jeton est à usage unique.
       protection.reinitialiser();
     } catch {
       refuser(MESSAGE_RESEAU, "");
@@ -940,208 +1123,275 @@ export function ReservationRendezVous({
   }
 
   const enCours = etatEnvoi === "envoi";
+  const idCompteur = `${instance}-compteur`;
 
-  /*
-   * LE SUJET PRIS PAR DÉFAUT PASSE SOUS LE CALENDRIER (2026-11-22) : les
-   * créneaux arrivent dans le premier écran du téléphone, et le sujet reste à
-   * portée juste avant les coordonnées. Déplacé dans le DOM et non par `order`,
-   * pour que le clavier suive le même ordre que l'œil.
-   */
-  const sujetApres = typeParDefaut !== undefined && typeInitial === undefined;
-  const blocSujet = sujetsProposes ? (
-    <div ref={refSujet}>
-      <BoutonsSujet
-        prefixe={instance}
-        types={types}
-        choisi={type}
-        onChoisir={choisirType}
-        decrire={sujetChoisi}
-      />
+  /** Le créneau retenu, rappelé aux étapes 2 et 3 avec un retour au calendrier. */
+  const rappelCreneau = creneauRetenu ? (
+    <div className="flex items-center justify-between gap-[12px] rounded-card border border-accent/60 bg-accent/[0.07] py-[10px] pl-[16px] pr-[8px]">
+      <p className="m-0 min-w-0 text-[15px] font-medium leading-[1.3] tracking-[-0.01em] text-foreground">
+        {typeChoisi && (pageClient || client) ? `${typeChoisi.nom} · ` : ""}
+        {creneauRetenu.resume}
+      </p>
+      <button
+        type="button"
+        onClick={() => {
+          effacerEtat();
+          setEtape(0);
+        }}
+        className="min-h-[44px] shrink-0 rounded-control px-[10px] text-[12px] font-medium uppercase leading-[1.2] tracking-[-0.01em] text-foreground-60 transition-colors hover:text-accent motion-reduce:transition-none"
+      >
+        {contenu.etapes.modifier}
+      </button>
     </div>
-  ) : (
-    <h3 className="m-0 text-[22px] font-medium leading-[1.1] tracking-[-0.02em] text-foreground tablet:text-[26px]">
-      {typeChoisi?.nom}
-    </h3>
-  );
+  ) : null;
 
   return (
     // `scroll-mt` : le haut du bloc ne doit pas finir sous l'en-tête fixe.
-    <div ref={racine} className="flex scroll-mt-[100px] flex-col gap-[28px]">
+    <div ref={racine} className="flex scroll-mt-[100px] flex-col gap-[24px]">
       <form
         /* SANS CE NOM, la mesure appelle ce formulaire « form » et les
            formulaires de contact du site se confondent dans un même seau. */
         data-analytics-form="rendez-vous"
-        className="relative flex flex-col gap-[32px]"
+        data-etape={etape}
+        className="relative flex flex-col gap-[24px]"
         /* `method="post"` et `action` : sans script, le navigateur soumet
-           lui-même, en POST et dans un CORPS. Aucune donnée personnelle ne
-           peut partir dans une chaîne de requête. */
+           lui-même, en POST et dans un CORPS. */
         method="post"
         action="/api/rendez-vous"
         onSubmit={gererSoumission}
-        /* Première interaction = chargement du script Turnstile. */
+        /* Première interaction = chargement du script anti-robot. */
         onFocusCapture={protection.activer}
+        noValidate
       >
-        {sujetApres ? null : blocSujet}
+        <EnteteEtape etape={etape} refTitre={refTitre} idCompteur={idCompteur} />
 
-        <div ref={refCreneaux} className="flex scroll-mt-[100px] flex-col gap-[16px]">
-          <h3 className={`${CLASSE_LIBELLE} m-0`}>{contenu.blocs.creneau}</h3>
-
-          {!type ? <p className={`${CLASSE_TEXTE} m-0`}>{contenu.formulaire.choisirSujet}</p> : null}
-
-          {etatCreneaux === "indisponible" ? (
-            <p className={`${CLASSE_TEXTE} m-0`}>{contenu.creneaux.indisponible}</p>
-          ) : null}
-
-          {etatCreneaux === "reseau" ? (
-            <div className="flex flex-col items-start gap-[12px]">
-              <p className={`${CLASSE_TEXTE} m-0`}>{contenu.creneaux.erreur}</p>
-              <button
-                type="button"
-                onClick={() => setTentative((valeur) => valeur + 1)}
-                className="min-h-[44px] rounded-control border border-border px-[16px] text-[13px] font-medium uppercase leading-[1.2] tracking-[-0.01em] text-foreground transition-colors hover:border-accent hover:text-accent motion-reduce:transition-none"
-              >
-                {contenu.actions.reessayer}
-              </button>
-            </div>
-          ) : null}
-
-          {chargement && !donnees ? (
-            <div className="flex min-h-[120px] items-center gap-[10px]">
-              <Spinner size="sm" label={contenu.creneaux.chargement} />
-              <span aria-hidden className={CLASSE_LIBELLE}>
-                {contenu.creneaux.chargement}
-              </span>
-            </div>
-          ) : null}
-
-          {/* Calendrier et heures restent POSÉS pendant un rechargement (mois),
-              simplement estompés : les faire disparaître déplacerait la grille
-              sous le curseur du prospect. */}
-          {donnees ? (
-            <div className="grid grid-cols-1 gap-[28px] desktop:grid-cols-[minmax(0,1fr)_minmax(0,0.8fr)]">
-              <Calendrier
-                donnees={donnees}
-                jourActif={jourActif}
-                chargement={chargement}
-                onChoisirJour={setJourChoisi}
-                onDecaler={decalerMois}
+        {etape === 0 ? (
+          <div key="etape-0" className="rdv-etape flex flex-col gap-[20px]">
+            {pageClient ? (
+              <BoutonsSujet
+                prefixe={instance}
+                types={types}
+                choisi={type}
+                onChoisir={choisirType}
+                decrire={sujetChoisi}
               />
-              {jourActif ? (
-                <div
-                  className={`transition-opacity motion-reduce:transition-none desktop:min-h-[300px] ${
-                    chargement ? "pointer-events-none opacity-40" : ""
-                  }`}
+            ) : estTypeClient(typeInitial) ? (
+              <p className="m-0 text-[18px] font-medium leading-[1.2] tracking-[-0.01em] text-foreground">
+                {typeChoisi?.nom}
+              </p>
+            ) : null}
+
+            {!type ? <p className={`${CLASSE_TEXTE} m-0`}>{contenu.formulaire.choisirSujet}</p> : null}
+
+            {etatCreneaux === "indisponible" ? (
+              <p className={`${CLASSE_TEXTE} m-0`}>{contenu.creneaux.indisponible}</p>
+            ) : null}
+
+            {etatCreneaux === "reseau" ? (
+              <div className="flex flex-col items-start gap-[12px]">
+                <p className={`${CLASSE_TEXTE} m-0`}>{contenu.creneaux.erreur}</p>
+                <button
+                  type="button"
+                  onClick={() => setTentative((valeur) => valeur + 1)}
+                  className="min-h-[44px] rounded-control border border-border px-[16px] text-[13px] font-medium uppercase leading-[1.2] tracking-[-0.01em] text-foreground transition-colors hover:border-accent hover:text-accent motion-reduce:transition-none"
                 >
-                  <Heures jour={jourActif} choisi={creneauRetenu} onChoisir={choisirCreneau} />
-                </div>
-              ) : (
-                <p className={`${CLASSE_TEXTE} m-0 desktop:pt-[50px]`}>{contenu.creneaux.vide}</p>
-              )}
-            </div>
-          ) : null}
-
-          {type ? <p className={`${CLASSE_LIBELLE} m-0`}>{contenu.noteFuseau}</p> : null}
-
-          {/* La région existe avant son contenu : le choix d'une heure s'annonce. */}
-          <div aria-live="polite">
-            {creneauRetenu ? (
-              <div className="flex flex-col gap-[6px] rounded-card border border-accent bg-accent/[0.07] px-[16px] py-[12px]">
-                <p className={`${CLASSE_LIBELLE} m-0`}>{contenu.recapitulatif}</p>
-                <span className="sr-only">{contenu.formulaire.confirmerCiDessous}</span>
-                <p className="m-0 text-[16px] font-medium leading-[1.3] tracking-[-0.01em] text-foreground">
-                  {creneauRetenu.resume}
-                </p>
+                  {contenu.actions.reessayer}
+                </button>
               </div>
             ) : null}
+
+            {type && !donnees && etatCreneaux === "aucune" ? (
+              <div className="flex min-h-[120px] items-center gap-[10px]">
+                <Spinner size="sm" label={contenu.creneaux.chargement} />
+                <span aria-hidden className={CLASSE_LIBELLE}>
+                  {contenu.creneaux.chargement}
+                </span>
+              </div>
+            ) : null}
+
+            {/* Calendrier et heures restent POSÉS pendant un rechargement
+                (mois), simplement estompés : les faire disparaître déplacerait
+                la grille sous le curseur du prospect. */}
+            {donnees ? (
+              /* SOUS 1200 PX, LA DATE PUIS L'HEURE (2026-11-24, Eliott : « super
+                 long » sur téléphone) : le calendrier seul, puis, au jour
+                 touché, ses heures seules avec un retour au calendrier. Au-delà,
+                 les deux restent côte à côte. Masqués par CSS, jamais démontés :
+                 le bureau garde ses deux colonnes sans état de plus. */
+              <div className="grid grid-cols-1 gap-[24px] desktop:grid-cols-[minmax(0,1fr)_minmax(0,0.8fr)]">
+                <div className={vueHeures ? "hidden desktop:block" : undefined}>
+                  <Calendrier
+                    donnees={donnees}
+                    suite={suite}
+                    jourActif={jourActif}
+                    chargement={chargement}
+                    onChoisirJour={ouvrirJour}
+                    onDecaler={decalerMois}
+                  />
+                </div>
+                {jourActif ? (
+                  <div
+                    className={`flex flex-col gap-[12px] transition-opacity motion-reduce:transition-none desktop:min-h-[230px] ${
+                      chargement ? "pointer-events-none opacity-40" : ""
+                    } ${vueHeures ? "" : "hidden desktop:flex"}`}
+                  >
+                    <button
+                      ref={refChangerDate}
+                      type="button"
+                      onClick={() => setVueHeures(false)}
+                      className={`${CLASSE_BOUTON_RETOUR} h-[40px] self-start desktop:hidden`}
+                    >
+                      <Icon name="arrow" size={14} className="rotate-180" />
+                      {contenu.etapes.changerDate}
+                    </button>
+                    <Heures jour={jourActif} choisi={creneauRetenu} onChoisir={choisirCreneau} />
+                  </div>
+                ) : (
+                  <p className={`${CLASSE_TEXTE} m-0 desktop:pt-[50px]`}>{contenu.creneaux.vide}</p>
+                )}
+              </div>
+            ) : null}
+
+            {donnees ? <p className={`${CLASSE_TEXTE} m-0 text-[12px]`}>{contenu.noteFuseau}</p> : null}
+
+            {/* La région existe avant son contenu : le choix d'une heure s'annonce. */}
+            <div aria-live="polite">
+              {creneauRetenu ? (
+                <p className="m-0 text-[15px] font-medium leading-[1.3] tracking-[-0.01em] text-foreground">
+                  <span className="text-foreground-60">{contenu.recapitulatif} : </span>
+                  {creneauRetenu.resume}
+                </p>
+              ) : null}
+            </div>
           </div>
-        </div>
+        ) : null}
 
-        {sujetApres ? blocSujet : null}
+        {etape === 1 ? (
+          <div key="etape-1" className="rdv-etape flex flex-col gap-[20px]">
+            {rappelCreneau}
+            <ChampTexte
+              id={`${instance}-message`}
+              nom="message"
+              legende={client ? contenu.formulaire.messageLabelClient : contenu.formulaire.messageLabel}
+              valeur={message}
+              onChanger={setMessage}
+              placeholder={client ? contenu.formulaire.messagePlaceholderClient : contenu.formulaire.messagePlaceholder}
+              erreur={champEnErreur === "message" ? messageEnvoi : undefined}
+              maxLength={LONGUEUR_LIGNE_MAX}
+              multiligne
+              legendeMasquee
+              requis={!client}
+            />
+          </div>
+        ) : null}
 
-        <div
-          ref={refCoordonnees}
-          className="flex scroll-mt-[100px] flex-col gap-[14px]"
-          /* Première saisie (frappe ou remplissage automatique) : étape de l'entonnoir. */
-          onInputCapture={() => {
-            if (saisieAnnoncee.current) return;
-            saisieAnnoncee.current = true;
-            capture(ANALYTICS_EVENTS.rdvFormStarted, {
-              rdv_type: type,
-              slot_selected: creneauRetenu !== undefined,
-            });
-          }}
-        >
-          <h3 className={`${CLASSE_LIBELLE} m-0`}>{contenu.blocs.coordonnees}</h3>
-          <ChampTexte
-            id={`${instance}-nom`}
-            nom="nom"
-            legende={contenu.formulaire.nomLabel}
-            valeur={nom}
-            onChanger={setNom}
-            refChamp={refNom}
-            placeholder={contenu.formulaire.nomPlaceholder}
-            invalide={champEnErreur === "nom"}
-            autoComplete="name"
-            requis
-          />
-          <ChampTexte
-            id={`${instance}-email`}
-            nom="email"
-            type="email"
-            legende={contenu.formulaire.emailLabel}
-            valeur={email}
-            onChanger={setEmail}
-            placeholder={contenu.formulaire.emailPlaceholder}
-            invalide={champEnErreur === "email"}
-            autoComplete="email"
-            inputMode="email"
-            requis
-          />
-          <ChampTexte
-            id={`${instance}-telephone`}
-            nom="telephone"
-            type="tel"
-            legende={client ? contenu.formulaire.telephoneLabelClient : contenu.formulaire.telephoneLabel}
-            aide={client ? undefined : contenu.formulaire.telephoneAide}
-            valeur={telephone}
-            onChanger={setTelephone}
-            placeholder={contenu.formulaire.telephonePlaceholder}
-            invalide={champEnErreur === "telephone"}
-            autoComplete="tel"
-            inputMode="tel"
-            requis={!client}
-          />
-          <ChampTexte
-            id={`${instance}-message`}
-            nom="message"
-            legende={client ? contenu.formulaire.messageLabelClient : contenu.formulaire.messageLabel}
-            valeur={message}
-            onChanger={setMessage}
-            placeholder={client ? contenu.formulaire.messagePlaceholderClient : contenu.formulaire.messagePlaceholder}
-            invalide={champEnErreur === "message"}
-            maxLength={LONGUEUR_LIGNE_MAX}
-          />
-        </div>
+        {etape === 2 ? (
+          <div
+            key="etape-2"
+            className="rdv-etape flex flex-col gap-[16px]"
+            /* Première saisie (frappe ou remplissage automatique) : étape de l'entonnoir. */
+            onInputCapture={() => {
+              if (saisieAnnoncee.current) return;
+              saisieAnnoncee.current = true;
+              capture(ANALYTICS_EVENTS.rdvFormStarted, {
+                rdv_type: type,
+                slot_selected: creneauRetenu !== undefined,
+              });
+            }}
+          >
+            {rappelCreneau}
+            <p className={`${CLASSE_TEXTE} m-0`}>{contenu.formulaire.apres}</p>
+            <ChampTexte
+              id={`${instance}-nom`}
+              nom="nom"
+              legende={contenu.formulaire.nomLabel}
+              valeur={nom}
+              onChanger={setNom}
+              placeholder={contenu.formulaire.nomPlaceholder}
+              erreur={champEnErreur === "nom" ? messageEnvoi : undefined}
+              autoComplete="name"
+              requis
+            />
+            {/* E-mail et téléphone côte à côte dès que la colonne le permet :
+                l'étape tient en trois lignes au lieu de cinq. */}
+            <div className="@container">
+              <div className="grid grid-cols-1 gap-[16px] @md:grid-cols-2">
+                <ChampTexte
+                  id={`${instance}-email`}
+                  nom="email"
+                  type="email"
+                  legende={contenu.formulaire.emailLabel}
+                  valeur={email}
+                  onChanger={setEmail}
+                  placeholder={contenu.formulaire.emailPlaceholder}
+                  erreur={champEnErreur === "email" ? messageEnvoi : undefined}
+                  autoComplete="email"
+                  inputMode="email"
+                  requis
+                />
+                <ChampTexte
+                  id={`${instance}-telephone`}
+                  nom="telephone"
+                  type="tel"
+                  legende={client ? contenu.formulaire.telephoneLabelClient : contenu.formulaire.telephoneLabel}
+                  aide={client ? undefined : contenu.formulaire.telephoneAide}
+                  valeur={telephone}
+                  onChanger={setTelephone}
+                  placeholder={contenu.formulaire.telephonePlaceholder}
+                  erreur={champEnErreur === "telephone" ? messageEnvoi : undefined}
+                  autoComplete="tel"
+                  inputMode="tel"
+                  requis={!client}
+                />
+              </div>
+            </div>
+          </div>
+        ) : null}
 
-        <div className="flex flex-col gap-[16px]">
-          {/* Au-dessus du bouton qui vient d'être touché : un refus (sujet ou
-              heure oubliés, numéro faux, créneau pris) s'y lit sans chercher.
-              Toujours monté, pour que l'annonce au lecteur d'écran parte. */}
-          <MessageEtat etat={etatEnvoi} message={messageEnvoi} ton="clair" className="max-w-[420px]" />
-          <button type="submit" disabled={enCours} className={CLASSE_BOUTON_PRINCIPAL}>
-            {enCours ? contenu.formulaire.envoiEnCours : contenu.formulaire.envoyer}
-          </button>
-          <p className={`${CLASSE_TEXTE} m-0`}>{contenu.formulaire.apres}</p>
-          <p className="m-0 text-[12px] font-medium leading-[1.3] tracking-[-0.01em] text-foreground-60">
-            {contenu.formulaire.mention}{" "}
-            <Link
-              href={contenu.formulaire.mentionHref}
-              className="text-foreground no-underline transition-colors duration-200 ease-[cubic-bezier(0.44,0,0.56,1)] hover:text-accent motion-reduce:transition-none"
-            >
-              {contenu.formulaire.mentionLien}
-            </Link>
-            .
-          </p>
+        <div className="flex flex-col gap-[14px]">
+          {/* Au-dessus des boutons : un refus s'y lit sans chercher. Toujours
+              monté, pour que l'annonce au lecteur d'écran parte. Un refus
+              porté par un champ s'affiche sous ce champ, pas ici. */}
+          <MessageEtat
+            etat={etatEnvoi}
+            message={champEnErreur && ["message", "nom", "email", "telephone"].includes(champEnErreur) ? "" : messageEnvoi}
+            ton="clair"
+            className="max-w-[420px]"
+          />
+          <div className="flex items-center justify-between gap-[12px]">
+            {etape > 0 ? (
+              <button type="button" onClick={revenir} className={CLASSE_BOUTON_RETOUR}>
+                <Icon name="arrow" size={14} className="rotate-180" />
+                {contenu.etapes.retour}
+              </button>
+            ) : (
+              <span aria-hidden />
+            )}
+            {etape < 2 ? (
+              <button key="continuer" type="button" onClick={continuer} className={CLASSE_BOUTON_ETAPE}>
+                {contenu.etapes.continuer}
+              </button>
+            ) : (
+              <button key="envoyer" type="submit" disabled={enCours} className={CLASSE_BOUTON_ETAPE}>
+                {enCours ? contenu.formulaire.envoiEnCours : contenu.formulaire.envoyer}
+              </button>
+            )}
+          </div>
+          {etape === 2 ? (
+            <>
+              <p className="m-0 text-[12px] font-medium leading-[1.4] tracking-[-0.01em] text-foreground-60">
+                {contenu.formulaire.mention}{" "}
+                <Link
+                  href={contenu.formulaire.mentionHref}
+                  className="text-foreground no-underline transition-colors duration-200 ease-[cubic-bezier(0.44,0,0.56,1)] hover:text-accent motion-reduce:transition-none"
+                >
+                  {contenu.formulaire.mentionLien}
+                </Link>
+                .
+              </p>
+              <MentionRecaptcha />
+            </>
+          ) : null}
         </div>
 
         {/* Toujours monté : le widget Turnstile ne survit pas à un démontage. */}
@@ -1152,7 +1402,7 @@ export function ReservationRendezVous({
           montée en permanence : une région qui apparaît déjà remplie n'est
           pas annoncée. */}
       <p aria-live="polite" className="sr-only">
-        {!type
+        {etape !== 0 || !type
           ? ""
           : chargement
             ? contenu.creneaux.chargement

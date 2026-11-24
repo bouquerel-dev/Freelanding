@@ -407,3 +407,23 @@ describe("validerSoumission — téléphone facultatif", () => {
     ).toBe("telephone");
   });
 });
+
+describe("validerSoumission — message libre du pied de page (2026-11-24)", () => {
+  it("accepte un message sans type de projet, et n'invente pas de type", () => {
+    const resultat = valider(soumissionProjet({ intention: "footer", typeProjet: "" }));
+    expect(resultat.ok).toBe(true);
+    expect(resultat.soumission.typeProjet).toBeUndefined();
+    expect(resultat.soumission.message).toContain("menuiserie");
+  });
+
+  it("refuse une demande sans type de projet ni message", () => {
+    const resultat = valider(soumissionProjet({ intention: "footer", typeProjet: "", message: "" }));
+    expect(resultat.ok).toBe(false);
+    expect(resultat.motif.champ).toBe("message");
+  });
+
+  it("garde la liste fermée quand un type de projet est envoyé", () => {
+    const resultat = valider(soumissionProjet({ typeProjet: "Refaire ma cuisine" }));
+    expect(resultat.motif.champ).toBe("typeProjet");
+  });
+});

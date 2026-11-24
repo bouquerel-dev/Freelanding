@@ -467,3 +467,29 @@ LCP vérifié au navigateur à 1440 et 390 : le h1 (`hero-titre`), jamais la toi
 | emil-design-eng · décalage court | Repères | Fondu d'entrée décalé de 120 ms, après le texte ; rien en mouvement réduit |
 
 Second retour du même jour : sous-titre jugé trop long et « un seul interlocuteur n'est pas un argument ». Sous-titre ramené à trois phrases courtes, repères remplacés par ce qui se vérifie (très réactif, qualité d'agence, prix corrects). li-human : aucune tournure signalée ; la note chiffrée plafonne sous 70 sur un texte de 25 mots (rythme calculé sur trois phrases), écart assumé pour la concision demandée.
+
+## Bloc contact du pied de page, 2026-11-24 : appel d'abord, en trois étapes
+
+Demande d'Eliott : le bloc rendez-vous / message était pénible (sujet à choisir
+avant de voir un créneau, case Turnstile sous le bouton, message en trois
+étapes de questionnaire). Captures avant / après dans
+`docs/captures/contact-stepper/` (bureau 1440, mobile 390, chaque étape).
+
+| Skill · règle | Où | Effet |
+|---|---|---|
+| impeccable · détecteur (`impeccable detect`) | Composants du bloc | Aucun motif signalé |
+| impeccable · copie : pas de titre répété | Étape 2 | Le titre « De quoi voulez-vous parler ? » porte la question, la légende du champ passe en lecture d'écran seule |
+| impeccable · charge cognitive, divulgation progressive | Réservation | Une décision par écran : créneau, sujet, coordonnées ; indicateur discret « Étape 2 sur 3 » et trois traits |
+| impeccable · états d'erreur | Message et réservation | Erreur écrite sous le champ fautif, dans le rouge de la carte (`--neo-erreur-texte`) et non dans le vert de la marque, focus sur le premier champ fautif |
+| impeccable · responsive | Mobile 390 | Bouton « Réserver l’appel » sur une ligne, champs nom / e-mail en pleine largeur, vide sous le calendrier réduit |
+| emil-design-eng · entrée d'étape | `.rdv-etape` | 180 ms, fondu et 6 px, `cubic-bezier(0.23, 1, 0.32, 1)` ; fondu seul en mouvement réduit |
+| emil-design-eng · retour à l'appui | Boutons d'étape | `scale(0.97)` à l'appui |
+
+### Deuxième passe, même jour (retours d'Eliott)
+
+| Skill · règle | Où | Effet |
+|---|---|---|
+| impeccable · « nested cards are always wrong », pas de conteneur par réflexe | Carte néomorphique du bloc | Retirée : le bloc se pose à plat sous le titre, filets à 12 %, coins `control`, aucune ombre, comme le reste du site |
+| impeccable · rythme, densité | Étape 3 | E-mail et téléphone côte à côte (`@container`, dès 448 px), l'étape tient en trois rangées |
+| impeccable · un repère plutôt qu'un écran de plus | Calendrier | La grille enchaîne sur le mois suivant ; le 1er porte « déc. » en volt, l'en-tête dit « novembre et décembre 2026 » |
+| impeccable · adapt (mobile d'abord) | Créneau sous 1200 px | La date puis l'heure : le calendrier seul, puis les heures du jour touché avec « Changer de date » ; le focus suit. Bureau inchangé, côte à côte |

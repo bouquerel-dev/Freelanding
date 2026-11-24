@@ -333,3 +333,16 @@ describe("lireReponseCreneaux", () => {
     expect(lue?.jours).toEqual([]);
   });
 });
+
+describe("calendrier sur deux mois (2026-11-24)", () => {
+  it("grilleSemaines part du lundi et compte des semaines pleines", async () => {
+    const { grilleSemaines, moisCourt, formaterDeuxMois } = await import("./creneaux");
+    const grille = grilleSemaines("2026-11-25", 5);
+    expect(grille).toHaveLength(35);
+    expect(grille[0]).toBe("2026-11-23");
+    expect(grille.at(-1)).toBe("2026-12-27");
+    expect(moisCourt("2026-12-01")).toBe("déc.");
+    expect(formaterDeuxMois("2026-11", "2026-12")).toBe("novembre et décembre 2026");
+    expect(formaterDeuxMois("2026-12", "2027-01")).toBe("décembre 2026 et janvier 2027");
+  });
+});

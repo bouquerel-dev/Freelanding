@@ -38,7 +38,8 @@ export interface SoumissionValide {
   readonly intention: Intention;
   readonly nom: string;
   readonly email: string;
-  readonly typeProjet: string;
+  /** Absent depuis le 2026-11-24 pour le pied de page : le message suffit. */
+  readonly typeProjet?: string;
   /** Facultatif ; absent quand le visiteur n'a rien saisi. Donnée personnelle. */
   readonly telephone?: string;
   readonly message?: string;
@@ -258,8 +259,10 @@ export function validerSoumission(
   }
   const coordonnees = telephone.valeur ? { telephone: telephone.valeur } : {};
 
+  // FACULTATIF DEPUIS LE 2026-11-24 : le formulaire du pied de page n'a plus
+  // qu'un message libre. Présent (anciens formulaires), il reste en liste fermée.
   const typeProjet = normaliserLigne(lireChaine(champs, "typeProjet") ?? "");
-  if (!options.typesProjetAutorises.includes(typeProjet)) {
+  if (typeProjet.length > 0 && !options.typesProjetAutorises.includes(typeProjet)) {
     return {
       ok: false,
       motif: { type: "champ_invalide", champ: "typeProjet", raison: "hors_liste" },
@@ -302,8 +305,16 @@ export function validerSoumission(
   // Le message est facultatif pour les deux intentions : le pied de page le
   // propose aussi depuis le 2026-10-15, en champ court.
   const messageBrut = normaliserTexte(lireChaine(champs, "message") ?? "");
+  const projet = typeProjet.length > 0 ? { typeProjet } : {};
   if (messageBrut.length === 0) {
-    return { ok: true, soumission: { intention, nom, email, ...coordonnees, typeProjet, ...reponses } };
+    // Sans type de projet ni message, la demande ne dit rien : refusée.
+    if (typeProjet.length === 0) {
+      return {
+        ok: false,
+        motif: { type: "champ_invalide", champ: "message", raison: "longueur" },
+      };
+    }
+    return { ok: true, soumission: { intention, nom, email, ...coordonnees, ...projet, ...reponses } };
   }
   if (
     messageBrut.length < LIMITES.message.min ||
@@ -322,7 +333,7 @@ export function validerSoumission(
       nom,
       email,
       ...coordonnees,
-      typeProjet,
+      ...projet,
       ...reponses,
       message: messageBrut,
     },

@@ -21,6 +21,19 @@ describe("FooterContact", () => {
     expect(html).toContain("rendez-vous</p>");
   });
 
+  it("ouvre « Réserver un appel » par défaut, en premier onglet", () => {
+    const html = renderToStaticMarkup(
+      createElement(FooterContact, { modes: siteConfig.footerForm.modes, message, rendezVous }),
+    );
+    const onglets = [...html.matchAll(/role="tab"[^>]*aria-selected="(true|false)"[^>]*>([^<]*)</g)];
+    expect(onglets.map(([, , libelle]) => libelle)).toEqual([
+      siteConfig.footerForm.modes.rendezVous,
+      siteConfig.footerForm.modes.message,
+    ]);
+    expect(onglets.map(([, actif]) => actif)).toEqual(["true", "false"]);
+    expect(html).toMatch(/role="tabpanel"[^>]*hidden=""[^>]*>.*formulaire/u);
+  });
+
   it("garde la carte quand seul le message existe", () => {
     const html = renderToStaticMarkup(createElement(FooterContact, { message }));
     expect(html).toBe('<div class="neo neo-carte w-full"><p>formulaire</p></div>');

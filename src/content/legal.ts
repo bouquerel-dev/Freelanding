@@ -178,7 +178,7 @@ export const legalDocuments: readonly LegalDocument[] = [
           "PostHog, Inc., 2261 Market St. #4008, San Francisco, CA 94114, États-Unis : comptage des visites sans cookie, et, après consentement, mesure d’audience et enregistrement de session, sur son instance européenne.",
           "Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irlande : messagerie professionnelle, où arrivent et sont archivés les messages qui me sont adressés, et agenda, où sont inscrits les rendez-vous réservés en ligne.",
           "Plus Five Five, Inc., qui exploite le service Resend, 2261 Market Street #5039, San Francisco, CA 94114, États-Unis : acheminement des e-mails déclenchés par le formulaire.",
-          "Cloudflare, Inc., 101 Townsend St, San Francisco, CA 94107, États-Unis : protection anti-robot du formulaire (Turnstile).",
+          "Cloudflare, Inc., 101 Townsend St, San Francisco, CA 94107, États-Unis, et Google LLC, 1600 Amphitheatre Parkway, Mountain View, CA 94043, États-Unis : protection anti-robot des formulaires (Turnstile ou reCAPTCHA).",
         ],
       },
       {
@@ -282,7 +282,7 @@ export const legalDocuments: readonly LegalDocument[] = [
           "Répondre à votre demande et préparer un devis. Base légale : mesures précontractuelles prises à votre demande (art. 6.1.b RGPD). Données : identité, coordonnées, entreprise, contenu du message. Durée : 3 ans à compter du dernier échange, si rien n’aboutit.",
           "Réaliser la prestation et en assurer le suivi. Base légale : exécution du contrat (art. 6.1.b RGPD). Données : identité, coordonnées, échanges, accès techniques confiés. Durée : 5 ans à compter de la fin de la mission, durée de la prescription commerciale.",
           "Tenir la comptabilité et répondre à l’administration fiscale. Base légale : obligation légale (art. 6.1.c RGPD). Données : identité, coordonnées de facturation, montants. Durée : 10 ans, article L. 123-22 du code de commerce.",
-          "Bloquer les envois automatisés sur le formulaire. Base légale : intérêt légitime à protéger le service (art. 6.1.f RGPD). Données : signaux techniques du navigateur et adresse IP, traités par Cloudflare Turnstile. Durée : le temps de la vérification, aucune conservation de mon côté.",
+          "Bloquer les envois automatisés sur le formulaire. Base légale : intérêt légitime à protéger le service (art. 6.1.f RGPD). Données : signaux techniques du navigateur et adresse IP, traités par Google reCAPTCHA ou Cloudflare Turnstile. Durée : le temps de la vérification, aucune conservation de mon côté.",
           "Assurer le fonctionnement et la sécurité du serveur. Base légale : intérêt légitime à maintenir le service disponible et à détecter les abus (art. 6.1.f RGPD). Données : adresse IP, date et heure, page demandée, navigateur, code de réponse. Durée : 12 mois au maximum.",
           "Compter les visites sans cookie ni identifiant durable, pour savoir quelles pages sont lues et d’où viennent les visiteurs. Base légale : intérêt légitime à mesurer la fréquentation du site (art. 6.1.f RGPD) ; ce comptage est dispensé de consentement parce qu’il se limite à cette finalité. Données : page vue, provenance, appareil, étapes franchies dans la prise de rendez-vous (sujet, créneau choisi, rendez-vous confirmé, jamais ce que vous saisissez), et une empreinte calculée chaque jour à partir de l’adresse IP et du navigateur, qui ne permet pas de vous suivre d’un jour à l’autre ni d’un site à l’autre. Durée : 13 mois au maximum. Vous pouvez vous y opposer en activant le signal « Ne pas suivre » ou Global Privacy Control de votre navigateur : le site n’envoie alors plus rien.",
           "Mesurer l’audience du site et comprendre ce qui vous a été utile. Base légale : votre consentement (art. 6.1.a RGPD), donné dans la bannière et retirable à tout moment. Données : pages vues, provenance, clics, progression, appareil, adresse IP. Cette adresse sert à situer la visite par pays, elle n’est jamais rapprochée de votre identité. Durée : 13 mois au maximum, conformément aux recommandations de la CNIL.",
@@ -304,7 +304,7 @@ export const legalDocuments: readonly LegalDocument[] = [
         items: [
           "Hostinger International Ltd (Chypre) : hébergement du site, sur un serveur situé en France.",
           "PostHog, Inc. (instance européenne) : comptage des visites sans cookie, et, uniquement après votre consentement, mesure d’audience et enregistrement de session. Les données restent hébergées dans l’Union européenne.",
-          "Cloudflare, Inc. (États-Unis) : vérification anti-robot du formulaire (Turnstile).",
+          "Cloudflare, Inc. et Google LLC (États-Unis) : vérification anti-robot des formulaires (Turnstile ou reCAPTCHA).",
           "Plus Five Five, Inc., qui exploite Resend (États-Unis) : acheminement des e-mails déclenchés par le formulaire.",
           "Google Ireland Limited (Irlande) : messagerie professionnelle, où arrivent et sont archivés les messages que vous m’adressez, et agenda, où sont inscrits les rendez-vous que vous réservez.",
           "Indy (France) : devis, factures et signature électronique, une fois la relation engagée.",
@@ -354,7 +354,7 @@ export const legalDocuments: readonly LegalDocument[] = [
         items: [
           "Le cookie qui mémorise votre choix de consentement, six mois, pour ne pas vous reposer la question à chaque page. Sans lui, refuser ne servirait à rien.",
           "PostHog, pour le comptage des visites sans cookie : aucun cookie ni stockage dans votre navigateur, seulement la page vue, la provenance et les étapes de la prise de rendez-vous. Le signal « Ne pas suivre » de votre navigateur le coupe.",
-          "Cloudflare Turnstile, déposé au moment où vous commencez à remplir le formulaire, pour distinguer un humain d’un robot. La CNIL range cette finalité de sécurité parmi les traceurs exemptés de consentement : il ne sert ni à vous reconnaître d’un site à l’autre, ni à mesurer quoi que ce soit.",
+          "Google reCAPTCHA ou Cloudflare Turnstile, chargé au moment où vous commencez à remplir un formulaire, pour distinguer un humain d’un robot. La CNIL range cette finalité de sécurité parmi les traceurs exemptés de consentement : il ne sert ni à vous reconnaître d’un site à l’autre, ni à mesurer quoi que ce soit.",
         ],
       },
       {
