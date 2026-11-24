@@ -3,7 +3,7 @@ import { JSDOM } from "jsdom";
 import { act, createElement } from "react";
 import { createRoot } from "react-dom/client";
 
-import { ATTENTE_TRAME_MS, PASSAGE_MS, PortraitCouleur } from "./PortraitCouleur";
+import { ATTENTE_TRAME_MS, animerPortrait, PASSAGE_MS, PortraitCouleur } from "./PortraitCouleur";
 
 /**
  * Le portrait couleur dans jsdom. Ce que ces tests gardent :
@@ -51,9 +51,9 @@ function installer({ reduit = false, contexte = true } = {}) {
   etat.restaurer = () => Object.assign(globalThis, precedent);
 }
 
-async function monter({ trameDepuis } = {}) {
+async function monter({ trameDepuis, sansScene = false } = {}) {
   const scene = document.createElement("div");
-  scene.dataset.scene = "true";
+  if (!sansScene) scene.dataset.scene = "true";
   if (trameDepuis !== undefined) scene.dataset.trameDepuis = String(trameDepuis);
   document.body.append(scene);
   const racine = createRoot(scene);
@@ -145,5 +145,15 @@ describe("PortraitCouleur", () => {
     expect(etat.effaces).toBe(1);
     vague.f();
     expect(etat.scene.dataset.scene).toBe("true");
+  });
+
+  it("tient hors d'une scène, et sans toile", async () => {
+    installer();
+    const t = await monter({ sansScene: true });
+    etat.images[0].onload();
+    attendre();
+    expect(t.dataset.pret).toBe("1");
+    expect(etat.scene.dataset.scene).toBeUndefined();
+    expect(animerPortrait(null, "/x.webp")).toBeUndefined();
   });
 });

@@ -50,7 +50,7 @@ function installer({ reduit = false, fin = true, ordinateur = true, contexte = t
         }
       : null;
   Object.defineProperty(w.HTMLCanvasElement.prototype, "clientWidth", { configurable: true, get: () => etat.largeur ?? 1000 });
-  Object.defineProperty(w.HTMLCanvasElement.prototype, "clientHeight", { configurable: true, get: () => 220 });
+  Object.defineProperty(w.HTMLCanvasElement.prototype, "clientHeight", { configurable: true, get: () => etat.hauteur ?? 220 });
   w.HTMLElement.prototype.getBoundingClientRect = () => ({ left: 100, top: 50, width: 1000, height: 800 });
   globalThis.window = w;
   globalThis.document = w.document;
@@ -250,5 +250,17 @@ describe("AmbianceHeros", () => {
     expect(etat.annulations).toBe(1);
     souris(500, 300);
     expect(etat.section.dataset.pointeur).toBeUndefined();
+  });
+
+  it("compte le temps en images quand le navigateur ne le donne pas, et tient sans densité d'écran ni hauteur", async () => {
+    installer();
+    window.devicePixelRatio = 0;
+    await monter();
+    etat.images.shift()();
+    expect(etat.traits).toBe(12);
+    etat.hauteur = 0;
+    etat.traits = 0;
+    etat.images.shift()();
+    expect(etat.traits).toBe(0);
   });
 });

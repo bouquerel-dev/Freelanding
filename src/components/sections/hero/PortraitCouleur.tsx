@@ -24,47 +24,47 @@ export const PASSAGE_MS = 800;
  */
 export function PortraitCouleur({ src }: { src: string }) {
   const toile = useRef<HTMLCanvasElement>(null);
-
-  useEffect(() => {
-    const t = toile.current;
-    if (!t) return;
-    const scene = t.closest<HTMLElement>("[data-scene]");
-    const immobile = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const minuteurs: number[] = [];
-    let actif = true;
-
-    const montrer = () => {
-      if (!actif) return;
-      t.dataset.pret = "1";
-      if (scene) scene.dataset.scene = "photo";
-      minuteurs.push(
-        window.setTimeout(() => {
-          if (scene) scene.dataset.scene = "lampe";
-        }, immobile ? 0 : PASSAGE_MS),
-      );
-    };
-
-    const img = new window.Image();
-    img.decoding = "async";
-    img.onload = () => {
-      const ctx = t.getContext("2d");
-      if (!actif || !ctx) return;
-      t.width = img.naturalWidth;
-      t.height = img.naturalHeight;
-      ctx.drawImage(img, 0, 0);
-      // La trame déjà née finit sa vague ; pas encore née, la photo passe devant.
-      const depuis = Number(scene?.dataset.trameDepuis);
-      const reste = immobile || !depuis ? 0 : Math.max(0, ATTENTE_TRAME_MS - (performance.now() - depuis));
-      minuteurs.push(window.setTimeout(montrer, reste));
-    };
-    img.src = src;
-
-    return () => {
-      actif = false;
-      img.onload = null;
-      for (const m of minuteurs) window.clearTimeout(m);
-    };
-  }, [src]);
-
+  useEffect(() => animerPortrait(toile.current, src), [src]);
   return <canvas ref={toile} aria-hidden data-part="hero-photo" className="hero-photo absolute inset-0 h-full w-full" />;
+}
+
+/** Charge la photo dans la toile et mène la scène ; rend de quoi tout défaire. */
+export function animerPortrait(t: HTMLCanvasElement | null, src: string): (() => void) | undefined {
+  if (!t) return undefined;
+  const scene = t.closest<HTMLElement>("[data-scene]");
+  const immobile = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const minuteurs: number[] = [];
+  let actif = true;
+
+  const montrer = () => {
+    if (!actif) return;
+    t.dataset.pret = "1";
+    if (scene) scene.dataset.scene = "photo";
+    minuteurs.push(
+      window.setTimeout(() => {
+        if (scene) scene.dataset.scene = "lampe";
+      }, immobile ? 0 : PASSAGE_MS),
+    );
+  };
+
+  const img = new window.Image();
+  img.decoding = "async";
+  img.onload = () => {
+    const ctx = t.getContext("2d");
+    if (!actif || !ctx) return;
+    t.width = img.naturalWidth;
+    t.height = img.naturalHeight;
+    ctx.drawImage(img, 0, 0);
+    // La trame déjà née finit sa vague ; pas encore née, la photo passe devant.
+    const depuis = Number(scene?.dataset.trameDepuis);
+    const reste = immobile || !depuis ? 0 : Math.max(0, ATTENTE_TRAME_MS - (performance.now() - depuis));
+    minuteurs.push(window.setTimeout(montrer, reste));
+  };
+  img.src = src;
+
+  return () => {
+    actif = false;
+    img.onload = null;
+    for (const m of minuteurs) window.clearTimeout(m);
+  };
 }
