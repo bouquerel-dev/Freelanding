@@ -58,7 +58,7 @@ function echantillonner(img: HTMLImageElement, largeur: number): Point[] {
  * Décor pur (`aria-hidden`) : le nom est écrit en texte dans le héros, et une
  * toile n'est jamais candidate au LCP, qui reste le h1.
  */
-export function VisageTrame({ src, centre = 0.5 }: { src: string; centre?: number }) {
+export function VisageTrame({ src, centreOrdinateur = 0.5 }: { src: string; centreOrdinateur?: number }) {
   const toile = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
     const c = toile.current;
@@ -91,6 +91,9 @@ export function VisageTrame({ src, centre = 0.5 }: { src: string; centre?: numbe
         points = echantillonner(img, colonnes);
       }
       const pas = (largeur / colonnes) * 2;
+      // Sur ordinateur, le visage peut se décaler pour laisser la place aux
+      // repères ; sur téléphone et tablette, il reste centré.
+      const centre = window.matchMedia("(min-width: 1200px)").matches ? centreOrdinateur : 0.5;
       const ox = l * centre - largeur / 2;
       const amplitude = pas * 1.8;
       ctx.clearRect(0, 0, l, h);
@@ -144,6 +147,6 @@ export function VisageTrame({ src, centre = 0.5 }: { src: string; centre?: numbe
       vue.disconnect();
       img.onload = null;
     };
-  }, [src, centre]);
+  }, [src, centreOrdinateur]);
   return <canvas ref={toile} aria-hidden data-part="hero-visage" className="block h-full w-full text-accent" />;
 }

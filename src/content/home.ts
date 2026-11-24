@@ -61,9 +61,14 @@ const JOURS_BUREAU = SEMAINE.map(({ jour, tache, taches }) => {
 const LIGNES_TITRE = ["Un développeur,", "une équipe d’IA."] as const;
 const TITRE_ACCUEIL = LIGNES_TITRE.join(" ");
 
-/** Comment : une seule personne en face, des agents qui écrivent, Eliott qui décide et vérifie. */
+/**
+ * Pourquoi lui, en trois lignes (retour d'Eliott du 2026-11-24 : « trop
+ * long, même moi je le lis pas » ; « un seul interlocuteur n'est pas un
+ * argument » ; garder ce qui se vérifie : réactivité, qualité d'agence, prix
+ * correct). Aucun prix chiffré.
+ */
 const COMMENT =
-  "Vous parlez à une seule personne, du premier appel au premier jour en ligne. Les agents écrivent, je décide et je vérifie.";
+  "Mes agents d’IA écrivent le code, je teste tout avant la mise en ligne. La qualité d’une agence, pour un prix correct. Et je réponds vite, essayez.";
 
 
 /**
@@ -87,6 +92,7 @@ export const homeContent: HomeContent = {
     titleLines: LIGNES_TITRE,
     buildPrefix: "Je construis",
     buildItems: ["des sites internet", "des logiciels métier", "des automatisations IA"],
+    faceNotes: ["Très réactif", "Qualité d’agence", "Prix corrects"],
     subtitle: COMMENT,
     subtitleParagraphs: [{ text: COMMENT }],
     offerLink: { label: "Voir mes réalisations", href: "/realisations" },
