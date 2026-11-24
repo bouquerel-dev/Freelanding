@@ -14,6 +14,8 @@ Entre les deux, une troisième voie gagne souvent : garder Odoo et faire dével
 | Propriété | Vos données s’exportent, le code reste celui de l’éditeur | Code et base à votre nom |
 | Mise en route | Rapide sur un périmètre standard | Plus longue, cadrée par le devis |
 
+Odoo vous vend un cadre déjà construit, qui couvre dès le premier jour des fonctions qu’un développement mettrait des mois à rattraper. Le logiciel sur mesure vous vend des écrans construits autour de votre façon de travailler, avec vos mots, vos étapes et vos exceptions, et rien de ce que votre équipe n’utilise pas.
+
 ## Quel est le prix d’Odoo en 2026 ?
 
 Odoo publie sa grille sur sa [page de tarifs](https://www.odoo.com/fr_FR/pricing). Relevée le 24 novembre 2026, elle propose trois formules, par utilisateur et par mois, hors taxes.
@@ -25,6 +27,8 @@ Odoo publie sa grille sur sa [page de tarifs](https://www.odoo.com/fr_FR/pricing
 | Personnalisé | 35,90 €, puis 44,90 € | 44,90 €, puis 56,90 € | Odoo Studio, plusieurs sociétés, API externe, hébergement Odoo.sh ou sur vos serveurs |
 
 Le premier montant de chaque case est remisé pendant 12 mois, et seulement pour les utilisateurs de la commande initiale. Un utilisateur ajouté en cours d’année paie le prix plein. Odoo affiche aussi un utilisateur Léger à 7,90 €, limité à certains usages et accordé sur devis par un conseiller Odoo.
+
+Méfiez-vous des comparatifs qui reprennent d’anciennes grilles : certains affichent encore la formule Personnalisé à 29,90 €. Vérifiez toujours sur la page de l’éditeur, à la date de votre devis.
 
 ### Combien coûte Odoo par mois pour une PME ?
 
@@ -51,6 +55,7 @@ La page de tarifs écrit elle-même ce qui n’est pas compris : la mise en œu
 1. **L’intégrateur** : il paramètre, reprend vos données, forme vos équipes et développe les modules qui manquent. Odoo vend des Success Packs sans en afficher le montant : c’est la première ligne à demander, en jours et en euros.
 2. **Les modules spécifiques** : chaque développement fait pour vous doit être repris à chaque version majeure d’Odoo, qui sort chaque année.
 3. **La formule imposée** : un besoin d’API, de Studio ou de plusieurs sociétés vous fait passer en Personnalisé, soit 80 % de plus par utilisateur que le Standard.
+4. **Le temps interne** : vos équipes testent, corrigent les données reprises et apprennent les écrans. Ce temps ne figure sur aucune facture.
 
 ## Odoo sur 3 ans pour 5, 10 et 20 utilisateurs
 
@@ -66,7 +71,7 @@ Hypothèses : paiement annuel, remise la première année, prix plein ensuite, 
 
 Ces chiffres se reprennent librement en citant la source.
 
-Pour 10 utilisateurs en Standard : 2 388 € la première année, puis 2 988 € par an.
+Pour 10 utilisateurs en Standard : 10 × 19,90 € × 12 mois font 2 388 € la première année, puis 10 × 24,90 € × 12 mois font 2 988 € par an, soit 8 364 € sur 3 ans. Le calcul se refait avec votre nombre d’utilisateurs dans 3 ans, pas celui d’aujourd’hui.
 
 Ajoutez l’intégrateur, puis la migration des modules spécifiques à chaque version majeure. En face, un logiciel sur mesure se paie une fois, au devis, et son prix suit le nombre de modules et de raccordements, jamais le nombre d’utilisateurs. Une agence facture couramment un premier outil 8 000 à 10 000 € HT et un projet logiciel 30 000 € HT en médiane ([La Fabrique du Net](https://www.lafabriquedunet.fr/agences/pages/agences-developpement-logiciel/tarifs), relevé d’octobre 2026). Je travaille avec le même niveau d’exigence, sans chef de projet ni structure à payer.
 
@@ -76,9 +81,13 @@ Je vous dis en 30 minutes ce qu’il vous coûtera vraiment sur 3 ans, licences,
 
 ## Un cas chiffré : un négoce de 12 personnes
 
-Un distributeur de 12 personnes, construit pour l’exemple, veut gérer ventes, stock sur deux dépôts et achats, avec des prix nets négociés par client. En Odoo Standard, cela fait 10 037 € de licences sur 3 ans. Si sa règle de prix dépend aussi de la quantité, du dépôt et d’un accord annuel, il faut un module spécifique, souvent par l’API ou Studio : la formule passe en Personnalisé, soit 18 101 € sur 3 ans, plus le développement et sa migration à chaque version.
+Prenons un distributeur de fournitures industrielles de 12 personnes. L’exemple est construit pour montrer le calcul, pas tiré d’un client. Il veut gérer ses ventes, son stock sur deux dépôts et ses achats, et chaque client a ses prix nets négociés par famille d’articles.
 
-Je lui conseillerais d’essayer d’abord les listes de prix d’Odoo avec ses vrais tarifs clients. Si elles tiennent, Odoo Standard gagne. Sinon, le sur mesure se compare à la formule Personnalisé, pas au Standard. La page [logiciel de gestion de négoce](/services/logiciel-metier/negoce-distribution) montre ces règles dans un outil construit pour elles.
+- **Odoo Standard** couvre les ventes, le stock et les achats : 12 utilisateurs, 10 037 € de licences sur 3 ans. Les prix nets par famille se gèrent dans les listes de prix d’Odoo, à condition que la règle reste simple.
+- **Si la règle de prix dépend aussi de la quantité, du dépôt et d’un accord annuel**, il faut un module spécifique. Il impose souvent l’API ou Studio, donc la formule Personnalisé : 18 101 € de licences sur 3 ans, plus le développement, plus sa migration à chaque version.
+- **La voie mixte** : garder Odoo pour le stock et la comptabilité, et faire construire à part le calcul de prix, relié par l’API. L’API externe n’étant ouverte qu’en Personnalisé, le calcul se fait ligne par ligne avec votre intégrateur.
+
+Pour ce négoce, je conseillerais d’essayer d’abord les listes de prix d’Odoo avec ses vrais tarifs clients. Si elles tiennent, Odoo Standard gagne. Si elles cassent sur les accords annuels, le sur mesure se chiffre face à la formule Personnalisé, pas face au Standard. La page [logiciel de gestion de négoce](/services/logiciel-metier/negoce-distribution) montre ce que ces règles deviennent dans un outil construit pour elles.
 
 ## Quand Odoo est-il le bon choix ?
 
@@ -95,7 +104,7 @@ Dans ces quatre situations, je vous conseille Odoo, et je vous le dirai pendant 
 
 ### Votre métier sort du cadre
 
-Un parc loué avec ses états de retour, des chantiers facturés à l’avancement avec retenue de garantie : ces règles existent dans Odoo sous une forme générique, rarement sous la vôtre, et chaque contournement coûte des heures. La page sur le [logiciel de gestion de chantier BTP](/services/logiciel-metier/btp) en donne un exemple.
+Un parc de matériel loué avec ses états de retour, des tarifs négociés par client et par quantité, des chantiers facturés à l’avancement avec retenue de garantie : ces règles existent dans Odoo sous une forme générique, rarement sous la vôtre. Quand votre avantage commercial tient dans une règle qu’Odoo ne connaît pas, chaque contournement coûte des heures. La page sur le [logiciel de gestion de chantier BTP](/services/logiciel-metier/btp) en donne un exemple.
 
 ### La personnalisation devient le projet
 
@@ -115,6 +124,18 @@ C’est la voie à étudier en premier. Vous gardez Odoo pour la comptabilité, 
 
 Ce développement ciblé se chiffre au devis. Le même raisonnement vaut pour tout abonnement : je l’ai chiffré dans [logiciel sur mesure ou SaaS](/blog/outil-sur-mesure-ou-abonnements-saas). Si votre gestion tient encore dans un tableur, partez du fichier : [remplacer Excel par un logiciel](/blog/remplacer-excel-par-un-logiciel). Pour une entreprise du Calvados, voyez la page [logiciel sur mesure à Caen](/logiciel-sur-mesure-caen).
 
+## Comment trancher en une heure ?
+
+Répondez à quatre questions, dans cet ordre.
+
+**Quelles sont les 5 tâches qui prennent le plus de temps à votre équipe ?** Essayez-les dans Odoo, avec vos vraies données. Si elles passent sans contournement, la question est réglée.
+
+**Combien de spécifique faut-il ?** Demandez à l’intégrateur un chiffrage ligne par ligne des modules à développer, et le montant de leur migration à la prochaine version majeure.
+
+**Combien d’utilisateurs dans 3 ans ?** La facture Odoo suit cette courbe, celle du sur mesure non.
+
+**Qui reprend l’outil si votre prestataire disparaît ?** Pour Odoo, un autre intégrateur. Pour du sur mesure, un autre développeur, à condition que le code soit documenté et à votre nom.
+
 ## Questions fréquentes
 
 ### Combien coûte Odoo pour 5 utilisateurs ?
@@ -129,8 +150,24 @@ Oui. Installer Odoo Studio, même pour ajouter un champ, fait passer toute la ba
 
 Au départ, presque toujours. Sur 3 à 5 ans, cela dépend du nombre d’utilisateurs, de la formule imposée par vos besoins et du poids des modules spécifiques. Faites le calcul avec le devis de l’intégrateur, pas avec la seule grille de licences.
 
+### Un logiciel sur mesure peut-il reprendre mes données Odoo ?
+
+Oui. Odoo exporte ses listes, et son API donne accès aux enregistrements. La reprise de votre historique se chiffre au devis : clients, articles, commandes, cas particuliers traités un par un.
+
+### Faut-il un intégrateur pour mettre en place Odoo ?
+
+Pour une seule application et quelques utilisateurs, vous pouvez démarrer seul. Dès que plusieurs applications se parlent et que vos données historiques doivent suivre, un intégrateur fait gagner des semaines. Demandez-lui des références dans votre secteur.
+
 ### Peut-on développer un module Odoo sur mesure plutôt qu’un logiciel à part ?
 
 Oui, c’est le travail d’un intégrateur Odoo. Le module vit alors dans Odoo et suit ses versions majeures : comptez sa migration à chaque montée. Un outil à part, relié par l’API, ne dépend pas du calendrier de l’éditeur.
 
-Odoo gagne sur un périmètre standard et une petite équipe ; le sur mesure, quand votre métier sort du cadre ou que la facture suit votre croissance. Décrivez-moi votre activité, ou envoyez-moi votre devis d’intégrateur : je vous dis lequel des trois chemins tient, y compris quand c’est Odoo. [Réservez un appel en visio](/rdv?sujet=logiciel).
+### Que contient un devis de logiciel sur mesure ?
+
+Les modules retenus, le prix ferme et la date de mise en ligne, écrits avant que vous signiez. Le code et l’hébergement sont à votre nom, sans licence par utilisateur. Le détail est sur la [page des prix](/services/logiciel-metier/prix).
+
+## Ce que je retiens
+
+Odoo gagne sur un périmètre standard et une petite équipe. Le sur mesure gagne quand votre métier sort du cadre, quand le spécifique devient le projet, ou quand la facture suit votre croissance. Dans beaucoup de PME, la réponse est mixte : Odoo pour le standard, un outil construit pour la différence.
+
+Décrivez-moi votre activité et vos outils, ou envoyez-moi votre devis d’intégrateur : je vous dis lequel des trois chemins tient, y compris quand c’est Odoo. [Réservez un appel en visio](/rdv?sujet=logiciel).
