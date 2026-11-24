@@ -1154,6 +1154,34 @@ html[data-consent-choisi] [data-consent-attente] {
   background-repeat: no-repeat;
 }
 
+/* Portrait couleur (ordinateur) : carré, 146,3 % de la hauteur du cadre,
+   remonté de 19,4 % et décalé pour poser l'œil et l'oreille sur les points
+   des traits ; fondu vers le bas comme l'ancienne trame. La trame, elle,
+   n'apparaît plus que sous la lampe de la souris (`--lx`, `--ly`, posés par
+   AmbianceHeros) ; sans souris, elle reste invisible. */
+.hero-photo {
+  top: -19.4%;
+  left: calc(44% - 0.738 * min(66vh, 620px));
+  height: 146.3%;
+  width: auto;
+  max-width: none;
+  aspect-ratio: 1;
+  -webkit-mask-image: linear-gradient(to bottom, #000 62%, transparent 82%);
+  mask-image: linear-gradient(to bottom, #000 62%, transparent 82%);
+  opacity: 0;
+  transition: opacity 500ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.hero-photo[data-pret="1"] { opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  .hero-photo { transition: none; }
+}
+@media (min-width: 1200px) {
+  .hero-visage {
+    -webkit-mask-image: radial-gradient(circle 150px at var(--lx, -400px) var(--ly, -400px), #000 30%, transparent 100%);
+    mask-image: radial-gradient(circle 150px at var(--lx, -400px) var(--ly, -400px), #000 30%, transparent 100%);
+  }
+}
+
 /* Traits du visage : un point volt posé sur la trame, cerclé d'un halo, et un
    trait fin qui s'éteint vers l'étiquette. */
 .hero-repere-point {

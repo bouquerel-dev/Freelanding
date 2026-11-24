@@ -24,6 +24,11 @@ describe("HeroSection", () => {
     expect(h1).not.toContain("<canvas");
   });
 
+  it("pose le portrait couleur dans une toile, jamais candidate au LCP", () => {
+    expect(html).toContain('data-part="hero-photo"');
+    expect(html).not.toMatch(/<img[^>]*portrait-couleur/u);
+  });
+
   it("accroche six traits au visage, trois vers le titre, trois vers le bord", () => {
     const reperes = html.match(/data-part="hero-repere" data-cote="(gauche|droite)"/gu) ?? [];
     expect(reperes).toHaveLength(6);
