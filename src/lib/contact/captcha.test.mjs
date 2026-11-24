@@ -68,13 +68,17 @@ describe("creerVerificateurRecaptcha", () => {
 });
 
 describe("resoudreVerificateur", () => {
-  it("suit le fournisseur du jeton quand sa clef existe, sinon celui qu'il sait vérifier", () => {
+  it("vérifie chez le fournisseur du jeton, Turnstile quand il n'est pas dit", () => {
     const deux = { RECAPTCHA_SECRET_KEY: "r", TURNSTILE_SECRET_KEY: "t" };
     expect(resoudreVerificateur({ fournisseur: "recaptcha" }, deux).nom).toBe("recaptcha");
     expect(resoudreVerificateur({ fournisseur: "turnstile" }, deux).nom).toBe("turnstile");
-    expect(resoudreVerificateur({}, deux).nom).toBe("recaptcha");
-    expect(resoudreVerificateur({ fournisseur: "recaptcha" }, { TURNSTILE_SECRET_KEY: "t" }).nom).toBe("turnstile");
-    expect(resoudreVerificateur({ fournisseur: "turnstile" }, { RECAPTCHA_SECRET_KEY: "r" }).nom).toBe("recaptcha");
+    // Onglet ouvert avant le déploiement : jeton Turnstile sans fournisseur.
+    expect(resoudreVerificateur({}, deux).nom).toBe("turnstile");
+  });
+
+  it("sans la clef du fournisseur du jeton, refuse au lieu de vérifier ailleurs", () => {
+    expect(resoudreVerificateur({ fournisseur: "recaptcha" }, { TURNSTILE_SECRET_KEY: "t" }).nom).toBe("aucun");
+    expect(resoudreVerificateur({ fournisseur: "turnstile" }, { RECAPTCHA_SECRET_KEY: "r" }).nom).toBe("aucun");
   });
 
   it("sans aucune clef, refuse tout", async () => {

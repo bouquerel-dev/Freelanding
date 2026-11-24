@@ -8,9 +8,10 @@
  * sans protection le temps que les clefs Google soient posées.
  *
  * Le navigateur dit avec quel fournisseur il a pris son jeton
- * (`fournisseurCaptcha`) ; le serveur suit ce choix s'il en a la clef secrète,
- * sinon il prend celui qu'il sait vérifier. Pendant un déploiement où une seule
- * des deux clefs reCAPTCHA serait posée, le jeton reste ainsi vérifiable.
+ * (`fournisseurCaptcha`, absent = Turnstile, comme avant le 2026-11-24) ; le
+ * serveur le vérifie chez ce fournisseur et nul autre. Sans la clef secrète
+ * correspondante, refus `non_configure` (503 et journal) : les deux clefs
+ * reCAPTCHA se posent ENSEMBLE dans Coolify.
  *
  * CONSENTEMENT. reCAPTCHA charge un script Google qui lit des signaux du
  * navigateur. Il n'est chargé qu'à la première interaction avec un formulaire,
@@ -226,16 +227,16 @@ export function resoudreVerificateur(
   demande: { readonly fournisseur?: "recaptcha" | "turnstile"; readonly action?: string } = {},
   env: Readonly<Record<string, string | undefined>> = process.env,
 ): VerificateurCaptcha {
-  const recaptcha = env.RECAPTCHA_SECRET_KEY?.trim();
-  const turnstile = env.TURNSTILE_SECRET_KEY?.trim();
-  const versRecaptcha = (cle: string) =>
-    creerVerificateurRecaptcha(cle, {
+  const fournisseur = demande.fournisseur ?? "turnstile";
+  if (fournisseur === "recaptcha") {
+    const cle = env.RECAPTCHA_SECRET_KEY?.trim();
+    if (!cle) return VERIFICATEUR_ABSENT;
+    return creerVerificateurRecaptcha(cle, {
       seuil: lireSeuil(env.RECAPTCHA_SEUIL),
       ...(demande.action ? { action: demande.action } : {}),
     });
-  if (demande.fournisseur === "recaptcha" && recaptcha) return versRecaptcha(recaptcha);
-  if (demande.fournisseur === "turnstile" && turnstile) return creerVerificateurTurnstile(turnstile);
-  if (recaptcha) return versRecaptcha(recaptcha);
-  if (turnstile) return creerVerificateurTurnstile(turnstile);
+  }
+  const cle = env.TURNSTILE_SECRET_KEY?.trim();
+  if (cle) return creerVerificateurTurnstile(cle);
   return VERIFICATEUR_ABSENT;
 }
