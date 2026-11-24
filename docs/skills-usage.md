@@ -493,3 +493,30 @@ avant de voir un créneau, case Turnstile sous le bouton, message en trois
 | impeccable · rythme, densité | Étape 3 | E-mail et téléphone côte à côte (`@container`, dès 448 px), l'étape tient en trois rangées |
 | impeccable · un repère plutôt qu'un écran de plus | Calendrier | La grille enchaîne sur le mois suivant ; le 1er porte « déc. » en volt, l'en-tête dit « novembre et décembre 2026 » |
 | impeccable · adapt (mobile d'abord) | Créneau sous 1200 px | La date puis l'heure : le calendrier seul, puis les heures du jour touché avec « Changer de date » ; le focus suit. Bureau inchangé, côte à côte |
+
+## Héros vivant sur ordinateur, schéma raccordé, titre mobile sur deux lignes, 2026-11-24
+
+Demandes d'Eliott : titre mobile sur deux lignes (seule retouche mobile
+permise), héros bureau « beaucoup plus vivant » avec « vraiment quelque chose
+de plus » en fond, split view gardée, « Ce que je construis » mieux intégré et
+aligné sur la colonne du héros. Captures (hors Git) dans
+`docs/heros-pistes/captures/` : `amb-avant-*` puis `amb-v1` à `amb-v4`
+(1280, 1440, 1920, 360, 390, 430, et `-schema` pour l'enchaînement).
+Les règles d'impeccable et de taste-skill appliquées sont celles déjà relevées
+plus haut pour ce héros ; emil-design-eng a été relu en entier pour le
+mouvement.
+
+| Skill · règle | Constat sur le rendu | Ce qui a changé |
+|---|---|---|
+| impeccable · adapt (une seule retouche) | 360 à 430 px : titre coupé en trois (« projet. » seul) | Taille calée sur la largeur utile (`(100vw − 40px) / 10,9`), coupure après « prouver, » partout ; le reste du mobile n'a pas bougé (captures 360/390/430 identiques hors titre) |
+| taste-skill · un motif, décliné | Le fond était un aplat avec du grain ; le visage était la seule matière | Le fond reprend la trame du visage : champ de points pâle sur tout le héros, ronde lumineuse qui fait le tour et allume les points en volt, lampe sous la souris, halo qui respire, trait qui balaie le viseur |
+| emil-design-eng · décor amorti, souris | Lampe collée au pointeur = artificielle | Position amortie (8 % par image), boucle arrêtée au repos ; la lampe naît sous la souris et prend le relais de la ronde, qui s'efface en 600 ms |
+| emil-design-eng · transform et opacité seulement | Motif qui suit une lampe mobile | Lampe et motif bougent en `translate3d` opposés (le motif reste calé sur le champ) ; aucune propriété de mise en page animée |
+| emil-design-eng · rien hors écran | Le pas du schéma (1,4 s) et les tirets tournaient même hors écran | `data-ambiance` / `data-schema="pause"` par IntersectionObserver : boucles arrêtées, animations CSS figées ; vérifié au navigateur |
+| impeccable · layout (une colonne) | Schéma dans 1200 px centrés : 90 px de décalage avec le héros à 1440 | Même colonne de 1440, marges de 20 puis 30 px ; titre du schéma et texte du héros sur la même verticale, onglets calés sur le bord droit du visage |
+| impeccable · rythme entre sections | Rupture de fond nette héros / schéma (grain d'un côté, aplat de l'autre) | Même grain sur ordinateur ; un fil part du bas du héros sur la colonne du texte, descend et tourne dans le trait du sur-titre, une goutte volt le parcourt ; angles de viseur repris sur le panneau |
+| emil-design-eng · cascade courte | Le schéma apparaissait d'un bloc | Entrée en cascade (en-tête, panneau, cartes à 60 ms d'écart), la première fois seulement, ordinateur seulement ; sans script, tout est visible |
+| emil-design-eng · mouvement réduit | — | Ni ronde, ni lampe, ni balayage, ni goutte ; champ et halo immobiles |
+
+LCP vérifié au navigateur à 1440 et 390 : le h1 (`hero-titre`). Image de
+partage régénérée (le champ et le halo y apparaissent, immobiles).

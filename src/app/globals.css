@@ -1139,16 +1139,6 @@ html[data-consent-choisi] [data-consent-attente] {
   }
 }
 
-/* Champ de points très pâle autour du visage : la même trame, sans le
-   portrait, qui s'efface en ellipse. */
-.hero-champ {
-  background-image: radial-gradient(circle, color-mix(in oklab, var(--accent) 38%, transparent) 1px, transparent 1.6px);
-  background-size: 14px 14px;
-  -webkit-mask-image: radial-gradient(ellipse 50% 50% at 44% 46%, #000, transparent 75%);
-  mask-image: radial-gradient(ellipse 50% 50% at 44% 46%, #000, transparent 75%);
-  opacity: 0.7;
-}
-
 /* Viseur : quatre angles de 14 px, filet de 1 px, aux coins du cadre. */
 .hero-viseur {
   --c: color-mix(in oklab, var(--foreground) 28%, transparent);
@@ -1170,6 +1160,174 @@ html[data-consent-choisi] [data-consent-attente] {
   width: 28px;
   height: 1px;
   background: color-mix(in oklab, var(--accent) 60%, transparent);
+}
+
+/* ---------------------------------------------------------------------------
+   Fond vivant du héros, ordinateur seulement (2026-11-24, `AmbianceHeros`).
+   Une seule matière, la trame du visage : champ pâle, lampe volt qui suit la
+   souris, halo qui respire, balayage du viseur. Tout bouge en transform ou en
+   opacité ; `data-ambiance="pause"` (héros hors écran) fige tout.
+   --------------------------------------------------------------------------- */
+.amb-champ,
+.amb-lampe-motif {
+  background-size: 14px 14px;
+  background-position: 0 0;
+}
+.amb-champ {
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.11) 1px, transparent 1.5px);
+  -webkit-mask-image: radial-gradient(ellipse 75% 80% at 55% 50%, #000 35%, transparent 90%);
+  mask-image: radial-gradient(ellipse 75% 80% at 55% 50%, #000 35%, transparent 90%);
+}
+.amb-lampe {
+  width: 560px;
+  height: 560px;
+  margin: -280px 0 0 -280px;
+  overflow: hidden;
+  border-radius: 50%;
+  -webkit-mask-image: radial-gradient(circle, #000 0%, transparent 70%);
+  mask-image: radial-gradient(circle, #000 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 600ms ease;
+}
+[data-pointeur="1"] .amb-lampe { opacity: 1; }
+.amb-lampe-motif {
+  left: 280px;
+  top: 280px;
+  width: 2400px;
+  height: 1600px;
+  background-image: radial-gradient(circle, color-mix(in oklab, var(--accent) 62%, transparent) 1.1px, transparent 1.7px);
+}
+/* Ronde : sans souris, une lampe plus large fait lentement le tour du héros.
+   Le motif fait le chemin inverse pour rester calé sur le champ ; tout est en
+   unités d'écran, communes aux deux. Elle s'efface quand la souris prend la
+   main. */
+.amb-ronde {
+  left: 0;
+  top: 0;
+  width: 720px;
+  height: 720px;
+  margin: -360px 0 0 -360px;
+  overflow: hidden;
+  border-radius: 50%;
+  -webkit-mask-image: radial-gradient(circle, #000 0%, transparent 70%);
+  mask-image: radial-gradient(circle, #000 0%, transparent 70%);
+  animation: amb-ronde 34s ease-in-out infinite;
+  transition: opacity 600ms ease;
+}
+.amb-ronde > span {
+  left: 360px;
+  top: 360px;
+  width: 2400px;
+  height: 1600px;
+  background-image: radial-gradient(circle, color-mix(in oklab, var(--accent) 42%, transparent) 1.1px, transparent 1.7px);
+  background-size: 14px 14px;
+  animation: amb-ronde-inverse 34s ease-in-out infinite;
+}
+[data-pointeur="1"] .amb-ronde { opacity: 0; }
+@keyframes amb-ronde {
+  0%, 100% { transform: translate(72vw, 30vh); }
+  25% { transform: translate(88vw, 72vh); }
+  50% { transform: translate(52vw, 88vh); }
+  75% { transform: translate(40vw, 20vh); }
+}
+@keyframes amb-ronde-inverse {
+  0%, 100% { transform: translate(-72vw, -30vh); }
+  25% { transform: translate(-88vw, -72vh); }
+  50% { transform: translate(-52vw, -88vh); }
+  75% { transform: translate(-40vw, -20vh); }
+}
+.amb-halo {
+  background: radial-gradient(closest-side, color-mix(in oklab, var(--accent) 13%, transparent), transparent);
+  animation: amb-respire 9s ease-in-out infinite;
+}
+@keyframes amb-respire {
+  0%, 100% { opacity: 0.7; transform: scale(0.94); }
+  50% { opacity: 1; transform: scale(1.06); }
+}
+
+/* Balayage du viseur : un trait volt et sa traîne descendent le cadre du
+   visage, puis marquent une pause (70 % de la course, 30 % de repos). */
+.hero-balayage { overflow: hidden; }
+.hero-balayage::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 100%;
+  background: linear-gradient(to bottom, transparent 88%, color-mix(in oklab, var(--accent) 6%, transparent) 99.4%, color-mix(in oklab, var(--accent) 55%, transparent) 99.7%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 25%, #000 75%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 25%, #000 75%, transparent);
+  transform: translateY(-100%);
+  animation: hero-balayage 7.5s cubic-bezier(0.77, 0, 0.175, 1) 1.6s infinite;
+}
+@keyframes hero-balayage {
+  0% { transform: translateY(-100%); }
+  70%, 100% { transform: translateY(100%); }
+}
+
+/* Repère : le trait se trace vers le visage après l'entrée de l'étiquette. */
+@media (min-width: 1200px) {
+  .hero-repere::before {
+    transform-origin: right;
+    animation: hero-trait 900ms cubic-bezier(0.23, 1, 0.32, 1) both;
+    animation-delay: calc(var(--d, 0ms) + 220ms);
+  }
+}
+
+/* Fil qui relie le héros au schéma : il part du bas du héros, sur la colonne
+   du texte, et descend jusqu'au titre de la section suivante ; une goutte volt
+   le parcourt. */
+.fil-suite { background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.16) 30%); overflow: hidden; }
+.fil-suite::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1px;
+  height: 64px;
+  background: linear-gradient(to bottom, transparent, var(--accent));
+  transform: translateY(-64px);
+  animation: fil-goutte 3.2s cubic-bezier(0.65, 0, 0.35, 1) 2s infinite;
+}
+.fil-suite-debut::after { display: none; }
+.fil-suite-fin { --fil: 111px; background: rgba(255, 255, 255, 0.16); }
+
+/* Entrée en cascade du schéma, ordinateur seulement : `data-vu="0"` n'est posé
+   par le script que si la section n'a pas encore paru, donc sans script tout
+   est visible. */
+@media (min-width: 1200px) {
+  [data-vu="0"] .schema-entree { opacity: 0; }
+  [data-vu="1"] .schema-entree {
+    animation: hero-fond 760ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: var(--d, 0ms);
+  }
+}
+.fil-suite-debut { background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.16)); }
+@keyframes fil-goutte {
+  0% { transform: translateY(-64px); }
+  80%, 100% { transform: translateY(var(--fil, 240px)); }
+}
+
+[data-ambiance="pause"] .amb-halo,
+[data-ambiance="pause"] .amb-ronde,
+[data-ambiance="pause"] .amb-ronde > span,
+[data-ambiance="pause"] .hero-balayage::before,
+[data-ambiance="pause"] .fil-suite::after,
+[data-schema="pause"] .schema-lien,
+[data-schema="pause"] .fil-suite::after {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .amb-ronde,
+  .amb-ronde > span,
+  .amb-halo,
+  .hero-balayage::before,
+  .fil-suite::after,
+  .hero-repere::before {
+    animation: none;
+  }
+  .hero-balayage { display: none; }
 }
 
 /* Bouton « Réserver un appel » de l'en-tête : le volt s'éclaircit à peine,
