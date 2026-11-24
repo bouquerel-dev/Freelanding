@@ -3,6 +3,7 @@ import type { HeroContent } from "@/lib/content/types";
 import { Grain } from "@/components/effects/Grain";
 import { lienRendezVous } from "@/content/rendez-vous";
 import { uiLabels } from "@/content/ui";
+import { AmbianceHeros } from "./hero/AmbianceHeros";
 import { JeConstruis } from "./hero/JeConstruis";
 import { VisageTrame } from "./hero/VisageTrame";
 
@@ -55,6 +56,7 @@ export function HeroSection({ hero }: { hero: HeroContent }) {
       className="relative isolate w-full overflow-hidden bg-background [font-family:var(--font-sans)]"
     >
       <Grain opacity={0.1} className="z-0" />
+      <AmbianceHeros />
 
       <div className="relative mx-auto flex min-h-[calc(100dvh/var(--zoom-ecran,1))] w-full max-w-[1440px] flex-col px-[20px] pt-[76px] pb-[44px] tablet:px-[30px] tablet:pt-[96px] desktop:min-h-[max(calc(100dvh/var(--zoom-ecran,1)),720px)] desktop:justify-center desktop:pt-[112px] desktop:pb-[72px]">
         {hero.person?.avatar ? (
@@ -62,14 +64,13 @@ export function HeroSection({ hero }: { hero: HeroContent }) {
             aria-hidden
             className="pointer-events-none relative z-0 -mx-[20px] h-[clamp(240px,40svh,360px)] tablet:-mx-[30px] tablet:h-[clamp(300px,40svh,440px)] desktop:absolute desktop:right-[30px] desktop:top-1/2 desktop:mx-0 desktop:h-[min(66vh,620px)] desktop:w-[50%] desktop:-translate-y-[40%]"
           >
-            {/* Champ de points d'où sort le visage : la trame continue au-delà de
-                lui, en très pâle, pour qu'il ne soit plus un bloc posé. */}
-            <span className="hero-champ absolute -inset-x-[8%] -inset-y-[18%] hidden desktop:block" />
             <div className="hero-visage absolute inset-0">
               <VisageTrame src="/images/eliott-portrait-large.jpg" centreOrdinateur={0.44} />
             </div>
-            {/* Repères de viseur aux quatre coins du cadre. */}
+            {/* Repères de viseur aux quatre coins du cadre, et le trait volt qui
+                le balaie de haut en bas (ordinateur seulement). */}
             <span className="hero-viseur absolute inset-0 hidden desktop:block" />
+            <span className="hero-balayage absolute inset-0 hidden desktop:block" />
             {hero.faceNotes?.map((note, i) => (
               <span
                 key={note}
@@ -100,16 +101,18 @@ export function HeroSection({ hero }: { hero: HeroContent }) {
           <h1
             id="services"
             data-part="hero-titre"
-            className="hero-fond m-0 mt-[14px] text-[clamp(34px,calc(9.4vw/var(--zoom-ecran,1)),48px)] font-semibold leading-[0.98] tracking-[-0.055em] text-foreground tablet:mt-[20px] tablet:text-[clamp(48px,calc(4.3vw/var(--zoom-ecran,1)),62px)]"
+            className="hero-fond m-0 mt-[14px] text-[clamp(28px,calc((100vw/var(--zoom-ecran,1)_-_40px)/10.9),48px)] font-semibold leading-[0.98] tracking-[-0.055em] text-foreground tablet:mt-[20px] tablet:text-[clamp(48px,calc(4.3vw/var(--zoom-ecran,1)),62px)]"
             style={delai(120)}
           >
             {avant}
-            {/* Une phrase sur deux lignes à partir de la tablette ; sur
-                téléphone, elle se coupe d'elle-même. */}
+            {/* Une phrase sur deux lignes, coupée après « prouver, » partout.
+                Sur téléphone, la taille suit la largeur utile (écran moins
+                les 40 px de marges) : la seconde ligne, la plus longue, mesure
+                10,45 em, d'où le diviseur de 10,9 qui garde une marge. */}
             {apres ? (
               <>
                 {" "}
-                <br className="hidden tablet:inline" />
+                <br />
                 {apres}
               </>
             ) : null}
@@ -152,6 +155,12 @@ export function HeroSection({ hero }: { hero: HeroContent }) {
             ) : null}
           </div>
         </div>
+
+        {/* Début du fil qui descend vers « Ce que je construis » (ordinateur). */}
+        <span
+          aria-hidden
+          className="fil-suite fil-suite-debut pointer-events-none absolute bottom-0 left-[30px] hidden h-[96px] w-px desktop:block"
+        />
       </div>
     </section>
   );

@@ -47,6 +47,26 @@ describe("HeroSection", () => {
     expect(h1).not.toContain("text-accent");
   });
 
+  it("coupe le titre après « prouver, » à toutes les tailles, téléphone compris", () => {
+    const h1 = html.slice(html.indexOf("<h1"), html.indexOf("</h1>"));
+    expect(h1).toContain("prouver, <br/>confiez");
+    expect(h1).not.toContain("hidden tablet:inline");
+    // Sur téléphone, la taille suit la largeur utile pour tenir la seconde ligne.
+    expect(h1).toContain("calc((100vw/var(--zoom-ecran,1)_-_40px)/10.9)");
+  });
+
+  it("pose le fond vivant sous le texte, sur ordinateur seulement, en décor", () => {
+    const balise = html.match(/<div[^>]*data-part="hero-ambiance"[^>]*>/u)?.[0] ?? "";
+    expect(balise).toContain('aria-hidden="true"');
+    expect(balise).toMatch(/class="[^"]*pointer-events-none[^"]*hidden[^"]*desktop:block/u);
+    for (const couche of ["amb-champ", "amb-halo", "amb-ronde", "amb-lampe"]) expect(html).toContain(couche);
+    expect(html).toContain("hero-balayage");
+  });
+
+  it("amorce le fil vers la section suivante sur la colonne du texte", () => {
+    expect(html).toMatch(/fil-suite fil-suite-debut[^"]*left-\[30px\][^"]*hidden[^"]*desktop:block/u);
+  });
+
   it("borne la largeur du héros sur la colonne de 1440 du site", () => {
     expect(html).toContain("max-w-[1440px]");
   });
