@@ -5,6 +5,7 @@ import { lienRendezVous } from "@/content/rendez-vous";
 import { uiLabels } from "@/content/ui";
 import { AmbianceHeros } from "./hero/AmbianceHeros";
 import { JeConstruis } from "./hero/JeConstruis";
+import { PortraitCouleur } from "./hero/PortraitCouleur";
 import { VisageTrame } from "./hero/VisageTrame";
 
 /**
@@ -102,6 +103,8 @@ export function HeroSection({ hero }: { hero: HeroContent }) {
             aria-hidden
             className="pointer-events-none relative z-0 -mx-[20px] h-[clamp(240px,40svh,360px)] tablet:-mx-[30px] tablet:h-[clamp(300px,40svh,440px)] desktop:absolute desktop:right-[30px] desktop:top-1/2 desktop:mx-0 desktop:h-[min(66vh,620px)] desktop:w-[50%] desktop:-translate-y-[40%]"
           >
+            {/* Portrait couleur sur ordinateur, la trame n'apparaît que sous la souris. */}
+            <PortraitCouleur src="/images/eliott-portrait-couleur.webp" />
             <div className="hero-visage absolute inset-0">
               <VisageTrame src="/images/eliott-portrait-large.jpg" centreOrdinateur={0.44} />
             </div>

@@ -528,3 +528,11 @@ partage régénérée (le champ et le halo y apparaissent, immobiles).
 | impeccable · hiérarchie | Six traits en deux colonnes alignées (titre et bord), chacun accroché par un point à une partie du visage ; remplace les trois repères numérotés jugés « argumentaire » |
 | emil-design-eng · origine | Le trait se trace depuis le point vers l'étiquette ; mouvement réduit : tracé immédiat |
 | taste-skill · lisibilité | Halo sombre sous les étiquettes posées sur la trame |
+
+### Portrait couleur au héros, 2026-11-24
+
+| Règle | Effet |
+|---|---|
+| impeccable · confiance | Vraie photo couleur sur ordinateur (choix d'Eliott), détourée, calée sur les six points des traits |
+| emil-design-eng · mouvement | Trame volt révélée seulement sous la souris, photo en fondu 500 ms à l'arrivée, sans fondu en mouvement réduit |
+| taste-skill · performance | Photo peinte dans une toile : le titre reste le LCP ; jamais chargée sur téléphone |

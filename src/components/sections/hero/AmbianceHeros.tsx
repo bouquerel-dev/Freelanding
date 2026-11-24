@@ -38,6 +38,10 @@ export function AmbianceHeros() {
     const m = motif.current;
     const section = r?.closest("section");
     if (!r || !l || !m || !section) return;
+    // La trame du visage n'apparaît que sous la lampe : on lui donne la
+    // position de la lampe dans son propre repère.
+    const visage = section.querySelector<HTMLElement>(".hero-visage");
+    const decalage = { x: 0, y: 0 };
 
     const ordinateur = window.matchMedia("(min-width: 1200px)");
     const vivant =
@@ -52,6 +56,8 @@ export function AmbianceHeros() {
     const poser = () => {
       l.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0)`;
       m.style.transform = `translate3d(${-pos.x}px, ${-pos.y}px, 0)`;
+      visage?.style.setProperty("--lx", `${pos.x - decalage.x}px`);
+      visage?.style.setProperty("--ly", `${pos.y - decalage.y}px`);
     };
 
     const avancer = () => {
@@ -78,6 +84,11 @@ export function AmbianceHeros() {
       const b = r.getBoundingClientRect();
       cible.x = e.clientX - b.left;
       cible.y = e.clientY - b.top;
+      if (visage) {
+        const v = visage.getBoundingClientRect();
+        decalage.x = v.left - b.left;
+        decalage.y = v.top - b.top;
+      }
       if (section.dataset.pointeur !== "1") {
         // Première entrée : la lampe naît sous la souris, sans traverser l'écran.
         section.dataset.pointeur = "1";
@@ -89,6 +100,8 @@ export function AmbianceHeros() {
     };
     const quitter = () => {
       section.dataset.pointeur = "";
+      visage?.style.removeProperty("--lx");
+      visage?.style.removeProperty("--ly");
     };
     const obs = new IntersectionObserver(([entree]) => {
       visible = Boolean(entree?.isIntersecting);

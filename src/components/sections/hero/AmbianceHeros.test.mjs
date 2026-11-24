@@ -45,10 +45,20 @@ function installer({ reduit = false, fin = true, ordinateur = true } = {}) {
   etat.restaurer = () => Object.assign(globalThis, precedent);
 }
 
-async function monter({ dansSection = true } = {}) {
+async function monter({ dansSection = true, visage = false } = {}) {
   const hote = document.createElement(dansSection ? "section" : "div");
   document.body.append(hote);
-  const racine = createRoot(hote);
+  let conteneur = hote;
+  if (visage) {
+    // La trame du visage, décalée de 600 px et 150 px dans le héros.
+    const v = document.createElement("div");
+    v.className = "hero-visage";
+    v.getBoundingClientRect = () => ({ left: 700, top: 200, width: 400, height: 500 });
+    conteneur = document.createElement("div");
+    hote.append(v, conteneur);
+    etat.visage = v;
+  }
+  const racine = createRoot(conteneur);
   await act(async () => racine.render(createElement(AmbianceHeros)));
   etat.racine = racine;
   etat.section = hote;
@@ -108,6 +118,18 @@ describe("AmbianceHeros", () => {
     expect(images).toBeLessThan(500);
     expect(etat.lampe.style.transform).toBe("translate3d(500px, 300px, 0)");
     expect(etat.images).toHaveLength(0);
+  });
+
+  it("éclaire la trame du visage sous la lampe, dans le repère du visage", async () => {
+    installer();
+    await monter({ visage: true });
+    souris(900, 400);
+    // Lampe à (800, 350) dans le héros, visage à (600, 150) : (200, 200) dans le visage.
+    expect(etat.visage.style.getPropertyValue("--lx")).toBe("200px");
+    expect(etat.visage.style.getPropertyValue("--ly")).toBe("200px");
+    etat.section.dispatchEvent(new window.Event("pointerleave"));
+    expect(etat.visage.style.getPropertyValue("--lx")).toBe("");
+    expect(etat.visage.style.getPropertyValue("--ly")).toBe("");
   });
 
   it("rend la main à la ronde quand la souris quitte le héros", async () => {
