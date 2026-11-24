@@ -1186,7 +1186,6 @@ html[data-consent-choisi] [data-consent-attente] {
   border-radius: 50%;
   -webkit-mask-image: radial-gradient(circle, #000 0%, transparent 70%);
   mask-image: radial-gradient(circle, #000 0%, transparent 70%);
-  will-change: transform;
   opacity: 0;
   transition: opacity 600ms ease;
 }
@@ -1197,7 +1196,6 @@ html[data-consent-choisi] [data-consent-attente] {
   width: 2400px;
   height: 1600px;
   background-image: radial-gradient(circle, color-mix(in oklab, var(--accent) 62%, transparent) 1.1px, transparent 1.7px);
-  will-change: transform;
 }
 /* Ronde : sans souris, une lampe plus large fait lentement le tour du héros.
    Le motif fait le chemin inverse pour rester calé sur le champ ; tout est en
