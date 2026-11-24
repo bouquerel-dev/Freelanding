@@ -107,18 +107,20 @@ describe("accueil", () => {
     expect(duree(65)).toBe("1\u00A0h\u00A005");
   });
 
-  test("le titre dit l'avantage face aux agences, en deux lignes", () => {
+  test("le titre dit comment il travaille, en deux lignes (version 2 « trame géante »)", () => {
     expect(homeContent.hero.doors ?? []).toHaveLength(0);
-    expect(homeContent.hero.title).toBe("Plus de qualité qu’une agence, pour moins cher.");
+    expect(homeContent.hero.title).toBe("Un développeur, une équipe d’IA.");
     expect(homeContent.hero.titleLines?.join(" ")).toBe(homeContent.hero.title);
     expect(homeContent.about.title).not.toBe(homeContent.hero.title);
     expect(homeContent.about.titleLines?.join(" ")).toBe(homeContent.about.title);
   });
 
   test("le haut de page dit qui, quoi et comment : sites, logiciels et IA au même rang", () => {
-    expect(homeContent.hero.eyebrow).toMatch(/Eliott Bouquerel/u);
+    expect(homeContent.hero.eyebrow).toBe("Bonjour, je suis Eliott Bouquerel");
     expect(homeContent.hero.buildItems).toEqual(["des sites internet", "des logiciels métier", "des automatisations IA"]);
-    expect(homeContent.hero.subtitle).toMatch(/IA/u);
+    // Une seule personne en face, des agents qui écrivent, Eliott qui décide.
+    expect(homeContent.hero.subtitle).toMatch(/une seule personne/u);
+    expect(homeContent.hero.subtitle).toMatch(/je décide et je vérifie/u);
   });
 
   test("le héros dit ce qui explique le prix, sans montant", () => {

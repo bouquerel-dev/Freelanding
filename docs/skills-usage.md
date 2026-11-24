@@ -434,6 +434,29 @@ schéma, le modèle Framer « Maël Blanc » pour la présence de la personne).
 | taste-skill · formes | Coins arrondis partout (tokens `--radius-tag/control/card/panel`) | L'ADN carré est abandonné, couleurs et typo inchangées |
 | li-human | Textes du héros et du schéma | Contrôle local passé avant intégration |
 
+## Héros version 2 « trame géante » et en-tête épuré, 2026-11-24
+
+Eliott a retenu la version 2 parmi trois maquettes, en notant qu'elle était
+« totalement étirée ». Captures avant/après (hors Git) dans `docs/heros-pistes/captures/`
+(`v2-avant-*`, `v2-apres-1280|1440|1920|390`). La critique impeccable s'est
+faite d'une seule tête sur les captures, sans les deux sous-agents isolés que
+prévoit `critique.md` : le périmètre (un héros, un bouton) ne justifiait pas
+leur coût.
+
+| Skill · règle | Constat sur le rendu | Ce qui a changé |
+|---|---|---|
+| impeccable · layout (conteneur borné) | Maquette : texte collé au bord gauche, visage collé au bord droit, écart qui grandit avec l'écran | Héros dans la colonne de 1440 du site ; à 1920 texte et visage restent ensemble au centre |
+| impeccable · règle de la vérité de l'image | La maquette forçait un rapport vertical de 0,95 sur une photo de 0,665 : visage étiré de 43 % | Échelle uniforme, la hauteur de la photo remplit la toile ; la toile se recadre, le visage ne se déforme plus |
+| impeccable · hiérarchie | Le visage débordait sous le menu et rivalisait avec le h1 | Visage sous l'en-tête (96 px), points un peu plus sombres (opacité 0,14 à 0,86), fondu vers le texte et vers le bas |
+| impeccable · adapt (mobile) | Visage trop grossier à 390 (une vingtaine de points de large) | Écart entre points calculé sur la taille rendue (5 px sur téléphone, 8 px sur ordinateur), visage au-dessus du texte, fondu vers le bas |
+| impeccable · distill | Bandeau défilant de la maquette, baseline et séparateur de l'en-tête | Retirés : le héros dit déjà ce qu'Eliott fait |
+| taste-skill · anti-centrage, point focal relié au produit | Héros centré de la version précédente | Texte à gauche, visage à droite : Eliott vend sa personne, le visage est le point focal |
+| taste-skill · hiérarchie par opacité | Salutation 100 %, nom en volt, sous-titre 60 % | Lecture : qui, quoi, comment |
+| emil-design-eng · mouvement décoratif amorti | Trame qui suit la souris | Position amortie (12 % par image), boucle arrêtée au repos et hors écran, rien en mouvement réduit |
+| emil-design-eng · bouton qui répond | Bouton de l'en-tête : bloc volt plaqué de 30 px | 40 px, rayon `control`, pastille encre concentrique (`tag`) avec flèche qui avance au survol, appui à 97 %, anneau volt au clavier, survol réservé aux pointeurs fins |
+
+LCP vérifié au navigateur à 1440 et 390 : le h1 (`hero-titre`), jamais la toile.
+
 ## Bloc contact du pied de page, 2026-11-24 : appel d'abord, en trois étapes
 
 Demande d'Eliott : le bloc rendez-vous / message était pénible (sujet à choisir
