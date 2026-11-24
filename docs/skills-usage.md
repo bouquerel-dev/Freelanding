@@ -415,3 +415,21 @@ Captures avant et après, 390 × 844, 1024 × 768, 1440 × 900, 1920, 2240 et
 | emil · une forme qui glisse | Onglets de la démo | Pastille déplacée en `transform` 280 ms `cubic-bezier(0.23, 1, 0.32, 1)`, étapes en fondu décalé 70 ms, rien en mouvement réduit |
 | impeccable · polish | Fil d'Ariane en capitales et barres obliques sous le menu en capitales et barres obliques | En pied de page, casse normale, chevrons, sur le fond clair de la FAQ |
 | impeccable · responsive | En 4K, héros à 22 px dans 3840, cartes projet de 2000 px de haut, logo et menu à 1 200 px du texte | `zoom` par paliers de 160 à 320 px au-delà de 2048 (rendu 1920 net en 4K), unités d'écran compensées, en-tête calé sur la colonne de 1440 |
+
+## Refonte de l'accueil, 2026-11-24 : un expert, pas une solution
+
+Process repris de la vidéo de Chase AI (goût, outils, direction, réglages) :
+moodboard de 15 héros tirés des galeries choisies par Eliott, trois pistes
+maquettées côte à côte, puis le héros retenu d'après ses retours et ses
+références (rubenmarcus.dev pour le discours, conduit.framer.ai pour le
+schéma, le modèle Framer « Maël Blanc » pour la présence de la personne).
+
+| Skill · règle | Où | Effet |
+|---|---|---|
+| impeccable · shape, trois directions en mode départ | Pistes maquettées avant le code | Eliott a choisi sur rendu, pas sur description |
+| impeccable · règle cassée exprès | Visage dans le h1, au milieu de la ligne | On voit qui parle avant de lire l'offre ; raison : Eliott vend sa personne, pas un produit |
+| impeccable · interdits (barre de preuve, métrique de héros) | Barre du bas retirée | Le premier écran tient en une idée |
+| emil-design-eng · mouvement utile | Trame du visage qui suit la souris, ligne « Je construis » brouillée puis posée, liens du schéma qui coulent | Coupés en mouvement réduit ; le lecteur d'écran lit la liste, jamais l'animation |
+| emil-design-eng · entrée liée au défilement | Encadré blanc de « Moi, c'est Eliott » (`animation-timeline: view()`) | Rien quand le navigateur ne le gère pas |
+| taste-skill · formes | Coins arrondis partout (tokens `--radius-tag/control/card/panel`) | L'ADN carré est abandonné, couleurs et typo inchangées |
+| li-human | Textes du héros et du schéma | Contrôle local passé avant intégration |

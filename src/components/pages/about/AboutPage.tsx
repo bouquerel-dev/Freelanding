@@ -291,6 +291,7 @@ export function AboutStory({ about }: { about: AboutContent }) {
                    345 × 1,12 = 386 px, c'est-à-dire 27vw à 1440. 28vw laisse la
                    marge, sans continuer à servir 40 % de pixels inutiles. */
                 sizes="(min-width: 810px) 28vw, 100vw"
+                className="rounded-card"
                 /* Même entrée que les portraits d'équipe : la source part de
                    `scale 1.1` et d'une opacité nulle. Relevé sur le conteneur
                    `.framer-1ambeg8-container` de 345x436 à 1440. */
@@ -425,7 +426,7 @@ export function AboutParcours({
                           {etape.domaines.map((domaine) => (
                             <li
                               key={domaine}
-                              className="border border-black/15 px-[8px] py-[4px] text-[12px] font-medium leading-[1.2] tracking-[-0.01em] text-background"
+                              className="rounded-tag border border-black/15 px-[8px] py-[4px] text-[12px] font-medium leading-[1.2] tracking-[-0.01em] text-background"
                             >
                               {domaine}
                             </li>

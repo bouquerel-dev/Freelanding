@@ -14,16 +14,15 @@ import { euros, repereAgenceLogiciel, SUR_DEVIS } from "./offre.ts";
 describe("accueil", () => {
   const ordre = homeContent.sectionOrder;
 
-  test("les logos vivent dans le héros, plus dans une section à part", () => {
+  test("plus de logos sous le héros : la barre du bas est partie (2026-11-24)", () => {
     expect(ordre).not.toContain("logoBand");
     expect(ordre[0]).toBe("hero");
-    expect(homeContent.logoBand?.logos.length).toBeGreaterThan(0);
   });
 
-  test("l'ordre vend d'abord le gain, puis qui, les preuves et les garanties", () => {
+  test("l'ordre : qui et quel avantage, ce que je construis, puis les preuves", () => {
     expect(ordre).toEqual([
       "hero",
-      "logiciel",
+      "schema",
       "moyens",
       "about",
       "showreel",
@@ -34,8 +33,8 @@ describe("accueil", () => {
       "articles",
     ]);
     expect(new Set(ordre).size).toBe(ordre.length);
-    // « works » se rend depuis `featuredWorkSlugs`, les autres depuis leur clef.
-    for (const section of ordre.filter((nom) => nom !== "works")) {
+    // « works » se rend depuis `featuredWorkSlugs`, « schema » depuis `schema.ts`.
+    for (const section of ordre.filter((nom) => nom !== "works" && nom !== "schema")) {
       expect(homeContent[section], `la section « ${section} » n'a pas de contenu`).toBeDefined();
     }
     expect(homeContent.featuredWorkSlugs.length).toBeGreaterThan(0);
@@ -51,16 +50,9 @@ describe("accueil", () => {
     expect(JSON.stringify(homeContent.hero)).not.toContain("Würth");
   });
 
-  test("le héros montre ce qu'une agence facture, sourcé", () => {
-    const comparaison = homeContent.hero.comparison;
-    const [agence, moi] = comparaison?.lignes ?? [];
-    expect(comparaison?.sujet).toMatch(/logiciel métier/u);
-    // Du premier outil à la médiane d'un projet, décision d'Eliott du 2026-11-01.
-    expect(agence?.prix).toContain(euros(repereAgenceLogiciel.premierOutilMin).replace(/\s€$/u, ""));
-    expect(agence?.prix).toContain(euros(repereAgenceLogiciel.mediane));
-    expect(moi?.prix).toBe(SUR_DEVIS);
-    expect(moi?.fort).toBe(true);
-    expect(comparaison?.source.href).toBe(repereAgenceLogiciel.source.href);
+  test("le héros ne chiffre plus ce qu'une agence facture (2026-11-24)", () => {
+    expect(homeContent.hero.comparison).toBeUndefined();
+    expect(JSON.stringify(homeContent.hero)).not.toMatch(/\d\s?000/u);
   });
 
   test("la bande des logos ne porte aucun intitulé qui en ferait des clients", () => {
@@ -78,8 +70,6 @@ describe("accueil", () => {
   test("les offres ne sont pas redites sous le héros, chacune a sa section", () => {
     expect(ordre).not.toContain("services");
     expect(ordre.indexOf("showreel")).toBe(ordre.indexOf("about") + 1);
-    expect(ordre).toContain("logiciel");
-    expect(homeContent.logiciel?.cta.href).toBe("#moyens");
   });
 
   test("trois moyens rendent le temps, sans aucun nom de prospect", () => {
@@ -98,10 +88,6 @@ describe("accueil", () => {
     expect(jours.map((j) => j.rendu)).toEqual([120, 144, 72, 96, 96].map(duree));
   });
 
-  test("le héros dit ce qu'une agence facture et chiffre l'écart", () => {
-    expect(homeContent.hero.subtitle).toContain("agence");
-    expect(homeContent.hero.comparison.lignes[0].prix).toContain("30");
-  });
 
   test("la démonstration montre un gain dérivé de ses hypothèses, jamais écrit à la main", () => {
     const demo = homeContent.logiciel?.demo;
@@ -121,22 +107,18 @@ describe("accueil", () => {
     expect(duree(65)).toBe("1\u00A0h\u00A005");
   });
 
-  test("le titre du héros est une seule porte, vers les trois moyens", () => {
-    const portes = homeContent.hero.doors ?? [];
-    expect(portes.map((porte) => porte.href)).toEqual(["#logiciel"]);
-    expect(homeContent.hero.title).toBe("L’IA recopie, trie, relance. Votre équipe avance.");
+  test("le titre dit l'avantage face aux agences, en deux lignes", () => {
+    expect(homeContent.hero.doors ?? []).toHaveLength(0);
+    expect(homeContent.hero.title).toBe("Plus de qualité qu’une agence, pour moins cher.");
     expect(homeContent.hero.titleLines?.join(" ")).toBe(homeContent.hero.title);
-    expect(portes[0]?.price).toBe("Voir ce que vous y gagnez");
     expect(homeContent.about.title).not.toBe(homeContent.hero.title);
     expect(homeContent.about.titleLines?.join(" ")).toBe(homeContent.about.title);
   });
 
-  test("le haut de page dit quoi, pour qui et le gain", () => {
-    const titre = homeContent.hero.title;
-    expect(titre).toMatch(/IA/u);
-    expect(titre).toMatch(/recopie/iu);
-    expect(homeContent.hero.subtitle).toMatch(/je construis le logiciel/iu);
-    expect(homeContent.hero.eyebrow).toMatch(/PME/u);
+  test("le haut de page dit qui, quoi et comment : sites, logiciels et IA au même rang", () => {
+    expect(homeContent.hero.eyebrow).toMatch(/Eliott Bouquerel/u);
+    expect(homeContent.hero.buildItems).toEqual(["des sites internet", "des logiciels métier", "des automatisations IA"]);
+    expect(homeContent.hero.subtitle).toMatch(/IA/u);
   });
 
   test("le héros dit ce qui explique le prix, sans montant", () => {

@@ -159,7 +159,7 @@ export function ComparateurAvantApres({
   return (
     <div ref={cadre} className={className}>
       <div
-        className="relative w-full select-none overflow-hidden bg-white"
+        className="relative w-full select-none overflow-hidden rounded-card bg-white"
         style={{ aspectRatio: ratio }}
       >
         {/* État APRÈS en dessous, sur toute la surface. */}

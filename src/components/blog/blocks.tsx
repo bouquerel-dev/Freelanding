@@ -71,7 +71,7 @@ export function Figure({
         height={height}
         sizes="(min-width: 810px) 690px, 100vw"
         priority={priority}
-        className="block h-auto w-full"
+        className="block h-auto w-full rounded-card"
       />
       {caption ? <figcaption className={LEGENDE}>{caption}</figcaption> : null}
     </figure>
@@ -98,7 +98,7 @@ export function Video({
   return (
     <figure className={ECART}>
       <video
-        className="block h-auto w-full"
+        className="block h-auto w-full rounded-card"
         src={src}
         poster={poster}
         /* Les captures d'article sont muettes : pas de sous-titres a fournir

@@ -75,7 +75,7 @@ export function LogicielSection({
           </Reveal>
           <Link
             href={logiciel.cta.href}
-            className="logiciel-cta flex h-[48px] w-fit items-center justify-center bg-accent px-[20px] text-[13px] font-semibold uppercase leading-none tracking-[-0.01em] text-accent-ink no-underline"
+            className="logiciel-cta flex h-[48px] w-fit items-center justify-center rounded-control bg-accent px-[20px] text-[13px] font-semibold uppercase leading-none tracking-[-0.01em] text-accent-ink no-underline"
           >
             {logiciel.cta.label}
           </Link>
@@ -93,7 +93,7 @@ export function LogicielSection({
         {/* La citation signée, en pied : l'auteur à gauche, la phrase à droite. */}
         <div className="flex items-end gap-[20px] tablet:pr-[24px] desktop:gap-[30px] desktop:pr-[30px]">
           {portrait ? (
-            <div className="relative h-[120px] w-[98px] flex-none overflow-hidden desktop:h-[150px] desktop:w-[122px]">
+            <div className="relative h-[120px] w-[98px] flex-none overflow-hidden rounded-card desktop:h-[150px] desktop:w-[122px]">
               <ParallaxBackdrop src={portrait.src} overshoot={0.06} label={portrait.alt} reveal />
             </div>
           ) : null}

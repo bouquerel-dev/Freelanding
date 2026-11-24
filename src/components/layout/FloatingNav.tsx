@@ -60,7 +60,7 @@ const REVEAL_Y = 70;
  * Styles computed exacts (live) :
  *   - Panneau `e5omt8` : `bg rgba(23,23,23,0.89)`, `backdrop-filter blur(9px)`,
  *     `padding 16px`, `gap 36px`, bord 1px `rgba(255,255,255,0.1)` (Framer data-border),
- *     `border-radius 0`. max-width 400px.
+ *     `border-radius` 20px (token `card`). max-width 400px.
  *     Le bord est un PSEUDO-ÉLÉMENT, pas un `border` de boîte : la source le
  *     dessine via `[data-border=true]::after` (`position:absolute; inset:0`), et
  *     `.framer-e5omt8` a bien `border-width: 0`. Notre `border` ajoutait 2 px de
@@ -327,7 +327,7 @@ export function FloatingNav({ site }: { site: SiteConfig }) {
           // 277,4 — c'est exactement le résultat d'une mise à l'échelle centrée
           // (655,9 - 138,7 + 20). `origin-bottom` le posait à 550,6, soit 13 px
           // trop bas pendant toute l'ouverture.
-          className={`absolute bottom-[70px] left-1/2 w-[min(400px,calc(calc(100vw/var(--zoom-ecran,1))-40px))] overflow-hidden bg-[rgba(23,23,23,0.89)] transition-[opacity,transform,backdrop-filter] duration-300 before:pointer-events-none before:absolute before:inset-0 before:z-[2] before:border before:border-[rgba(255,255,255,0.1)] before:content-[''] motion-reduce:transition-none ${
+          className={`absolute bottom-[70px] left-1/2 w-[min(400px,calc(calc(100vw/var(--zoom-ecran,1))-40px))] overflow-hidden rounded-card bg-[rgba(23,23,23,0.89)] transition-[opacity,transform,backdrop-filter] duration-300 before:pointer-events-none before:absolute before:inset-0 before:z-[2] before:rounded-[inherit] before:border before:border-[rgba(255,255,255,0.1)] before:content-[''] motion-reduce:transition-none ${
             open
               ? "pointer-events-auto opacity-100 [backdrop-filter:blur(9px)]"
               : "pointer-events-none opacity-0 [backdrop-filter:blur(0px)]"
@@ -413,7 +413,7 @@ export function FloatingNav({ site }: { site: SiteConfig }) {
               href={primaryCta.href}
               tabIndex={tab}
               onClick={closeMenu}
-              className="group relative flex h-[50px] w-full items-center justify-center overflow-hidden bg-background px-[16px] no-underline"
+              className="group relative flex h-[50px] w-full items-center justify-center overflow-hidden rounded-control bg-background px-[16px] no-underline"
             >
               {/* 14,4 px et non 15 : le cadre clippant de la source mesure
                   12,97 px sous l'échelle 0,9 du panneau, soit 14,41 px avant
@@ -447,7 +447,7 @@ export function FloatingNav({ site }: { site: SiteConfig }) {
           aria-expanded={open}
           aria-controls={PANEL_ID}
           // Focus : voir `src/app/focus.css` (source de vérité unique).
-          className="group pointer-events-auto relative flex h-[50px] w-[50px] flex-none items-center justify-center rounded-[1px] border border-[rgba(255,255,255,0.1)]"
+          className="group pointer-events-auto relative flex h-[50px] w-[50px] flex-none items-center justify-center rounded-control border border-[rgba(255,255,255,0.1)]"
         >
           {/* Fond de la pastille : s'assombrit au survol, de rgba(23,23,23,0.8) à
               rgba(20,20,20,0.8) (mesuré sur le live — très subtil, 3/255). */}
@@ -469,7 +469,7 @@ export function FloatingNav({ site }: { site: SiteConfig }) {
              * conservé, il travaille encore sur les fonds sombres et sur la
              * vidéo du hero.
              */
-            className="absolute inset-[1px] bg-[rgba(23,23,23,0.96)] transition-colors duration-[385ms] [backdrop-filter:blur(8px)] group-hover:bg-[rgba(20,20,20,0.96)] motion-reduce:transition-none"
+            className="absolute inset-[1px] rounded-[11px] bg-[rgba(23,23,23,0.96)] transition-colors duration-[385ms] [backdrop-filter:blur(8px)] group-hover:bg-[rgba(20,20,20,0.96)] motion-reduce:transition-none"
           />
           <span className="relative z-[1] flex items-center justify-center">
             <BurgerIcon open={open} />

@@ -620,6 +620,10 @@ export interface HeroContent {
   proofs?: readonly HeroProof[];
   /** Le prix d'une agence et le mien, pour le même livrable. */
   comparison?: HeroComparaison;
+  /** « Je construis » : début de la ligne qui fait défiler les prestations. */
+  buildPrefix?: string;
+  /** Les prestations qui défilent après `buildPrefix`, la première rendue par le serveur. */
+  buildItems?: readonly string[];
 }
 
 /**

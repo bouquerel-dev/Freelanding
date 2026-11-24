@@ -74,9 +74,9 @@ const TYPE_CHAMP: Readonly<Record<(typeof CHAMPS_CONTACT)[number], string>> = {
 const CLASSE_LIBELLE =
   "text-[12px] font-medium uppercase leading-[1.2] tracking-[0.02em] text-foreground/70";
 const CLASSE_CHAMP =
-  "w-full border border-white/45 bg-white/[0.04] px-[16px] text-[16px] font-medium leading-[1.3] tracking-[-0.01em] text-foreground transition-colors placeholder:text-white/55 hover:border-white/60 focus:border-accent aria-invalid:border-accent motion-reduce:transition-none";
+  "w-full rounded-control border border-white/45 bg-white/[0.04] px-[16px] text-[16px] font-medium leading-[1.3] tracking-[-0.01em] text-foreground transition-colors placeholder:text-white/55 hover:border-white/60 focus:border-accent aria-invalid:border-accent motion-reduce:transition-none";
 const CLASSE_PRINCIPAL =
-  "flex h-[56px] w-full items-center justify-center gap-[10px] bg-accent px-[30px] text-[12px] font-semibold uppercase leading-[1.2] tracking-[0.01em] text-accent-ink transition-[opacity,transform] duration-150 ease-out active:scale-[0.98] disabled:cursor-progress disabled:opacity-60 motion-reduce:transition-none tablet:w-fit";
+  "flex h-[56px] w-full items-center justify-center gap-[10px] rounded-control bg-accent px-[30px] text-[12px] font-semibold uppercase leading-[1.2] tracking-[0.01em] text-accent-ink transition-[opacity,transform] duration-150 ease-out active:scale-[0.98] disabled:cursor-progress disabled:opacity-60 motion-reduce:transition-none tablet:w-fit";
 
 /* ─── Format ───────────────────────────────────────────────────────────── */
 
@@ -236,7 +236,7 @@ function Question({
           alt={t.auteur.nom}
           width={36}
           height={36}
-          className="mt-[2px] size-[36px] flex-none object-cover grayscale"
+          className="mt-[2px] size-[36px] flex-none rounded-tag object-cover grayscale"
         />
         <p
           ref={ref}
@@ -277,7 +277,7 @@ function Reponse({
           {t.modifier}
         </button>
       ) : null}
-      <p className="m-0 min-w-0 whitespace-pre-line break-words border border-accent/40 bg-accent/[0.08] px-[16px] py-[10px] text-[16px] font-medium leading-[1.4] tracking-[-0.01em] text-foreground">
+      <p className="m-0 min-w-0 whitespace-pre-line break-words rounded-card border border-accent/40 bg-accent/[0.08] px-[16px] py-[10px] text-[16px] font-medium leading-[1.4] tracking-[-0.01em] text-foreground">
         {/* La coupe vit sur un enfant : sur la bulle, le remplissage laissait
             dépasser le haut de la septième ligne. */}
         <span className={long ? "line-clamp-6" : undefined}>{texte}</span>
@@ -304,7 +304,7 @@ function Choix<T extends string>({
           key={option.valeur}
           type="button"
           onClick={() => onChoisir(option.valeur)}
-          className="flex min-h-[56px] items-center border border-white/25 bg-white/[0.02] px-[20px] py-[10px] text-left text-[16px] font-medium leading-[1.25] tracking-[-0.01em] text-foreground transition-[border-color,background-color,transform] duration-150 ease-out hover:border-accent hover:bg-accent/[0.06] active:scale-[0.985] motion-reduce:transition-none"
+          className="flex min-h-[56px] items-center rounded-control border border-white/25 bg-white/[0.02] px-[20px] py-[10px] text-left text-[16px] font-medium leading-[1.25] tracking-[-0.01em] text-foreground transition-[border-color,background-color,transform] duration-150 ease-out hover:border-accent hover:bg-accent/[0.06] active:scale-[0.985] motion-reduce:transition-none"
         >
           {option.libelle}
         </button>
@@ -387,7 +387,7 @@ function Resultat({
         {/* ACHAT DIRECT : surface sombre, chiffre en blanc. */}
         <section
           aria-labelledby="achat"
-          className="flex flex-col gap-[20px] border border-white/15 bg-surface-2 p-[20px] tablet:p-[30px]"
+          className="flex flex-col gap-[20px] rounded-card border border-white/15 bg-surface-2 p-[20px] tablet:p-[30px]"
         >
           <div className="flex flex-col gap-[4px]">
             <h2
@@ -420,7 +420,7 @@ function Resultat({
         {/* ABONNEMENT : aplat de l'accent, c'est l'offre qu'Eliott pousse. */}
         <section
           aria-labelledby="abonnement"
-          className="flex flex-col gap-[20px] bg-accent p-[20px] text-accent-ink tablet:p-[30px]"
+          className="flex flex-col gap-[20px] rounded-card bg-accent p-[20px] text-accent-ink tablet:p-[30px]"
         >
           <div className="flex flex-wrap items-start justify-between gap-[10px]">
             <div className="flex flex-col gap-[4px]">
@@ -437,7 +437,7 @@ function Resultat({
             <div
               role="group"
               aria-labelledby={idDuree}
-              className="flex border border-accent-ink/80"
+              className="flex overflow-hidden rounded-control border border-accent-ink/80"
             >
               <span id={idDuree} className="sr-only">
                 {r.abonnement.choixDuree}
@@ -896,8 +896,8 @@ export function OutilEstimation() {
                   aria-hidden
                   className="grid grid-cols-1 gap-[2px] tablet:grid-cols-2"
                 >
-                  <div className="h-[220px] animate-pulse border border-white/10 bg-surface-2 motion-reduce:animate-none" />
-                  <div className="h-[220px] animate-pulse bg-accent/25 motion-reduce:animate-none" />
+                  <div className="h-[220px] animate-pulse rounded-card border border-white/10 bg-surface-2 motion-reduce:animate-none" />
+                  <div className="h-[220px] animate-pulse rounded-card bg-accent/25 motion-reduce:animate-none" />
                 </div>
               ) : null}
             </form>

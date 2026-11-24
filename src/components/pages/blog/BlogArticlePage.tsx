@@ -69,7 +69,7 @@ function RelatedArticle({ post }: { post: BlogPost }) {
       // d'où 688 × 688 à 1440 une fois la gouttière de 4 px du grid déduite.
       // La bordure de 3 px qui simulait cette gouttière disparaît au profit du
       // vrai `gap-[4px]` posé sur la grille.
-      className="group relative flex aspect-square w-full flex-col items-start justify-end gap-[10px] overflow-clip bg-background p-[20px] text-foreground no-underline tablet:p-[30px]"
+      className="group relative flex aspect-square w-full flex-col items-start justify-end gap-[10px] overflow-clip rounded-card bg-background p-[20px] text-foreground no-underline tablet:p-[30px]"
     >
       {/* `.framer-15cbb0e` — cadre de la photo, sous le texte (z-1), masqué. */}
       <div

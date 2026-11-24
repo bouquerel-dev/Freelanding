@@ -52,7 +52,7 @@ function StartProjectCta({
   return (
     <Link
       href={href}
-      className="group relative flex h-[30px] flex-none flex-row items-center justify-center overflow-hidden bg-accent px-[10px] no-underline"
+      className="group relative flex h-[30px] flex-none flex-row items-center justify-center overflow-hidden rounded-control bg-accent px-[10px] no-underline"
     >
       {/* Swap vertical MESURÉ sur le live : course de 22 px (14,4 px de texte +
           7,6 px d'écart), ~300 ms, et surtout un vrai FONDU CROISÉ (opacité 1→0

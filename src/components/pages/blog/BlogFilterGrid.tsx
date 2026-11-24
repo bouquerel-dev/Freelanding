@@ -60,7 +60,7 @@ function BlogIndexCard({
       /* Carte CARRÉE sur la source (367×367 / 372×372 / 680,5×680,5) : c'est un
          `aspect-ratio: 1`, pas une hauteur minimale. La séparation entre cartes
          vient du `gap: 4px` de la grille sur fond clair, pas d'une bordure. */
-      className="group relative flex aspect-square overflow-hidden bg-background p-[20px] text-foreground no-underline tablet:p-[30px]"
+      className="group relative flex aspect-square overflow-hidden rounded-card bg-background p-[20px] text-foreground no-underline tablet:p-[30px]"
     >
       {/* Couverture sur-cadrée de 6 % et DÉRIVANTE au scroll, comme la source
           (`top:-6%; height:calc(100% + 12%)` sur les six cartes du listing).

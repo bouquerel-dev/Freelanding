@@ -134,7 +134,7 @@ export function WorkTestimonial({
             delay={0.15}
           >
             {avatar ? (
-              <div className="relative h-[162px] w-[130px] flex-none overflow-hidden">
+              <div className="relative h-[162px] w-[130px] flex-none overflow-hidden rounded-card">
                 <ImageProgressive
                   src={avatar.src}
                   alt={avatar.alt}

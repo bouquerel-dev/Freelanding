@@ -288,7 +288,7 @@ function AboutImage({ src, alt }: { src?: string; alt?: string }) {
     // descendant transformé la renvoyait bloquée à 1 (image figée en butée).
     <div
       ref={parallaxFrame}
-      className="relative z-[1] aspect-[0.637584] w-full self-start overflow-hidden"
+      className="relative z-[1] aspect-[0.637584] w-full self-start overflow-hidden rounded-[18px]"
     >
       {/* framer-1ambeg8-container : wrapper animé (scale 1.1 → 1, opacity 0 → 1) */}
       <motion.div
@@ -355,10 +355,15 @@ export function AboutSection({
 
   return (
     // framer-zwvlfw : section fond orange (--accent #ff4500), flex col centrée
+    /* DANS UN ENCADRÉ BLANC depuis le 2026-11-24, demande d'Eliott : la grande
+       section volt est posée dans un cadre blanc arrondi qui apparaît au
+       défilement (`.about-cadre`, `globals.css`). */
     <section
       data-section="about"
-      className="relative flex w-full flex-col items-center justify-start gap-[10px] overflow-hidden bg-accent p-[20px] [font-family:var(--font-sans)] tablet:p-[30px] tablet:px-[24px] desktop:px-[30px]"
+      className="relative w-full bg-background px-[12px] py-[24px] [font-family:var(--font-sans)] tablet:px-[24px] tablet:py-[40px] desktop:px-[30px]"
     >
+     <div className="about-cadre mx-auto w-full max-w-[1500px] rounded-[28px] bg-[#f4f4f1] p-[8px] tablet:rounded-[36px] tablet:p-[12px]">
+     <div className="relative flex w-full flex-col items-center justify-start gap-[10px] overflow-hidden rounded-[22px] bg-accent p-[20px] tablet:rounded-[28px] tablet:p-[30px] tablet:px-[24px] desktop:px-[30px]">
       {/* framer-1p37rei : Container (max 1440, aligné à gauche).
           IMMOBILE, et non plus en fondu. Relevé sur `/live-proxy` à 1440 par
           balayage fin (pas de 60 px) : ce conteneur garde `opacity: 100` et un
@@ -469,6 +474,8 @@ export function AboutSection({
 
       {/* framer-1jrf812 : filet vertical central (blanc 18 %) */}
       <div className="absolute left-[calc(50%-0.5px)] top-0 z-[1] h-full w-px hidden tablet:block bg-accent-ink opacity-[0.18]" />
+     </div>
+     </div>
     </section>
   );
 }

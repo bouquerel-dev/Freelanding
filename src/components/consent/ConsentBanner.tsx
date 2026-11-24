@@ -331,7 +331,7 @@ export function ConsentBanner() {
      Écrite une fois, elle ne peut pas diverger — c'est ce qui garantit que le
      refus ne se dégrade pas au fil des retouches. */
   const decisionButton =
-    "flex min-h-[40px] flex-1 items-center justify-center rounded-none px-[16px] " +
+    "flex min-h-[40px] flex-1 items-center justify-center rounded-control px-[16px] " +
     "text-[12px] font-semibold uppercase leading-[1.2] tracking-[-0.01em] " +
     "transition-opacity duration-200 hover:opacity-85 motion-reduce:transition-none";
 
@@ -386,8 +386,8 @@ export function ConsentBanner() {
             aria-describedby={descriptionId}
             /* Même matière que le panneau du menu flottant : fond très sombre
                translucide, flou d'arrière-plan, filet 1px en pseudo-élément
-               (jamais un `border`, qui décalerait la boîte), angles vifs. */
-            className="pointer-events-auto relative w-full max-w-[460px] overflow-hidden desktop:max-w-[min(520px,calc(50vw-211px))] bg-[rgba(23,23,23,0.94)] [backdrop-filter:blur(9px)] before:pointer-events-none before:absolute before:inset-0 before:z-[2] before:border before:border-[rgba(255,255,255,0.12)] before:content-['']"
+               (jamais un `border`, qui décalerait la boîte), angles arrondis (token `card`). */
+            className="pointer-events-auto relative w-full max-w-[460px] overflow-hidden rounded-card desktop:max-w-[min(520px,calc(50vw-211px))] bg-[rgba(23,23,23,0.94)] [backdrop-filter:blur(9px)] before:pointer-events-none before:absolute before:inset-0 before:z-[2] before:rounded-[inherit] before:border before:border-[rgba(255,255,255,0.12)] before:content-['']"
           >
             {/* HAUTEUR BORNÉE, avec défilement interne. Le panneau déplié
                 mesure près de 700 px : sur un téléphone court (360 × 640) il

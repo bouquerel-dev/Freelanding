@@ -148,7 +148,7 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
       <div className="relative flex w-full max-w-[570px] flex-col items-center tablet:[place-self:start]">
         {/* framer-l6zna5 : portrait net au premier plan (inset 40px) */}
         {avatar ? (
-          <div className="absolute inset-[40px] z-[2] overflow-hidden">
+          <div className="absolute inset-[40px] z-[2] overflow-hidden rounded-card">
             {/* Le portrait net est un calque de parallaxe sur la source
                 (`framer-l6zna5-container`, débord 6 %), pas une image posée à
                 plat : il dérivait donc de zéro pendant que le reste bougeait. */}
@@ -157,7 +157,7 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
         ) : null}
         {/* framer-1kgy2te : fond (même image en cover, assombrie + floutée) */}
         <div className="relative flex w-full flex-col">
-          <div className="relative z-[1] aspect-square w-full overflow-hidden">
+          <div className="relative z-[1] aspect-square w-full overflow-hidden rounded-card">
             {avatar ? (
               <img
                 src={avatar.src}

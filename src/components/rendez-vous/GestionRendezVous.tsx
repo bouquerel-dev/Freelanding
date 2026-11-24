@@ -153,7 +153,7 @@ export function GestionRendezVous({ jeton }: { jeton: string }) {
   if (mode === "annule" || mode === "deplace") {
     const succes = mode === "annule" ? gestion.succes.annule : gestion.succes.deplace;
     return (
-      <div className="flex flex-col gap-[16px] border border-accent bg-accent/[0.07] p-[20px]">
+      <div className="flex flex-col gap-[16px] rounded-card border border-accent bg-accent/[0.07] p-[20px]">
         <p
           ref={refTitre}
           tabIndex={-1}
@@ -182,7 +182,7 @@ export function GestionRendezVous({ jeton }: { jeton: string }) {
           </button>
           <button
             type="button"
-            className="flex h-[52px] w-full items-center justify-center border border-border px-[28px] text-[13px] font-semibold uppercase leading-[1.2] tracking-[-0.01em] text-foreground transition-colors hover:border-accent hover:text-accent motion-reduce:transition-none tablet:w-fit"
+            className="flex h-[52px] w-full items-center justify-center rounded-control border border-border px-[28px] text-[13px] font-semibold uppercase leading-[1.2] tracking-[-0.01em] text-foreground transition-colors hover:border-accent hover:text-accent motion-reduce:transition-none tablet:w-fit"
             onClick={() => changerMode("annuler")}
           >
             {gestion.actions.annuler}
@@ -202,7 +202,7 @@ export function GestionRendezVous({ jeton }: { jeton: string }) {
             value={motif}
             onChange={(evenement) => setMotif(evenement.target.value)}
             aria-describedby={`${instance}-motif-aide`}
-            className="min-h-[90px] w-full resize-y border border-white/25 bg-white/[0.04] p-[16px] text-[16px] font-medium leading-[1.2] tracking-[-0.01em] text-foreground transition-colors placeholder:text-white/45 hover:border-white/45 focus:border-accent tablet:text-[15px]"
+            className="min-h-[90px] w-full resize-y rounded-control border border-white/25 bg-white/[0.04] p-[16px] text-[16px] font-medium leading-[1.2] tracking-[-0.01em] text-foreground transition-colors placeholder:text-white/45 hover:border-white/45 focus:border-accent tablet:text-[15px]"
           />
           <p id={`${instance}-motif-aide`} className={CLASSE_TEXTE}>
             {gestion.motif.aide}
@@ -223,7 +223,7 @@ export function GestionRendezVous({ jeton }: { jeton: string }) {
               <button
                 type="button"
                 onClick={() => setTentative((valeur) => valeur + 1)}
-                className="min-h-[44px] border border-border px-[16px] text-[13px] font-medium uppercase leading-[1.2] tracking-[-0.01em] text-foreground transition-colors hover:border-accent hover:text-accent motion-reduce:transition-none"
+                className="min-h-[44px] rounded-control border border-border px-[16px] text-[13px] font-medium uppercase leading-[1.2] tracking-[-0.01em] text-foreground transition-colors hover:border-accent hover:text-accent motion-reduce:transition-none"
               >
                 {contenu.actions.reessayer}
               </button>

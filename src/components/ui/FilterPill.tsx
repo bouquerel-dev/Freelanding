@@ -43,7 +43,7 @@ export function FilterPill({
         // Aucun style de focus ici : il est porté par `src/app/focus.css`.
         // Voir en revanche `--focus-shadow-keep` plus bas, indispensable au
         // filet interne de la puce inactive.
-        "flex h-[30px] w-min cursor-pointer items-center gap-[10px] whitespace-pre px-[10px] " +
+        "flex h-[30px] w-min cursor-pointer items-center gap-[10px] whitespace-pre rounded-control px-[10px] " +
         "text-[12px] font-medium uppercase leading-[1.2] tracking-[-0.01em] " +
         "transition-colors duration-200 motion-reduce:transition-none " +
         // AUCUN état de survol : la source n'en a pas. Deux preuves

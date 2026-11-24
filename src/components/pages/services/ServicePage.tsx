@@ -142,7 +142,7 @@ export function OffreDetail({
         <ListeOffre titre={servicePageLabels.faitMonter} lignes={offre.faitMonter} />
         <Link
           href={href}
-          className="flex h-[30px] w-fit flex-none items-center justify-center bg-accent px-[10px] text-[12px] font-semibold uppercase leading-[1.2] tracking-[-0.01em] text-background no-underline transition-opacity duration-200 hover:opacity-80 motion-reduce:transition-none"
+          className="flex h-[30px] w-fit flex-none items-center justify-center rounded-control bg-accent px-[10px] text-[12px] font-semibold uppercase leading-[1.2] tracking-[-0.01em] text-background no-underline transition-opacity duration-200 hover:opacity-80 motion-reduce:transition-none"
         >
           <span className="accent-room">{servicePageLabels.cta}</span>
         </Link>
@@ -595,7 +595,7 @@ export function ServicePage({
                   le bouton de l'offre. */}
               <Link
                 href={lienRendezVous("logiciel")}
-                className="flex h-[30px] w-fit flex-none items-center justify-center bg-accent px-[10px] text-[12px] font-semibold uppercase leading-[1.2] tracking-[-0.01em] text-background no-underline transition-opacity duration-200 hover:opacity-80 motion-reduce:transition-none"
+                className="flex h-[30px] w-fit flex-none items-center justify-center rounded-control bg-accent px-[10px] text-[12px] font-semibold uppercase leading-[1.2] tracking-[-0.01em] text-background no-underline transition-opacity duration-200 hover:opacity-80 motion-reduce:transition-none"
               >
                 <span className="accent-room">{surMesureBloc.cta}</span>
               </Link>

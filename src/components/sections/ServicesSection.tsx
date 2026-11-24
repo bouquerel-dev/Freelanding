@@ -460,7 +460,7 @@ function ServiceRow({
                       aria-label={`${uiLabels.services.rdvAriaPrefix}${service.title}`}
                       tabIndex={open ? undefined : -1}
                       aria-hidden={!open}
-                      className="group relative flex h-[30px] flex-none flex-row items-center justify-center overflow-hidden bg-accent px-[10px] no-underline"
+                      className="group relative flex h-[30px] flex-none flex-row items-center justify-center overflow-hidden rounded-control bg-accent px-[10px] no-underline"
                     >
                       <span className="accent-room whitespace-pre text-[12px] font-semibold uppercase leading-[1.2] tracking-[-0.01em] text-background">
                         {uiLabels.services.rdvLabel}
@@ -493,7 +493,7 @@ function ServiceRow({
               {/* framer-hhouxn : image (aspect 1.72727, bg cover + grain) */}
               <div
                 ref={imageFrame}
-                className="relative z-[1] aspect-[1.72727] w-full flex-none overflow-hidden"
+                className="relative z-[1] aspect-[1.72727] w-full flex-none overflow-hidden rounded-card"
               >
                 {/* Calque sur-cadré de 7 % en haut et en bas, DÉRIVANT au scroll.
                     La source pose exactement `top:-7%; bottom:-7%` sur un div à

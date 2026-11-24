@@ -164,7 +164,7 @@ function ContactHero({
                 // chromatiques dans un cadre de 136 px. Même traitement que la
                 // carte du pied de page, qui est le même motif « portrait +
                 // nom ».
-                className="relative z-[2] aspect-[136/167] w-[116px] flex-none overflow-hidden grayscale tablet:w-[136px]"
+                className="relative z-[2] aspect-[136/167] w-[116px] flex-none overflow-hidden rounded-card grayscale tablet:w-[136px]"
               >
                 {/* Portrait sur-cadré de 6 % et DÉRIVANT : la source monte ici
                       son composant de parallaxe, il était posé à plat. */}
@@ -237,7 +237,7 @@ function ContactDetails({ contact }: { contact: ContactContent }) {
             Le 690/339 précédent venait de la boîte de SUR-CADRAGE (303 x 1,12 =
             339, 154 x 1,12 = 172), pas de la boîte de découpe : il rendait
             l'image trop haute de 18 à 41px selon la largeur. */}
-        <div className="relative aspect-[2.28/1] w-full overflow-hidden">
+        <div className="relative aspect-[2.28/1] w-full overflow-hidden rounded-card">
           {/* Sur-cadrée de 6 % et DÉRIVANTE au scroll, comme la source
               (`top:-6%; height:calc(100% + 12%)`). Elle était posée en `fill`
               sans sur-cadrage ni mouvement : /contact était la dernière page

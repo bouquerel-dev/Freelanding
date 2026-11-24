@@ -52,7 +52,7 @@ export function WorkRendezVous({ work }: { work: WorkItem }) {
           </h2>
           <Link
             href={lienRendezVous(work.sujetRendezVous ?? "decouverte")}
-            className="flex h-[30px] w-fit flex-none items-center justify-center bg-accent px-[10px] text-[12px] font-semibold uppercase leading-[1.2] tracking-[-0.01em] text-background no-underline transition-opacity duration-200 hover:opacity-80 motion-reduce:transition-none"
+            className="flex h-[30px] w-fit flex-none items-center justify-center rounded-control bg-accent px-[10px] text-[12px] font-semibold uppercase leading-[1.2] tracking-[-0.01em] text-background no-underline transition-opacity duration-200 hover:opacity-80 motion-reduce:transition-none"
           >
             {labels.rendezVousLabel}
           </Link>
