@@ -32,6 +32,13 @@ describe("HeroSection", () => {
     }
   });
 
+  it("un quatrième repère reste rendu, sans position réservée", () => {
+    const hero = { ...homeContent.hero, faceNotes: ["Un", "Deux", "Trois", "Quatre"] };
+    const rendu = renderToStaticMarkup(createElement(HeroSection, { hero }));
+    expect(rendu.match(/data-part="hero-repere"/gu) ?? []).toHaveLength(4);
+    expect(rendu).toContain(">04</span>Quatre");
+  });
+
   it("borne la largeur du héros sur la colonne de 1440 du site", () => {
     expect(html).toContain("max-w-[1440px]");
   });
