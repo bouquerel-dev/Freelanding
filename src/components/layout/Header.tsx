@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 // liens classiques téléchargeaient `/contact` et les autres routes dès l'arrivée.
 import { HoverPrefetchLink as Link } from "@/components/ui/HoverPrefetchLink";
 import { Reveal } from "@/components/motion/Reveal";
-import { SwapCopies } from "@/components/ui/SwapCopies";
+import { BoutonAppel } from "@/components/ui/BoutonAppel";
 import { uiLabels } from "@/content/ui";
 import type { SiteConfig } from "@/lib/content/types";
 import { Logo } from "./Logo";
@@ -18,7 +18,7 @@ import { Logo } from "./Logo";
  *   - Gauche : le logo seul (baseline et séparateur retirés le 2026-11-24).
  *   - Droite `framer-beg1hm` (gap 28→36px) : nav "WORKS / BLOG / ABOUT / CONTACT"
  *     (séparateurs "/" opacity .2) visible dès 810px, puis le CTA
- *     « Réserver un appel » (toujours visible), voir `ReserverCta`.
+ *     « Réserver un appel » (toujours visible), le `BoutonAppel` partagé.
  *
  * Reveal d'apparition (appear-id `1nqx0rw`) : opacity .001 + translateY(-100px)
  * + scale(1.3) → état final, tween 1.4s delay .3s ease cubic(0.68,0,0,1). Joué
@@ -35,63 +35,6 @@ import { Logo } from "./Logo";
  * Sur mobile, la nav (Works/Blog/About/Contact) n'est donc accessible que via le
  * footer et via le menu flottant séparé, invisible en haut puis affiché au scroll.
  */
-
-/**
- * LE BOUTON « RÉSERVER UN APPEL » DE L'EN-TÊTE (refait le 2026-11-24, demande
- * d'Eliott : « vraiment classe et intégré au header »). Même rayon que les
- * boutons du héros (`rounded-control`), hauteur alignée sur la ligne du menu,
- * et une pastille encre portant une flèche, au rayon concentrique (12 - 5 de
- * retrait ≈ `rounded-tag`). Au survol, le volt s'éclaircit à peine et la
- * flèche avance d'un cran ; à l'appui, le bouton se tasse à 97 % ; au clavier,
- * un anneau volt détaché du fond.
- *
- * Le libellé garde sa permutation verticale au survol (`SwapCopies`), dans un
- * masque `.accent-room` : son remplissage haut, compensé par une marge
- * négative, laisse la place à l'accent du « É » sans décaler le texte. Le
- * `translate-y-[0.46px]` centre l'encre des capitales, pas la boîte de ligne.
- * Sous 390 px, la forme courte du libellé évite que le bouton sorte de l'écran.
- */
-function ReserverCta({
-  href,
-  label,
-  shortLabel,
-}: {
-  href: string;
-  label: string;
-  shortLabel?: string;
-}) {
-  return (
-    <Link
-      href={href}
-      data-part="header-cta"
-      className="header-cta group relative flex h-[36px] flex-none flex-row items-center gap-[10px] rounded-control bg-accent pl-[12px] pr-[4px] no-underline outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background tablet:h-[40px] tablet:pl-[16px] tablet:pr-[5px]"
-    >
-      <span className="accent-room relative block translate-y-[0.46px] overflow-hidden">
-        <SwapCopies
-          travel={22}
-          textClassName="text-[12px] font-semibold uppercase leading-[1.2] tracking-[-0.01em] text-accent-ink"
-        >
-          {shortLabel ? (
-            <>
-              <span className="min-[390px]:hidden">{shortLabel}</span>
-              <span className="hidden min-[390px]:inline">{label}</span>
-            </>
-          ) : (
-            label
-          )}
-        </SwapCopies>
-      </span>
-      <span
-        aria-hidden
-        className="grid size-[28px] flex-none place-items-center overflow-hidden rounded-tag bg-accent-ink text-accent tablet:size-[30px]"
-      >
-        <svg viewBox="0 0 12 12" width="12" height="12" fill="none" className="header-cta-fleche">
-          <path d="M3 9 9 3M4.2 3H9v4.8" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      </span>
-    </Link>
-  );
-}
 
 export function Header({
   site,
@@ -122,13 +65,10 @@ export function Header({
   // Base commune aux liens ET aux séparateurs « / ».
   const navBaseCls =
     "relative whitespace-pre text-[12px] font-medium uppercase leading-[1.2] tracking-[-0.01em] text-foreground no-underline";
-  // Survol des LIENS : recoloration vers l'accent, `0.2s cubic-bezier(0.44,0,0.56,1)`
-  // (mesuré sur le live). L'ancienne version passait l'opacité à 0.7, ce qui est le
-  // mauvais effet ; et les séparateurs héritaient de ce survol alors que le live
-  // n'en applique AUCUN sur eux — ils gardent donc la base, sans état de survol.
-  const navItemCls =
-    navBaseCls +
-    " transition-colors duration-200 ease-[cubic-bezier(0.44,0,0.56,1)] hover:text-accent motion-reduce:transition-none";
+  // Survol des LIENS (2026-11-24) : le libellé permute vers sa copie volt et
+  // un trait se dessine dessous, règles `.nav-lien*` de `interactions.css`.
+  // Les séparateurs gardent la base, sans état de survol.
+  const navItemCls = `${navBaseCls} nav-lien block`;
 
   // Au-delà de 1500 px, le logo et le menu se calent sur la colonne de 1440
   // du contenu au lieu des bords de la fenêtre (2026-10-16) : sur grand
@@ -165,14 +105,20 @@ export function Header({
                   : {})}
                 className={navItemCls}
               >
-                {link.label}
+                <span className="nav-lien-masque accent-room">
+                  <span className="nav-lien-texte">{link.label}</span>
+                  <span aria-hidden className="nav-lien-copie">
+                    {link.label}
+                  </span>
+                </span>
+                <span aria-hidden className="nav-lien-trait" />
               </Link>
             </span>
           ))}
         </nav>
 
         {/* CTA, toujours visible */}
-        <ReserverCta
+        <BoutonAppel
           href={primaryCta.href}
           label={primaryCta.label}
           shortLabel={primaryCta.shortLabel}

@@ -17,6 +17,7 @@ import { SITE_METADATA, SiteDocument } from "./(site)/SiteDocument";
 import { notFoundContent } from "@/content/not-found";
 import "./globals.css";
 import "./focus.css";
+import "./interactions.css";
 
 // Le document reprend les métadonnées du site, sauf le titre : le 404 portait
 // celui de l'accueil, et un onglet ou un favori ne disait pas que la page
