@@ -107,9 +107,10 @@ describe("accueil", () => {
     expect(duree(65)).toBe("1\u00A0h\u00A005");
   });
 
-  test("le titre dit comment il travaille, en deux lignes (version 2 « trame géante »)", () => {
+  test("le titre est la phrase d'Eliott, en deux lignes, sans parler d'IA", () => {
     expect(homeContent.hero.doors ?? []).toHaveLength(0);
-    expect(homeContent.hero.title).toBe("Un développeur, une équipe d’IA.");
+    expect(homeContent.hero.title).toBe("J’ai tout à prouver.");
+    expect(homeContent.hero.title).not.toMatch(/IA/u);
     expect(homeContent.hero.titleLines?.join(" ")).toBe(homeContent.hero.title);
     expect(homeContent.about.title).not.toBe(homeContent.hero.title);
     expect(homeContent.about.titleLines?.join(" ")).toBe(homeContent.about.title);
@@ -118,13 +119,15 @@ describe("accueil", () => {
   test("le haut de page dit qui, quoi et comment : sites, logiciels et IA au même rang", () => {
     expect(homeContent.hero.eyebrow).toBe("Bonjour, je suis Eliott Bouquerel");
     expect(homeContent.hero.buildItems).toEqual(["des sites internet", "des logiciels métier", "des automatisations IA"]);
-    // Pourquoi lui, en court : ce qui se vérifie (réactivité, qualité, prix).
-    expect(homeContent.hero.subtitle).toMatch(/je teste tout/u);
-    expect(homeContent.hero.subtitle).toMatch(/qualité d’une agence/u);
-    expect(homeContent.hero.subtitle).toMatch(/je réponds vite/u);
-    expect(homeContent.hero.subtitle.length).toBeLessThan(160);
-    expect(homeContent.hero.faceNotes).toEqual(["Très réactif", "Qualité d’agence", "Prix corrects"]);
-    expect(JSON.stringify(homeContent.hero)).not.toMatch(/interlocuteur/u);
+    // Pourquoi lui : le contraste avec l'agence, puis le résultat client.
+    // Ni l'IA, ni « un seul interlocuteur », ni « prix corrects ».
+    const sous = homeContent.hero.subtitle ?? "";
+    expect(sous).toMatch(/Une agence a déjà sa réputation/u);
+    expect(sous).toMatch(/clients/u);
+    expect(sous).not.toMatch(/\bIA\b|agents/u);
+    expect(sous.length).toBeLessThan(150);
+    expect(homeContent.hero.faceNotes).toEqual(["Très réactif", "Tout à votre nom", "Utile avant beau"]);
+    expect(JSON.stringify(homeContent.hero)).not.toMatch(/interlocuteur|prix correct/iu);
   });
 
   test("le héros dit ce qui explique le prix, sans montant", () => {
