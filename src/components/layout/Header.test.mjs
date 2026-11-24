@@ -31,4 +31,11 @@ describe("Header", () => {
     expect(bouton).toContain("rounded-control");
     expect(bouton).toContain("<svg");
   });
+
+  it("sans forme courte, le bouton porte le libellé entier partout", () => {
+    const site = { ...siteConfig, primaryCta: { ...siteConfig.primaryCta, shortLabel: undefined } };
+    const rendu = renderToStaticMarkup(createElement(Header, { site }));
+    expect(rendu).toContain(siteConfig.primaryCta.label);
+    expect(rendu).not.toContain("min-[390px]:hidden");
+  });
 });

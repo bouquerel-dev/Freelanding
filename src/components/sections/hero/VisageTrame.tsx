@@ -94,7 +94,7 @@ export function VisageTrame({ src, centre = 0.5 }: { src: string; centre?: numbe
       const ox = l * centre - largeur / 2;
       const amplitude = pas * 1.8;
       ctx.clearRect(0, 0, l, h);
-      ctx.fillStyle = getComputedStyle(c).color;
+      ctx.fillStyle = window.getComputedStyle(c).color;
       for (const [u, v, lum] of points) {
         const z = lum - 0.5;
         const x = ox + u * largeur + pos.x * z * amplitude;

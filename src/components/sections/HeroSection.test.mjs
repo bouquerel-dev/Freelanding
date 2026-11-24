@@ -52,4 +52,25 @@ describe("HeroSection", () => {
     expect(html).not.toContain("<video");
     expect(html).not.toContain('data-part="comparaison"');
   });
+
+  it("tient sur un héros minimal : titre seul, sans visage, liste, sous-titre ni lien", () => {
+    const nu = renderToStaticMarkup(createElement(HeroSection, { hero: { title: "Titre seul" } }));
+    expect(nu).toContain("Titre seul");
+    expect(nu).not.toContain('data-part="hero-visage"');
+    expect(nu).not.toContain('data-part="hero-salut"');
+    expect(nu).not.toContain('data-part="hero-pour-qui"');
+    expect(nu).not.toContain('data-part="hero-cta-secondaire"');
+  });
+
+  it("garde la salutation entière quand le nom n'y figure pas", () => {
+    const autre = renderToStaticMarkup(
+      createElement(HeroSection, {
+        hero: { title: "T", eyebrow: "Bonjour", person: { name: "Absent" }, buildItems: ["des sites"], subtitle: "Sous-titre seul" },
+      }),
+    );
+    expect(autre).toContain(">Bonjour</p>");
+    expect(autre).not.toContain("text-accent\">Absent");
+    expect(autre).toContain("des sites");
+    expect(autre).toContain("Sous-titre seul");
+  });
 });
