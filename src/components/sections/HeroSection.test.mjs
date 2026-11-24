@@ -39,6 +39,12 @@ describe("HeroSection", () => {
     expect(rendu).toContain(">04</span>Quatre");
   });
 
+  it("ajoute l'invitation en troisième ligne du titre", () => {
+    const h1 = html.slice(html.indexOf("<h1"), html.indexOf("</h1>"));
+    expect(h1).toContain('data-part="hero-invitation"');
+    expect(h1).toContain("Confiez-moi votre projet.");
+  });
+
   it("borne la largeur du héros sur la colonne de 1440 du site", () => {
     expect(html).toContain("max-w-[1440px]");
   });

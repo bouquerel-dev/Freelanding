@@ -47,7 +47,7 @@ function Salutation({ texte, nom }: { texte: string; nom?: string }) {
 }
 
 export function HeroSection({ hero }: { hero: HeroContent }) {
-  const [avant, apres] = hero.titleLines ?? [hero.title];
+  const [avant, apres, invitation] = hero.titleLines ?? [hero.title];
   const sousTitre = hero.subtitleParagraphs?.[0]?.text ?? hero.subtitle;
   return (
     <section
@@ -106,6 +106,12 @@ export function HeroSection({ hero }: { hero: HeroContent }) {
             {avant}
             <br />
             {apres}
+            {/* Troisième ligne : l'invitation, plus petite et en volt. */}
+            {invitation ? (
+              <span data-part="hero-invitation" className="mt-[0.32em] block text-[0.5em] leading-[1.05] tracking-[-0.035em] text-accent">
+                {invitation}
+              </span>
+            ) : null}
           </h1>
 
           {hero.buildItems?.length ? (
