@@ -1,6 +1,8 @@
 import type { CSSProperties } from "react";
+import { preload } from "react-dom";
 import type { HeroContent, PartieVisage } from "@/lib/content/types";
 import { Grain } from "@/components/effects/Grain";
+import { SwapCopies } from "@/components/ui/SwapCopies";
 import { lienRendezVous } from "@/content/rendez-vous";
 import { uiLabels } from "@/content/ui";
 import { AmbianceHeros } from "./hero/AmbianceHeros";
@@ -11,63 +13,102 @@ import { VisageTrame } from "./hero/VisageTrame";
 /**
  * Héros de l'accueil, version 2 « trame géante » (retenue par Eliott le
  * 2026-11-24) : à gauche il se présente, dit comment il travaille et ce qu'il
- * construit ; à droite son visage en grand, en trame de points, qui suit la
- * souris et se fond vers le texte.
+ * construit ; à droite sa photo en grand, dont la trame de points ne revient
+ * que sous la lampe de la souris, et six traits accrochés au visage.
  *
  * LARGEUR BORNÉE. Tout tient dans la colonne de 1440 du site : au-delà, le
  * texte et le visage ne s'écartent plus, ils restent ensemble au centre. Le
  * visage garde son rapport (voir `VisageTrame`), il se recadre sans s'étirer.
  *
- * Sous 1200 px, le visage passe au-dessus du texte, plus petit, fondu vers le
- * bas.
+ * Sous 1200 px, le portrait (photo, trame et six traits) passe au-dessus du
+ * texte, à la largeur de l'écran, fondu vers le bas sous le titre.
  *
- * MOUVEMENT. L'entrée reste celle du bloc `.hero-*` de `globals.css` (fondu
- * décalé par `--d`), en CSS, hors du fil principal.
+ * HAUTEUR. Sur ordinateur, le héros laisse 270 px d'écran au schéma qui suit,
+ * pour qu'on le voie arriver et qu'on ait envie de descendre.
+ *
+ * MOUVEMENT. L'entrée du texte reste celle du bloc `.hero-*` de `globals.css`
+ * (fondu décalé par `--d`, jamais d'opacité nulle : le titre reste le LCP).
+ * Le portrait arrive en trois temps : lueur, trame qui naît en vague, photo du
+ * flou au net (voir `PortraitCouleur`).
  */
 
 /**
- * Où tombent les trois repères, en pourcentage du cadre : une colonne calée à
- * droite, le trait tourné vers le visage, pour ne jamais toucher le texte.
- */
-/**
- * POINTS D'ACCROCHE DES TRAITS SUR LE PORTRAIT (ordinateur). La photo remplit
- * la hauteur du cadre et son centre est posé à 44 % de sa largeur
- * (`centreOrdinateur`) : un point du visage se place donc à 44 % plus `k` fois
- * la hauteur du cadre, et à `v` fois cette hauteur depuis le haut. Relevés sur
- * la photo source quadrillée (1200 × 798) : le point tombe dans l'œil, dans
- * l'oreille, sur la bouche, au front, sur l'épaule et sur le cœur.
+ * LA SCÈNE DU PORTRAIT (2026-11-24, refonte). Un carré qui porte, l'un sur
+ * l'autre, exactement le même cadre : la photo couleur détourée (1024 × 1024),
+ * la trame de points tirée de la même photo, les six traits. Tout se place en
+ * pourcentage du carré, donc la trame couvre toute la photo et la lampe de la
+ * souris n'a plus de bord.
  *
- * Les étiquettes s'alignent en deux colonnes, de part et d'autre du visage :
- * côté titre elles finissent toutes à `COLONNE_GAUCHE`, côté bord elles
- * commencent toutes à `COLONNE_DROITE` ; le trait va de la colonne au point.
+ * Taille du carré (`--s`, posée sur le conteneur) : la largeur de l'écran sur
+ * téléphone, bornée à 460 px ; sur ordinateur, 86 % de la hauteur d'écran,
+ * bornée à 780 px. Le bas de la photo se fond à 82 % du carré.
+ *
+ * POINTS D'ACCROCHE, relevés sur la photo source : `u` en largeur, `v` en
+ * hauteur. Les étiquettes s'alignent en deux colonnes (`colonne`) : côté titre
+ * elles finissent toutes à la colonne gauche, côté bord elles commencent à la
+ * colonne droite. Sur ordinateur, chaque étiquette est à la hauteur de son
+ * point (trait horizontal) ; sur téléphone, les étiquettes se rangent plus haut
+ * (`vMobile`) pour laisser le bas au titre, et le trait part en biais.
  */
-const HAUTEUR_CADRE = "min(66vh, 620px)";
-const COLONNE_GAUCHE = -0.29;
-const COLONNE_DROITE = 0.43;
-const POINTS_VISAGE: Record<PartieVisage, { k: number; v: number; gauche: boolean }> = {
-  front: { k: 0, v: 0.32, gauche: true },
-  oeil: { k: -0.088, v: 0.4, gauche: true },
-  bouche: { k: 0.008, v: 0.54, gauche: true },
-  oreille: { k: 0.228, v: 0.43, gauche: false },
-  epaule: { k: 0.35, v: 0.8, gauche: false },
-  coeur: { k: 0.11, v: 0.93, gauche: false },
+const POINTS_VISAGE: Record<PartieVisage, { u: number; v: number; vMobile: number; vPointMobile?: number; gauche: boolean }> = {
+  front: { u: 0.504, v: 0.353, vMobile: 0.3, gauche: true },
+  oeil: { u: 0.444, v: 0.406, vMobile: 0.4, gauche: true },
+  bouche: { u: 0.51, v: 0.502, vMobile: 0.5, gauche: true },
+  oreille: { u: 0.66, v: 0.427, vMobile: 0.36, gauche: false },
+  epaule: { u: 0.744, v: 0.679, vMobile: 0.6, gauche: false },
+  // Au téléphone, le titre recouvre le bas de la photo : le cœur remonte.
+  coeur: { u: 0.58, v: 0.768, vMobile: 0.48, vPointMobile: 0.7, gauche: false },
 };
+const COLONNES = {
+  ordinateur: { gauche: 0.302, droite: 0.794 },
+  mobile: { gauche: 0.38, droite: 0.68 },
+} as const;
 
-function arrondi(n: number) {
-  return Math.round(n * 1000) / 1000;
+function pc(n: number) {
+  return `${Math.round(n * 1000) / 10}%`;
 }
 
-/** Le trait, de la colonne d'étiquettes jusqu'au point du visage. */
-function placeTrait(partie: PartieVisage): CSSProperties {
-  const { k, v, gauche } = POINTS_VISAGE[partie];
-  const debut = gauche ? COLONNE_GAUCHE : k;
-  const longueur = arrondi(gauche ? k - COLONNE_GAUCHE : COLONNE_DROITE - k);
+/** Les traits d'un format : de la colonne d'étiquettes jusqu'au point du visage. */
+function Traits({ format }: { format: keyof typeof COLONNES }) {
+  const colonne = COLONNES[format];
+  return (
+    <svg
+      aria-hidden
+      className={`hero-traits absolute inset-0 h-full w-full overflow-visible ${format === "ordinateur" ? "hidden desktop:block" : "desktop:hidden"}`}
+    >
+      {Object.entries(POINTS_VISAGE).map(([partie, p], i) => {
+        // Au téléphone, le trait part sous l'étiquette pour ne jamais la barrer.
+        const y = format === "ordinateur" ? p.v : p.vMobile + 0.045;
+        const x = p.gauche ? colonne.gauche : colonne.droite;
+        return (
+          <line
+            key={partie}
+            x1={pc(x)}
+            y1={pc(y)}
+            x2={pc(p.u)}
+            y2={pc(format === "ordinateur" ? p.v : (p.vPointMobile ?? p.v))}
+            pathLength={1}
+            className="hero-trait-ligne"
+            style={delai(420 + i * 90)}
+          />
+        );
+      })}
+    </svg>
+  );
+}
+
+function placeEtiquette(partie: PartieVisage): CSSProperties {
+  const p = POINTS_VISAGE[partie];
   return {
-    top: `${v * 100}%`,
-    left: `calc(44% + ${debut} * ${HAUTEUR_CADRE})`,
-    width: `calc(${longueur} * ${HAUTEUR_CADRE})`,
-  };
+    "--y-m": pc(p.vMobile),
+    "--y-d": pc(p.v),
+    "--x-m": pc(p.gauche ? 1 - COLONNES.mobile.gauche : COLONNES.mobile.droite),
+    "--x-d": pc(p.gauche ? 1 - COLONNES.ordinateur.gauche : COLONNES.ordinateur.droite),
+  } as CSSProperties;
 }
+
+/** Petite trame (320 px, 8 ko) tirée de la photo couleur : elle arrive avant la photo. */
+const TRAME_PORTRAIT = "/images/eliott-portrait-trame.webp";
 
 function delai(ms: number): CSSProperties {
   return { "--d": `${ms}ms` } as CSSProperties;
@@ -89,6 +130,8 @@ function Salutation({ texte, nom }: { texte: string; nom?: string }) {
 export function HeroSection({ hero }: { hero: HeroContent }) {
   const [avant, apres] = hero.titleLines ?? [hero.title];
   const sousTitre = hero.subtitleParagraphs?.[0]?.text ?? hero.subtitle;
+  // La trame est le premier visuel du portrait : demandée dès le HTML.
+  if (hero.person?.avatar) preload(TRAME_PORTRAIT, { as: "image", type: "image/webp" });
   return (
     <section
       data-section="hero"
@@ -97,48 +140,47 @@ export function HeroSection({ hero }: { hero: HeroContent }) {
       <Grain opacity={0.1} className="z-0" />
       <AmbianceHeros />
 
-      <div className="relative mx-auto flex min-h-[calc(100dvh/var(--zoom-ecran,1))] w-full max-w-[1440px] flex-col px-[20px] pt-[76px] pb-[44px] tablet:px-[30px] tablet:pt-[96px] desktop:min-h-[max(calc(100dvh/var(--zoom-ecran,1)),720px)] desktop:justify-center desktop:pt-[112px] desktop:pb-[72px]">
+      <div className="relative mx-auto flex w-full max-w-[1440px] flex-col px-[20px] pt-[20px] pb-[36px] [--s:min(calc(100vw/var(--zoom-ecran,1)),460px)] tablet:px-[30px] tablet:pt-[40px] desktop:min-h-[max(calc(100dvh/var(--zoom-ecran,1)_-_270px),600px)] desktop:justify-center desktop:pt-[104px] desktop:pb-[56px] desktop:[--s:min(86vh,780px)]">
         {hero.person?.avatar ? (
           <div
             aria-hidden
-            className="pointer-events-none relative z-0 -mx-[20px] h-[clamp(240px,40svh,360px)] tablet:-mx-[30px] tablet:h-[clamp(300px,40svh,440px)] desktop:absolute desktop:right-[30px] desktop:top-1/2 desktop:mx-0 desktop:h-[min(66vh,620px)] desktop:w-[50%] desktop:-translate-y-[40%]"
+            data-scene
+            className="hero-scene pointer-events-none relative z-0 h-[var(--s)] self-center w-[var(--s)] flex-none desktop:absolute desktop:left-[calc(72%_-_var(--s)/2)] desktop:top-0 desktop:self-auto"
           >
-            {/* Portrait couleur sur ordinateur, la trame n'apparaît que sous la souris. */}
+            {/* La photo couleur, puis la trame de la même photo par-dessus :
+                pendant le chargement, la trame naît seule ; la photo arrive
+                ensuite, du flou au net, et la trame ne reste que sous la lampe
+                de la souris (ordinateur). */}
             <PortraitCouleur src="/images/eliott-portrait-couleur.webp" />
             <div className="hero-visage absolute inset-0">
-              <VisageTrame src="/images/eliott-portrait-large.jpg" centreOrdinateur={0.44} />
+              <VisageTrame src={TRAME_PORTRAIT} />
             </div>
-            {/* Repères de viseur aux quatre coins du cadre (ordinateur seulement). */}
-            <span className="hero-viseur absolute inset-0 hidden desktop:block" />
-            {/* Six traits, chacun accroché à une partie du visage par un point
-                et un trait fin qui se trace depuis le visage. */}
+            <Traits format="mobile" />
+            <Traits format="ordinateur" />
             {hero.faceNotes?.map((trait, i) => {
-              const gauche = POINTS_VISAGE[trait.partie].gauche;
+              const p = POINTS_VISAGE[trait.partie];
               return (
-                <span
-                  key={trait.partie}
-                  data-part="hero-repere"
-                  data-cote={gauche ? "gauche" : "droite"}
-                  className={`hero-fond absolute hidden h-px -translate-y-1/2 items-center desktop:flex ${gauche ? "flex-row" : "flex-row-reverse"}`}
-                  style={{ ...placeTrait(trait.partie), ...delai(700 + i * 110) }}
-                >
+                <span key={trait.partie} className="contents">
                   <span
-                    className={`absolute top-1/2 flex -translate-y-1/2 flex-col gap-[4px] whitespace-nowrap [text-shadow:0_0_3px_rgb(10_10_10),0_1px_12px_rgb(10_10_10)] ${
-                      gauche ? "right-[calc(100%+12px)] items-end text-right" : "left-[calc(100%+12px)] items-start text-left"
-                    }`}
+                    className="hero-repere-point absolute h-[7px] w-[7px] -translate-x-1/2 -translate-y-1/2 rounded-full"
+                    style={{ left: pc(p.u), "--pt-m": pc(p.vPointMobile ?? p.v), "--pt-d": pc(p.v), ...delai(300 + i * 90) } as CSSProperties}
+                  />
+                  <span
+                    data-part="hero-repere"
+                    data-cote={p.gauche ? "gauche" : "droite"}
+                    className="hero-etiquette hero-fond absolute flex flex-col gap-[3px] whitespace-nowrap [text-shadow:0_0_3px_rgb(10_10_10),0_1px_12px_rgb(10_10_10)] desktop:gap-[4px]"
+                    style={{ ...placeEtiquette(trait.partie), ...delai(560 + i * 90) }}
                   >
-                    <span className="font-mono text-[11px] uppercase leading-none tracking-[0.04em] text-foreground">{trait.titre}</span>
-                    <span className="w-max max-w-[132px] whitespace-normal text-balance text-[12px] leading-[1.25] tracking-[-0.01em] text-foreground-60">{trait.detail}</span>
+                    <span className="font-mono text-[10px] uppercase leading-none tracking-[0.04em] text-foreground desktop:text-[11px]">{trait.titre}</span>
+                    <span className="text-[11px] leading-[1.2] tracking-[-0.01em] text-foreground-60 desktop:text-[12px]">{trait.detail}</span>
                   </span>
-                  <span className="hero-repere-trait h-px flex-1" />
-                  <span className={`hero-repere-point h-[7px] w-[7px] flex-none rounded-full ${gauche ? "-mr-[3.5px]" : "-ml-[3.5px]"}`} />
                 </span>
               );
             })}
           </div>
         ) : null}
 
-        <div className="relative z-[1] -mt-[28px] flex flex-col items-start tablet:-mt-[40px] desktop:mt-0 desktop:max-w-[700px]">
+        <div className="relative z-[1] -mt-[calc(var(--s)*0.26)] flex flex-col items-start desktop:mt-0 desktop:max-w-[700px]">
           {hero.eyebrow ? (
             <p
               data-part="hero-salut"
@@ -154,7 +196,7 @@ export function HeroSection({ hero }: { hero: HeroContent }) {
           <h1
             id="services"
             data-part="hero-titre"
-            className="hero-fond m-0 mt-[14px] text-[clamp(28px,calc((100vw/var(--zoom-ecran,1)_-_40px)/10.9),48px)] font-semibold leading-[0.98] tracking-[-0.055em] text-foreground tablet:mt-[20px] tablet:text-[clamp(48px,calc(4.3vw/var(--zoom-ecran,1)),62px)]"
+            className="hero-fond m-0 mt-[14px] text-[clamp(28px,calc((100vw/var(--zoom-ecran,1)_-_40px)/10.9),48px)] font-semibold leading-[0.98] tracking-[-0.055em] text-foreground tablet:mt-[20px] tablet:text-[clamp(48px,calc(4vw/var(--zoom-ecran,1)),62px)]"
             style={delai(120)}
           >
             {avant}
@@ -193,17 +235,40 @@ export function HeroSection({ hero }: { hero: HeroContent }) {
           >
             <a
               href={lienRendezVous("decouverte")}
-              className="hero-cta flex h-[50px] flex-none items-center justify-center rounded-control bg-accent px-[22px] text-[13px] font-semibold uppercase leading-none tracking-[-0.01em] text-accent-ink no-underline"
+              data-part="hero-cta"
+              className="hero-cta header-cta group flex h-[50px] flex-none items-center justify-between gap-[14px] rounded-control bg-accent pl-[20px] pr-[6px] no-underline"
             >
-              {uiLabels.services.rdvLabel}
+              <span className="relative block overflow-hidden">
+                <SwapCopies travel={22} textClassName="text-[13px] font-semibold uppercase leading-[1.2] tracking-[-0.01em] text-accent-ink">
+                  {uiLabels.services.rdvLabel}
+                </SwapCopies>
+              </span>
+              <span aria-hidden className="grid size-[38px] flex-none place-items-center rounded-tag bg-accent-ink text-accent">
+                <svg viewBox="0 0 12 12" width="13" height="13" fill="none" className="header-cta-fleche">
+                  <path d="M3 9 9 3M4.2 3H9v4.8" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </span>
             </a>
             {hero.offerLink ? (
               <a
                 href={hero.offerLink.href}
                 data-part="hero-cta-secondaire"
-                className="flex h-[50px] flex-none items-center justify-center rounded-control border border-white/30 px-[22px] text-[13px] font-semibold uppercase leading-none tracking-[-0.01em] text-foreground no-underline transition-colors duration-200 hover:border-foreground hover:bg-white/10"
+                className="hero-cta-secondaire group flex h-[50px] flex-none items-center justify-between gap-[14px] rounded-control border border-white/25 pl-[20px] pr-[5px] no-underline hover:border-white/60"
               >
-                {hero.offerLink.label}
+                <span className="relative block overflow-hidden">
+                  <SwapCopies travel={22} textClassName="text-[13px] font-semibold uppercase leading-[1.2] tracking-[-0.01em] text-foreground">
+                    {hero.offerLink.label}
+                  </SwapCopies>
+                </span>
+                <span aria-hidden className="grid size-[38px] flex-none place-items-center rounded-tag bg-white/10 text-foreground">
+                  {/* Quatre vignettes : les réalisations. */}
+                  <svg viewBox="0 0 12 12" width="12" height="12" fill="currentColor" className="hero-cta-grille">
+                    <rect x="1" y="1" width="4" height="4" rx="1" />
+                    <rect x="7" y="1" width="4" height="4" rx="1" />
+                    <rect x="1" y="7" width="4" height="4" rx="1" />
+                    <rect x="7" y="7" width="4" height="4" rx="1" opacity="0.45" />
+                  </svg>
+                </span>
               </a>
             ) : null}
           </div>

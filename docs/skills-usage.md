@@ -536,3 +536,46 @@ partage régénérée (le champ et le halo y apparaissent, immobiles).
 | impeccable · confiance | Vraie photo couleur sur ordinateur (choix d'Eliott), détourée, calée sur les six points des traits |
 | emil-design-eng · mouvement | Trame volt révélée seulement sous la souris, photo en fondu 500 ms à l'arrivée, sans fondu en mouvement réduit |
 | taste-skill · performance | Photo peinte dans une toile : le titre reste le LCP ; jamais chargée sur téléphone |
+
+## Héros refait : arrivée, photo partout, fils, 2026-11-24
+
+Captures dans `assets-site-eliottbouquerel/captures-2026-11-24/heros/`,
+numérotées : 01 avant, 02 à 04 étapes, 05 à 07 planches d'arrivée, 08 à 10
+retouches après revue, 11 après (et planche de la lampe).
+
+Direction : une arrivée en trois temps tirée de la photo elle-même. Lueur volt
+(CSS, avant le script), trame de points qui naît en vague depuis le visage,
+puis la photo qui s'ouvre du visage vers les bords, du flou au net. La trame et
+la photo partagent le même carré : la lampe couvre toute la photo, sans bord.
+
+### reactbits (fonds et effets de curseur)
+- « Threads » retenu comme inspiration (fils qui s'écartent autour du curseur,
+  « de la soie aux courbes de niveau ») : réécrit en toile 2D de 150 lignes,
+  aucune dépendance. Les fonds en grille de points (« Dot Grid ») écartés :
+  c'est précisément ce qu'Eliott trouvait « très IA ».
+
+### emil-design-eng (revue de l'arrivée)
+- `hero-point` partait de `scale(0)` : départ à 0,4 avec fondu.
+- Points de la trame nés de rien : rayon de départ à 40 %, en fondu.
+- Bouton secondaire sans transition sur `:active` : transform 160 ms.
+- Flou de la photo gardé sous 20 px (14 px), courbes ease-out expo partout.
+
+### impeccable et taste-skill (revue indépendante sur captures, verdict RETRAVAILLER, puis corrigé)
+- Étiquette coupée à 360 px : colonne gauche du téléphone de 0,33 à 0,38.
+- Collision titre / étiquettes à 1280 : scène à 72 %, titre à 4vw.
+- Traits qui barraient les étiquettes au téléphone : épaule et cœur échangés,
+  trait parti sous l'étiquette, point du cœur remonté au-dessus du titre.
+- Rebond du point (loi Motion « no bounce ») : ease-out expo 420 ms.
+- Fils trop volt sous la souris (taste « never compete with it ») : alpha
+  0,06 + 0,18, le volt vif reste aux six traits ; coude sur la ligne du curseur
+  remplacé par un écart en `tanh`.
+- Attente trame → photo de 900 à 600 ms, ouverture de 1 300 à 900 ms.
+- Héros raccourci (ordinateur : écran moins 270 px ; téléphone : texte remonté
+  sous la photo) : le schéma entre dans le premier écran à 1440, 1280 et 390.
+- Non retenu : remplacer la lueur par l'image de trame en CSS. Une image de
+  fond de 780 px serait candidate au LCP et passerait devant le titre.
+
+### li-human (descriptions des traits)
+- Six descriptions ramenées à 20 signes au plus, vouvoiement, sans tiret long.
+  `detect.py` juge le texte trop court pour noter le rythme ; aucun mot du
+  lexique, aucune empreinte typographique.
