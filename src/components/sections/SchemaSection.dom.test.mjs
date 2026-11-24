@@ -126,6 +126,12 @@ describe("SchemaSection, en vrai DOM", () => {
     await voir(true);
     await act(async () => actives()[0]());
     const onglets = etat.section.querySelectorAll('[role="tab"]');
+    expect(etat.section.dataset.vu).toBe("1");
+    await act(async () => onglets[1].dispatchEvent(new window.MouseEvent("click", { bubbles: true })));
+    // Choisir un onglet pendant la cascade l'arrête.
+    expect(etat.section.dataset.vu).toBe("2");
+    await act(async () => onglets[2].dispatchEvent(new window.MouseEvent("click", { bubbles: true })));
+    expect(etat.section.dataset.vu).toBe("2");
     await act(async () => onglets[1].dispatchEvent(new window.MouseEvent("click", { bubbles: true })));
     expect(onglets[1].getAttribute("aria-selected")).toBe("true");
     expect(action()).toContain(schemaAccueil.modes[1].actions[0]);

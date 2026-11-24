@@ -172,6 +172,9 @@ export function SchemaSection({ schema }: { schema: SchemaContent }) {
                 onClick={() => {
                   setMode(i);
                   setPas(0);
+                  // Un onglet choisi pendant la cascade l'arrête : les cartes
+                  // neuves arrivent tout de suite.
+                  if (section.current?.dataset.vu === "1") section.current.dataset.vu = "2";
                 }}
                 className={`rounded-[10px] px-[14px] py-[9px] text-[12px] font-semibold uppercase tracking-[-0.01em] transition-colors duration-200 ${
                   i === mode ? "bg-accent text-accent-ink" : "text-foreground-60 hover:text-foreground"
