@@ -5,7 +5,7 @@ import { uiLabels } from "@/content/ui";
  *
  * Premier geste attendu d'une navigation clavier, et il manquait : sans lui,
  * atteindre le contenu d'une page depuis la barre d'adresse impose de traverser
- * le logo, la tagline, les quatre liens du header et le CTA, sur CHAQUE page.
+ * le logo, les quatre liens du header et le CTA, sur CHAQUE page.
  *
  * Il n'y a volontairement aucune classe utilitaire ici : tout le style vit dans
  * `src/app/focus.css` (`.skip-link`), avec le reste de la mécanique de focus.

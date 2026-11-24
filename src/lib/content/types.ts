@@ -235,9 +235,6 @@ export interface SiteConfig {
    * deux endroits : le seul mot du site qui échappait encore à la donnée.
    */
   brand: { name: string; mark: string; given: string }; // "Bouquerel", "®", "Eliott"
-  tagline: string; // "Conversion-first design & dev studio"
-  /** Fragments de la baseline mis en emphase dans l'en-tête. */
-  taglineEmphasis?: readonly string[]; // ["design & dev"]
   nav: Link[];
   /** Liens du panneau de menu flottant — distincts de la nav d'en-tête. */
   menuNav?: Link[];

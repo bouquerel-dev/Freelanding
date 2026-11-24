@@ -26,13 +26,6 @@ export const siteConfig: SiteConfig = {
   // Le champ reste dans le type : un depot le remplirait en une ligne. Tous les
   // points d'appel concatenent `name + mark`, une chaine vide n'y casse rien.
   brand: { name: "Bouquerel", mark: "", given: "Eliott" },
-  /*
-   * UNE SEULE OFFRE DEPUIS LE 2026-10-31 : la baseline du logotype est lue sur
-   * toutes les pages. LE FRAGMENT DOIT EXISTER DANS `tagline`, sinon `Header`
-   * concatène le texte entier et le fragment introuvable.
-   */
-  tagline: "Sites, logiciels et IA",
-  taglineEmphasis: ["Sites, logiciels"],
   nav: [
     { label: "Accueil", href: "/" },
     { label: "Réalisations", href: "/realisations" },

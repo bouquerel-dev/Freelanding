@@ -32,6 +32,10 @@ const navigateur = await chromium.launch();
 const page = await navigateur.newPage({
   viewport: { width: 1200, height: 630 },
   deviceScaleFactor: 2,
+  // Mouvement réduit : la ligne « Je construis » ne se brouille pas et la
+  // trame du visage reste immobile. Sans ça, la capture tombait au milieu
+  // d'un brouillage (« DES LOOCFHTEQ LZHFEJ »).
+  reducedMotion: "reduce",
 });
 await page.goto(BASE + "/", { waitUntil: "load" });
 // Les entrées du hero durent 1,6 s, la plus tardive se termine vers 2 s.
