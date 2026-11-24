@@ -55,20 +55,22 @@ const JOURS_BUREAU = SEMAINE.map(({ jour, tache, taches }) => {
  * chiffre ce qu'une agence facture à côté du mien, source écrite.
  */
 /*
- * LE H1 DE L'ACCUEIL depuis le 2026-11-24 (version 2 « trame géante ») :
- * comment Eliott travaille, en deux lignes.
+ * LE H1 DE L'ACCUEIL depuis le 2026-11-24 : la phrase d'Eliott (« moi j'ai
+ * tout à prouver, une agence non », `vault/wiki/business/copy-matiere-brute.md`).
+ * Effet challenger : le manque de notoriété devient la raison de mieux faire.
+ * Le métier est dit juste dessous (« Je construis… »), l'IA n'est plus en titre.
  */
-const LIGNES_TITRE = ["Un développeur,", "une équipe d’IA."] as const;
+const LIGNES_TITRE = ["J’ai tout", "à prouver."] as const;
 const TITRE_ACCUEIL = LIGNES_TITRE.join(" ");
 
 /**
- * Pourquoi lui, en trois lignes (retour d'Eliott du 2026-11-24 : « trop
- * long, même moi je le lis pas » ; « un seul interlocuteur n'est pas un
- * argument » ; garder ce qui se vérifie : réactivité, qualité d'agence, prix
- * correct). Aucun prix chiffré.
+ * Pourquoi lui (retours d'Eliott du 2026-11-24 : ne pas parler de l'IA à
+ * chaque ligne, dire un truc vrai et pas banal, ni « un seul interlocuteur »
+ * ni « prix corrects »). Le contraste avec l'agence, puis le résultat que veut
+ * un dirigeant. Aucun chiffre promis.
  */
 const COMMENT =
-  "Mes agents d’IA écrivent le code, je teste tout avant la mise en ligne. La qualité d’une agence, pour un prix correct. Et je réponds vite, essayez.";
+  "Une agence a déjà sa réputation. La mienne se joue sur votre projet : il doit vous amener des clients ou rendre des heures à votre équipe.";
 
 
 /**
@@ -92,7 +94,7 @@ export const homeContent: HomeContent = {
     titleLines: LIGNES_TITRE,
     buildPrefix: "Je construis",
     buildItems: ["des sites internet", "des logiciels métier", "des automatisations IA"],
-    faceNotes: ["Très réactif", "Qualité d’agence", "Prix corrects"],
+    faceNotes: ["Très réactif", "Tout à votre nom", "Utile avant beau"],
     subtitle: COMMENT,
     subtitleParagraphs: [{ text: COMMENT }],
     offerLink: { label: "Voir mes réalisations", href: "/realisations" },
@@ -478,7 +480,7 @@ export const homeContent: HomeContent = {
     // Mot-clé en tête, marque en fin.
     title: "Développeur à Caen : sites, logiciels et IA · Eliott Bouquerel",
     description:
-      "Sites, logiciels métier et automatisations IA pour TPE et PME. Un développeur, une équipe d’IA, un seul interlocuteur. Basé à Caen, en visio partout.",
+      "Sites, logiciels métier et automatisations IA pour TPE et PME. J’ai tout à prouver : votre projet doit vous amener des clients. Caen et visio.",
     ogImage: {
       src: "/images/og.jpg",
       alt: "Eliott Bouquerel",
