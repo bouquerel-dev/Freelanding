@@ -2,7 +2,7 @@ import type { CSSProperties } from "react";
 import { preload } from "react-dom";
 import type { HeroContent, PartieVisage } from "@/lib/content/types";
 import { Grain } from "@/components/effects/Grain";
-import { SwapCopies } from "@/components/ui/SwapCopies";
+import { BoutonAppel } from "@/components/ui/BoutonAppel";
 import { lienRendezVous } from "@/content/rendez-vous";
 import { uiLabels } from "@/content/ui";
 import { AmbianceHeros } from "./hero/AmbianceHeros";
@@ -230,46 +230,20 @@ export function HeroSection({ hero }: { hero: HeroContent }) {
           ) : null}
 
           <div
-            className="hero-fond mt-[26px] flex w-full flex-col gap-[10px] min-[480px]:w-auto min-[480px]:flex-row tablet:mt-[32px] tablet:gap-[14px]"
+            className="hero-fond mt-[26px] flex w-full flex-col gap-[10px] tablet:w-auto tablet:flex-row tablet:mt-[32px] tablet:gap-[14px]"
             style={delai(520)}
           >
-            <a
-              href={lienRendezVous("decouverte")}
-              data-part="hero-cta"
-              className="hero-cta header-cta group flex h-[50px] flex-none items-center justify-between gap-[14px] rounded-control bg-accent pl-[20px] pr-[6px] no-underline"
-            >
-              <span className="relative block overflow-hidden">
-                <SwapCopies travel={22} textClassName="text-[13px] font-semibold uppercase leading-[1.2] tracking-[-0.01em] text-accent-ink">
-                  {uiLabels.services.rdvLabel}
-                </SwapCopies>
-              </span>
-              <span aria-hidden className="grid size-[38px] flex-none place-items-center rounded-tag bg-accent-ink text-accent">
-                <svg viewBox="0 0 12 12" width="13" height="13" fill="none" className="header-cta-fleche">
-                  <path d="M3 9 9 3M4.2 3H9v4.8" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </span>
-            </a>
+            {/* Le bouton partagé de l'en-tête, en grand : même habillage, même logo. */}
+            <BoutonAppel href={lienRendezVous("decouverte")} label={uiLabels.services.rdvLabel} taille="grand" largeur="pleine-mobile" data-part="hero-cta" />
             {hero.offerLink ? (
-              <a
+              <BoutonAppel
                 href={hero.offerLink.href}
+                label={hero.offerLink.label}
+                taille="grand"
+                ton="encre"
+                largeur="pleine-mobile"
                 data-part="hero-cta-secondaire"
-                className="hero-cta-secondaire group flex h-[50px] flex-none items-center justify-between gap-[14px] rounded-control border border-white/25 pl-[20px] pr-[5px] no-underline hover:border-white/60"
-              >
-                <span className="relative block overflow-hidden">
-                  <SwapCopies travel={22} textClassName="text-[13px] font-semibold uppercase leading-[1.2] tracking-[-0.01em] text-foreground">
-                    {hero.offerLink.label}
-                  </SwapCopies>
-                </span>
-                <span aria-hidden className="grid size-[38px] flex-none place-items-center rounded-tag bg-white/10 text-foreground">
-                  {/* Quatre vignettes : les réalisations. */}
-                  <svg viewBox="0 0 12 12" width="12" height="12" fill="currentColor" className="hero-cta-grille">
-                    <rect x="1" y="1" width="4" height="4" rx="1" />
-                    <rect x="7" y="1" width="4" height="4" rx="1" />
-                    <rect x="1" y="7" width="4" height="4" rx="1" />
-                    <rect x="7" y="7" width="4" height="4" rx="1" opacity="0.45" />
-                  </svg>
-                </span>
-              </a>
+              />
             ) : null}
           </div>
         </div>
