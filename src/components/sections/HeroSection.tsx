@@ -125,7 +125,7 @@ export function HeroSection({ hero }: { hero: HeroContent }) {
                     }`}
                   >
                     <span className="font-mono text-[11px] uppercase leading-none tracking-[0.04em] text-foreground">{trait.titre}</span>
-                    <span className="text-[12px] leading-none tracking-[-0.01em] text-foreground-60">{trait.detail}</span>
+                    <span className="w-max max-w-[132px] whitespace-normal text-balance text-[12px] leading-[1.25] tracking-[-0.01em] text-foreground-60">{trait.detail}</span>
                   </span>
                   <span className="hero-repere-trait h-px flex-1" />
                   <span className={`hero-repere-point h-[7px] w-[7px] flex-none rounded-full ${gauche ? "-mr-[3.5px]" : "-ml-[3.5px]"}`} />
