@@ -1,5 +1,21 @@
 [
   {
+    "slug": "panne-outlook-demandes-clients",
+    "title": "Panne d’Outlook : vos demandes clients sont-elles arrivées ?",
+    "date": "2026-11-24",
+    "category": "Méthode",
+    "description": "Vos clients vous écrivent par mail et Outlook est tombé les 12 et 13 novembre : retrouvez les demandes en retard et gardez la prochaine hors de la boîte.",
+    "readingTime": "8 min de lecture",
+    "tags": [
+      "panne outlook",
+      "mails perdus outlook",
+      "panne microsoft 365",
+      "formulaire de contact"
+    ],
+    "alt": "Un casier de tri postal à vingt-huit cases, des enveloppes en pointillés en attente ; une seule case est cerclée de vert et garde son enveloppe pleine",
+    "validationId": "90c60db6-18c7-4248-93d8-e4aeaee9d275"
+  },
+  {
     "slug": "logiciel-planification-production",
     "title": "Logiciel de planification de production quand Excel déborde",
     "date": "2026-11-23",

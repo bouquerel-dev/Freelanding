@@ -1,0 +1,81 @@
+Le 20 novembre 2026, Microsoft a publié le rapport final de la panne qui a coupé Outlook et Exchange Online pendant près de 24 heures, les 12 et 13 novembre. Il dit avoir distribué tous les mails professionnels en attente, avec du retard. Côté Outlook.com, la messagerie des particuliers, des messages adressés à des boîtes inactives depuis plus de 30 jours ont expiré avant d’arriver, et leurs expéditeurs ont reçu un avis de non-remise ([Clubic, 23 novembre 2026](https://www.clubic.com/actualite-640492-apres-la-panne-d-outlook-microsoft-confirme-que-certains-e-mails-ne-sont-jamais-arrives.html)). Si vos demandes de devis arrivent par mail, la question pour vous tient en une ligne : un client qui vous a écrit le jeudi 12 au soir a-t-il eu sa réponse, et quand ?
+
+Cette semaine, vous pouvez le vérifier en une heure. Ensuite, vous pouvez faire en sorte que la prochaine panne ne touche plus que la notification, jamais la demande elle-même. C’est le travail que je fais pour des PME : brancher le site et la boîte mail sur une base qui garde chaque demande, et une IA qui la trie. Pendant [un appel en visio](/rdv?sujet=site), montrez-moi par où vos demandes arrivent aujourd’hui.
+
+## Qu’est-ce que la panne a fait aux mails de vos clients ?
+
+D’après le rapport, un défaut installé en juillet sur des serveurs d’accès est resté invisible plus de trois mois, jusqu’à ce qu’un problème de routage dans l’est des États-Unis envoie tout le trafic de Teams vers les serveurs qui servent aussi la messagerie. En temps normal, un serveur de mail retente la remise pendant 24 heures avant de renvoyer le message à son expéditeur. Pendant la panne, Microsoft a porté ce délai à 48 heures pour éviter les retours en masse.
+
+| Votre situation | Ce que dit le rapport | Ce que vous faites |
+| --- | --- | --- |
+| Vous êtes sur Microsoft 365 (adresse à votre nom de domaine) | Les mails professionnels sont arrivés, en retard | Relire ce qui est entré entre le 12 au soir et le 14 au matin, et vérifier que chaque demande a eu sa réponse |
+| Vos clients particuliers écrivent depuis une adresse Outlook.com ou Hotmail | Une partie des messages vers les boîtes inactives a expiré | Chercher dans vos envois les avis de non-remise de ces deux jours et renvoyer |
+| Votre site envoie ses formulaires par mail | Le formulaire a reçu la demande, le mail qu’il produit a pu attendre comme les autres | Retrouver les demandes du formulaire sur la même fenêtre, dans le site ou chez l’hébergeur |
+| Vous êtes sur une autre messagerie | Vos clients sur Outlook ont pu recevoir vos réponses en retard | Rappeler ceux qui attendaient un devis ces jours-là |
+
+Le retard compte autant que la perte. Un client qui a demandé plusieurs devis le jeudi soir compare ceux qui arrivent : une réponse sortie le samedi arrive après celles des concurrents dont la messagerie tournait.
+
+## Comment vérifier qu’aucune demande n’est restée en route ?
+
+<Steps items={[
+  "**Filtrez votre boîte de réception du 12 novembre 18 h au 14 novembre midi**, et notez chaque demande de client ou de prospect, avec l’heure à laquelle vous avez répondu.",
+  "**Cherchez « non remis » ou « undeliverable » dans votre boîte** sur les mêmes jours : chaque avis correspond à un message à renvoyer, devis compris.",
+  "**Relevez les demandes de votre formulaire en ligne** depuis l’interface du site ou de l’hébergeur, pas seulement depuis les mails qu’il envoie, et comparez les deux listes.",
+  "**Appelez les clients à qui vous avez répondu après le samedi 14** : un appel de deux minutes rattrape souvent un devis qui serait parti ailleurs."
+]} />
+
+La troisième étape est celle qui surprend. Beaucoup de formulaires de site ne gardent rien : ils fabriquent un mail et l’envoient. Si le mail se perd, la demande n’existe plus nulle part, et vous ne saurez jamais qu’elle a existé.
+
+## Pourquoi la boîte mail fait un mauvais registre de demandes
+
+Une boîte mail sert à recevoir des messages. Une entreprise lui demande souvent aussi de tenir la liste de ses demandes clients, de dire qui a répondu à qui, et de rappeler ce qui reste à traiter. Elle le fait mal, pour trois raisons.
+
+- **Elle dépend d’un seul fournisseur.** Quand le serveur ne répond plus, vous ne voyez plus rien, même ce qui était déjà arrivé, sauf dans une copie locale.
+- **Elle ne connaît pas l’état d’une demande.** Un mail lu n’est pas un mail traité. Rien ne distingue la demande à laquelle vous avez répondu de celle que vous avez ouverte entre deux rendez-vous.
+- **Elle mélange tout.** La demande de devis arrive entre une facture fournisseur, une newsletter et un démarchage. Le tri se fait à l’œil, chaque matin.
+
+<Figure src="/images/blog/corps/panne-outlook-demandes-clients-1.jpg" alt="À gauche, trois flèches grises qui convergent vers un seul rond barré ; à droite, les mêmes flèches entrent dans un bloc vert puis repartent vers deux petits ronds, l’un intact, l’autre barré" caption="Quand le formulaire écrit seulement un mail, la panne de la messagerie efface la demande ; quand il l’écrit d’abord dans une base, seule la notification attend." />
+
+Changer de messagerie ne règle rien, puisque toutes tombent un jour. Ce qui règle le problème, c’est de séparer l’endroit où la demande est gardée du moyen par lequel vous êtes prévenu.
+
+## À quoi ressemble une demande qui entre dans une base ?
+
+Le formulaire de votre site, au lieu de fabriquer un mail, enregistre la demande dans une base de données qui vous appartient : nom, téléphone, besoin, date, page d’où elle vient. Une fois la demande enregistrée, il vous envoie une notification, par mail ou par SMS. Si la notification se perd, la demande reste dans la liste, marquée « à traiter », et vous la voyez en ouvrant l’écran.
+
+Les mails qui arrivent directement dans votre boîte suivent le même chemin. Un relevé lit la boîte toutes les quelques minutes et range chaque message dans la base. Si la messagerie tombe, le relevé échoue, et c’est ce silence qui doit vous alerter : un écran qui affiche « dernier relevé il y a six heures » vaut mieux qu’une boîte vide qui a l’air calme.
+
+<Figure src="/images/blog/corps/panne-outlook-demandes-clients-2.jpg" alt="Une ligne de temps avec une zone hachurée au centre ; en haut, des points verts continuent pendant toute la zone, en bas des points gris s’empilent puis sortent ensemble" caption="Pendant une panne, les demandes du formulaire continuent d’entrer dans la base ; les notifications attendent et sortent ensemble au retour du service." />
+
+L’IA trouve sa place dans ce circuit, à un endroit précis. Elle lit chaque demande, dit s’il s’agit d’un devis, d’une réclamation ou d’un démarchage, repère l’urgence et prépare un brouillon de réponse que vous relisez avant qu’il parte. Le tri du matin disparaît, et une demande importante ne reste plus coincée entre deux newsletters.
+
+| | Demandes par mail seulement | Demandes en base, mail en notification |
+| --- | --- | --- |
+| Panne de la messagerie | Les demandes attendent ou se perdent, sans trace | Les demandes sont enregistrées, la notification attend |
+| Savoir ce qui reste à traiter | De mémoire, ou par des drapeaux posés à la main | Un statut par demande : nouvelle, en cours, répondue |
+| Tri des messages | À l’œil, chaque matin | Une IA classe et prépare la réponse, vous validez |
+| Mesurer le délai de réponse | Impossible sans tout relire | Calculé pour chaque demande |
+| Changer de messagerie | Tout l’historique est à déménager | La base ne bouge pas |
+
+## Comment je l’ai construit pour moi
+
+Je n’ai pas encore livré ce circuit chez un client. Je le fais tourner chez moi, dans le cockpit qui pilote mon activité. Les rendez-vous que l’on réserve sur ce site n’arrivent pas par mail : chaque réservation s’écrit directement dans la base du cockpit, et le mail de confirmation n’est qu’une copie. Ma boîte est relevée par le cockpit, qui range chaque message, le rattache à la bonne fiche client et le classe avec une IA. Les réponses sont préparées, et rien ne part sans que je l’aie validé.
+
+Ce qui m’a le plus servi, c’est de pouvoir répondre en dix secondes à la question « qui attend une réponse de moi ? », sans ouvrir ma boîte. Pendant une panne, c’est la seule question qui compte, et une boîte mail ne sait pas y répondre.
+
+Pour une PME, le même circuit tient en quelques semaines de travail : le formulaire du site, le relevé de la boîte, la base, l’écran des demandes et le tri par IA. Le détail de cette offre est sur la page [Automatisation et intégration d’IA](/services/automatisation). Une agence facture couramment de 8 000 à 10 000 € HT un premier outil sur mesure (La Fabrique du Net, ordres de grandeur relevés le 15 octobre 2026) ; je fais le même travail pour environ deux fois moins, à un prix fixé au devis.
+
+## Questions fréquentes
+
+**Faut-il quitter Microsoft 365 après cette panne ?**
+Non. Une autre messagerie tombera aussi un jour. Ce qui protège vos demandes, c’est qu’elles soient gardées ailleurs que dans la boîte.
+
+**Mon formulaire de site garde-t-il les demandes ?**
+Regardez dans l’administration du site s’il existe une liste des messages reçus. S’il n’y en a pas, chaque demande n’existe que sous forme de mail.
+
+**Peut-on garder Outlook comme outil de travail ?**
+Oui. La base se branche sur votre boîte actuelle et vous continuez à écrire depuis Outlook. Seul le suivi des demandes passe par l’écran.
+
+**L’IA répond-elle seule à mes clients ?**
+Seulement si vous le décidez. Je la règle pour préparer la réponse, et c’est vous qui l’envoyez.
+
+Pour regarder votre cas, [prenez rendez-vous en visio](/rdv?sujet=site) avec la liste des demandes reçues entre le 12 et le 14 novembre.
