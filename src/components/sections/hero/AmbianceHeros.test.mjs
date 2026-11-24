@@ -254,7 +254,7 @@ describe("AmbianceHeros", () => {
 
   it("compte le temps en images quand le navigateur ne le donne pas, et tient sans densité d'écran ni hauteur", async () => {
     installer();
-    window.devicePixelRatio = 0;
+    Object.defineProperty(window, "devicePixelRatio", { configurable: true, value: 0 });
     await monter();
     etat.images.shift()();
     expect(etat.traits).toBe(12);
