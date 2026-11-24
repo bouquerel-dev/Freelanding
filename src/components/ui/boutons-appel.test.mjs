@@ -47,6 +47,8 @@ describe("boutons d'appel partagés", () => {
     const sansRdv = await rendre(createElement(WhyUsSection, { whyUs: autre }));
     expect(boutons(sansRdv).length).toBe(0);
     expect(sansRdv).toContain('href="/realisations"');
+    const sansLien = await rendre(createElement(WhyUsSection, { whyUs: { ...home.whyUs, ctas: [] } }));
+    expect(boutons(sansLien).length).toBe(0);
   });
 
   it("services de l'accueil : un bouton par prestation, nommé par elle, hors tabulation replié", async () => {
@@ -54,6 +56,10 @@ describe("boutons d'appel partagés", () => {
     const liste = boutons(html);
     expect(liste.length).toBeGreaterThan(0);
     for (const b of liste) expect(b).toContain("aria-label=");
+    const items = home.services.items ?? home.services;
+    const sansRdv = Array.isArray(items) ? items.map((i) => ({ ...i, rdvHref: undefined })) : items;
+    const html2 = await rendre(createElement(ServicesSection, { services: sansRdv }));
+    expect(boutons(html2).length).toBe(0);
   });
 
   it("réalisation : le bouton mène au sujet de la réalisation", async () => {

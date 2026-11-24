@@ -119,6 +119,22 @@ describe("EtincellesClic", () => {
     expect(canevas()).toBeNull();
   });
 
+  it("lit le volt du site et tient sans densité d'écran déclarée", () => {
+    dom.window.document.documentElement.style.setProperty("--accent", "#abcdef");
+    dom.window.devicePixelRatio = 0;
+    cliquer();
+    expect(canevas().width).toBe(dom.window.innerWidth);
+    jouer();
+    expect(images).toHaveLength(0);
+  });
+
+  it("sans contexte 2D, rien n'est dessiné et rien ne casse", () => {
+    dom.window.HTMLCanvasElement.prototype.getContext = () => null;
+    cliquer();
+    jouer();
+    expect(traits).toBe(0);
+  });
+
   it("au démontage : écouteur retiré, boucle annulée, canevas enlevé", async () => {
     cliquer();
     await act(async () => racine.unmount());
