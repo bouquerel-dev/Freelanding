@@ -465,3 +465,5 @@ LCP vérifié au navigateur à 1440 et 390 : le h1 (`hero-titre`), jamais la toi
 | taste-skill · le point focal se décline | Le visage restait un bloc posé | La trame continue autour en champ de points pâle, et quatre angles de viseur cadrent le visage : deux motifs tirés de la trame elle-même |
 | impeccable · clarify | Le sous-titre ne disait pas pourquoi lui | Sous-titre réécrit (agents qui écrivent, lui qui teste, un seul interlocuteur, finitions), passé par li-human (73,7, PASSE) ; trois repères numérotés autour du visage en reprennent les temps |
 | emil-design-eng · décalage court | Repères | Fondu d'entrée décalé de 120 ms, après le texte ; rien en mouvement réduit |
+
+Second retour du même jour : sous-titre jugé trop long et « un seul interlocuteur n'est pas un argument ». Sous-titre ramené à trois phrases courtes, repères remplacés par ce qui se vérifie (très réactif, qualité d'agence, prix corrects). li-human : aucune tournure signalée ; la note chiffrée plafonne sous 70 sur un texte de 25 mots (rythme calculé sur trois phrases), écart assumé pour la concision demandée.

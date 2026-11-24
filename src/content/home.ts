@@ -62,12 +62,13 @@ const LIGNES_TITRE = ["Un développeur,", "une équipe d’IA."] as const;
 const TITRE_ACCUEIL = LIGNES_TITRE.join(" ");
 
 /**
- * Comment il travaille et pourquoi lui (réécrit le 2026-11-24, demande
- * d'Eliott : « parler de comment je travaille, de pourquoi me choisir »).
- * Passé par li-human : note 73,7, PASSE.
+ * Pourquoi lui, en trois lignes (retour d'Eliott du 2026-11-24 : « trop
+ * long, même moi je le lis pas » ; « un seul interlocuteur n'est pas un
+ * argument » ; garder ce qui se vérifie : réactivité, qualité d'agence, prix
+ * correct). Aucun prix chiffré.
  */
 const COMMENT =
-  "Des agents d’IA écrivent le code. Je relis et je teste chaque ligne avant qu’elle parte en ligne. Vous n’avez qu’un interlocuteur, à Caen ou en visio, du premier appel au premier jour en ligne, et les heures gagnées vont dans les finitions : un site rapide, testé, bien placé sur Google. Pas de chef de projet entre nous.";
+  "Mes agents d’IA écrivent le code, je teste tout avant la mise en ligne. La qualité d’une agence, pour un prix correct. Et je réponds vite, essayez.";
 
 
 /**
@@ -91,7 +92,7 @@ export const homeContent: HomeContent = {
     titleLines: LIGNES_TITRE,
     buildPrefix: "Je construis",
     buildItems: ["des sites internet", "des logiciels métier", "des automatisations IA"],
-    faceNotes: ["Un seul interlocuteur", "Les agents écrivent", "Je teste chaque ligne"],
+    faceNotes: ["Très réactif", "Qualité d’agence", "Prix corrects"],
     subtitle: COMMENT,
     subtitleParagraphs: [{ text: COMMENT }],
     offerLink: { label: "Voir mes réalisations", href: "/realisations" },
