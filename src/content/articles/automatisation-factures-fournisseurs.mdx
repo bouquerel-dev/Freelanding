@@ -1,93 +1,195 @@
-Automatiser vos factures fournisseurs, c’est confier à un outil tout le trajet d’une facture entre sa réception et son paiement : il la lit, vérifie qu’elle correspond à une commande et à une livraison, l’impute sur le bon compte, la présente à la personne qui doit la valider, puis l’envoie en comptabilité et prépare le règlement à l’échéance. Votre équipe ne traite plus que les écarts. Depuis le 1er septembre 2026, la facture électronique rend ce travail plus simple : les factures arrivent en données lisibles par un programme, plus seulement en PDF. Deux voies s’offrent à vous : un logiciel spécialisé par abonnement, ou une automatisation branchée sur les outils que vous utilisez déjà, à un prix fixé au devis.
+L’automatisation des factures fournisseurs confie à un outil le trajet complet d’une facture, de sa réception à son paiement : il la lit, la rapproche de la commande et de la livraison, l’impute, la fait valider par la bonne personne, la passe en comptabilité et prépare le virement à l’échéance. Votre équipe ne traite plus que les écarts, et depuis le 1er septembre 2026 la facture électronique lui facilite la tâche, puisque les factures arrivent en données qu’un programme lit sans les deviner.
 
-Je conçois et je branche seul ces automatisations pour des PME, du choix de la tâche à la mise en service. Si vos factures fournisseurs passent encore par une boîte mail, un classeur et une saisie à la main, [prenez un appel en visio](/rdv?sujet=logiciel) : nous regardons ensemble quelles étapes l’outil peut prendre, et combien d’heures cela vous rend.
+Je conçois et je branche seul ces automatisations pour des PME, du choix de la première étape à la mise en service. Si vos factures fournisseurs passent encore par une boîte mail et une saisie à la main, [prenez un appel en visio](/rdv?sujet=ia) : nous regardons ensemble quelles étapes un outil peut prendre chez vous, et combien d’heures cela vous rend.
 
 ## Qu’est-ce que l’automatisation des factures fournisseurs ?
 
-Une facture fournisseur suit toujours le même chemin, quelle que soit votre activité :
-
-- **la réception** : par mail, par courrier, sur un portail fournisseur, et désormais par votre plateforme de facturation électronique ;
-- **la lecture** : fournisseur, numéro, date, montants, TVA, échéance, références de commande ;
-- **le contrôle** : la facture correspond-elle à ce qui a été commandé, au prix convenu, et à ce qui a été livré ;
-- **l’imputation** : compte de charge, code analytique, chantier ou affaire concernés ;
-- **la validation** : la personne qui a passé la commande confirme, ou le responsable au-dessus d’un montant ;
-- **la comptabilisation et le paiement** : écriture passée, règlement programmé à l’échéance, pièce archivée.
-
-Faite à la main, chaque étape demande quelqu’un : ouvrir le mail, recopier les montants, chercher le bon de commande dans un autre outil, relancer le collègue qui doit valider, ressaisir l’écriture. L’automatisation enchaîne ces étapes sans intervention tant que tout concorde, et elle arrête la facture avec un motif clair dès qu’un écart apparaît : un prix qui ne correspond pas, une quantité livrée inférieure, un fournisseur inconnu.
-
-## Qu’est-ce que la facture électronique change depuis septembre 2026 ?
-
-La généralisation de la facturation électronique entre entreprises est effective depuis le 1er septembre 2026, selon [la page de l’administration fiscale consacrée à la réforme](https://www.impots.gouv.fr/professionnel/je-passe-la-facturation-electronique). Toutes les entreprises assujetties à la TVA doivent depuis cette date pouvoir recevoir leurs factures par une plateforme agréée. L’obligation d’émettre suit en deux temps : les grandes entreprises et les entreprises de taille intermédiaire depuis le 1er septembre 2026, les PME et les microentreprises au 1er septembre 2027, calendrier fixé par la loi de finances pour 2024.
-
-Pour vos factures fournisseurs, la réforme change deux choses.
-
-**Les données arrivent structurées.** Une facture électronique au sens de la réforme circule dans un des trois formats du socle (Factur-X, UBL ou CII) : le montant, la TVA, le numéro de commande sont des champs qu’un programme lit sans les deviner. La lecture, l’étape la plus fragile quand on part d’un PDF scanné, devient fiable.
-
-**La plateforme reçoit, elle ne décide pas.** Votre plateforme agréée dépose la facture et transmet les données à l’administration. Elle ne sait pas que la commande correspondante est dans votre outil de gestion, que la livraison a été partielle, ni que les factures d’un chantier passent par votre conducteur de travaux. Le contrôle, le rapprochement et le circuit de validation restent à organiser chez vous.
-
-Jusqu’en septembre 2027, une partie de vos fournisseurs, les plus petits, pourra encore vous envoyer des PDF. Une automatisation utile lit donc les deux : les données structurées quand elles existent, le PDF avec l’aide d’une IA quand elles manquent.
-
-## Quelles étapes confier à l’outil, et lesquelles garder ?
+C’est l’exécution par un logiciel des étapes répétitives du traitement d’une facture d’achat. Quelle que soit votre activité, une facture fournisseur suit le même chemin, et chaque étape peut être confiée à l’outil, en tout ou en partie.
 
 | Étape | Ce que fait l’outil | Ce que garde votre équipe |
 | --- | --- | --- |
-| Réception | Récupère les factures sur la plateforme, dans la boîte dédiée et sur les portails | Rien |
-| Lecture | Lit les champs structurés, ou extrait ceux d’un PDF avec une IA | Un coup d’œil sur les PDF mal lus |
-| Contrôle | Rapproche la facture de la commande et du bon de livraison, ligne à ligne | Les écarts, avec leur motif |
-| Imputation | Propose le compte et le code analytique d’après l’historique du fournisseur | La validation des nouveaux fournisseurs |
-| Validation | Envoie la facture à la bonne personne, relance si rien ne bouge | La décision |
+| Réception | Récupère les factures sur votre plateforme agréée, dans une boîte dédiée et sur les portails fournisseurs | Rien |
+| Capture | Lit les champs structurés, ou extrait ceux d’un PDF par OCR et IA | Un coup d’œil sur les PDF mal lus |
+| Rapprochement | Compare la facture à la commande et au bon de livraison, ligne à ligne | Les écarts, avec leur motif |
+| Imputation | Propose le compte de charge et le code analytique d’après l’historique du fournisseur | La validation des nouveaux fournisseurs |
+| Validation | Envoie la facture à la bonne personne et relance si rien ne bouge | La décision |
 | Comptabilisation | Prépare l’écriture et l’exporte vers votre logiciel comptable | Le contrôle de fin de mois |
-| Paiement | Prépare le fichier de virement à l’échéance | La signature du paiement |
+| Paiement | Prépare le virement à l’échéance et vérifie l’IBAN | La signature du paiement |
+| Archivage | Range la facture et sa piste d’audit, consultables pendant la durée légale | Rien |
 
-La règle que j’applique : l’outil propose, votre équipe valide, tant que son taux d’erreur sur vos propres factures n’est pas connu. Les calculs exacts, comme un total ou une TVA, sont refaits par le code et jamais confiés à l’IA. Quand le taux d’erreur est mesuré, vous décidez de ce qui passe seul, par exemple les factures sans écart d’un fournisseur régulier sous un montant que vous fixez.
+Faite à la main, chaque ligne de ce tableau demande quelqu’un : ouvrir le mail, recopier les montants, chercher le bon de commande dans un autre outil, relancer le collègue qui doit valider, ressaisir l’écriture. Une fois automatisée, la facture qui concorde traverse tout le circuit sans qu’on la touche. Celle qui présente un écart s’arrête avec un motif lisible : un prix différent du tarif convenu, une quantité livrée inférieure, un fournisseur inconnu.
 
-## Combien de temps pouvez-vous reprendre ?
+## Pourquoi automatiser la gestion des factures fournisseurs ?
 
-Le calcul se fait avec vos chiffres, pas avec ceux d’un éditeur. Pendant une semaine, notez pour chaque facture le temps passé de la réception à la comptabilisation, relances comprises. Multipliez par votre volume mensuel.
+Parce qu’une facture traitée à la main coûte cher et se paie souvent en retard. Le cabinet d’études américain Ardent Partners mesure chaque année le coût complet du traitement d’une facture, main-d’œuvre, outils et frais de structure compris. Dans son édition 2026 (rapport *Accounts Payable Metrics that Matter*, [page de présentation publiée par Medius](https://www.medius.com/resources/guides-reports/ardent-partners-accounts-payable-metrics-that-matter/), mise à jour le 29 septembre 2026), le service fournisseurs moyen dépense 9,90 dollars par facture. Les 20 % les plus efficaces, presque tous automatisés, descendent à 2,67 dollars, et ils n’ont que 11,8 % de factures en exception contre 19,9 % en moyenne.
 
-Prenez un exemple de calcul, à remplacer par vos propres relevés : à 300 factures par mois et 6 minutes par facture, votre équipe y passe 30 heures par mois. Si l’automatisation traite seule les factures sans écart et ne vous présente que les autres, ce sont ces 30 heures moins le temps des écarts que vous reprenez. Le temps rendu dépend surtout de la part de factures qui concordent du premier coup, et c’est ce que le test sur vos factures passées mesure avant tout engagement.
+<Stat value="9,90 $" label="coût moyen de traitement d’une facture fournisseur, contre 2,67 $ pour les services les plus automatisés (Ardent Partners, édition 2026)" />
 
-Le gain ne se limite pas au temps. Une facture validée à temps se paie à l’échéance prévue, ni en retard, ce qui abîme la relation avec le fournisseur, ni en avance, ce qui pèse sur votre trésorerie. Et un écart de prix repéré à la réception se règle avec le fournisseur avant le paiement, plutôt qu’en avoir trois mois plus tard.
+Le coût n’est qu’une partie de l’affaire. En France, un délai de paiement entre entreprises ne peut pas dépasser 60 jours après l’émission de la facture, ou 45 jours fin de mois si le contrat le prévoit ([fiche de la Banque de France sur les délais de paiement](https://www.banque-france.fr/system/files/2024-04/823415%20Fiche-601.pdf)). Chaque facture payée en retard expose à des pénalités et à une indemnité forfaitaire de 40 euros pour frais de recouvrement. Une facture qui dort deux semaines dans la boîte mail d’un conducteur de travaux en congé suffit à faire déraper l’échéance.
 
-## Logiciel spécialisé ou automatisation branchée sur vos outils ?
+Reste la fraude. Le faux fournisseur qui annonce un changement de coordonnées bancaires vise justement les circuits où personne ne compare l’IBAN de la facture à celui du fichier fournisseurs. Un outil fait cette comparaison sur chaque facture, et il bloque le paiement dès que les deux diffèrent.
 
-| | Module de votre plateforme agréée | Logiciel d’automatisation par abonnement | Automatisation branchée sur vos outils |
+## Comment fonctionne le traitement automatisé, étape par étape ?
+
+### La réception : une seule porte d’entrée
+
+Tant que vos factures arrivent par trois boîtes mail, le courrier et deux portails fournisseurs, personne ne sait combien sont en attente. La première chose qu’un outil apporte, c’est une file unique : chaque facture entre au même endroit, avec sa date d’arrivée, et rien ne se perd entre deux personnes. Depuis septembre 2026, votre plateforme agréée devient la source principale de cette file.
+
+### La capture : données structurées, OCR ou IA
+
+| D’où vient la facture | Comment l’outil la lit | Fiabilité |
+| --- | --- | --- |
+| Facture électronique (Factur-X, UBL, CII) | Lit directement les champs : montant, TVA, numéro de commande | Exacte, rien à deviner |
+| PDF généré par un logiciel | Extrait le texte, puis une IA repère les champs | Bonne, à contrôler sur les nouveaux fournisseurs |
+| Papier scanné, photo | OCR puis IA | Variable selon la qualité de l’image |
+
+L’OCR seul reconnaît des caractères sans comprendre la mise en page. Les modèles d’IA récents savent retrouver un numéro de commande ou une échéance où qu’ils soient placés sur la page. Une règle que j’applique partout : les calculs exacts, un total ou une TVA, sont refaits par le code et jamais confiés à l’IA.
+
+### Le rapprochement à deux ou trois voies
+
+C’est l’étape qui fait gagner le plus de temps, et la plus souvent mal faite à la main.
+
+| Rapprochement | Ce qui est comparé | Quand il suffit |
+| --- | --- | --- |
+| À deux voies | Facture et bon de commande : fournisseur, articles, prix unitaires | Services, abonnements, achats sans livraison physique |
+| À trois voies | Facture, bon de commande et bon de réception : en plus, les quantités vraiment livrées | Marchandises, matériaux, livraisons partielles |
+
+Le rapprochement fonctionne avec des tolérances que vous fixez : un écart de quelques centimes d’arrondi passe, un prix unitaire supérieur de 3 % au tarif négocié bloque. Il suppose aussi que la commande et la réception existent quelque part dans un outil. Si vos achats se suivent dans un tableur ou de mémoire, commencez par là : l’article sur [le logiciel de gestion des achats](/blog/logiciel-gestion-des-achats) décrit ce circuit de la demande à la réception.
+
+### L’imputation et la validation
+
+L’outil propose le compte de charge, le code analytique ou le chantier concerné d’après les factures précédentes du même fournisseur. Puis il envoie la facture à la personne qui a passé la commande, ou au responsable au-delà d’un montant que vous fixez, et il relance tant que la décision n’est pas prise.
+
+Une facture sans bon de commande n’est pas rejetée d’office. Elle part dans un circuit d’exception, vers quelqu’un qui confirme la dépense avant qu’elle continue.
+
+### La comptabilisation, le paiement et l’archivage
+
+L’écriture est préparée dans le format que votre logiciel comptable importe déjà. Le virement est programmé à l’échéance, ni avant, ce qui pèse sur votre trésorerie, ni après. La facture et l’historique de ses validations sont archivés : le Code de commerce impose de conserver les pièces comptables dix ans.
+
+## Que change la facture électronique depuis le 1er septembre 2026 ?
+
+La généralisation de la facture électronique entre entreprises est entrée en vigueur le 1er septembre 2026, selon [l’annonce publiée par Entreprendre Service Public](https://entreprendre.service-public.gouv.fr/actualites/A18953?lang=fr) et [la page de l’administration fiscale consacrée à la réforme](https://www.impots.gouv.fr/professionnel/je-passe-la-facturation-electronique).
+
+| Obligation | Entreprises concernées | Date |
+| --- | --- | --- |
+| Recevoir les factures électroniques | Toutes les entreprises assujetties à la TVA | 1er septembre 2026 |
+| Émettre ses factures en électronique | Grandes entreprises et ETI | 1er septembre 2026 |
+| Émettre ses factures en électronique | PME et microentreprises | 1er septembre 2027 |
+
+La réception et l’émission passent par une plateforme agréée, appelée PDP dans les premiers textes de la réforme. L’administration fiscale a publié une première liste de 101 plateformes le 16 janvier 2026 ; elle l’enrichit depuis, et la version à jour se consulte sur [la page « Je consulte la liste des plateformes agréées »](https://www.impots.gouv.fr/je-consulte-la-liste-des-plateformes-agreees), modifiée le 23 novembre 2026.
+
+Les sanctions ont été relevées par la loi de finances pour 2026 ([Entreprendre Service Public, 20 février 2026](https://entreprendre.service-public.gouv.fr/actualites/A18802?lang=fr)) : 50 euros par facture qui n’est pas émise sous forme électronique, 500 euros par transmission manquante de données à l’administration, dans la limite de 15 000 euros par année civile. Une première infraction régularisée spontanément, ou dans les trente jours suivant la demande de l’administration, n’est pas sanctionnée.
+
+Pour vos factures fournisseurs, la réforme change deux choses. Les données arrivent structurées dans un des trois formats du socle (Factur-X, UBL ou CII), ce qui rend la capture fiable. Mais la plateforme reçoit et transmet, elle ne décide de rien : elle ne sait pas que la commande correspondante est dans votre outil de gestion, que la livraison a été partielle, ni que les factures d’un chantier passent par votre conducteur de travaux. Le rapprochement et le circuit de validation restent à organiser chez vous.
+
+Jusqu’en septembre 2027, vos plus petits fournisseurs pourront encore vous envoyer des PDF. Une automatisation utile en 2026 lit donc les deux formats.
+
+## Combien coûte une facture traitée à la main, et automatisée ?
+
+Les moyennes d’Ardent Partners donnent un ordre de grandeur, mesuré surtout sur des entreprises américaines. Le seul calcul qui vaille se fait avec vos chiffres. Pendant une semaine, notez pour chaque facture le temps passé de la réception à la comptabilisation, relances comprises, puis multipliez par votre volume mensuel.
+
+Un exemple de calcul, à remplacer par vos relevés : à 300 factures par mois et 6 minutes par facture, votre équipe y passe 30 heures par mois. Si l’automatisation traite seule les factures sans écart et ne présente que les autres, vous reprenez ces 30 heures moins le temps passé sur les exceptions. Avec le taux d’exception moyen relevé par Ardent Partners, environ une facture sur cinq demanderait encore quelqu’un. Le temps rendu dépend donc surtout de la part de vos factures qui concordent du premier coup, et c’est ce que le test sur vos factures passées mesure avant tout engagement.
+
+Le gain se voit aussi ailleurs. Un écart de prix repéré à la réception se règle avec le fournisseur avant le paiement, plutôt qu’en avoir trois mois plus tard. Et le fichier des dettes fournisseurs est à jour chaque matin, ce qui change la prévision de trésorerie.
+
+## Quels logiciels pour automatiser les factures fournisseurs ?
+
+Six éditeurs reviennent dans les recherches des PME françaises. Deux affichent leurs prix, les quatre autres répondent sur devis. Le relevé ci-dessous les met côte à côte, avec ce que chacun couvre côté fournisseurs.
+
+### Relevé des prix publics des logiciels de factures fournisseurs (24/11/2026)
+
+Prix en euros HT par mois, relevés le 24/11/2026 sur la page tarifs de chaque éditeur (relevé Eliott Bouquerel sur les sites publics des éditeurs). Un prix qui n’est pas affiché publiquement est noté « sur devis ».
+
+| Solution | Pour qui | Ce qu’elle couvre côté fournisseurs | Prix public (€ HT par mois) |
 | --- | --- | --- | --- |
-| Ce qu’il fait | Réception, statuts, archivage | Lecture, circuit de validation, export comptable | Les étapes que vous choisissez, avec vos règles |
+| Votre plateforme agréée | Toutes les entreprises | Réception, statuts, archivage | Selon la plateforme, parfois inclus dans votre logiciel |
+| [Qonto](https://qonto.com/fr/pricing) | TPE et PME | Collecte, OCR, paiement des factures, connexion à l’ERP dès l’offre Business | 49, 109 ou 199, payés à l’année |
+| [Pennylane](https://www.pennylane.com/fr/tarifs) | TPE et PME | Paiement des factures fournisseurs dès l’offre Basique, circuit de validation à un niveau dans l’offre Premium | 14 (Basique) à 79 (Premium), un utilisateur, jusqu’à 1 200 factures par an |
+| [Libeo](https://libeo.io/tarifs) | PME, réseaux et groupes | Circuits de validation, paiement, synchronisation comptable | Sur devis |
+| [Yooz](https://www.getyooz.com/fr/tarifs) | PME et ETI | Dématérialisation, capture, circuits de validation | Sur devis (premier prix affiché : 99 €, sans période) |
+| [Esker](https://www.esker.com/fr/solutions-dematerialisation/cycle-source-to-pay/factures-fournisseurs/) | ETI et grands comptes | Capture par IA, rapprochement à trois voies | Sur devis |
+| [Basware](https://www.basware.com/fr/) | Grands groupes, offre dédiée aux ETI et PME | Traitement complet à fort volume | Sur devis |
+| Automatisation sur mesure | PME aux règles propres | Les étapes que vous choisissez, dans vos outils | Au devis, payée une fois |
+
+### Coût d’abonnement par facture, à 100 et 500 factures par mois
+
+Calcul fait à partir du relevé ci-dessus : prix mensuel de l’offre divisé par le nombre de factures du mois, en euros HT par facture. Il ne compte que l’abonnement, sans le temps passé par votre équipe, et suppose que l’offre accepte ce volume.
+
+| Offre (€ HT par mois) | 100 factures par mois | 500 factures par mois |
+| --- | --- | --- |
+| Pennylane Basique (14) | 0,14 € | Au-delà du plafond affiché de 1 200 factures par an |
+| Pennylane Premium (79) | 0,79 € | Au-delà du plafond affiché de 1 200 factures par an |
+| Qonto Essential (49) | 0,49 € | 0,10 € |
+| Qonto Business (109) | 1,09 € | 0,22 € |
+| Qonto Enterprise (199) | 1,99 € | 0,40 € |
+
+Ramené à la facture, l’abonnement pèse donc entre 0,10 et 2 euros. Le coût complet mesuré par Ardent Partners, 9,90 dollars en moyenne, est presque entièrement du temps de personne. C’est le temps passé sur les exceptions qu’il faut réduire, et un abonnement bon marché qui ne sait pas rapprocher vos factures de vos commandes ne le réduit pas.
+
+Les chiffres de performance publiés par les éditeurs restent les leurs : Esker annonce plus de 80 % de factures traitées sans intervention, sans dire sur quel type de client. Demandez toujours un test sur un lot de vos propres factures avant de signer.
+
+Pour choisir entre ces familles, regardez où vivent vos commandes.
+
+| | Module de votre plateforme agréée | Logiciel par abonnement | Automatisation branchée sur vos outils |
+| --- | --- | --- | --- |
 | Rapprochement avec vos commandes | Rarement | Si votre outil de gestion fait partie de ses connecteurs | Oui, dans l’outil où vivent vos commandes |
-| Prix | Compris ou en option de la plateforme | Abonnement mensuel, souvent au volume de factures | Payé une fois, suivi facultatif |
+| Prix | Compris ou en option | Abonnement mensuel, souvent au volume | Payé une fois, suivi facultatif |
 | Quand le choisir | Peu de factures, peu de contrôles | Circuit classique, outils courants | Règles propres à votre métier, outil de gestion maison ou ancien |
 
-Prenez d’abord ce que votre plateforme agréée propose déjà : si vous recevez quelques dizaines de factures par mois et que personne ne doit les rapprocher d’une commande, cela suffit. Un logiciel spécialisé convient quand votre circuit ressemble à celui de tout le monde et que vos outils figurent dans sa liste de connecteurs.
+Prenez d’abord ce que votre plateforme agréée propose déjà. Si vous recevez quelques dizaines de factures par mois et que personne ne doit les rapprocher d’une commande, cela suffit. Un logiciel par abonnement convient quand votre circuit ressemble à celui de tout le monde et que votre outil de gestion figure dans sa liste de connecteurs.
 
-L’automatisation sur mesure se justifie quand le rapprochement dépend de votre métier : une facture à affecter à un chantier, des livraisons partielles, des remises négociées par client, un outil de gestion qu’aucun logiciel du marché ne sait lire. Elle tourne dans vos outils, sans nouvel écran à apprendre, et vous n’ajoutez pas un abonnement de plus à ceux que vous payez déjà.
+## Quand l’automatisation sur mesure se justifie-t-elle ?
 
-## Combien coûte une automatisation sur mesure ?
+Quand le rapprochement dépend de votre métier. Une facture à affecter à un chantier, des livraisons partielles payées au fil de l’eau, des remises négociées par client, un outil de gestion qu’aucun logiciel du marché ne sait lire : dans ces cas, l’abonnement vous laisse la partie difficile à faire à la main. L’automatisation sur mesure tourne dans vos outils, sans nouvel écran à apprendre, et elle n’ajoute pas un abonnement de plus à ceux que vous payez déjà.
 
-Un premier usage, par exemple la lecture et le rapprochement des factures branchés sur un outil que vous utilisez déjà, se chiffre au devis. Le prix monte avec le nombre d’étapes confiées, les règles de votre métier à appliquer et le nombre d’outils à relier. L’abonnement au modèle d’IA, quand il en faut un pour lire les PDF, est ouvert à votre nom et vous le payez directement à son éditeur. Le code source est livré dans votre dépôt, avec sa documentation.
+<Callout title="Würth : construire par-dessus un outil qu’on ne contrôle pas">
+L’eShop B2B de Würth France tourne sur une plateforme dont la filiale française n’a pas le code. J’ai reconstruit le parcours de création de compte par-dessus, relié au SIRET de l’INSEE et à la Base Adresse Nationale. Résultat mesuré en interne : −92 % d’erreurs et de sollicitations du support. Une automatisation de factures se branche de la même façon autour d’un logiciel comptable ou d’un ERP que vous ne pouvez pas modifier. [Voir la réalisation Würth](/realisations/wurth-creation-de-compte).
+</Callout>
 
-Pour comparer, une agence facture couramment de 8 000 à 10 000 € HT un premier outil sur mesure (La Fabrique du Net, ordres de grandeur relevés le 15 octobre 2026). Je fais le même travail, du cadrage à la mise en service, à un prix fixé au devis : vous parlez directement à la personne qui construit, sans chef de projet entre nous. Le détail de l’offre et de ce qui fait varier le prix est sur la page [Automatisation et IA](/services/automatisation).
+Un premier usage, par exemple la lecture et le rapprochement des factures branchés sur un outil que vous utilisez déjà, se chiffre au devis. Le prix monte avec le nombre d’étapes confiées, les règles de votre métier et le nombre d’outils à relier. L’abonnement au modèle d’IA, quand il en faut un pour lire les PDF, est ouvert à votre nom et vous le payez directement à son éditeur. Le code source est livré dans votre dépôt, avec sa documentation.
 
-## Comment démarrer sans tout changer ?
+Pour comparer, une agence facture couramment de 8 000 à 10 000 € HT un premier outil sur mesure (La Fabrique du Net, ordres de grandeur relevés le 15 octobre 2026). Je fais le même travail, du cadrage à la mise en service, à un prix fixé au devis, et vous parlez directement à la personne qui construit. Le détail de l’offre est sur la page [automatisation et IA pour PME](/services/automatisation).
+
+## Comment mettre en place l’automatisation sans tout changer ?
 
 <Steps items={[
   "Pendant une semaine, notez pour chaque facture le temps passé, les relances et les écarts trouvés.",
   "Listez vos règles : qui valide quoi, à partir de quel montant, comment une facture se rattache à une commande ou à un chantier.",
+  "Demandez à vos fournisseurs réguliers de reprendre votre numéro de commande sur chaque facture.",
   "Choisissez une seule étape, celle qui coûte le plus de temps, souvent le rapprochement avec les commandes.",
   "Testez l’automatisation sur une centaine de vos factures passées et comparez son résultat avec ce qu’a fait votre équipe.",
-  "Les premières semaines, chaque facture passe par une validation ; ouvrez le passage automatique fournisseur par fournisseur."
+  "Les premières semaines, chaque facture passe par une validation ; ouvrez ensuite le passage automatique fournisseur par fournisseur."
 ]} />
 
-Si vos commandes et vos livraisons vivent encore dans un tableur, l’automatisation n’a rien à quoi rapprocher la facture : l’article sur [le remplacement d’Excel par un logiciel](/blog/remplacer-excel-par-un-logiciel) montre par où commencer. Si la question porte sur tout votre outil de gestion, lisez [le guide du choix d’un ERP pour PME](/blog/erp-pme).
+Le numéro de commande repris par le fournisseur est la condition la moins chère d’un bon rapprochement, et elle ne coûte qu’un message. Si vos commandes et vos livraisons vivent encore dans un tableur, l’automatisation n’a rien à quoi rapprocher la facture : l’article sur [le remplacement d’Excel par un logiciel](/blog/remplacer-excel-par-un-logiciel) montre par où commencer. Si la question porte sur tout votre outil de gestion, lisez [le guide du choix d’un ERP pour PME](/blog/erp-pme). Et pour l’autre côté de la trésorerie, les factures que vous émettez, voyez [le logiciel de relance client](/blog/logiciel-relance-client).
 
 ## Questions fréquentes
 
-**Faut-il changer de logiciel comptable pour automatiser ?** Non. L’automatisation prépare les écritures dans le format que votre logiciel comptable importe déjà, et votre cabinet comptable garde ses habitudes.
+### Qu’est-ce que l’automatisation du traitement des factures fournisseurs ?
 
-**L’IA peut-elle se tromper sur une facture ?** Oui, surtout sur un PDF mal scanné. C’est pour cela que les montants sont recalculés par le code, que chaque écart bloque la facture, et que le passage automatique ne s’ouvre qu’une fois le taux d’erreur mesuré sur vos factures.
+C’est confier à un logiciel la réception, la lecture, le rapprochement avec la commande, l’imputation, la validation, la comptabilisation et le paiement des factures d’achat. Les factures qui concordent passent seules, celles qui présentent un écart sont présentées à une personne avec leur motif.
 
-**Mes factures quittent-elles mon entreprise ?** Elles restent dans vos outils. Seul le texte utile à la lecture d’un PDF part vers le modèle d’IA, sur un compte ouvert à votre nom.
+### Quel logiciel d’automatisation choisir pour traiter les factures fournisseurs ?
 
-**La plateforme agréée ne suffit-elle pas ?** Elle suffit pour recevoir et archiver. Le rapprochement avec vos commandes, l’imputation et le circuit de validation dépendent de vos règles, et c’est là que se trouvent les heures à reprendre.
+Partez de votre volume et de l’outil où vivent vos commandes. Quelques dizaines de factures sans rapprochement : le module de votre plateforme agréée ou de votre banque en ligne suffit. Un circuit classique avec un logiciel de gestion courant : un logiciel par abonnement. Des règles propres à votre métier ou un outil maison : une automatisation branchée dessus.
 
-Vous recevez plusieurs centaines de factures par mois et vous voulez savoir lesquelles un outil pourrait traiter seul ? [Prenez un créneau en visio](/rdv?sujet=logiciel) et apportez quelques factures récentes.
+### Faut-il changer de logiciel comptable pour automatiser ?
+
+Non. L’automatisation prépare les écritures dans le format que votre logiciel comptable importe déjà, et votre cabinet comptable garde ses habitudes.
+
+### L’IA peut-elle se tromper sur une facture ?
+
+Oui, surtout sur un PDF mal scanné. C’est pour cela que les montants sont recalculés par le code, que chaque écart bloque la facture, et que le passage automatique ne s’ouvre qu’une fois le taux d’erreur mesuré sur vos propres factures.
+
+### La plateforme agréée ne suffit-elle pas ?
+
+Elle suffit pour recevoir vos factures et les archiver. Le rapprochement avec vos commandes, l’imputation et le circuit de validation dépendent de vos règles, et c’est là que se trouvent les heures à reprendre.
+
+### Mes factures quittent-elles mon entreprise ?
+
+Elles restent dans vos outils. Seul le texte utile à la lecture d’un PDF part vers le modèle d’IA, sur un compte ouvert à votre nom.
+
+### Une PME doit-elle déjà recevoir des factures électroniques ?
+
+Oui. Depuis le 1er septembre 2026, toutes les entreprises assujetties à la TVA, PME et microentreprises comprises, doivent pouvoir recevoir leurs factures par une plateforme agréée. L’obligation d’émettre ne s’applique aux PME qu’au 1er septembre 2027.
+
+Vous recevez plusieurs centaines de factures par mois et vous voulez savoir lesquelles un outil pourrait traiter seul ? [Prenez un créneau en visio](/rdv?sujet=ia) et apportez quelques factures récentes.

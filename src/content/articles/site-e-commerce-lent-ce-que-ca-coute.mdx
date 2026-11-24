@@ -1,194 +1,210 @@
-Un site e-commerce lent coûte des commandes avant même d’être vu. Google publie
-des seuils précis pour ses signaux Web essentiels : l’affichage du plus grand
-élément visible doit se faire en moins de **2,5 secondes**, la réponse à une
-interaction rester sous **200 millisecondes**, et le décalage cumulé de mise en
-page sous **0,1**. Ce sont les valeurs
-[publiées par Google sur web.dev](https://web.dev/articles/vitals), et elles se
-mesurent sur votre boutique en dix minutes.
+Un site e-commerce lent perd des commandes avant d’avoir montré un seul produit : sur mobile, la probabilité qu’un visiteur reparte augmente de 32 % quand la page passe d’une à trois secondes, et les marchands étudiés par Deloitte ont vu leurs conversions progresser de 8,4 % pour un dixième de seconde gagné. Google considère qu’une page est trop lente quand son contenu principal met plus de **2,5 secondes** à s’afficher, et vous pouvez le vérifier gratuitement sur votre boutique en dix minutes.
 
-Cet article explique ce que ces trois nombres veulent dire, comment les relever
-sans outil payant, et ce qui les dégrade réellement sur une boutique.
+La cause tient presque toujours en peu de choses : des photos trop lourdes et une pile d’applications et de scripts tiers chargés sur chaque page. L’hébergement arrive bien après. Vous trouverez ici les chiffres vérifiés à leur source, la méthode de mesure et l’ordre dans lequel corriger.
 
-## Les trois mesures, en français
+<Callout title="Votre boutique est-elle lente ?">
+Envoyez-moi son adresse. Je relève les mesures de vos fiches produit, de vos catégories et de votre panier, et je vous dis ce qu’il faut retirer en premier. [Réservez un créneau en visio](/rdv?sujet=autre).
+</Callout>
 
-**LCP**, pour Largest Contentful Paint. Le temps au bout duquel le plus grand
-élément visible de la page est affiché : sur une fiche produit, c’est presque
-toujours la photo principale.
-[Bon en dessous de 2,5 secondes](https://web.dev/articles/lcp).
+## Qu’est-ce qu’un site e-commerce lent, selon Google ?
 
-**INP**, pour Interaction to Next Paint. Le délai entre le moment où l’on touche
-quelque chose et le moment où l’écran réagit. Bon en dessous de 200
-millisecondes. C’est la mesure qui a remplacé l’ancien FID, et elle est plus
-sévère parce qu’elle regarde toutes les interactions, pas seulement la première.
-Le seuil et la méthode de mesure sont détaillés dans
-[la documentation des signaux Web essentiels](https://web.dev/articles/vitals).
+Google mesure la vitesse avec trois indicateurs, les signaux Web essentiels (Core Web Vitals en anglais). Les seuils sont [publiés sur web.dev](https://web.dev/articles/vitals) et valent pour toutes les boutiques, quelle que soit la plateforme.
 
-**CLS**, pour Cumulative Layout Shift. À quel point le contenu saute pendant le
-chargement. Bon en dessous de 0,1. C’est la mesure qui correspond au bouton
-qu’on rate parce qu’une bannière s’est insérée au-dessus au dernier moment.
+| Mesure | Ce qu’elle regarde | Bon | À améliorer | Mauvais | Ce que vit votre client |
+| --- | --- | --- | --- | --- | --- |
+| LCP (Largest Contentful Paint) | Affichage du plus grand élément visible | jusqu’à 2,5 s | de 2,5 à 4 s | au-delà de 4 s | La photo produit apparaît tard, l’écran reste blanc ou à moitié vide |
+| INP (Interaction to Next Paint) | Délai de réaction à un clic ou un toucher | jusqu’à 200 ms | de 200 à 500 ms | au-delà de 500 ms | Il touche « Ajouter au panier » et rien ne se passe, alors il touche encore |
+| CLS (Cumulative Layout Shift) | Décalages de la mise en page pendant le chargement | jusqu’à 0,1 | de 0,1 à 0,25 | au-delà de 0,25 | Une bannière s’insère et il appuie sur le mauvais bouton |
+
+Sur une fiche produit, le LCP correspond presque toujours à la photo principale. L’INP a remplacé l’ancien FID en mars 2024 et il est plus sévère : il regarde toutes les interactions de la visite, pas seulement la première. C’est souvent lui qui se dégrade quand une boutique empile les applications.
 
 <Stat
   value="2,5 s"
-  label="seuil publié par Google pour le LCP, au-delà duquel l’expérience n’est plus considérée comme bonne. Il s’apprécie au 75e centile des chargements, séparément sur mobile et sur ordinateur : ce n’est pas votre page la plus rapide qui compte, c’est celle que subissent vos visiteurs les moins bien lotis."
+  label="seuil publié par Google pour le LCP. Il s’apprécie au 75e centile des visites réelles, séparément sur mobile et sur ordinateur : ce n’est pas votre chargement le plus rapide qui compte, c’est celui que subit le quart de vos visiteurs les moins bien lotis."
 />
 
-## Ce que la lenteur coûte, sans invoquer d’étude douteuse
+Une page ne passe le test que si les trois mesures sont bonnes au 75e centile. Une boutique rapide sur le wifi du bureau peut donc échouer, parce que la majorité de ses visiteurs arrivent sur un téléphone en 4G.
 
-Je ne vais pas vous servir un pourcentage de conversion perdue par seconde. Ces
-chiffres circulent, ils viennent d’échantillons très différents du vôtre, et je
-n’ai personnellement mesuré aucun résultat client sur ce point : je démarre mon
-activité. J’ai relevé les trois seuils cités plus haut directement dans la
-documentation de Google, un par un, plutôt que de les recopier d’un article de
-blog : c’est la seule partie de ce texte que je peux garantir au chiffre près.
+## Combien coûte un site e-commerce lent ?
 
-Ce que je peux affirmer sans risque tient en trois mécanismes.
+Les articles sur le sujet citent beaucoup de pourcentages et peu de sources. J’ai remonté chaque chiffre ci-dessous jusqu’au document qui le publie, et je donne sa limite à côté.
 
-<Steps items={[
-  "Un visiteur qui attend part. C’est une évidence, elle se vérifie dans vos propres statistiques : comparez le taux de rebond de vos pages les plus lentes et de vos pages les plus rapides, à trafic comparable.",
-  "Une publicité payée sur une page lente est payée deux fois. Vous payez le clic, et vous perdez une partie du trafic avant l’affichage. C’est le seul poste où la lenteur se chiffre directement en euros.",
-  "La vitesse est un signal de classement documenté par Google, via l’expérience de page, [ce que la Search Central confirme noir sur blanc](https://developers.google.com/search/docs/appearance/core-web-vitals). Elle ne fait pas classer une mauvaise page devant une bonne, mais elle départage à qualité égale."
-]} />
+| Étude | Échantillon | Ce qu’elle a mesuré | Sa limite |
+| --- | --- | --- | --- |
+| [Deloitte pour Google, « Milliseconds Make Millions »](https://www.deloitte.com/ie/en/services/consulting/research/milliseconds-make-millions.html), 2020 | 37 marques de commerce, voyage, luxe et génération de contacts, en Europe et aux États-Unis, 4 semaines de données mobiles | Pour 0,1 s gagnée sur mobile : conversions +8,4 % et panier moyen +9,2 % chez les marchands | Étude commandée par Google, qui a intérêt à un web rapide ; corrélation observée, pas test contrôlé |
+| Google et SOASTA, 2017, repris page 10 du [rapport Deloitte](https://www.deloitte.com/content/dam/assets-zone2/ie/en/docs/services/consulting/2023/Milliseconds_Make_Millions_report.pdf) | Visites mobiles | Probabilité de rebond : +32 % de 1 à 3 s, +90 % de 1 à 5 s, +123 % de 1 à 10 s | Mesure le départ, pas la vente perdue |
+| [Portent](https://www.portent.com/blog/analytics/research-site-speed-hurting-everyones-revenue.htm), 2022 | Environ 100 millions de pages vues sur 20 sites, dont 6 boutiques B2C | Taux de conversion e-commerce : 3,05 % à 1 s, 1,68 % à 2 s, 1,12 % à 3 s | Six boutiques seulement, et la mesure de vitesse utilisée n’est pas précisée |
+| [Vodafone, étude de cas web.dev](https://web.dev/case-studies/vodafone), 2021 | Test A/B sur une page, trafic payant partagé à 50/50 | LCP amélioré de 31 %, ventes +8 % | Un seul site, mais la seule différence entre les deux versions était la vitesse |
 
-Sur le deuxième point, la page qui reçoit le clic payé compte autant que sa
-vitesse : [landing page ou page produit](/blog/landing-page-ou-page-produit) dit
-laquelle choisir selon d’où vient le visiteur.
+Le cas Vodafone est le plus solide des quatre, parce que c’est une expérience : deux versions de la même page, le même trafic publicitaire, une seule variable. Les trois autres montrent une tendance sur beaucoup de sites, sans prouver qu’elle s’appliquera au vôtre.
 
-Le troisième point mérite une nuance qu’on entend rarement : la vitesse ne fera
-jamais d’un catalogue générique un site bien classé. Elle empêche seulement de
-perdre à cause d’elle.
+Un chiffre manque volontairement au tableau : « 100 millisecondes de plus coûtent 1 % des ventes à Amazon ». Il vient d’une diapositive présentée par Greg Linden, ancien ingénieur d’Amazon, au milieu des années 2000, et les données derrière n’ont jamais été publiées. Il circule partout, personne ne peut le vérifier.
 
-Les **signaux Web essentiels** sont les trois mesures par lesquelles Google
-résume l’expérience réelle d’un visiteur : le temps d’affichage du contenu
-principal, la vitesse de réaction aux interactions, et la stabilité visuelle de
-la page pendant son chargement. Ils se relèvent sur des visiteurs réels, au
-75e centile, et non sur un test de laboratoire.
+### Faites le calcul avec vos propres chiffres
 
-## Mesurer en dix minutes, gratuitement
+Prenez trois nombres dans vos statistiques : vos visites mobiles par mois, votre taux de conversion mobile et votre panier moyen. Le produit des trois donne le chiffre d’affaires que vos visiteurs sur téléphone génèrent chaque mois.
 
-Trois relevés, dans cet ordre.
+Exemple, avec des hypothèses à remplacer par les vôtres : 10 000 visites mobiles, 1,5 % de conversion, 60 € de panier moyen, soit 9 000 € par mois. Si un dixième de seconde gagné ne vous apportait qu’environ le quart de l’effet mesuré par Deloitte, soit 2 % de commandes en plus, cela ferait 180 € par mois et 2 160 € par an, pour une seule correction.
 
-**[PageSpeed Insights](https://developers.google.com/speed/docs/insights/v5/about)**, l’outil public de Google. Entrez l’adresse d’une fiche
-produit, pas votre page d’accueil : c’est là qu’atterrissent vos visiteurs. Regardez
-la section des données de terrain, celles qui viennent d’utilisateurs réels,
-avant la section de laboratoire.
+Le calcul le plus fiable reste celui que vous ferez vous-même : relevez vos ventes mobiles sur les quatre semaines qui précèdent une correction et les quatre qui suivent, à campagnes publicitaires comparables.
 
-**La Search Console**, onglet des signaux Web essentiels. Elle regroupe vos
-pages par gabarit et vous dit lesquels échouent. C’est le seul endroit qui donne
-une vue d’ensemble plutôt qu’une page à la fois.
+### Ce que la lenteur coûte en référencement et en publicité
 
-**Votre propre téléphone, en données mobiles, hors du wifi de votre bureau.** C’est
-le test le plus désagréable et le plus instructif. Ouvrez votre boutique comme un
-inconnu, en partant d’une recherche, et allez jusqu’au paiement.
+Google l’écrit dans sa documentation sur l’expérience de page : les signaux Web essentiels [sont utilisés par ses systèmes de classement](https://developers.google.com/search/docs/appearance/page-experience). La même page précise qu’il n’existe pas de signal unique et que le moteur montre toujours le contenu le plus pertinent, même quand l’expérience est médiocre. La vitesse ne fera donc jamais classer une fiche produit pauvre devant une bonne. À pertinence égale, elle départage.
 
-<Callout title="Le piège du score sur cent">
-Le score coloré de PageSpeed est une synthèse de laboratoire, calculée sur un
-appareil simulé. Il est utile pour comparer deux versions d’une même page, pas
-pour juger votre boutique. Les seuils qui comptent sont les trois mesures de
-terrain, celles qui viennent de vos vrais visiteurs.
-</Callout>
+La publicité est le poste où la lenteur se chiffre le plus directement. Vous payez le clic, et une partie des visiteurs repart avant d’avoir vu la page. Le choix de la page qui reçoit ce clic compte autant que sa vitesse : [landing page ou page produit](/blog/landing-page-ou-page-produit) explique laquelle choisir selon d’où vient le visiteur.
 
-Si vous préférez déléguer le relevé, envoyez-moi l’adresse de votre site : je
-mesure vos gabarits et je vous dis quoi retirer en premier, pendant
-[un appel en visio](/rdv?sujet=autre).
+## Pourquoi votre site e-commerce est-il lent ?
 
-## Ce qui ralentit réellement une boutique
-
-Dans l’ordre de fréquence.
+Les causes, dans l’ordre où je les rencontre le plus souvent.
 
 ### Les images
 
-Presque toujours le premier poste. Des photos produit servies en pleine
-résolution, sans format moderne, sans dimensions déclarées. Trois corrections
-règlent l’essentiel : redimensionner à la taille réellement affichée, servir en
-AVIF ou WebP, et déclarer largeur et hauteur dans le code pour que la place soit
-réservée avant le chargement. Cette dernière corrige le CLS à elle seule.
+C’est presque toujours le premier poste. Des photos produit envoyées en pleine résolution, en JPEG ou en PNG, sans dimensions déclarées. Trois corrections règlent l’essentiel : redimensionner à la taille réellement affichée, servir en AVIF ou en WebP, et déclarer la largeur et la hauteur dans le code pour que le navigateur réserve la place. Cette dernière règle une bonne partie du CLS.
+
+Une erreur fréquente aggrave le LCP : le chargement différé (lazy loading) appliqué à toutes les images, y compris la photo principale de la fiche produit. Le navigateur attend alors d’avoir construit la page avant de la demander. La photo visible à l’arrivée doit être chargée en priorité, les autres peuvent attendre.
+
+### Les applications, extensions et modules
+
+Sur Shopify, chaque application peut ajouter son code au thème. Sur WooCommerce, chaque extension ajoute ses fichiers et ses requêtes à la base de données. Sur PrestaShop, les modules font de même. Le problème est rarement une application seule : c’est leur somme, chargée sur toutes les pages, y compris là où elle ne sert à rien. Un compteur de stock chargé sur la page de contact est une situation banale.
+
+Une application désinstallée laisse parfois du code derrière elle dans le thème. Si votre boutique a changé plusieurs fois d’outil d’avis ou de fidélité, cherchez les restes.
 
 ### Les scripts tiers
 
-C’est le poste qui grossit tout seul. Une boutique accumule au fil des ans un
-outil de statistiques, deux pixels publicitaires, un chat, un système d’avis, un
-gestionnaire de consentement, une bannière de promotion, un widget de fidélité.
-Chacun a été ajouté pour une bonne raison, aucun n’a jamais été retiré.
+C’est le poste qui grossit sans que personne le décide. Une boutique accumule au fil des ans un outil de statistiques, deux pixels publicitaires, un chat, un système d’avis, une bannière de consentement, un widget de fidélité. Chacun a été ajouté pour une bonne raison, aucun n’a jamais été retiré.
 
-Faites l’inventaire. Pour chaque script, posez deux questions : qu’est-ce qu’il
-apporte, et qui regarde ce qu’il produit. Les scripts dont personne ne lit les
-données sortent.
+Faites l’inventaire et posez deux questions pour chaque script : qu’est-ce qu’il rapporte, et qui lit ce qu’il produit ? Ceux dont personne ne lit les données sortent. Les autres peuvent souvent se charger après l’affichage de la page.
 
-### Les applications de plateforme
+### Le thème et le constructeur de pages
 
-Sur les boutiques Shopify ou WooCommerce, les extensions installent leur propre
-code sur toutes les pages, y compris là où elles ne servent à rien. Une
-application de compteur de stock chargée sur la page de contact est une
-situation banale. C’est un des arguments qui pèsent dans l’arbitrage entre
-[une plateforme et un site sur mesure](/blog/shopify-ou-site-sur-mesure).
+Un carrousel de cinq grandes images en haut de l’accueil, une vue rapide sur chaque vignette de catégorie, une fenêtre surgissante à l’arrivée, une vidéo en lecture automatique : chaque fonction du thème a son coût, même désactivée dans les réglages quand son code reste chargé. Les constructeurs de pages ajoutent leurs propres fichiers sur toutes les pages.
 
-### Le rendu côté client
+### L’hébergement et le cache
 
-Une page produit dont le contenu n’existe qu’après l’exécution du JavaScript
-est lente pour le visiteur et opaque pour les moteurs. C’est aussi ce qui
-empêche un assistant de la citer : ces moteurs lisent une page rendue, et une
-page qui met huit secondes à s’afficher est souvent abandonnée avant.
+Sur Shopify, l’hébergement n’est pas votre sujet : la plateforme le gère. Sur WooCommerce et PrestaShop, il l’est. Un hébergement mutualisé d’entrée de gamme sans cache de page fait attendre le premier octet de chaque page, et le panier se recalcule souvent à chaque affichage. Ce poste compte, mais il vient rarement en premier : un serveur médiocre ajoute quelques centaines de millisecondes, une photo de 4 Mo plusieurs secondes sur un téléphone en 4G.
 
-### Les polices
+### Le rendu côté navigateur et les polices
 
-Une police chargée depuis un service externe ajoute une connexion réseau avant
-le premier texte affiché. Les héberger sur votre propre domaine et déclarer un
-repli visible pendant le chargement supprime le problème.
+Une fiche produit dont le contenu n’existe qu’après l’exécution du JavaScript est lente pour le visiteur et difficile à lire pour les moteurs, y compris les assistants qui citent des pages. Les polices chargées depuis un service externe ajoutent une connexion réseau avant le premier texte : les héberger sur votre domaine et afficher une police de repli pendant le chargement supprime ce délai.
 
-## L’ordre dans lequel je prends les choses
+## Relevé : la vitesse de 39 boutiques normandes sur mobile
+
+Pour savoir ce que vivent les clients des boutiques d’ici, j’ai mesuré le 24 novembre 2026 les pages d’accueil de 39 boutiques en ligne normandes, tirées de mon [étude des sites des entreprises normandes](/blog/etat-des-sites-des-entreprises-normandes-2026). Les boutiques ne sont pas nommées.
+
+| Plateforme | Boutiques mesurées | LCP médian | LCP au-dessus de 2,5 s | CLS bon (0,1 ou moins) | Poids médian de la page | dont images | dont JavaScript |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Shopify | 14 | 7,5 s | 14 sur 14 | 13 sur 14 | 4,0 Mo | 0,9 Mo | 1,6 Mo |
+| WooCommerce | 16 | 7,6 s | 15 sur 16 | 7 sur 16 | 1,9 Mo | 1,0 Mo | 0,6 Mo |
+| PrestaShop | 9 | 11,2 s | 9 sur 9 | 4 sur 9 | 6,1 Mo | 4,5 Mo | 0,9 Mo |
+
+*Relevé Eliott Bouquerel du 24/11/2026. Unités : secondes pour le LCP, mégaoctets transférés pour le poids. Outil : Lighthouse 12.8.2 lancé en local, profil mobile par défaut (téléphone milieu de gamme et réseau mobile lent simulés), une mesure par page d’accueil. Échantillon : 16 boutiques Shopify tirées au hasard parmi celles de l’étude, les 11 boutiques PrestaShop de l’étude, les 16 sites WordPress de l’étude qui chargent WooCommerce et affichent un bouton d’ajout au panier dès l’accueil ; 39 mesures abouties sur 43.*
+
+Une seule boutique sur 39 affiche son contenu principal en moins de 2,5 secondes dans ces conditions. Le laboratoire est plus sévère que la réalité : il simule une connexion lente, et les données de terrain publiées par le [Web Almanac 2025 de HTTP Archive](https://almanac.httparchive.org/fr/2025/ecommerce) donnent de meilleurs résultats sur l’ensemble du web (sur mobile, 76 % des boutiques Shopify passent les trois seuils, 50 % des PrestaShop et 35 % des WooCommerce). L’écart entre plateformes, lui, se retrouve dans les deux sources.
+
+Le poids raconte où chercher. Les boutiques PrestaShop mesurées envoient 4,5 Mo d’images en médiane, et huit sur neuf dépassent 1 Mo d’images sur leur seul accueil : la compression des photos y réglerait l’essentiel. Les boutiques Shopify ont des images plus légères mais 1,6 Mo de JavaScript, celui du thème et des applications. Les boutiques WooCommerce sont les plus légères, et leur point faible est la stabilité : moins de la moitié ont un CLS bon, signe d’images et de bandeaux sans place réservée.
+
+
+## Comment savoir si votre boutique est lente ?
+
+Trois relevés gratuits, dans cet ordre, sur une fiche produit plutôt que sur l’accueil : c’est là qu’arrivent les visiteurs venus de Google et de la publicité.
+
+| Outil | Ce qu’il donne | Sa limite |
+| --- | --- | --- |
+| [PageSpeed Insights](https://developers.google.com/speed/docs/insights/v5/about) | Les trois mesures relevées chez vos vrais visiteurs sur 28 jours (rapport CrUX de Chrome), puis un test de laboratoire avec ses recommandations | Sans assez de trafic sur la page, il affiche la moyenne du site entier, ou rien |
+| Search Console, rapport « Signaux Web essentiels » | Vos pages regroupées par gabarit, mobile et ordinateur séparés, avec celles qui échouent | Demande un compte Search Console sur votre domaine, et assez de visites |
+| Votre téléphone, en 4G, hors du wifi | Ce que vit un client qui arrive d’une recherche et va jusqu’au paiement | Un seul appareil, une seule mesure |
+
+Dans PageSpeed Insights, lisez d’abord la section des données de terrain, celles de vos visiteurs. La partie laboratoire simule un téléphone milieu de gamme depuis un centre de données de Google : elle sert à trouver les causes, pas à juger la boutique.
+
+<Callout title="Le piège du score sur cent">
+Le score coloré de PageSpeed est une synthèse de laboratoire, calculée sur un appareil simulé. Il sert à comparer deux versions d’une même page. Les seuils qui comptent pour Google et pour vos ventes sont les trois mesures de terrain.
+</Callout>
+
+Si vous voulez aller plus loin, l’onglet Réseau des outils de développement de Chrome (touche F12) liste chaque fichier chargé avec son poids et son origine. Triez par taille : les trois plus gros fichiers expliquent souvent la moitié du problème.
+
+## Comment accélérer un site e-commerce lent ?
+
+L’ordre compte autant que les corrections. Je commence par ce qui rapporte le plus pour le moins de risque.
+
+| Priorité | Action | Mesure améliorée | Effort | Risque pour les ventes |
+| --- | --- | --- | --- | --- |
+| 1 | Compresser et redimensionner les photos, AVIF ou WebP, photo principale chargée en priorité | LCP | Faible | Aucun |
+| 2 | Retirer les applications et les scripts dont personne ne lit les données | LCP et INP | Faible | Faible, si l’on vérifie à quoi chacun sert |
+| 3 | Réserver la place des images, bannières et encarts qui arrivent en retard | CLS | Faible | Aucun |
+| 4 | Charger après l’affichage les scripts restants (chat, avis, pixels) | INP | Moyen | Faible |
+| 5 | Alléger le thème : carrousel, vue rapide, vidéo automatique, fenêtres surgissantes | LCP et INP | Moyen | À tester sur le taux de conversion |
+| 6 | Cache de page, CDN, meilleur hébergement (WooCommerce, PrestaShop) | LCP | Moyen | Faible |
+| 7 | Revoir l’architecture : thème, rendu côté serveur, plateforme | Les trois | Élevé | Projet à part entière |
 
 <Steps items={[
-  "Mesurer sur les gabarits qui rapportent : fiche produit, page de catégorie, panier, tunnel. Pas la page d’accueil, qui reçoit moins de monde qu’on ne le croit.",
+  "Mesurer les gabarits qui rapportent : fiche produit, catégorie, panier, tunnel de paiement. Noter les trois mesures de terrain, mobile d’abord.",
   "Traiter les images, parce que c’est le premier poste et le moins risqué.",
-  "Faire l’inventaire des scripts tiers et retirer ce que personne ne regarde. C’est gratuit et souvent spectaculaire.",
-  "Réserver la place des éléments qui arrivent en retard : images, bannières, encarts publicitaires. Le CLS se règle presque entièrement là.",
-  "Enfin seulement, regarder l’architecture : rendu serveur, mise en cache, hébergement. C’est le poste le plus coûteux, et il ne se justifie qu’après les quatre premiers."
+  "Faire l’inventaire des applications et des scripts tiers, et retirer ce que personne ne regarde. C’est gratuit et souvent spectaculaire.",
+  "Réserver la place des éléments qui arrivent en retard. Le CLS se règle presque entièrement là.",
+  "Remesurer après 28 jours, le temps que les données de terrain se renouvellent, et seulement ensuite regarder le thème, l’hébergement et l’architecture."
 ]} />
 
-Cet ordre surprend, parce que le premier soupçon tombe presque toujours sur
-l’hébergement. Il l’est rarement. Un hébergement médiocre ajoute quelques
-dizaines de millisecondes ; une photo de 4 Mo en ajoute plusieurs secondes.
+Le premier soupçon tombe presque toujours sur l’hébergement, et c’est rarement lui. Changer de serveur coûte cher et ne règle pas une photo de 4 Mo.
 
 <Quote>
-La vitesse ne se gagne pas en achetant un serveur plus gros. Elle se gagne en
-envoyant moins de choses.
+La vitesse ne se gagne pas en achetant un serveur plus gros. Elle se gagne en envoyant moins de choses.
 </Quote>
 
-## Ce qu’il ne faut pas faire
+### Ce qu’il ne faut pas faire
 
-Ne poursuivez pas le score de cent sur cent. Au-delà d’un certain point, les gains
-sont invisibles pour un visiteur et coûtent très cher en complexité.
+Courir après le score de cent sur cent. Au-delà des seuils, le visiteur ne voit plus la différence, et chaque point gagné coûte plus cher en complexité.
 
-Ne retirez pas un outil qui rapporte pour gagner deux dixièmes de seconde. Un
-système d’avis qui augmente vraiment la conversion vaut son poids ; c’est le
-widget de fidélité que personne n’a ouvert depuis dix-huit mois qui doit partir.
+Retirer un outil qui rapporte pour gagner deux dixièmes de seconde. Un système d’avis qui fait vraiment vendre vaut son poids ; c’est le widget de fidélité que personne n’a ouvert depuis dix-huit mois qui doit partir.
 
-Ne mesurez pas une seule fois. La performance se dégrade toute seule, au rythme
-des ajouts. Un relevé trimestriel de vos quatre gabarits principaux suffit à
-tenir la ligne.
+Mesurer une seule fois. Une boutique ralentit au rythme des ajouts : une application ici, un pixel pour une campagne là. Un relevé tous les trois mois sur vos quatre gabarits principaux suffit à tenir la ligne.
 
-## Et pour un site vitrine ?
+## Quand faut-il refaire le site plutôt que l’optimiser ?
 
-Les trois seuils valent aussi pour un site d’entreprise sans boutique. La perte
-n’y prend pas la forme d’un panier abandonné, mais d’une demande de devis qui ne
-part jamais : le visiteur qui attend sur son téléphone revient aux résultats de
-recherche et contacte l’entreprise suivante. Elle se mesure de la même façon,
-sur les pages qui reçoivent ce trafic : l’accueil, les pages de prestation et le
-formulaire de contact.
+Quand les corrections rapides sont faites et que le LCP mobile reste au-delà de 4 secondes, le problème est dans la structure.
 
-Quand la lenteur vient du thème ou du constructeur de pages, qui chargent leur
-code sur toutes les pages, alléger ne suffit plus : la question devient celle
-d’une [refonte de site internet](/blog/refonte-site-internet-pme), avec son plan
-de redirections.
+Deux cas mènent à une refonte. Le thème ou le constructeur de pages charge son code partout, et l’alléger reviendrait à le réécrire. Ou la boutique repose sur une version ancienne de la plateforme, que les extensions récentes ne suivent plus.
 
-## Ce que je retiens
+Deux autres se règlent sans tout refaire. Des applications font du travail de gestion, le stock ou la facturation par exemple, que la boutique n’a pas à porter à chaque affichage. Ou la plateforme vous interdit de toucher au code des pages qui comptent, comme le tunnel ou la création de compte.
 
-Un site lent perd des gens avant de leur avoir montré quoi que ce soit, et le
-diagnostic est gratuit. Les trois seuils de Google sont publics, les outils de
-mesure aussi, et les deux tiers des corrections consistent à retirer plutôt qu’à
-ajouter.
+Pour les premiers, la question devient celle d’une [refonte de site internet](/blog/refonte-site-internet-pme), avec son plan de redirections pour ne pas perdre le référencement acquis. Le choix de la plateforme se pose alors de nouveau : [Shopify ou site sur mesure](/blog/shopify-ou-site-sur-mesure) compare les deux sur la durée.
 
-Je développe aujourd’hui des [logiciels métier sur mesure](/services/logiciel-metier)
-branchés sur les boutiques en ligne : stock, commandes, facturation. Si votre
-boutique vous prend du temps à la main, [réservez un
-appel](/rdv?sujet=logiciel) avec son adresse.
+Pour les seconds, la gestion peut sortir de la boutique et vivre dans un outil relié à elle : c’est l’objet de [connecter ERP et site e-commerce](/blog/synchroniser-catalogue-stock-et-commandes). Pour un catalogue professionnel avec des tarifs par client, voyez le [logiciel pour le négoce et la distribution](/services/logiciel-metier/negoce-distribution).
+
+<Callout title="Würth : un parcours reconstruit par-dessus la plateforme">
+Sur l’eShop B2B de Würth France, la plateforme ne permettait pas de modifier le code de la création de compte. Je l’ai reconstruite par-dessus, reliée au SIRET de l’INSEE et à la Base Adresse Nationale. Résultat mesuré en interne : −92 % d’erreurs et de sollicitations du support. [Voir la réalisation Würth](/realisations/wurth-creation-de-compte).
+</Callout>
+
+## Questions fréquentes
+
+### Quel temps de chargement viser pour un site e-commerce ?
+
+Google fixe le seuil à 2,5 secondes pour l’affichage du contenu principal, mesuré au 75e centile de vos visites réelles. Visez-le sur mobile en priorité, sur vos fiches produit et vos pages de catégorie.
+
+### Pourquoi mon site Shopify est-il lent ?
+
+La base de Shopify est rapide : 76 % des boutiques Shopify passent les trois seuils sur mobile selon le Web Almanac 2025. Une boutique Shopify lente l’est presque toujours à cause de ses applications, de ses scripts tiers, de photos trop lourdes ou d’un thème chargé. Commencez par l’inventaire des applications, y compris celles déjà désinstallées.
+
+### Pourquoi mon site WooCommerce est-il lent ?
+
+Sur WooCommerce, l’hébergement, le cache et les extensions sont à votre charge. Seules 39 % des boutiques WooCommerce ont un LCP bon sur mobile. Vérifiez d’abord les images, puis le nombre d’extensions actives, puis la présence d’un cache de page et la qualité de l’hébergement.
+
+### Mon site PrestaShop est lent : par où commencer ?
+
+Par les images. Dans mon relevé normand, les boutiques PrestaShop envoyaient 4,5 Mo d’images en médiane sur leur seule page d’accueil. Viennent ensuite les modules. Désactivez un à un les modules dont vous ne lisez pas les données, en mesurant après chaque retrait, puis vérifiez le cache et la compression du serveur.
+
+### Un meilleur hébergement suffit-il à accélérer ma boutique ?
+
+Rarement. Il réduit le temps de réponse du serveur, mais il ne change rien au poids des photos ni aux scripts que le téléphone du visiteur doit exécuter. Passez-y après les images et les scripts tiers.
+
+### La vitesse de mon site fait-elle perdre des demandes de devis ?
+
+Oui, et le mécanisme est le même qu’en e-commerce. Sur un site vitrine, la perte prend la forme d’un formulaire jamais envoyé : le visiteur qui attend sur son téléphone revient aux résultats de recherche et contacte l’entreprise suivante. Mesurez vos pages de prestation et votre page de contact avec les mêmes outils.
+
+### Faut-il viser 100 sur PageSpeed Insights ?
+
+Non. Le score sur cent vient d’un test de laboratoire. Ce qui compte, ce sont les trois mesures de terrain sous leurs seuils. Une boutique à 70 dont les mesures réelles sont bonnes est rapide pour ses clients.
+
+## Et après le diagnostic
+
+Je développe des [logiciels métier sur mesure](/services/logiciel-metier) branchés sur les boutiques en ligne : stock, commandes, facturation. Ils sortent de la boutique le travail de gestion qui la ralentit et qui vous prend du temps à la main. Si votre boutique est lente ou vous coûte des heures de saisie, [réservez un appel en visio](/rdv?sujet=logiciel) avec son adresse.
