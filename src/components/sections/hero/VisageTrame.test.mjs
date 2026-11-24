@@ -12,7 +12,9 @@ import { VisageTrame } from "./VisageTrame";
  *   - la photo garde son rapport (un point en haut à droite de la photo ne
  *     descend pas quand la toile s'allonge) ;
  *   - la toile ne tourne qu'en mouvement, et s'arrête au repos ou hors écran ;
- *   - en mouvement réduit, une seule image, aucune écoute de la souris.
+ *   - en mouvement réduit, une seule image, aucune écoute de la souris ;
+ *   - les pixels transparents (photo détourée) sont écartés comme le volt ;
+ *   - la trame naît en vague depuis le visage et le dit à sa scène.
  */
 
 /** Pixels de la photo simulée, ligne par ligne (4 x 2). */
@@ -20,10 +22,12 @@ const VOLT = [200, 220, 50, 255];
 const VERT_SOMBRE = [100, 220, 50, 255];
 const BLANC = [250, 250, 250, 255];
 const NOIR = [10, 10, 10, 255];
+/** Pixel détouré de la photo couleur : transparent. */
+const TRANSPARENT = [0, 0, 0, 0];
 
 let etat;
 
-function installer({ reduit = false, contexte = true, horsEcran = true, largeur = 400, hauteur = 300, donneesCourtes = false } = {}) {
+function installer({ reduit = false, contexte = true, horsEcran = true, largeur = 400, hauteur = 300, donneesCourtes = false, detouree = false } = {}) {
   const dom = new JSDOM("<!doctype html><html><body></body></html>", { url: "http://localhost/", pretendToBeVisual: true });
   const precedent = {
     window: globalThis.window,
@@ -82,7 +86,7 @@ function installer({ reduit = false, contexte = true, horsEcran = true, largeur 
         const pixels = [];
         for (let j = 0; j < h; j += 1) {
           for (let i = 0; i < l; i += 1) {
-            pixels.push(...[VOLT, VERT_SOMBRE, BLANC, NOIR][(i + j) % 4]);
+            pixels.push(...[detouree ? TRANSPARENT : VOLT, VERT_SOMBRE, BLANC, NOIR][(i + j) % 4]);
           }
         }
         return { data: donneesCourtes ? pixels.slice(0, 8) : pixels };
@@ -109,9 +113,11 @@ function installer({ reduit = false, contexte = true, horsEcran = true, largeur 
   etat.restaurer = () => Object.assign(globalThis, precedent);
 }
 
-async function monter(props = {}) {
+async function monter(props = {}, { scene = false } = {}) {
   const conteneur = document.createElement("div");
+  if (scene) conteneur.dataset.scene = "true";
   document.body.appendChild(conteneur);
+  etat.conteneur = conteneur;
   const racine = createRoot(conteneur);
   await act(async () => {
     racine.render(createElement(VisageTrame, { src: "/images/eliott-portrait-large.jpg", ...props }));
@@ -279,5 +285,51 @@ describe("VisageTrame", () => {
     charger();
     jouer();
     expect(etat.arcs.length).toBeGreaterThan(0);
+  });
+
+  it("écarte les pixels transparents de la photo détourée", async () => {
+    installer({ reduit: true, detouree: true });
+    await monter();
+    charger();
+    jouer();
+    const detouree = etat.arcs.length;
+    await act(async () => etat.racine.unmount());
+    etat.racine = null;
+    etat.restaurer();
+    installer({ reduit: true });
+    await monter();
+    charger();
+    jouer();
+    // Même nombre de points : le pixel transparent tient la place du volt.
+    expect(detouree).toBe(etat.arcs.length);
+    expect(detouree).toBeGreaterThan(0);
+  });
+
+  it("naît en vague depuis le visage, et le dit à sa scène une seule fois", async () => {
+    installer();
+    await monter({}, { scene: true });
+    charger();
+    // Première image : aucun point encore né, la scène passe à « trame ».
+    etat.images_rAF.splice(0).forEach((rappel) => rappel(1000));
+    expect(etat.arcs).toHaveLength(0);
+    expect(etat.conteneur.dataset.scene).toBe("trame");
+    const depuis = etat.conteneur.dataset.trameDepuis;
+    expect(Number(depuis)).toBeGreaterThan(0);
+    // À mi-vague, des points naissants, plus petits que leur taille finale.
+    etat.images_rAF.splice(0).forEach((rappel) => rappel(1200));
+    const milieu = etat.arcs.splice(0);
+    expect(milieu.length).toBeGreaterThan(0);
+    // Vague finie : la boucle s'arrête d'elle-même, points à leur taille.
+    etat.images_rAF.splice(0).forEach((rappel) => rappel(4000));
+    const fin = etat.arcs.splice(0);
+    expect(fin.length).toBeGreaterThanOrEqual(milieu.length);
+    expect(Math.max(...fin.map((a) => a.r))).toBeGreaterThan(Math.max(...milieu.map((a) => a.r)));
+    expect(etat.images_rAF).toHaveLength(0);
+    expect(etat.conteneur.dataset.trameDepuis).toBe(depuis);
+    // La photo arrivée, la trame ne réécrit plus l'état de la scène.
+    etat.conteneur.dataset.scene = "photo";
+    window.dispatchEvent(new window.MouseEvent("pointermove", { clientX: 10, clientY: 10 }));
+    jouer();
+    expect(etat.conteneur.dataset.scene).toBe("photo");
   });
 });

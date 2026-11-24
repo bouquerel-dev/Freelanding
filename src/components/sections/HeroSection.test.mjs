@@ -29,7 +29,7 @@ describe("HeroSection", () => {
     expect(html).not.toMatch(/<img[^>]*portrait-couleur/u);
   });
 
-  it("accroche six traits au visage, trois vers le titre, trois vers le bord", () => {
+  it("accroche six traits au visage, trois vers le titre, trois vers le bord, à toutes les tailles", () => {
     const reperes = html.match(/data-part="hero-repere" data-cote="(gauche|droite)"/gu) ?? [];
     expect(reperes).toHaveLength(6);
     expect(reperes.filter((r) => r.includes("gauche"))).toHaveLength(3);
@@ -37,10 +37,34 @@ describe("HeroSection", () => {
       expect(html).toContain(`>${trait.titre}</span>`);
       expect(html).toContain(`>${trait.detail}</span>`);
     }
-    // Côté titre, le trait part de la colonne d'étiquettes et finit sur l'œil.
-    expect(html).toContain("left:calc(44% + -0.29 * min(66vh, 620px));width:calc(0.202 * min(66vh, 620px))");
-    // Côté bord, il part de l'oreille et finit à la colonne d'étiquettes.
-    expect(html).toContain("left:calc(44% + 0.228 * min(66vh, 620px));width:calc(0.202 * min(66vh, 620px))");
+    // Plus de « hidden desktop:flex » : les étiquettes s'affichent aussi au téléphone.
+    expect(html).not.toMatch(/data-part="hero-repere"[^>]*hidden/u);
+    // Deux jeux de traits : biais au téléphone, horizontal sur ordinateur.
+    expect(html).toContain('class="hero-traits absolute inset-0 h-full w-full overflow-visible desktop:hidden"');
+    expect(html).toContain("hidden desktop:block");
+    // Sur ordinateur, l'œil : colonne gauche à 30,2 %, point à 44,4 % et 40,6 %, trait horizontal.
+    expect(html).toContain('x1="30.2%" y1="40.6%" x2="44.4%" y2="40.6%"');
+    // Au téléphone, l'épaule : l'étiquette monte à 50 %, le trait descend au point.
+    expect(html).toContain('x1="68%" y1="50%" x2="74.4%" y2="67.9%"');
+  });
+
+  it("tient chaque petite description sur une ligne : vingt signes au plus", () => {
+    for (const trait of homeContent.hero.faceNotes ?? []) expect(trait.detail.length).toBeLessThanOrEqual(23);
+  });
+
+  it("pose la trame et la photo dans le même carré, et précharge la trame", () => {
+    const scene = html.slice(html.indexOf("data-scene"), html.indexOf("hero-traits"));
+    expect(scene).toContain('data-part="hero-photo"');
+    expect(scene).toContain('data-part="hero-visage"');
+    expect(html).toMatch(/<div aria-hidden="true" data-scene="true" class="hero-scene[^"]*h-\[var\(--s\)\][^"]*w-\[var\(--s\)\]/u);
+    expect(html).toContain('<link rel="preload" href="/images/eliott-portrait-trame.webp" as="image" type="image/webp"/>');
+  });
+
+  it("habille les deux boutons comme celui de l'en-tête, logo compris", () => {
+    const cta = html.match(/<a[^>]*data-part="hero-cta"[^>]*>/u)?.[0] ?? "";
+    expect(cta).toContain("header-cta");
+    expect(html).toContain("header-cta-fleche");
+    expect(html).toContain("hero-cta-grille");
   });
 
   it("dit le titre en une phrase blanche, coupée en deux lignes", () => {
@@ -59,13 +83,15 @@ describe("HeroSection", () => {
     expect(h1).toContain("calc((100vw/var(--zoom-ecran,1)_-_40px)/10.9)");
   });
 
-  it("pose le fond vivant sous le texte, sur ordinateur seulement, en décor", () => {
+  it("pose le fond de fils sous le texte, à toutes les tailles, en décor", () => {
     const balise = html.match(/<div[^>]*data-part="hero-ambiance"[^>]*>/u)?.[0] ?? "";
     expect(balise).toContain('aria-hidden="true"');
-    expect(balise).toMatch(/class="[^"]*pointer-events-none[^"]*hidden[^"]*desktop:block/u);
-    for (const couche of ["amb-champ", "amb-halo", "amb-ronde", "amb-lampe"]) expect(html).toContain(couche);
-    // Balayage du viseur retiré (2026-11-24, « ça fait cheap »).
-    expect(html).not.toContain("hero-balayage");
+    expect(balise).toContain("pointer-events-none");
+    expect(balise).not.toMatch(/class="(?:[^"]* )?hidden[ "]/u);
+    expect(html).toContain("amb-fils");
+    expect(html).toContain("amb-halo");
+    // Le champ de points (« très IA ») et sa ronde sont retirés.
+    for (const couche of ["amb-champ", "amb-ronde", "amb-lampe", "hero-balayage"]) expect(html).not.toContain(couche);
   });
 
   it("amorce le fil vers la section suivante sur la colonne du texte", () => {

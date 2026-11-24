@@ -1126,152 +1126,153 @@ html[data-consent-choisi] [data-consent-attente] {
   .rdv-etape { animation: hero-fond-doux 120ms ease both; }
 }
 
-/* Héros, visage en trame géante : fondu vers le bas sous 1200 px, vers le
-   texte (gauche) et les bords au-delà. Deux masques croisés, pour que les
-   épaules ne s'arrêtent pas net sur le bas du héros. */
-.hero-visage {
-  -webkit-mask-image: linear-gradient(180deg, #000 58%, transparent);
-  mask-image: linear-gradient(180deg, #000 58%, transparent);
+/* ---------------------------------------------------------------------------
+   Scène du portrait (2026-11-24, refonte) : photo couleur, trame de la même
+   photo et traits partagent le même carré (`HeroSection`). Trois états, posés
+   par `PortraitCouleur` sur `[data-scene]` :
+     - sans état : la photo charge, la trame naît seule, en entier ;
+     - `photo` : la photo arrive, du flou au net, depuis le visage ; la trame
+       s'efface au même rythme ;
+     - `lampe` : la trame ne revient que sous la lampe de la souris (ordinateur,
+       `--lx` et `--ly` posés par AmbianceHeros). Au doigt, elle reste éteinte.
+   Bas de la photo et de la trame fondu de la même façon : aucun bord.
+   --------------------------------------------------------------------------- */
+/* Avant le script : une lueur volt à la place du visage, qui respire, pour
+   que le cadre ne soit jamais vide. Un dégradé n'est jamais candidat au LCP,
+   contrairement à une image de fond. Elle s'éteint quand la photo arrive. */
+.hero-scene::before {
+  content: "";
+  position: absolute;
+  inset: 12% 24% 22%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, color-mix(in oklab, var(--accent) 16%, transparent), transparent);
+  animation: hero-lueur 1.8s ease-in-out infinite alternate;
+  transition: opacity 900ms cubic-bezier(0.23, 1, 0.32, 1);
 }
-@media (min-width: 1200px) {
-  .hero-visage {
-    -webkit-mask-image: linear-gradient(90deg, transparent, #000 30%, #000 82%, transparent), linear-gradient(180deg, #000 70%, transparent);
+[data-scene="photo"]::before,
+[data-scene="lampe"]::before { opacity: 0; animation: none; }
+@keyframes hero-lueur {
+  from { scale: 0.92; opacity: 0.55; }
+  to { scale: 1.04; opacity: 1; }
+}
+.hero-photo,
+.hero-visage {
+  -webkit-mask-image: linear-gradient(to bottom, #000 62%, transparent 82%);
+  mask-image: linear-gradient(to bottom, #000 62%, transparent 82%);
+}
+.hero-photo {
+  opacity: 0;
+  clip-path: circle(0% at 50% 40%);
+  filter: blur(14px);
+  transform: scale(1.05);
+  transition:
+    opacity 500ms cubic-bezier(0.23, 1, 0.32, 1),
+    clip-path 1300ms cubic-bezier(0.16, 1, 0.3, 1),
+    filter 1100ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 1300ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.hero-photo[data-pret="1"] {
+  opacity: 1;
+  clip-path: circle(75% at 50% 40%);
+  filter: blur(0);
+  transform: none;
+}
+.hero-visage { transition: opacity 900ms cubic-bezier(0.23, 1, 0.32, 1); }
+[data-scene="photo"] .hero-visage,
+[data-scene="lampe"] .hero-visage { opacity: 0; }
+@media (hover: hover) and (pointer: fine) and (min-width: 1200px) {
+  [data-scene="lampe"] .hero-visage {
+    opacity: 1;
+    transition: none;
+    -webkit-mask-image:
+      radial-gradient(circle 170px at var(--lx, -400px) var(--ly, -400px), #000 30%, transparent 100%),
+      linear-gradient(to bottom, #000 62%, transparent 82%);
     -webkit-mask-composite: source-in;
-    mask-image: linear-gradient(90deg, transparent, #000 30%, #000 82%, transparent), linear-gradient(180deg, #000 70%, transparent);
+    mask-image:
+      radial-gradient(circle 170px at var(--lx, -400px) var(--ly, -400px), #000 30%, transparent 100%),
+      linear-gradient(to bottom, #000 62%, transparent 82%);
     mask-composite: intersect;
   }
 }
 
-/* Viseur : quatre angles de 14 px, filet de 1 px, aux coins du cadre. */
-.hero-viseur {
-  --c: color-mix(in oklab, var(--foreground) 28%, transparent);
-  background:
-    linear-gradient(var(--c), var(--c)) top left / 14px 1px,
-    linear-gradient(var(--c), var(--c)) top left / 1px 14px,
-    linear-gradient(var(--c), var(--c)) top right / 14px 1px,
-    linear-gradient(var(--c), var(--c)) top right / 1px 14px,
-    linear-gradient(var(--c), var(--c)) bottom left / 14px 1px,
-    linear-gradient(var(--c), var(--c)) bottom left / 1px 14px,
-    linear-gradient(var(--c), var(--c)) bottom right / 14px 1px,
-    linear-gradient(var(--c), var(--c)) bottom right / 1px 14px;
-  background-repeat: no-repeat;
+/* Les traits attendent que la trame naisse (`data-scene` passe de « true » à
+   « trame ») : le visage d'abord, puis ce qu'on en dit. */
+[data-scene="true"] :is(.hero-etiquette, .hero-repere-point, .hero-trait-ligne) {
+  animation-play-state: paused;
 }
 
-/* Portrait couleur (ordinateur) : carré, 146,3 % de la hauteur du cadre,
-   remonté de 19,4 % et décalé pour poser l'œil et l'oreille sur les points
-   des traits ; fondu vers le bas comme l'ancienne trame. La trame, elle,
-   n'apparaît plus que sous la lampe de la souris (`--lx`, `--ly`, posés par
-   AmbianceHeros) ; sans souris, elle reste invisible. */
-.hero-photo {
-  top: -19.4%;
-  left: calc(44% - 0.738 * min(66vh, 620px));
-  height: 146.3%;
-  width: auto;
-  max-width: none;
-  aspect-ratio: 1;
-  -webkit-mask-image: linear-gradient(to bottom, #000 62%, transparent 82%);
-  mask-image: linear-gradient(to bottom, #000 62%, transparent 82%);
-  opacity: 0;
-  transition: opacity 500ms cubic-bezier(0.23, 1, 0.32, 1);
-}
-.hero-photo[data-pret="1"] { opacity: 1; }
-@media (prefers-reduced-motion: reduce) {
-  .hero-photo { transition: none; }
-}
+/* Étiquettes des traits : colonne gauche alignée à droite, colonne droite à
+   gauche, à la hauteur posée par `--y-m` (téléphone) ou `--y-d` (ordinateur). */
+.hero-etiquette { top: var(--y-m); translate: 0 -50%; }
+.hero-etiquette[data-cote="gauche"] { right: calc(var(--x-m) + 8px); align-items: flex-end; text-align: right; }
+.hero-etiquette[data-cote="droite"] { left: calc(var(--x-m) + 8px); align-items: flex-start; text-align: left; }
 @media (min-width: 1200px) {
-  .hero-visage {
-    -webkit-mask-image: radial-gradient(circle 150px at var(--lx, -400px) var(--ly, -400px), #000 30%, transparent 100%);
-    mask-image: radial-gradient(circle 150px at var(--lx, -400px) var(--ly, -400px), #000 30%, transparent 100%);
-  }
+  .hero-etiquette { top: var(--y-d); }
+  .hero-etiquette[data-cote="gauche"] { right: calc(var(--x-d) + 12px); }
+  .hero-etiquette[data-cote="droite"] { left: calc(var(--x-d) + 12px); }
 }
 
-/* Traits du visage : un point volt posé sur la trame, cerclé d'un halo, et un
-   trait fin qui s'éteint vers l'étiquette. */
+/* Traits du visage : un point volt posé sur le visage, cerclé d'un halo, et un
+   trait fin qui se trace depuis le point vers l'étiquette. */
 .hero-repere-point {
   background: var(--accent);
   box-shadow: 0 0 0 4px color-mix(in oklab, var(--accent) 18%, transparent);
+  animation: hero-point 520ms cubic-bezier(0.34, 1.4, 0.64, 1) both;
+  animation-delay: var(--d, 0ms);
 }
-.hero-repere-trait {
-  background: linear-gradient(to left, color-mix(in oklab, var(--accent) 70%, transparent), color-mix(in oklab, var(--accent) 15%, transparent));
+@keyframes hero-point {
+  from { scale: 0.4; opacity: 0; }
+  to { scale: 1; opacity: 1; }
 }
-[data-cote="droite"] .hero-repere-trait {
-  background: linear-gradient(to right, color-mix(in oklab, var(--accent) 70%, transparent), color-mix(in oklab, var(--accent) 15%, transparent));
+.hero-trait-ligne {
+  stroke: color-mix(in oklab, var(--accent) 55%, transparent);
+  stroke-width: 1px;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: hero-trace 900ms cubic-bezier(0.23, 1, 0.32, 1) forwards;
+  animation-delay: var(--d, 0ms);
+}
+@keyframes hero-trace {
+  to { stroke-dashoffset: 0; }
+}
+
+/* Bouton secondaire : la grille s'allume au survol. */
+.hero-cta-grille { transition: transform 240ms cubic-bezier(0.23, 1, 0.32, 1); }
+@media (hover: hover) and (pointer: fine) {
+  .hero-cta-secondaire:hover .hero-cta-grille { transform: rotate(90deg); }
+}
+.hero-cta-secondaire { transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1), border-color 200ms ease; }
+.hero-cta-secondaire:active { transform: scale(0.97); }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-photo {
+    clip-path: none;
+    filter: none;
+    transform: none;
+    transition: opacity 300ms ease;
+  }
+  .hero-visage { transition: opacity 300ms ease; }
+  .hero-repere-point,
+  .hero-scene::before { animation: none; }
+  .hero-trait-ligne { animation: none; stroke-dashoffset: 0; }
+  .hero-cta-grille { transition: none; }
 }
 
 /* ---------------------------------------------------------------------------
-   Fond vivant du héros, ordinateur seulement (2026-11-24, `AmbianceHeros`).
-   Une seule matière, la trame du visage : champ pâle, lampe volt qui suit la
-   souris, halo qui respire (le balayage du viseur, jugé « cheap »
-   par Eliott le 2026-11-24, est retiré). Tout bouge en transform ou en
-   opacité ; `data-ambiance="pause"` (héros hors écran) fige tout.
+   Fond du héros (2026-11-24, remplace le champ de points jugé « très IA ») :
+   des fils fins qui ondulent et s'écartent autour de la souris, tracés dans
+   une toile par `AmbianceHeros`. Fondu vers le texte sur ordinateur, vers le
+   bas sur téléphone, pour que rien ne passe sous les lignes de lecture.
    --------------------------------------------------------------------------- */
-.amb-champ,
-.amb-lampe-motif {
-  background-size: 14px 14px;
-  background-position: 0 0;
+.amb-fils {
+  -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 30%, #000 30%, transparent 85%);
+  mask-image: radial-gradient(ellipse 90% 70% at 50% 30%, #000 30%, transparent 85%);
 }
-.amb-champ {
-  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.11) 1px, transparent 1.5px);
-  -webkit-mask-image: radial-gradient(ellipse 75% 80% at 55% 50%, #000 35%, transparent 90%);
-  mask-image: radial-gradient(ellipse 75% 80% at 55% 50%, #000 35%, transparent 90%);
-}
-.amb-lampe {
-  width: 560px;
-  height: 560px;
-  margin: -280px 0 0 -280px;
-  overflow: hidden;
-  border-radius: 50%;
-  -webkit-mask-image: radial-gradient(circle, #000 0%, transparent 70%);
-  mask-image: radial-gradient(circle, #000 0%, transparent 70%);
-  opacity: 0;
-  transition: opacity 600ms ease;
-}
-[data-pointeur="1"] .amb-lampe { opacity: 1; }
-.amb-lampe-motif {
-  left: 280px;
-  top: 280px;
-  width: 2400px;
-  height: 1600px;
-  background-image: radial-gradient(circle, color-mix(in oklab, var(--accent) 62%, transparent) 1.1px, transparent 1.7px);
-}
-/* Ronde : sans souris, une lampe plus large fait lentement le tour du héros.
-   Le motif fait le chemin inverse pour rester calé sur le champ ; tout est en
-   unités d'écran, communes aux deux. Elle s'efface quand la souris prend la
-   main. */
-.amb-ronde {
-  left: 0;
-  top: 0;
-  width: 720px;
-  height: 720px;
-  margin: -360px 0 0 -360px;
-  overflow: hidden;
-  border-radius: 50%;
-  -webkit-mask-image: radial-gradient(circle, #000 0%, transparent 70%);
-  mask-image: radial-gradient(circle, #000 0%, transparent 70%);
-  animation: amb-ronde 34s ease-in-out infinite;
-  transition: opacity 600ms ease;
-}
-.amb-ronde > span {
-  left: 360px;
-  top: 360px;
-  width: 2400px;
-  height: 1600px;
-  background-image: radial-gradient(circle, color-mix(in oklab, var(--accent) 42%, transparent) 1.1px, transparent 1.7px);
-  background-size: 14px 14px;
-  animation: amb-ronde-inverse 34s ease-in-out infinite;
-}
-[data-pointeur="1"] .amb-ronde { opacity: 0; }
-@keyframes amb-ronde {
-  0%, 100% { transform: translate(72vw, 30vh); }
-  25% { transform: translate(88vw, 72vh); }
-  50% { transform: translate(52vw, 88vh); }
-  75% { transform: translate(40vw, 20vh); }
-}
-@keyframes amb-ronde-inverse {
-  0%, 100% { transform: translate(-72vw, -30vh); }
-  25% { transform: translate(-88vw, -72vh); }
-  50% { transform: translate(-52vw, -88vh); }
-  75% { transform: translate(-40vw, -20vh); }
+@media (min-width: 1200px) {
+  .amb-fils {
+    -webkit-mask-image: radial-gradient(ellipse 60% 85% at 70% 45%, #000 25%, transparent 90%);
+    mask-image: radial-gradient(ellipse 60% 85% at 70% 45%, #000 25%, transparent 90%);
+  }
 }
 .amb-halo {
   background: radial-gradient(closest-side, color-mix(in oklab, var(--accent) 13%, transparent), transparent);
@@ -1280,16 +1281,6 @@ html[data-consent-choisi] [data-consent-attente] {
 @keyframes amb-respire {
   0%, 100% { opacity: 0.7; transform: scale(0.94); }
   50% { opacity: 1; transform: scale(1.06); }
-}
-
-/* Trait du visage : il part du point et se trace vers l'étiquette. */
-@media (min-width: 1200px) {
-  [data-cote="droite"] .hero-repere-trait { transform-origin: left; }
-  .hero-repere-trait {
-    transform-origin: right;
-    animation: hero-trait 900ms cubic-bezier(0.23, 1, 0.32, 1) both;
-    animation-delay: calc(var(--d, 0ms) + 220ms);
-  }
 }
 
 /* Fil qui relie le héros au schéma : il part du bas du héros, sur la colonne
@@ -1327,8 +1318,6 @@ html[data-consent-choisi] [data-consent-attente] {
 }
 
 [data-ambiance="pause"] .amb-halo,
-[data-ambiance="pause"] .amb-ronde,
-[data-ambiance="pause"] .amb-ronde > span,
 [data-ambiance="pause"] .fil-suite::after,
 [data-schema="pause"] .schema-lien,
 [data-schema="pause"] .fil-suite::after {
@@ -1336,11 +1325,8 @@ html[data-consent-choisi] [data-consent-attente] {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .amb-ronde,
-  .amb-ronde > span,
   .amb-halo,
-  .fil-suite::after,
-  .hero-repere-trait {
+  .fil-suite::after {
     animation: none;
   }
 }

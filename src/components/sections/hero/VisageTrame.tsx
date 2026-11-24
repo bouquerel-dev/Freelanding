@@ -15,6 +15,18 @@ function colonnesPour(largeurRendue: number) {
   return Math.round((largeurRendue * 2) / ecart);
 }
 
+/** Durée de la naissance de la trame, et retard du point le plus éloigné du visage. */
+const NAISSANCE_MS = 520;
+const VAGUE_MS = 640;
+/** Image d'animation théorique, quand le navigateur ne donne pas l'heure. */
+const IMAGE_MS = 16.7;
+
+/** Sortie douce (cubique) : le point gonfle vite, puis se pose. */
+function sortie(t: number) {
+  const x = Math.min(1, Math.max(0, t));
+  return 1 - (1 - x) ** 3;
+}
+
 /** Relit la photo en points : le fond volt est écarté, chaque point garde sa lumière. */
 function echantillonner(img: HTMLImageElement, largeur: number): Point[] {
   const hauteur = Math.round((largeur * img.naturalHeight) / img.naturalWidth);
@@ -32,7 +44,9 @@ function echantillonner(img: HTMLImageElement, largeur: number): Point[] {
       const r = d[k] ?? 0;
       const g = d[k + 1] ?? 0;
       const b = d[k + 2] ?? 0;
-      if (g > 170 && r > 150 && 120 > b) continue;
+      const a = d[k + 3] ?? 255;
+      // Pixel transparent (photo détourée) ou fond volt (ancienne photo) : écarté.
+      if (a < 128 || (g > 170 && r > 150 && 120 > b)) continue;
       points.push([i / largeur, j / hauteur, (r + g + b) / 765]);
     }
   }
@@ -58,7 +72,7 @@ function echantillonner(img: HTMLImageElement, largeur: number): Point[] {
  * Décor pur (`aria-hidden`) : le nom est écrit en texte dans le héros, et une
  * toile n'est jamais candidate au LCP, qui reste le h1.
  */
-export function VisageTrame({ src, centreOrdinateur = 0.5 }: { src: string; centreOrdinateur?: number }) {
+export function VisageTrame({ src }: { src: string }) {
   const toile = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
     const c = toile.current;
@@ -73,10 +87,30 @@ export function VisageTrame({ src, centreOrdinateur = 0.5 }: { src: string; cent
     const pos = { x: 0, y: 0 };
     let cadre = 0;
     let visible = true;
+    // Naissance : les points gonflent en vague depuis le visage. `null` tant
+    // que la photo n'est pas lue ; le temps vient du navigateur, ou se compte
+    // en images quand il ne le donne pas.
+    let naissance: number | null = immobile ? -Infinity : null;
+    let images = 0;
 
-    const dessiner = () => {
+    const dessiner = (instant?: number) => {
       cadre = 0;
       if (!rapport) return;
+      images += 1;
+      const maintenant = typeof instant === "number" ? instant : images * IMAGE_MS;
+      if (naissance === null) {
+        naissance = maintenant;
+        // La scène sait que la trame est née : les traits la suivent, la photo
+        // compte son attente à partir d'ici (`PortraitCouleur`).
+        const scene = c.closest<HTMLElement>("[data-scene]");
+        if (scene && scene.dataset.scene === "true") {
+          scene.dataset.scene = "trame";
+          scene.dataset.trameDepuis = String(performance.now());
+        }
+      }
+      const age = maintenant - naissance;
+      // Le coin le plus loin du visage est à 0,78 : son retard vaut 1,25 vague.
+      const naissant = age < VAGUE_MS * 1.3 + NAISSANCE_MS;
       const dpr = Math.min(window.devicePixelRatio, 2);
       const l = Math.round(c.clientWidth * dpr);
       const h = Math.round(c.clientHeight * dpr);
@@ -91,10 +125,7 @@ export function VisageTrame({ src, centreOrdinateur = 0.5 }: { src: string; cent
         points = echantillonner(img, colonnes);
       }
       const pas = (largeur / colonnes) * 2;
-      // Sur ordinateur, le visage peut se décaler pour laisser la place aux
-      // repères ; sur téléphone et tablette, il reste centré.
-      const centre = window.matchMedia("(min-width: 1200px)").matches ? centreOrdinateur : 0.5;
-      const ox = l * centre - largeur / 2;
+      const ox = l / 2 - largeur / 2;
       const amplitude = pas * 1.8;
       ctx.clearRect(0, 0, l, h);
       ctx.fillStyle = window.getComputedStyle(c).color;
@@ -103,15 +134,20 @@ export function VisageTrame({ src, centreOrdinateur = 0.5 }: { src: string; cent
         const x = ox + u * largeur + pos.x * z * amplitude;
         const y = v * h + pos.y * z * amplitude * 0.7;
         if (x < -pas || x > l + pas) continue;
-        ctx.globalAlpha = 0.14 + lum * 0.72;
+        // Chaque point attend selon sa distance au visage (0,5 ; 0,4).
+        const ne = naissant ? sortie((age - Math.hypot(u - 0.5, v - 0.4) * 1.6 * VAGUE_MS) / NAISSANCE_MS) : 1;
+        if (ne <= 0) continue;
+        ctx.globalAlpha = (0.14 + lum * 0.72) * ne;
         ctx.beginPath();
-        ctx.arc(x, y, pas * (0.1 + lum * 0.36), 0, Math.PI * 2);
+        // Jamais de zéro : le point naît à 40 % de sa taille, en fondu.
+        ctx.arc(x, y, pas * (0.1 + lum * 0.36) * (0.4 + 0.6 * ne), 0, Math.PI * 2);
         ctx.fill();
       }
       // Amorti vers la souris : la boucle s'arrête une fois la cible rejointe.
       const dx = cible.x - pos.x;
       const dy = cible.y - pos.y;
-      if (!immobile && (Math.abs(dx) > 0.002 || Math.abs(dy) > 0.002)) {
+      const enRoute = Math.abs(dx) > 0.002 || Math.abs(dy) > 0.002;
+      if (!immobile && (enRoute || naissant)) {
         pos.x += dx * 0.12;
         pos.y += dy * 0.12;
         cadre = window.requestAnimationFrame(dessiner);
@@ -147,6 +183,6 @@ export function VisageTrame({ src, centreOrdinateur = 0.5 }: { src: string; cent
       vue.disconnect();
       img.onload = null;
     };
-  }, [src, centreOrdinateur]);
+  }, [src]);
   return <canvas ref={toile} aria-hidden data-part="hero-visage" className="block h-full w-full text-accent" />;
 }

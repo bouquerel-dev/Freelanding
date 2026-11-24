@@ -4,79 +4,137 @@ import { useEffect, useRef } from "react";
 
 /** Amorti de la lampe : part de l'écart rattrapée à chaque image. */
 const AMORTI = 0.08;
+/** Écart entre deux fils, et entre deux points d'un fil, en pixels CSS. */
+const ECART_FILS = 22;
+const PAS_X = 14;
+/** Rayon d'écartement autour de la souris, et poussée maximale. */
+const RAYON = 150;
+const POUSSEE = 26;
+/** Durée du tissage d'entrée : les fils se tracent de gauche à droite. */
+const TISSAGE_MS = 1600;
+/** Image d'animation théorique, quand le navigateur ne donne pas l'heure. */
+const IMAGE_MS = 16.7;
+
+/** Sortie forte (expo) : départ franc, arrivée douce. */
+function sortie(t: number) {
+  const x = Math.min(1, Math.max(0, t));
+  return x === 1 ? 1 : 1 - 2 ** (-10 * x);
+}
 
 /**
- * FOND VIVANT DU HÉROS, ORDINATEUR SEULEMENT (2026-11-24, demande d'Eliott :
- * « vraiment quelque chose de plus » derrière la split view). Trois couches,
- * toutes tirées de la trame du visage, pour que le fond et le portrait soient
- * la même matière :
+ * FOND VIVANT DU HÉROS (2026-11-24, refonte). Le champ de points, jugé « très
+ * IA » par Eliott, laisse la place à des fils fins (inspiration : « Threads »
+ * de reactbits, réécrit ici en toile 2D, sans dépendance) :
  *
- * - un champ de points très pâle sur tout le héros, fondu vers les bords ;
- * - une ronde : sans souris, une lampe large fait lentement le tour du héros
- *   et allume le champ en volt sur son passage (CSS seul) ;
- * - une lampe qui suit la souris, plus serrée, qui prend le relais de la ronde
- *   dès que la souris entre dans le héros ;
- * - un halo volt qui respire lentement derrière le visage.
+ * - une cinquantaine de fils volt très pâles qui ondulent lentement ;
+ * - à l'arrivée, ils se tissent de gauche à droite ;
+ * - sous la souris (ordinateur), ils s'écartent et s'allument, comme des
+ *   courbes de niveau autour d'un relief ;
+ * - un halo volt qui respire derrière le visage.
  *
- * COÛT. La lampe bouge par `transform` seulement (le motif est contre-décalé
- * dans la lampe pour rester calé sur le champ), avec une boucle amortie qui
- * s'arrête quand elle a rejoint la souris. Hors écran, la section reçoit
- * `data-ambiance="pause"` : la boucle s'arrête et les animations CSS se
- * figent. Mouvement réduit ou pointeur tactile : ni ronde ni lampe, le champ
- * et le halo restent immobiles.
+ * La position lissée de la souris sert aussi à la trame du visage : elle n'est
+ * révélée que sous la lampe (`--lx`, `--ly` posés sur `.hero-visage`, dans
+ * son repère).
+ *
+ * COÛT. Une seule toile, un trait par fil, rendu plafonné à 1,5 pixel par
+ * pixel CSS. Hors écran, la boucle s'arrête et `data-ambiance="pause"` fige
+ * le halo. Mouvement réduit : une image, fils immobiles, aucune écoute.
  *
  * Décor pur (`aria-hidden`), sous le texte (`z-0`), jamais candidat au LCP.
  */
 export function AmbianceHeros() {
   const racine = useRef<HTMLDivElement>(null);
-  const lampe = useRef<HTMLSpanElement>(null);
-  const motif = useRef<HTMLSpanElement>(null);
+  const toile = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const r = racine.current;
-    const l = lampe.current;
-    const m = motif.current;
+    const c = toile.current;
     const section = r?.closest("section");
-    if (!r || !l || !m || !section) return;
-    // La trame du visage n'apparaît que sous la lampe : on lui donne la
-    // position de la lampe dans son propre repère.
+    const ctx = c?.getContext("2d");
+    if (!r || !c || !section || !ctx) return;
     const visage = section.querySelector<HTMLElement>(".hero-visage");
     const decalage = { x: 0, y: 0 };
 
     const ordinateur = window.matchMedia("(min-width: 1200px)");
-    const vivant =
-      !window.matchMedia("(prefers-reduced-motion: reduce)").matches &&
-      window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    const immobile = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const souris = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 
     const pos = { x: 0, y: 0 };
     const cible = { x: 0, y: 0 };
+    // Présence de la souris, lissée de 0 à 1 : les fils s'écartent en douceur.
+    let presence = 0;
+    let dedans = false;
     let cadre = 0;
     let visible = true;
+    let debut: number | null = immobile ? -Infinity : null;
+    let images = 0;
 
-    const poser = () => {
-      l.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0)`;
-      m.style.transform = `translate3d(${-pos.x}px, ${-pos.y}px, 0)`;
-      visage?.style.setProperty("--lx", `${pos.x - decalage.x}px`);
-      visage?.style.setProperty("--ly", `${pos.y - decalage.y}px`);
-    };
+    const couleur = window.getComputedStyle(c).color;
 
-    const avancer = () => {
+    const dessiner = (instant?: number) => {
       cadre = 0;
-      const dx = cible.x - pos.x;
-      const dy = cible.y - pos.y;
-      if (Math.abs(dx) < 0.4 && Math.abs(dy) < 0.4) {
-        pos.x = cible.x;
-        pos.y = cible.y;
-        poser();
+      images += 1;
+      const maintenant = typeof instant === "number" ? instant : images * IMAGE_MS;
+      if (debut === null) debut = maintenant;
+      // Au doigt, une image sur deux une fois les fils tissés : la batterie d'abord.
+      if (!souris && images % 2 === 0 && maintenant - debut > TISSAGE_MS) {
+        if (visible) cadre = window.requestAnimationFrame(dessiner);
         return;
       }
-      pos.x += dx * AMORTI;
-      pos.y += dy * AMORTI;
-      poser();
-      cadre = window.requestAnimationFrame(avancer);
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      const l = c.clientWidth;
+      const h = c.clientHeight;
+      if (!l || !h) return;
+      const lp = Math.round(l * dpr);
+      const hp = Math.round(h * dpr);
+      if (c.width !== lp) c.width = lp;
+      if (c.height !== hp) c.height = hp;
+
+      // Lampe : amortie vers la souris, présence lissée.
+      pos.x += (cible.x - pos.x) * AMORTI;
+      pos.y += (cible.y - pos.y) * AMORTI;
+      presence += ((dedans ? 1 : 0) - presence) * 0.06;
+      if (visage && dedans) {
+        visage.style.setProperty("--lx", `${pos.x - decalage.x}px`);
+        visage.style.setProperty("--ly", `${pos.y - decalage.y}px`);
+      }
+
+      const temps = immobile ? 0 : (maintenant - debut) / 1000;
+      const tissage = immobile ? 1 : sortie((maintenant - debut) / TISSAGE_MS);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, l, h);
+      ctx.strokeStyle = couleur;
+      ctx.lineWidth = 1;
+      const fils = Math.ceil(h / ECART_FILS) + 2;
+      const fin = l * tissage + PAS_X;
+      for (let i = 0; i < fils; i += 1) {
+        const y0 = (i - 1) * ECART_FILS;
+        // Plus pâle loin du milieu de la hauteur : la matière se concentre.
+        let lueur = 0;
+        ctx.beginPath();
+        for (let x = 0; x <= fin; x += PAS_X) {
+          const onde =
+            Math.sin(x * 0.0042 + temps * 0.32 + i * 0.31) * 0.6 + Math.sin(x * 0.0093 - temps * 0.21 + i * 0.57) * 0.4;
+          let y = y0 + onde * 16;
+          if (presence > 0.01) {
+            const dx = x - pos.x;
+            const dy = y - pos.y;
+            const force = Math.exp(-(dx * dx + dy * dy) / (RAYON * RAYON)) * presence;
+            y += Math.sign(dy || 1) * force * POUSSEE;
+            lueur = Math.max(lueur, force);
+          }
+          if (x === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.globalAlpha = 0.075 + lueur * 0.32;
+        ctx.stroke();
+      }
+      ctx.globalAlpha = 1;
+
+      if (!immobile && visible) cadre = window.requestAnimationFrame(dessiner);
     };
     const relancer = () => {
-      if (!cadre && visible) cadre = window.requestAnimationFrame(avancer);
+      if (!cadre && visible) cadre = window.requestAnimationFrame(dessiner);
     };
 
     const suivre = (e: PointerEvent) => {
@@ -89,36 +147,42 @@ export function AmbianceHeros() {
         decalage.x = v.left - b.left;
         decalage.y = v.top - b.top;
       }
-      if (section.dataset.pointeur !== "1") {
+      if (!dedans) {
         // Première entrée : la lampe naît sous la souris, sans traverser l'écran.
+        dedans = true;
         section.dataset.pointeur = "1";
         pos.x = cible.x;
         pos.y = cible.y;
-        poser();
       }
       relancer();
     };
     const quitter = () => {
+      dedans = false;
       section.dataset.pointeur = "";
       visage?.style.removeProperty("--lx");
       visage?.style.removeProperty("--ly");
     };
     const obs = new IntersectionObserver(([entree]) => {
-      visible = Boolean(entree?.isIntersecting);
+      visible = entree?.isIntersecting ?? true;
       section.dataset.ambiance = visible ? "" : "pause";
       if (!visible && cadre) {
         window.cancelAnimationFrame(cadre);
         cadre = 0;
       }
+      relancer();
     });
     obs.observe(section);
+    const taille = new ResizeObserver(relancer);
+    taille.observe(c);
 
-    if (vivant) {
+    if (!immobile && souris) {
       section.addEventListener("pointermove", suivre);
       section.addEventListener("pointerleave", quitter);
     }
+    relancer();
     return () => {
       obs.disconnect();
+      taille.disconnect();
       section.removeEventListener("pointermove", suivre);
       section.removeEventListener("pointerleave", quitter);
       if (cadre) window.cancelAnimationFrame(cadre);
@@ -130,16 +194,10 @@ export function AmbianceHeros() {
       ref={racine}
       aria-hidden
       data-part="hero-ambiance"
-      className="pointer-events-none absolute inset-0 z-0 hidden overflow-hidden desktop:block"
+      className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
     >
-      <span className="amb-champ absolute inset-0" />
-      <span className="amb-halo absolute right-[6%] top-[8%] h-[84%] w-[56%]" />
-      <span className="amb-ronde absolute">
-        <span className="absolute" />
-      </span>
-      <span ref={lampe} className="amb-lampe absolute left-0 top-0">
-        <span ref={motif} className="amb-lampe-motif absolute" />
-      </span>
+      <span className="amb-halo absolute right-[6%] top-[8%] hidden h-[84%] w-[56%] desktop:block" />
+      <canvas ref={toile} className="amb-fils absolute inset-0 h-full w-full text-accent" />
     </div>
   );
 }
