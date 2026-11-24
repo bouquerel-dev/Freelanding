@@ -167,7 +167,7 @@ export const blogPosts: BlogPost[] = [
     slug: "logiciel-sur-mesure-ou-odoo",
     title: "Prix d’Odoo en 2026 : le vrai coût, ou le sur mesure",
     date: "2026-10-02",
-    updated: "2026-11-24",
+    updated: "2026-11-25",
     dateSource: "editorial",
     listedInIndex: true,
     category: "Outils métier",
@@ -201,7 +201,7 @@ export const blogPosts: BlogPost[] = [
     },
     excerpt:
       "Odoo coûte 0 €, 19,90 € ou 35,90 € par utilisateur et par mois, plus l’intégrateur : le coût sur 3 ans pour 5 à 20 utilisateurs, et quand le sur mesure gagne.",
-    readingTime: "11 min de lecture",
+    readingTime: "12 min de lecture",
     tags: ["odoo prix", "prix odoo", "odoo ou sur mesure", "alternative odoo sur mesure", "logiciel sur mesure"],
     seo: {
       // Réécriture du 2026-11-24 (vault `blog-etat-articles.md`) : l'article
