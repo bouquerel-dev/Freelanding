@@ -33,7 +33,8 @@ import { VisageTrame } from "./hero/VisageTrame";
  * la hauteur du cadre et son centre est posé à 44 % de sa largeur
  * (`centreOrdinateur`) : un point du visage se place donc à 44 % plus `k` fois
  * la hauteur du cadre, et à `v` fois cette hauteur depuis le haut. Relevés sur
- * le rendu 1440 × 900.
+ * la photo source quadrillée (1200 × 798) : le point tombe dans l'œil, dans
+ * l'oreille, sur la bouche, au front, sur l'épaule et sur le cœur.
  *
  * Les étiquettes s'alignent en deux colonnes, de part et d'autre du visage :
  * côté titre elles finissent toutes à `COLONNE_GAUCHE`, côté bord elles
@@ -43,12 +44,12 @@ const HAUTEUR_CADRE = "min(66vh, 620px)";
 const COLONNE_GAUCHE = -0.29;
 const COLONNE_DROITE = 0.43;
 const POINTS_VISAGE: Record<PartieVisage, { k: number; v: number; gauche: boolean }> = {
-  front: { k: -0.01, v: 0.13, gauche: true },
-  oeil: { k: -0.1, v: 0.34, gauche: true },
-  bouche: { k: 0, v: 0.55, gauche: true },
-  oreille: { k: 0.26, v: 0.35, gauche: false },
-  epaule: { k: 0.32, v: 0.8, gauche: false },
-  coeur: { k: 0.1, v: 0.92, gauche: false },
+  front: { k: 0, v: 0.32, gauche: true },
+  oeil: { k: -0.088, v: 0.4, gauche: true },
+  bouche: { k: 0.008, v: 0.54, gauche: true },
+  oreille: { k: 0.228, v: 0.43, gauche: false },
+  epaule: { k: 0.35, v: 0.8, gauche: false },
+  coeur: { k: 0.11, v: 0.93, gauche: false },
 };
 
 function arrondi(n: number) {

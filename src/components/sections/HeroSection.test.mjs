@@ -33,9 +33,9 @@ describe("HeroSection", () => {
       expect(html).toContain(`>${trait.detail}</span>`);
     }
     // Côté titre, le trait part de la colonne d'étiquettes et finit sur l'œil.
-    expect(html).toContain("left:calc(44% + -0.29 * min(66vh, 620px));width:calc(0.19 * min(66vh, 620px))");
+    expect(html).toContain("left:calc(44% + -0.29 * min(66vh, 620px));width:calc(0.202 * min(66vh, 620px))");
     // Côté bord, il part de l'oreille et finit à la colonne d'étiquettes.
-    expect(html).toContain("left:calc(44% + 0.26 * min(66vh, 620px));width:calc(0.17 * min(66vh, 620px))");
+    expect(html).toContain("left:calc(44% + 0.228 * min(66vh, 620px));width:calc(0.202 * min(66vh, 620px))");
   });
 
   it("dit le titre en une phrase blanche, coupée en deux lignes", () => {
