@@ -165,9 +165,9 @@ export const blogPosts: BlogPost[] = [
 
   {
     slug: "logiciel-sur-mesure-ou-odoo",
-    title: "Odoo ou logiciel sur mesure : comment choisir",
+    title: "Prix d’Odoo en 2026 : le vrai coût, ou le sur mesure",
     date: "2026-10-02",
-    updated: "2026-10-16",
+    updated: "2026-11-24",
     dateSource: "editorial",
     listedInIndex: true,
     category: "Outils métier",
@@ -200,17 +200,17 @@ export const blogPosts: BlogPost[] = [
       },
     },
     excerpt:
-      "Les licences Odoo sur 3 ans pour 5, 10 et 20 utilisateurs, ce que l’intégrateur ajoute, et les cas où Odoo reste meilleur qu’un logiciel sur mesure.",
-    readingTime: "8 min de lecture",
-    tags: ["Odoo", "ERP", "logiciel sur mesure"],
+      "Odoo coûte 0 €, 19,90 € ou 35,90 € par utilisateur et par mois, plus l’intégrateur : le coût sur 3 ans pour 5 à 20 utilisateurs, et quand le sur mesure gagne.",
+    readingTime: "11 min de lecture",
+    tags: ["odoo prix", "prix odoo", "odoo ou sur mesure", "alternative odoo sur mesure", "logiciel sur mesure"],
     seo: {
-      // Réécriture du 2026-10-16 (vault `blog-etat-articles.md`, n° 1) : le
-      // titre ne porte plus « prix » à côté de « logiciel sur mesure », pour
-      // rendre « logiciel sur mesure prix » à la page prix. Prix d'Odoo du
-      // corps relevés sur odoo.com le 2026-10-15.
-      title: "Odoo ou logiciel sur mesure : tarifs Odoo sur 3 ans",
+      // Réécriture du 2026-11-24 (vault `blog-etat-articles.md`) : l'article
+      // vise « odoo prix » et « odoo ou sur mesure ». « logiciel sur mesure
+      // prix » reste à la page prix, que l'article lie tôt avec cette ancre.
+      // Prix d'Odoo du corps relevés sur odoo.com le 2026-11-24.
+      title: "Odoo prix 2026 : tarifs réels et alternative sur mesure",
       description:
-        "Odoo se paie par utilisateur et par mois, plus l’intégrateur. Comparez le total sur 3 ans avec un logiciel sur mesure, et voyez quand Odoo reste meilleur.",
+        "Prix Odoo 2026 : 0 €, 19,90 € ou 35,90 € par utilisateur et par mois, plus l’intégrateur. Le coût réel sur 3 ans, et quand un logiciel sur mesure gagne.",
       ogImage: {
         src: "/images/og-blog-logiciel-sur-mesure-ou-odoo.jpg",
         alt: "Une grille de modules carrés identiques sur fond noir, et un groupe de forme libre qui ressort en vert",

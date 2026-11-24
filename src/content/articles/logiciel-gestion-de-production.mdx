@@ -1,39 +1,114 @@
-Un logiciel de gestion de production du marché se paie par utilisateur et par mois : un ERP en ligne qui inclut un module de fabrication affiche de 19,90 € à 56,90 € par utilisateur et par mois selon la formule (grille publique d’un éditeur relevée le 27 octobre 2026), avant le paramétrage. En atelier, chaque opérateur qui pointe un ordre de fabrication compte comme un utilisateur, et la facture suit l’effectif. Prenez un logiciel du marché si vos gammes sont classiques et votre atelier petit. Quand vos ordres de fabrication suivent des règles propres à votre métier, ou quand vingt opérateurs doivent pointer, un module de production sur mesure, payé une fois, revient moins cher et vous appartient.
+Un logiciel de gestion de production, ou GPAO, relie la commande du client à la pièce qui sort de l’atelier : nomenclatures, gammes, ordres de fabrication, planning, pointage des temps et prix de revient. Pour une PME, il se loue de 19,90 à 56,90 € par utilisateur et par mois chez un éditeur comme Odoo (grille relevée le 24 novembre 2026), ou se fait construire une fois, sur devis, quand l’atelier suit des règles qu’aucun paramétrage ne tient.
 
-Je conçois et je développe seul des outils de gestion sur mesure pour des PME, du cadrage à la mise en production. Si vous comparez des logiciels de production, [prenez un appel en visio](/rdv?sujet=logiciel) : je vous dis ce que les offres reçues vous coûteront sur cinq ans, et quel module vous rendrait le plus d’heures.
+Ce guide compare les fonctions, les familles de logiciels, les prix sur cinq ans et les critères de choix, avec un cas d’atelier chiffré. Je conçois et je code des outils de gestion pour des PME industrielles : si vous avez déjà reçu des offres, [prenez un appel en visio](/rdv?sujet=logiciel) et je vous dis ce qu’elles vous coûteront vraiment.
 
-## Que fait un logiciel de gestion de production ?
+## Qu’est-ce qu’un logiciel de gestion de production ?
 
-Un logiciel de gestion de production, ou GPAO (gestion de production assistée par ordinateur), suit ce qui se passe entre la commande d’un client et la pièce qui sort de l’atelier. Il porte quatre choses :
+C’est l’outil qui dit à l’atelier quoi fabriquer, avec quoi, sur quel poste et pour quand, puis qui enregistre ce qui a vraiment été produit. On l’appelle aussi GPAO (gestion de production assistée par ordinateur) ou logiciel de gestion de fabrication : les trois noms désignent le même outil.
 
-- **la nomenclature** : de quoi est fait chaque article, composant par composant ;
-- **la gamme** : les opérations, dans l’ordre, avec le poste et le temps prévu pour chacune ;
-- **l’ordre de fabrication** : ce qu’il faut produire, en quelle quantité, pour quelle date ;
-- **le suivi** : ce que l’atelier a réellement produit, rebuté et passé comme temps.
+Sans lui, la production vit dans trois endroits. Le planning tient dans un tableur que le chef d’atelier refait chaque matin. Les fiches suiveuses accompagnent les pièces sur papier. Les temps réels arrivent en fin de mois, quand quelqu’un recopie les fiches. Le prix de revient d’une pièce reste une estimation, et le délai annoncé au client, un pari.
 
-Sans lui, ces informations vivent dans un tableur de planning, des fiches papier qui suivent les pièces et la mémoire du chef d’atelier. Le planning se refait chaque matin, les temps réels se découvrent en fin de mois, et le prix de revient d’une pièce reste une estimation.
+Un logiciel de gestion de production remplace ces trois supports par une seule base. Le commercial voit la charge de l’atelier avant de promettre une date. L’opérateur pointe son ordre sur une tablette. Le dirigeant lit la marge réelle d’une affaire le jour où elle se termine, et pas au bilan.
 
-On croise aussi deux autres sigles. Le MES (système d’exécution de la production) se concentre sur l’atelier : pointages, arrêts machine, cadence en temps réel. L’ERP couvre toute l’entreprise, des devis à la comptabilité, et inclut souvent un module de production. Pour une PME, la question se pose rarement en sigles : quel outil supprime les ressaisies entre le bureau et l’atelier ?
+## Les 9 fonctions d’un logiciel de gestion de production
+
+Tous les logiciels ne couvrent pas tout. Voici ce qu’une PME industrielle attend, de la plus courante à la plus avancée.
+
+| Fonction | Ce qu’elle fait | Indispensable ? |
+| --- | --- | --- |
+| Nomenclatures | Décrit chaque article composant par composant, sur plusieurs niveaux | Oui |
+| Gammes | Liste les opérations, dans l’ordre, avec le poste et le temps prévu | Oui |
+| Ordres de fabrication | Transforme une commande ou un besoin de stock en travail à faire | Oui |
+| Calcul des besoins (MRP) | Déduit les matières à acheter et les sous-ensembles à lancer | Dès que vous stockez des composants |
+| Planification et ordonnancement | Place les ordres sur les postes, selon leur capacité | Dès que plusieurs ordres se disputent un poste |
+| Suivi de production | Pointage des temps, quantités faites, rebuts, arrêts | Oui, c’est là que se trouvent les heures perdues |
+| Traçabilité | Relie les lots de matière aux lots fabriqués et aux clients livrés | Obligatoire en agroalimentaire et en santé |
+| Qualité | Contrôles en cours de fabrication, non-conformités, actions correctives | Selon vos certifications |
+| Prix de revient | Compare le coût prévu et le coût réel de chaque ordre | Oui, c’est ce qui justifie l’outil |
+
+Les cinq premières lignes forment le cœur de toute GPAO. Les quatre suivantes font la différence entre un outil qui organise l’atelier et un outil qui le pilote.
+
+### La planification de la production
+
+Planifier, c’est décider quel ordre passe sur quel poste, et quand. Un bon logiciel montre la charge de chaque poste face à sa capacité, signale les retards avant qu’ils arrivent, et recalcule tout quand une urgence s’ajoute. Le sujet mérite un guide à lui seul : je compare les approches dans l’article sur le [logiciel de planification de production](/blog/logiciel-planification-production).
+
+### Le suivi de production
+
+Un logiciel de suivi de production enregistre ce qui se passe réellement sur chaque poste : début et fin d’opération, quantité bonne, rebut, cause d’arrêt. C’est la partie que les PME négligent le plus, et celle qui rapporte le plus vite. Tant que les temps réels se recopient à la main, personne ne sait si une gamme est juste.
+
+L’écran de pointage doit tenir en trois boutons, sur une tablette par îlot : démarrer, déclarer, arrêter. Un opérateur qui doit chercher son ordre dans une liste de deux cents lignes reviendra au papier en une semaine.
+
+### Le pilotage de la production
+
+Un logiciel de pilotage de la production transforme ces pointages en indicateurs que le dirigeant lit chaque matin :
+
+- **le TRS** (taux de rendement synthétique), qui mesure la part du temps où une machine produit des pièces bonnes à la cadence prévue ;
+- **le taux de service**, la part des commandes livrées à la date promise ;
+- **la charge face à la capacité**, poste par poste, sur les quatre semaines à venir ;
+- **l’écart de temps**, entre la gamme prévue et le temps pointé, ordre par ordre ;
+- **le taux de rebut**, par article et par poste.
+
+Ces cinq chiffres suffisent pour une PME. Un tableau de bord de quarante indicateurs que personne ne lit ne pilote rien.
+
+## GPAO, ERP ou MES : quelle différence ?
+
+Les trois sigles se recouvrent, et les éditeurs jouent de la confusion. La question à se poser est simple : jusqu’où l’outil doit-il aller, de l’atelier au reste de l’entreprise ?
+
+| | GPAO | ERP de gestion de production | MES |
+| --- | --- | --- | --- |
+| Périmètre | La production : nomenclatures, gammes, ordres, planning, temps | Toute l’entreprise : devis, achats, stock, production, facturation, comptabilité | L’exécution en atelier, en temps réel |
+| Utilisateurs | Bureau des méthodes, ordonnancement, atelier | Tous les services | Opérateurs et chefs d’équipe |
+| Données machines | Rarement | Rarement | Oui : cadence, arrêts, compteurs |
+| Pour qui | PME qui garde ses outils de vente et de compta | PME qui veut tout réunir dans un seul logiciel | Ateliers à forte cadence, souvent en complément |
+
+Un ERP de gestion de production contient presque toujours une GPAO parmi ses modules. Si votre devis, votre stock et votre facturation tiennent déjà dans des outils qui vous conviennent, une GPAO seule, reliée à eux, coûte moins qu’un ERP complet. Si tout est à refaire, lisez le [guide du choix d’un ERP pour PME](/blog/erp-pme), qui chiffre le cas complet.
+
+## Quel logiciel selon votre type de production ?
+
+Le bon logiciel dépend d’abord de la façon dont votre atelier fabrique. Un éditeur qui vous montre la même démonstration quel que soit votre métier vous vend son catalogue, pas une réponse.
+
+- **Production à l’affaire ou à la commande** (chaudronnerie, menuiserie, mécanique de précision) : chaque commande est presque unique. Il faut un devis qui devient un ordre de fabrication, des gammes créées vite, et un suivi des heures par affaire pour connaître la marge réelle.
+- **Production en série** (sous-traitance mécanique, plasturgie, découpe) : les mêmes articles reviennent. Le calcul des besoins, la planification sur les postes et le TRS comptent le plus.
+- **Production en process** (agroalimentaire, cosmétique, chimie) : on travaille en recettes et en lots. La traçabilité des lots, les dates limites et les rendements matière passent avant tout. L’article sur le [logiciel de traçabilité](/blog/logiciel-de-tracabilite) détaille ce que la loi impose.
+- **Production mixte** : une partie catalogue, une partie spéciale. C’est le cas le plus difficile pour un logiciel standard, et le plus fréquent dans les PME.
 
 ## Combien coûte un logiciel de gestion de production ?
 
-Un logiciel du marché se paie sur trois lignes.
+Un logiciel du marché se paie sur trois lignes, que les pages de prix ne montrent jamais ensemble.
 
-1. **Les licences** : un montant par utilisateur et par mois. La grille publique relevée le 27 octobre 2026 va de 19,90 € à 56,90 € par utilisateur et par mois, selon la formule et la remise de première année.
+1. **Les licences** : un montant par utilisateur et par mois. Chez Odoo, dont l’application Fabrication est incluse dans toutes les formules payantes, la grille publique relevée le 24 novembre 2026 va de 19,90 € (formule Standard, première année, paiement annuel) à 56,90 € (formule Personnalisé, paiement mensuel) par utilisateur et par mois.
 2. **La mise en place** : paramétrage des nomenclatures et des gammes, reprise de vos articles, formation. Elle se chiffre au devis de l’intégrateur et ne figure sur aucune grille.
 3. **Les adaptations** : ce que le logiciel ne sait pas faire et qu’il faut développer à côté, puis reprendre à chaque nouvelle version.
 
-Le tableau ne compte que la première ligne, sur cinq ans, à tarif constant. Les opérateurs qui pointent en atelier y sont comptés comme des utilisateurs.
+Le tableau ne compte que la première ligne, sur cinq ans, en paiement annuel : prix remisé la première année, prix plein les quatre suivantes. Les opérateurs qui pointent en atelier y comptent comme des utilisateurs.
 
-| Utilisateurs (bureau et atelier) | Licences sur 5 ans, formule d’entrée | Licences sur 5 ans, formule complète |
+| Utilisateurs (bureau et atelier) | Formule Standard, 5 ans | Formule Personnalisé, 5 ans |
 | --- | --- | --- |
-| 10 | 11 940 € | 34 140 € |
-| 20 | 23 880 € | 68 280 € |
-| 40 | 47 760 € | 136 560 € |
+| 10 | 14 340 € | 25 860 € |
+| 20 | 28 680 € | 51 720 € |
+| 40 | 57 360 € | 103 440 € |
 
-Ajoutez la mise en place et les adaptations. Le montant à mettre en face est le temps que votre atelier et votre bureau perdent aujourd’hui à recopier et à chercher l’état d’une commande.
+Pour 10 utilisateurs en Standard : 10 × 19,90 € × 12 mois la première année, puis 10 × 24,90 € × 12 mois pendant quatre ans, soit 14 340 €. La formule Personnalisé ajoute l’API externe, nécessaire pour relier le logiciel à vos autres outils.
 
-## Logiciel du marché ou sur mesure : lequel choisir ?
+Les GPAO spécialisées pour PME industrielles, éditées en France, publient rarement leurs tarifs : elles se vendent sur devis, souvent avec une licence par poste et un contrat de maintenance annuel. Cegid, l’un de ces éditeurs, situe un projet de PME entre 20 000 et 150 000 €, pour un déploiement de quatre à neuf mois ([guide Cegid de la gestion de production](https://www.cegid.com/fr/blog/logiciel-gestion-de-production/), mis à jour le 6 novembre 2026). Demandez toujours le coût sur cinq ans, maintenance et nouvelles versions comprises, et le prix d’un utilisateur de plus.
+
+Le montant à mettre en face est le temps que votre bureau et votre atelier perdent aujourd’hui à recopier, à chercher l’état d’une commande et à refaire le planning.
+
+## Comment choisir un logiciel de gestion de production ?
+
+Avant de regarder les démonstrations, répondez à ces sept questions. Elles éliminent la moitié des offres en une heure.
+
+<Steps items={[
+  "Votre type de production est-il couvert ? Demandez une démonstration sur l’un de vos articles réels, avec sa vraie nomenclature, pas sur l’exemple de l’éditeur.",
+  "Combien d’utilisateurs dans trois ans, opérateurs compris ? La facture suit ce nombre.",
+  "Le pointage en atelier tient-il sur une tablette, en trois gestes, avec des gants ?",
+  "Le logiciel se relie-t-il à vos outils actuels : devis, comptabilité, stock ? Par quel moyen, et à quel prix ?",
+  "Qui paramètre, qui forme, et combien coûte la reprise de vos articles et de vos gammes ?",
+  "Que deviennent vos adaptations à chaque nouvelle version de l’éditeur ?",
+  "Pouvez-vous exporter toutes vos données, dans un format lisible, sans passer par l’éditeur ?"
+]} />
+
+## Logiciel du marché ou module sur mesure : lequel choisir ?
 
 Les deux suivent la production. Ils diffèrent par ce qu’ils vous demandent d’adapter : votre atelier, ou l’outil.
 
@@ -45,6 +120,7 @@ Les deux suivent la production. Ils diffèrent par ce qu’ils vous demandent d�
 | Vos règles de fabrication | Adaptées au logiciel, ou développées à côté | Écrites telles que votre atelier les applique |
 | Outils existants | À remplacer ou à relier par l’intégrateur | Reliés : comptabilité, devis, stock que vous gardez |
 | Propriété | Le logiciel reste à l’éditeur | Code et base de données à votre nom |
+| Mise en route | Rapide si vos gammes ressemblent au catalogue | Un flux à la fois, le plus coûteux en heures d’abord |
 
 Un logiciel du marché vous convient si vos gammes ressemblent à celles de son catalogue, si une poignée de personnes s’en servent et si vous partez de zéro. Vous gagnez du temps dès les premières semaines.
 
@@ -55,11 +131,25 @@ Le sur mesure se justifie si l’une de ces situations vous parle :
 - vous avez déjà un logiciel de devis ou un ERP qui vous convient, et il vous manque seulement le lien avec l’atelier ;
 - vous avez payé un intégrateur pour faire entrer votre métier dans un progiciel, et chaque mise à jour casse une adaptation.
 
+## Un cas chiffré : un atelier de 25 personnes
+
+Prenons une entreprise de chaudronnerie de 25 personnes. L’exemple est construit pour montrer le calcul, pas tiré d’un client. Cinq personnes travaillent au bureau : devis, achats, méthodes, facturation. Vingt opérateurs travaillent sur huit postes. Chaque commande est une affaire, et le dirigeant veut connaître la marge réelle de chacune.
+
+Pour que la marge soit juste, les vingt opérateurs doivent pointer. Sur un logiciel du marché, cela fait 25 utilisateurs :
+
+- en formule Standard, 35 850 € de licences sur cinq ans ;
+- en formule Personnalisé, nécessaire pour relier le logiciel de devis que l’entreprise garde, 64 650 € sur cinq ans ;
+- plus l’intégrateur, la reprise des articles et les adaptations au fonctionnement à l’affaire.
+
+Le module sur mesure, lui, part du logiciel de devis existant : chaque devis accepté devient une affaire, avec ses opérations prévues. Les opérateurs pointent sur quatre tablettes partagées. Le dirigeant lit chaque soir les heures prévues et pointées, affaire par affaire. Il se paie une fois, au devis, et un vingt-et-unième opérateur ne change rien à la facture.
+
+Dans ce cas, le sur mesure l’emporte parce que le nombre d’utilisateurs est élevé et le besoin étroit : relier le devis au pointage. Avec cinq utilisateurs et une production en série classique, le calcul s’inverse, et je vous conseillerai un logiciel du marché.
+
 ## Combien coûte un module de production sur mesure ?
 
 Un module de production sur mesure commence par la partie qui vous coûte le plus d’heures : souvent l’ordre de fabrication tiré de la commande, avec le pointage des opérations sur une tablette d’atelier. Le prix est fixé au devis avant de commencer, et il ne bouge plus.
 
-En agence, un premier outil se facture entre 8 000 et 10 000 €, selon [les tarifs relevés par La Fabrique du Net](https://www.lafabriquedunet.fr/agences/pages/agences-developpement-logiciel/tarifs) en octobre 2026. Je fais le même travail, du relevé de l’atelier à la mise en production : je conçois et je code moi-même, sans chef de projet ni structure à payer. Le prix dépend du projet : je le fixe au devis, avant de commencer, et il ne bouge plus.
+En agence, un premier outil se facture entre 8 000 et 10 000 €, et un projet logiciel médian 30 000 €, selon [les tarifs relevés par La Fabrique du Net](https://www.lafabriquedunet.fr/agences/pages/agences-developpement-logiciel/tarifs) en octobre 2026. Je fais le même travail, du relevé de l’atelier à la mise en production : je conçois et je code moi-même, sans chef de projet ni structure à payer.
 
 Ce que vous payez une fois vous reste :
 
@@ -68,9 +158,7 @@ Ce que vous payez une fois vous reste :
 - toutes vos données s’exportent à tout moment, sans passer par moi ;
 - les dépendances du logiciel se mettent à jour automatiquement et sont testées avant chaque mise en ligne.
 
-Le suivi mensuel se chiffre aussi au devis, et il reste facultatif : si vous l’arrêtez, votre outil continue de tourner. Le détail de ce qui fait varier le prix est sur la page [ERP sur mesure](/services/logiciel-metier/erp-sur-mesure), qui montre le trajet d’une commande du devis à la facture, et sur celle du [prix d’un logiciel sur mesure](/services/logiciel-metier/prix).
-
-Un module sur mesure ne remplace pas un logiciel du marché quand votre production est standard et votre équipe réduite. Il devient moins cher quand l’atelier entier doit pointer, quand vos règles ne tiennent dans aucun paramétrage, ou quand un seul module suffit à relier le bureau et l’atelier.
+Le suivi mensuel se chiffre aussi au devis, et il reste facultatif : si vous l’arrêtez, votre outil continue de tourner. Le détail de ce qui fait varier le prix est sur la page [ERP sur mesure](/services/logiciel-metier/erp-sur-mesure), qui montre le trajet d’une commande du devis à la facture, et sur celle du [prix d’un logiciel sur mesure](/services/logiciel-metier/prix). L’offre complète est sur la page [logiciel métier sur mesure](/services/logiciel-metier).
 
 ## Par où commencer sans arrêter l’atelier ?
 
@@ -82,13 +170,19 @@ Un module sur mesure ne remplace pas un logiciel du marché quand votre producti
   "Gardez les outils qui marchent, comme la comptabilité ou le logiciel de devis, et faites-les relier plutôt que remplacer."
 ]} />
 
-Si votre planning tient aujourd’hui dans un tableur devenu trop lourd, l’article sur [le remplacement d’Excel par un logiciel](/blog/remplacer-excel-par-un-logiciel) détaille la migration pas à pas. Si la question porte sur toute l’entreprise et pas seulement l’atelier, lisez [le guide du choix d’un ERP pour PME](/blog/erp-pme).
+Si votre planning tient aujourd’hui dans un tableur devenu trop lourd, l’article sur [le remplacement d’Excel par un logiciel](/blog/remplacer-excel-par-un-logiciel) détaille la migration pas à pas. Pour les matières et les composants, voyez aussi le [logiciel de gestion de stock](/blog/logiciel-gestion-de-stock), et pour les contrôles, le [logiciel de gestion de la qualité](/blog/logiciel-gestion-qualite).
 
 ## Questions fréquentes
 
 **Quelle différence entre une GPAO et un ERP ?** La GPAO suit la production : nomenclatures, gammes, ordres de fabrication, temps passés. L’ERP couvre toute l’entreprise, des devis à la facture, et contient souvent une GPAO parmi ses modules.
 
-**Existe-t-il un logiciel de gestion de production gratuit ?** Des versions communautaires open source existent, et certains éditeurs offrent une application seule sans frais. L’hébergement, le paramétrage des gammes, la reprise de vos articles et les adaptations restent à payer.
+**Existe-t-il un logiciel de gestion de production gratuit ?** Des versions communautaires open source existent, et Odoo offre une application seule sans frais, pour un nombre illimité d’utilisateurs. L’hébergement, le paramétrage des gammes, la reprise de vos articles et les adaptations restent à payer, et une seule application ne relie pas la production au stock ni à la facturation.
+
+**Peut-on gérer sa production sur Excel ?** Pour un atelier de quelques personnes, avec peu d’articles, oui. Le tableur casse quand plusieurs personnes le modifient en même temps, quand les nomenclatures ont plusieurs niveaux, ou quand il faut connaître le stock de composants en temps réel.
+
+**Qu’est-ce qu’un logiciel de production industrielle ?** C’est le même outil, vu depuis l’usine : une GPAO, souvent complétée par un MES qui lit les données des machines. Pour une PME de moins de cinquante personnes, la GPAO avec un pointage sur tablette suffit dans la plupart des cas.
+
+**Combien de temps pour mettre en place un logiciel de gestion de production ?** Sur un logiciel du marché, comptez le temps de saisir vos nomenclatures et vos gammes : c’est le gros du travail, quel que soit l’outil. Sur mesure, le premier flux se met en service avant le suivant, et l’atelier s’en sert pendant que le reste se construit.
 
 **Peut-on pointer en atelier sans un ordinateur par poste ?** Oui. Une tablette ou un téléphone par îlot suffit, avec un écran réduit à l’essentiel : l’ordre en cours, la quantité faite, le rebut, l’arrêt.
 
