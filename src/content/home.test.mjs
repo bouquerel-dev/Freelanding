@@ -109,7 +109,7 @@ describe("accueil", () => {
 
   test("le titre est la phrase d'Eliott, puis l'invitation, sans parler d'IA", () => {
     expect(homeContent.hero.doors ?? []).toHaveLength(0);
-    expect(homeContent.hero.title).toBe("J’ai tout à prouver. Confiez-moi votre projet.");
+    expect(homeContent.hero.title).toBe("J’ai tout à prouver, confiez-moi votre projet.");
     expect(homeContent.hero.title).not.toMatch(/IA/u);
     expect(homeContent.hero.titleLines?.join(" ")).toBe(homeContent.hero.title);
     expect(homeContent.about.title).not.toBe(homeContent.hero.title);
