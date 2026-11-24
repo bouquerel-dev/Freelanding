@@ -339,10 +339,13 @@ describe("articles de décision et de prix", () => {
         expect(/\b(tu|ton|ta|tes|toi)\b/iu.test(description)).toBe(false);
       });
 
-      test("1 200 à 1 800 mots", () => {
+      // Plafond relevé de 1 800 à 2 800 le 2026-11-24 : un article hors top 3
+      // ne sert à rien (règle d'Eliott), et le top 3 demande de couvrir toutes
+      // les requêtes secondaires relevées en Search Console.
+      test("1 200 à 2 800 mots", () => {
         const total = mots(texte);
         expect(total).toBeGreaterThanOrEqual(1200);
-        expect(total).toBeLessThanOrEqual(1800);
+        expect(total).toBeLessThanOrEqual(2800);
       });
 
       test("tableau comparatif, FAQ et titres en questions", () => {

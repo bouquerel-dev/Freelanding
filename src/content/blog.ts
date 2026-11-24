@@ -222,9 +222,9 @@ export const blogPosts: BlogPost[] = [
 
   {
     slug: "remplacer-excel-par-un-logiciel",
-    title: "Remplacer Excel par un logiciel : quand et à quel prix",
+    title: "Remplacer Excel par un logiciel sur mesure : quand et à quel prix",
     date: "2026-10-02",
-    updated: "2026-10-16",
+    updated: "2026-11-24",
     dateSource: "editorial",
     listedInIndex: true,
     category: "Outils métier",
@@ -257,15 +257,15 @@ export const blogPosts: BlogPost[] = [
       },
     },
     excerpt:
-      "Un tableur partagé coûte des heures que personne ne facture. Les 6 signes qu’Excel ne suffit plus, l’option qui le remplace, la migration en 4 étapes et le prix.",
-    readingTime: "8 min de lecture",
+      "Quand votre fichier Excel devient un logiciel de gestion : les 6 signes, ce qu’il vous coûte en heures, les options no-code, SaaS et sur mesure, le cas des ESN et la migration en 4 étapes.",
+    readingTime: "12 min de lecture",
     tags: ["Excel", "migration", "logiciel sur mesure"],
     seo: {
       // Position 14,8 sur « remplacer excel logiciel sur mesure » : le titre
       // garde la formulation exacte (réécriture du 2026-10-16, vault n° 2).
       title: "Remplacer Excel par un logiciel sur mesure : signes et prix",
       description:
-        "Votre fichier Excel fait office de logiciel de gestion ? Les 6 signes, ce qu’il vous coûte en heures, la migration en 4 étapes et le prix du sur mesure.",
+        "Remplacer Excel par un logiciel sur mesure : les 6 signes, ce que vous coûte le tableur, quel logiciel pour une ESN, la migration en 4 étapes et le prix.",
       ogImage: {
         src: "/images/og-blog-remplacer-excel-par-un-logiciel.jpg",
         alt: "Une grille de tableur sur fond noir, une colonne de cellules surlignée en vert",
@@ -446,9 +446,9 @@ export const blogPosts: BlogPost[] = [
 
   {
     slug: "site-e-commerce-lent-ce-que-ca-coute",
-    title: "Site e-commerce lent : ce que ça coûte, et comment le mesurer",
+    title: "Site e-commerce lent : ce que ça coûte et comment l’accélérer",
     date: "2026-08-28",
-    updated: "2026-10-16",
+    updated: "2026-11-24",
     dateSource: "editorial",
     listedInIndex: true,
     category: "Performance",
@@ -485,8 +485,8 @@ export const blogPosts: BlogPost[] = [
       },
     },
     excerpt:
-      "Trois seuils publiés par Google décident si votre boutique est considérée comme rapide. Ils se relèvent gratuitement, et les deux tiers des corrections consistent à retirer.",
-    readingTime: "7 min de lecture",
+      "Une boutique lente perd des commandes avant d’avoir montré un produit. Les chiffres vérifiés à leur source, ce qui ralentit chaque plateforme et l’ordre des corrections.",
+    readingTime: "14 min de lecture",
     tags: ["performance", "signaux Web essentiels", "e-commerce"],
     seo: {
       // Position 4,4 sur « site e-commerce lent » et aucun clic (Search
@@ -495,9 +495,9 @@ export const blogPosts: BlogPost[] = [
       // Carte SEO du 2026-10-15 : position 4,1, 50 impressions, 0 clic. Le
       // seul chiffre que l'article garantit est le seuil de Google : c'est lui
       // qui va dans le titre, aucun taux de perte inventé.
-      title: "Site e-commerce lent : au-delà de 2,5 s, ce que vous perdez",
+      title: "Site e-commerce lent : ce que ça coûte et comment accélérer",
       description:
-        "Au-delà de 2,5 s, Google juge votre site lent et vos visiteurs partent. Mesurez vos 3 seuils gratuitement en 10 minutes, puis corrigez dans le bon ordre.",
+        "Un site e-commerce lent perd des ventes : +32 % de rebond de 1 à 3 s sur mobile. Causes, diagnostic gratuit en 10 minutes et plan pour accélérer votre boutique.",
       ogImage: {
         src: "/images/og-blog-site-e-commerce-lent-ce-que-ca-coute.jpg",
         alt: "Chronomètre mécanique à cadran blanc posé sur une table claire, couronne et anneau en haut à droite",
@@ -509,9 +509,9 @@ export const blogPosts: BlogPost[] = [
 
   {
     slug: "shopify-ou-site-sur-mesure",
-    title: "Shopify ou site sur mesure : comment trancher",
+    title: "Shopify sur mesure : jusqu’où le personnaliser, et quand en sortir",
     date: "2026-08-28",
-    updated: "2026-10-16",
+    updated: "2026-11-24",
     dateSource: "editorial",
     listedInIndex: true,
     category: "Méthode",
@@ -548,13 +548,13 @@ export const blogPosts: BlogPost[] = [
       },
     },
     excerpt:
-      "Ce qui coûte, c’est l’écart entre votre façon de vendre et ce que la plateforme prévoit. Voici comment mettre un chiffre en face de cet écart.",
-    readingTime: "7 min de lecture",
+      "Du thème Liquid à Hydrogen, six niveaux pour personnaliser Shopify, leur coût sur trois ans chiffré pour trois boutiques, et le seuil où un site à vous devient rentable.",
+    readingTime: "12 min de lecture",
     tags: ["Shopify", "sur mesure", "e-commerce"],
     seo: {
-      title: "Shopify ou site sur mesure : les cinq critères qui décident",
+      title: "Shopify sur mesure : niveaux, coût sur 3 ans et limites",
       description:
-        "Shopify ou site sur mesure : ce que chaque option achète, le coût sur 3 ans commissions comprises, et les signaux qui font basculer vers le sur mesure.",
+        "Shopify sur mesure : six niveaux de personnalisation, le coût sur 3 ans aux tarifs de novembre 2026 et les signes qui doivent vous faire passer au sur mesure.",
       ogImage: {
         src: "/images/og-blog-shopify-ou-site-sur-mesure.jpg",
         alt: "Buste de couture habillé d’un tissu à fines rayures, un mètre ruban autour du cou, dans un atelier",
@@ -566,9 +566,9 @@ export const blogPosts: BlogPost[] = [
 
   {
     slug: "outil-sur-mesure-ou-abonnements-saas",
-    title: "Logiciel sur mesure ou SaaS : comment décider",
+    title: "Abonnement SaaS ou logiciel sur mesure : le vrai coût sur 5 ans",
     date: "2026-08-28",
-    updated: "2026-10-16",
+    updated: "2026-11-24",
     dateSource: "editorial",
     listedInIndex: true,
     category: "Outils métier",
@@ -605,16 +605,16 @@ export const blogPosts: BlogPost[] = [
       },
     },
     excerpt:
-      "Un abonnement achète un droit d’usage, un logiciel sur mesure achète un actif. Le coût sur 3 ans chiffré, le seuil en utilisateurs et à qui restent vos données.",
-    readingTime: "9 min de lecture",
+      "Un abonnement SaaS loue un droit d’usage. Prix publics d’une TPE de 10 personnes relevés le 24/11/2026, coût sur 5 ans avec la hausse des tarifs et quand garder le SaaS.",
+    readingTime: "12 min de lecture",
     tags: ["outil métier", "SaaS", "coûts", "données"],
     seo: {
       // Réécriture du 2026-10-16 (vault n° 3) : vise « logiciel sur mesure ou
       // saas » et absorbe l'article « À qui appartient votre fichier client »,
       // redirigé ici en 301 (voir `next.config.ts`).
-      title: "Logiciel sur mesure ou SaaS : le vrai coût sur 3 ans",
+      title: "Abonnement SaaS : coût réel sur 5 ans et quand en sortir",
       description:
-        "Abonnement SaaS ou logiciel sur mesure : le coût sur 3 ans chiffré, à qui appartiennent vos données, et les cas où l’abonnement reste le meilleur choix.",
+        "Abonnement SaaS : définition, prix relevés pour une TPE de 10 personnes, coût sur 5 ans avec la hausse des tarifs, et les cas où vous avez intérêt à le garder.",
       ogImage: {
         src: "/images/og-blog-outil-sur-mesure-ou-abonnements-saas.jpg",
         alt: "Rabot à main en métal posé sur une planche de pin, au milieu des copeaux",

@@ -1,84 +1,187 @@
-Un logiciel de gestion des contrats range tous les contrats de votre entreprise au même endroit et surveille leurs dates à votre place : fin de période, date limite pour dénoncer une reconduction, révision du prix, renouvellement d’une garantie ou d’une assurance. Il vous prévient assez tôt pour décider, au lieu de découvrir un engagement repris pour un an. Sur le marché, un outil de signature et de suivi se loue de 9 à 45 € par utilisateur et par mois, et une plateforme de gestion du cycle de vie des contrats autour de 399 € par mois en entrée de gamme (comparatif Appvizer publié le 3 octobre 2025). Ces outils servent bien un service juridique qui négocie des contrats. Quand vos contrats font tourner votre activité, contrats de maintenance, abonnements clients, locations, sous-traitance, un outil branché sur votre facturation et votre suivi client vous rend plus de temps.
+Un logiciel de suivi des contrats enregistre chaque contrat avec ses dates (terme, préavis, date limite pour dénoncer la reconduction, révision du prix) et prévient la bonne personne, par e-mail ou par SMS, avant le jour où il faut agir. Sur le marché, il va de la version gratuite limitée à dix contrats à 250 € par mois pour cinq utilisateurs, et il se construit sur mesure quand vos contrats pilotent votre facturation.
+
+L’enjeu se chiffre. World Commerce & Contracting, l’association internationale des métiers du contrat, mesure un écart moyen de 8,6 % entre ce que les contrats devaient rapporter et ce qu’ils rapportent vraiment, faute d’un suivi tenu ([rapport d’août 2025](https://info.worldcc.com/contract-management-aug-2025)). Dans une PME, cette perte commence souvent par une date que personne n’a vue passer.
 
 Je conçois et je développe seul des logiciels de gestion pour des PME, du cadrage à la mise en production. Pendant [un appel en visio](/rdv?sujet=logiciel), montrez-moi trois contrats signés et la façon dont vous suivez leurs échéances aujourd’hui : nous voyons ensemble ce qu’un outil peut reprendre.
 
-## Que doit faire un logiciel de gestion des contrats ?
+## Que fait un logiciel de suivi des contrats ?
 
-Il doit savoir, pour chaque contrat, ce qui a été signé, avec qui, jusqu’à quand, et ce que vous devez faire avant chaque date. Pour une PME, cela tient en six fonctions :
+Il sait, pour chaque contrat, ce qui a été signé, avec qui, jusqu’à quand, et ce que vous devez faire avant chaque date. Pour une PME, cela tient en six fonctions :
 
-1. **Le registre** : chaque contrat client, fournisseur, de location ou d’assurance a sa fiche, avec la société, l’objet, le montant et le document signé.
-2. **Les dates clés** : date de signature, durée, terme, reconduction, préavis à respecter et date limite de dénonciation qui en découle.
-3. **Les alertes** : la bonne personne reçoit un rappel avec le délai qui reste, puis un second si rien n’a bougé.
+1. **Le registre** : chaque contrat client, fournisseur, de location ou d’assurance a sa fiche, avec la société, l’objet, le montant, le responsable et le document signé.
+2. **Les dates clés** : signature, durée, terme, reconduction, préavis, et la date limite de dénonciation que l’outil calcule à partir des deux derniers.
+3. **Les alertes** : un rappel part vers le responsable avec le délai qui reste, puis un second, puis un message à son suppléant si personne n’a tranché.
 4. **La révision des prix** : l’outil applique la clause d’indexation à la date prévue et prépare le nouveau tarif.
-5. **Le lien avec la facturation** : un contrat signé crée la facturation récurrente, un contrat résilié l’arrête.
-6. **La lecture des documents** : l’IA lit le PDF signé et propose les dates, la durée, le préavis et la clause de révision ; une personne confirme avant l’enregistrement.
+5. **Le lien avec la facturation** : un contrat signé crée la facture récurrente, un contrat résilié l’arrête.
+6. **La lecture des documents** : l’IA lit le PDF signé et propose les dates, la durée, le préavis et la clause de révision, puis une personne confirme.
 
-## Où se perdent le temps et l’argent dans vos contrats ?
+Un tableur ou un dossier partagé couvre les deux premières fonctions. Les quatre autres demandent un outil qui agit seul.
 
-Dans les dates. Un contrat de maintenance, un bail de matériel ou un abonnement fournisseur se reconduit souvent sans que personne ne le décide. L’article 1215 du Code civil prévoit que si les deux parties continuent d’exécuter le contrat après son terme, il y a tacite reconduction, avec les mêmes effets qu’un renouvellement. Selon l’article 1214, le contrat renouvelé repart pour une durée indéterminée, sauf clause contraire. Laisser passer une date limite, c’est garder un fournisseur que vous vouliez changer.
+## Comment fonctionnent les alertes d’échéance de contrat ?
 
-Côté clients, l’oubli coûte dans l’autre sens. Une clause de révision non appliquée, c’est une année facturée à l’ancien prix. L’article L. 112-2 du Code monétaire et financier impose que l’indice choisi soit en relation directe avec l’objet du contrat ou l’activité d’une des parties, ce qui fixe à l’avance le calcul à faire chaque année.
+Une bonne alerte se cale sur la date limite de dénonciation, jamais sur l’échéance. Prenez un contrat de maintenance qui se termine le 31 décembre avec trois mois de préavis : la lettre doit partir au plus tard le 30 septembre. Une alerte envoyée le 1er décembre arrive deux mois trop tard, et le contrat repart.
 
-Enfin, la fin d’une relation suit ses propres règles. L’article L. 442-1 du Code de commerce engage la responsabilité de celui qui rompt brutalement une relation commerciale établie sans préavis écrit suffisant, en tenant compte de sa durée. Un registre qui garde l’historique de chaque relation vous dit quel délai respecter.
+Le calendrier qui fonctionne dans la plupart des PME :
 
-Faites le point avec vos chiffres. Comptez vos contrats en cours, repérez ceux dont vous ne connaissez pas la date limite de dénonciation sans ouvrir le document, et ceux dont la révision de prix n’a pas été appliquée cette année. Ce total est le point de départ pour juger un outil.
+| Moment | Canal | Destinataire | Ce que dit le message |
+| --- | --- | --- | --- |
+| 60 jours avant la date limite | E-mail | Responsable du contrat | Contrat, montant annuel, date limite, lien vers la fiche |
+| 30 jours avant | E-mail | Responsable et suppléant | Même message, avec « aucune décision enregistrée » |
+| 10 jours avant | SMS | Responsable | Une ligne : contrat, date limite, numéro de la fiche |
+| Le jour même | SMS | Dirigeant | Le contrat se reconduit si rien ne part aujourd’hui |
+
+Hack’celeration, qui compare les outils du marché pour les PME, conseille la même base : une alerte 30 jours avant la date limite, 60 pour les gros contrats, un responsable et un suppléant par contrat ([comparatif 2026](https://hackceleration.com/fr/labs/meilleur/logiciel-gestion-contrats-pme)).
+
+### Pourquoi une alerte par SMS ?
+
+L’e-mail se perd entre deux devis, surtout chez un dirigeant qui reçoit cent messages par jour. Le SMS sert de dernier filet, à J-10 et le jour même, quand l’enjeu justifie d’interrompre quelqu’un. Il convient aussi aux équipes qui ne vivent pas devant un ordinateur : chef d’atelier, conducteur de travaux, responsable de flotte.
+
+Sur les grilles tarifaires consultées le 24 novembre 2026 (PandaDoc, Docusign, Oneflow, Salesforce, Zoho Contracts), aucune offre n’annonce d’alerte d’échéance par SMS : les rappels partent par e-mail ou dans l’application. Un outil conçu pour vous branche un service d’envoi de SMS et décide quels contrats le méritent, par exemple ceux au-delà d’un certain montant annuel.
+
+### L’alerte ne résilie rien
+
+Le rappel vous laisse le temps de décider, il n’envoie pas la lettre. Le logiciel doit donc garder la trace de la décision : reconduire, renégocier ou résilier, avec la date d’envoi et la preuve de réception. Sans cette trace, la même question revient l’année suivante.
+
+## Tacite reconduction : que dit la loi pour vos contrats ?
+
+La règle change selon que votre cocontractant est un particulier, une association ou une autre entreprise. Votre logiciel doit savoir lequel des trois régimes s’applique à chaque contrat.
+
+### Vos contrats avec des particuliers : la loi Chatel
+
+L’[article L. 215-1 du Code de la consommation](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000034072591/), issu de la loi Chatel et modifié par la loi du 16 août 2022, vise les contrats de services à durée déterminée avec reconduction tacite. Le prestataire doit prévenir le consommateur par lettre nominative ou par e-mail dédié, au plus tôt trois mois et au plus tard un mois avant la fin de la période pour refuser la reconduction, avec la date limite dans un encadré apparent. S’il ne le fait pas, le client peut résilier gratuitement à tout moment après la reconduction, et les sommes versées d’avance lui sont remboursées sous 30 jours.
+
+Si vous vendez de l’entretien, de la maintenance ou un abonnement à des particuliers, ces courriers doivent partir à la bonne date, pour chaque client. C’est exactement ce qu’un logiciel de suivi des contrats sait programmer. Depuis le 1er juin 2023, l’article L. 215-1-1 vous oblige aussi à proposer une résiliation en ligne quand le contrat a pu être conclu en ligne.
+
+L’article L. 215-3 étend la protection aux non-professionnels, c’est-à-dire aux personnes morales qui n’agissent pas à des fins professionnelles : syndicats de copropriétaires, comités sociaux et économiques, certaines associations. L’Institut national de la consommation détaille la jurisprudence ([fiche de l’INC](https://www.inc-conso.fr/content/reconduction-tacite-du-contrat)).
+
+### Vos contrats entre entreprises
+
+Entre sociétés commerciales, la loi Chatel ne s’applique pas : les tribunaux l’écartent, et votre fournisseur n’a aucune obligation de vous rappeler l’échéance. C’est le Code civil qui joue. L’article 1215 prévoit que si les deux parties continuent d’exécuter le contrat après son terme, il y a tacite reconduction. Selon l’article 1214, le contrat renouvelé repart alors pour une durée indéterminée, sauf clause contraire. Les conditions générales de vos fournisseurs prévoient souvent une reconduction pour la même durée : relisez la clause.
+
+Pour mettre fin à une relation suivie, l’article L. 442-1 du Code de commerce engage la responsabilité de celui qui rompt brutalement une relation commerciale établie sans préavis écrit suffisant. Plus la relation est ancienne, plus le préavis attendu est long. Un registre qui garde la date de début de chaque relation vous dit quel délai respecter.
+
+### Vos assurances et vos baux
+
+L’article L. 113-12 du Code des assurances permet de résilier un contrat à son échéance annuelle en prévenant l’assureur au moins deux mois avant. La loi n° 2026-403 du 26 mai 2026 de simplification de la vie économique crée un article L. 113-15-2-1 qui ouvre aux microentreprises et aux PME la résiliation à tout moment après la première année pour leurs contrats d’assurance de dommages aux biens ; son application attend un décret qui fixera les entreprises concernées ([analyse du cabinet Seban & Associés, juin 2026](https://www.seban-associes.avocat.fr/loi-de-simplification-de-la-vie-economique-quels-impacts-sur-le-droit-des-assurances/)).
+
+Pour un bail commercial, le locataire peut donner congé à la fin de chaque période triennale, six mois à l’avance (articles L. 145-4 et L. 145-9 du Code de commerce). Un bail signé le 1er juillet 2025 ouvre une première sortie au 30 juin 2028, à condition que le congé parte au plus tard le 31 décembre 2027.
 
 ## Quels contrats suivre dans une PME ?
 
 Tous ceux qui vous engagent dans la durée. Le tableau ci-dessous montre ce que l’outil surveille pour chaque famille.
 
-| Famille | Ce qui compte | Ce que l’outil fait |
-| --- | --- | --- |
-| Contrats clients récurrents | Terme, révision du prix, facturation | Prépare la révision et met à jour la facture récurrente |
-| Contrats de maintenance | Visites prévues, niveau de service, reconduction | Planifie les interventions et prévient avant la reconduction |
-| Fournisseurs et sous-traitants | Préavis, conditions tarifaires, attestations | Rappelle la date limite de dénonciation et les pièces à réclamer |
-| Locations et crédit-bail | Durée, restitution, option d’achat | Prévient avant la fin et garde l’état des lieux |
-| Assurances | Échéance annuelle, garanties | Rappelle l’échéance assez tôt pour comparer |
+| Famille | Date qui compte | Préavis courant | Ce que fait l’outil |
+| --- | --- | --- | --- |
+| Contrats clients récurrents | Terme, révision du prix | Fixé au contrat | Prépare la révision, met à jour la facture récurrente, envoie le courrier Chatel aux particuliers |
+| Maintenance et entretien | Reconduction, visites prévues | Souvent 1 à 3 mois | Planifie les interventions et prévient avant la date limite |
+| Fournisseurs et sous-traitants | Date limite de dénonciation | Fixé aux conditions générales | Rappelle la date limite et les attestations à réclamer |
+| Licences et abonnements logiciels | Renouvellement annuel, nombre de postes | Souvent 30 jours | Compare les postes payés aux postes utilisés avant le renouvellement |
+| Baux commerciaux | Fin de période triennale | 6 mois | Prévient avant la date limite du congé |
+| Locations et crédit-bail | Fin de contrat, option d’achat | Fixé au contrat | Prévient avant la fin et garde l’état des lieux |
+| Assurances | Échéance annuelle | 2 mois | Rappelle l’échéance assez tôt pour faire jouer la concurrence |
 
-## Logiciel du marché ou outil sur mesure ?
+Faites le compte avant de choisir un outil. Listez vos contrats en cours, repérez ceux dont vous ne connaissez pas la date limite de dénonciation sans ouvrir le PDF, et ceux dont la révision de prix n’a pas été appliquée cette année. Ce chiffre vous dit si un tableur suffit encore.
 
-Le choix dépend de qui travaille sur vos contrats. Un service juridique qui rédige, négocie et fait signer des contrats variés tire profit d’une plateforme du marché. Une PME dont les contrats se ressemblent et font tourner l’activité a surtout besoin que les dates, les prix et les factures suivent.
+## Quels logiciels de suivi des contrats en 2026, et à quel prix ?
+
+Huit logiciels du marché, six offres à prix affiché et trois sur devis, avec ce qu’elles coûtent sur trois ans à une PME où cinq personnes suivent les contrats.
+
+### Prix publics des logiciels de suivi des contrats (relevé du 24/11/2026)
+
+Unité : prix affiché par l’éditeur, par utilisateur et par mois en facturation annuelle, sauf mention contraire. Coût sur trois ans calculé pour 5 utilisateurs, 36 mois d’abonnement, sans frais de mise en place ni options. Source : relevé Eliott Bouquerel sur les pages tarifaires publiques des éditeurs, le 24 novembre 2026. Un prix que l’éditeur n’affiche pas est noté « sur devis ».
+
+| Logiciel et offre | Prix affiché | Alertes d’échéance annoncées | Coût sur 3 ans pour 5 utilisateurs |
+| --- | --- | --- | --- |
+| [Zoho Contracts](https://www.zoho.com/fr/contracts/pricing.html) Gratuit | 0 € | Non précisé | 0 €, mais 3 utilisateurs et 10 contrats au maximum |
+| [PandaDoc](https://www.pandadoc.com/fr/pricing/) Débutant | 25 $ | Alertes d’expiration | 4 500 $ |
+| PandaDoc Professionnel | 49 $ | Alertes d’expiration et rappels automatiques | 8 820 $ |
+| [Docusign](https://ecom.docusign.com/fr-FR/plans-and-pricing/esignature) Standard | 23 € | Non, rappels de signature seulement | 4 140 € |
+| [Oneflow](https://oneflow.com/fr/tarifs/) | 250 € par mois pour 5 sièges | Non précisé | 9 000 € |
+| [Salesforce Contracts](https://www.salesforce.com/fr/sales/revenue-lifecycle-management/contracts-pricing/) | 50 €, produits Salesforce prérequis en plus | Non précisé | 9 000 €, hors prérequis |
+| Tomorro, Hyperlex, Juro | Sur devis | Oui, d’après les comparatifs | Sur devis |
+
+Deux lectures de ce tableau. D’abord, un outil de signature électronique ne suit pas vos échéances : chez Docusign, le référentiel de contrats (Agreement Manager) n’apparaît que dans les offres Enhanced, sur devis. Ensuite, le prix par utilisateur pèse avec le temps : de 4 000 à 9 000 environ sur trois ans pour cinq personnes, tant que vous restez client, et aucune de ces offres n’annonce d’alerte par SMS.
+
+Ces outils servent d’abord à rédiger, négocier et signer. Une PME dont les contrats se ressemblent a surtout besoin que les dates, les prix et les factures suivent.
+
+## Excel et des alertes : jusqu’où ça tient ?
+
+Un tableur bien construit suffit pour démarrer. Une ligne par contrat, une colonne « date limite de dénonciation » calculée (échéance moins préavis), une mise en forme conditionnelle qui colore en orange à 60 jours et en rouge à 30 jours. Pour les alertes, chaque date limite part dans l’agenda partagé avec un rappel, ou un flux Power Automate envoie un e-mail chaque lundi avec les contrats qui approchent.
+
+Les limites arrivent vite :
+
+- le tableur ne prévient personne : il faut penser à l’ouvrir, et un rappel d’agenda ne se met pas à jour quand la date change ;
+- personne ne sait qui a décidé quoi l’an dernier, faute d’historique ;
+- deux personnes modifient le fichier en même temps et une ligne disparaît ;
+- aucun lien avec la facturation : la révision de prix se recopie à la main ;
+- pas de SMS sans un service tiers à brancher et à payer.
+
+Hack’celeration situe le seuil autour de 40 contrats, ou dès que plusieurs personnes modifient le fichier. Si votre suivi tient aujourd’hui dans un classeur devenu trop lourd, l’article sur [le remplacement d’Excel par un logiciel](/blog/remplacer-excel-par-un-logiciel) détaille la migration pas à pas.
+
+## Quand un logiciel sur mesure se justifie-t-il ?
+
+Quand vos contrats font tourner votre activité au lieu de dormir dans un dossier. Quatre situations reviennent :
+
+- **vous vendez des contrats récurrents** (maintenance, entretien, location, abonnement) et la facture doit suivre le contrat sans ressaisie ;
+- **vos clients sont des particuliers** et vous devez envoyer le courrier de la loi Chatel à chacun, à la bonne date ;
+- **vos révisions de prix suivent un indice** que vous recalculez chaque année à la main ;
+- **vous voulez des alertes par SMS**, ou par un canal que les outils du marché ne proposent pas.
 
 | | Outil de signature et de suivi | Plateforme de gestion des contrats | Logiciel conçu pour vous |
 | --- | --- | --- | --- |
 | Ce qu’il couvre | Modèles, signature, rappels simples | Rédaction, négociation, validation, archivage | Registre, échéances, révision des prix, facturation |
+| Alertes | E-mail | E-mail et application | E-mail, SMS, selon vos règles |
 | Lien avec vos outils | Quelques connecteurs | Connecteurs aux grands outils du marché | Branché sur votre facturation et votre suivi client |
 | Révision des prix | Non | Selon l’offre | Calculée et reportée sur la facture |
-| Prix | Par utilisateur et par mois | Abonnement mensuel ou annuel | Payé une fois, suivi en option |
+| Prix | Par utilisateur et par mois | Abonnement, souvent sur devis | Payé une fois, suivi en option |
 | Quand le choisir | Vous voulez surtout signer en ligne | Un service juridique gère beaucoup de contrats | Vos contrats pilotent votre facturation |
 
-## Combien coûte un logiciel de gestion des contrats ?
+Pour comparer, une agence facture couramment de 8 000 à 10 000 € HT un premier outil sur mesure (La Fabrique du Net, ordres de grandeur relevés le 15 octobre 2026). Je fais le même travail, du cadrage à la mise en production, à un prix fixé au devis : vous parlez directement à la personne qui conçoit et qui code. Le prix dépend du nombre de familles de contrats, des règles de révision et des outils à relier. Le code source est livré dans votre dépôt, avec sa documentation. Le détail de l’offre est sur la page [logiciel métier sur mesure](/services/logiciel-metier), et les fourchettes sur la page [prix d’un logiciel métier](/services/logiciel-metier/prix).
 
-Les grilles publiques donnent ces repères (comparatif Appvizer du 3 octobre 2025) :
+Le sur mesure peut aussi se poser par-dessus un outil que vous gardez. Chez Würth France, j’ai reconstruit le parcours de création de compte de l’eShop professionnel par-dessus une plateforme dont le code n’était pas modifiable : [−92 % d’erreurs et de sollicitations du support](/realisations/wurth-creation-de-compte). Le même principe s’applique à vos contrats, branchés sur votre logiciel de facturation actuel.
 
-- **Outil de signature et de suivi** : de 9 à 45 € par utilisateur et par mois selon la formule ;
-- **Plateforme de gestion du cycle de vie des contrats** : 399 € par mois en entrée de gamme, sur devis pour les offres supérieures.
+## Comment l’IA reprend-elle vos contrats existants ?
 
-Le prix par utilisateur pèse avec le temps. Si cinq personnes doivent suivre les contrats, un outil à 45 € revient à 2 700 € par an, soit 8 100 € sur trois ans. Une plateforme à 399 € par mois représente 14 364 € sur la même durée, tant que vous restez client.
+La reprise est souvent ce qui bloque : des centaines de PDF signés, rangés dans des dossiers partagés ou des boîtes mail. L’IA lit chaque document et propose une fiche avec les parties, l’objet, la durée, le préavis, la date limite de dénonciation et l’indice de révision. Une personne relit et valide. Vous passez de plusieurs semaines de saisie à quelques jours de relecture, et chaque date part ensuite dans les alertes.
 
-Un logiciel conçu pour vous se paie une fois. Pour comparer, une agence facture couramment de 8 000 à 10 000 € HT un premier outil sur mesure (La Fabrique du Net, ordres de grandeur relevés le 15 octobre 2026). Je fais le même travail, du cadrage à la mise en production, à un prix fixé au devis : vous parlez directement à la personne qui conçoit et qui code. Le prix dépend du nombre de familles de contrats, des règles de révision et des outils à relier. Le code source est livré dans votre dépôt, avec sa documentation. Le détail de l’offre est sur la page [Logiciel métier sur mesure](/services/logiciel-metier).
+Pour un nouveau contrat, c’est la même chose : le PDF signé arrive par e-mail, l’outil prépare sa fiche, et la facture récurrente démarre à la bonne date.
 
-## Comment l’IA aide-t-elle à reprendre vos contrats existants ?
+## Comment mettre en place le suivi de vos contrats ?
 
-La reprise est souvent ce qui bloque : des centaines de PDF signés, rangés dans des dossiers partagés ou des boîtes mail. L’IA lit chaque document et propose une fiche : parties, objet, durée, préavis, date limite de dénonciation, indice de révision. Une personne relit et valide. Vous passez de plusieurs semaines de saisie à quelques jours de relecture, et chaque date part ensuite dans les alertes.
+Commencez par une seule famille, celle qui vous coûte le plus quand une date passe : souvent la maintenance ou les fournisseurs reconduits sans le vouloir.
 
-La même lecture sert pour les nouveaux contrats. Le document signé arrive, l’outil prépare sa fiche, et la facturation récurrente démarre à la bonne date, au bon prix.
+<Steps items={[
+  "Rassemblez les contrats signés de cette famille dans un seul dossier, avenants compris.",
+  "Pour chacun, relevez le terme, le préavis et la clause de reconduction, puis calculez la date limite de dénonciation.",
+  "Nommez un responsable et un suppléant par contrat : l’alerte part vers une personne, jamais vers une adresse générique.",
+  "Réglez les rappels sur la date limite (60 et 30 jours par e-mail, 10 jours par SMS pour les gros contrats).",
+  "Enregistrez chaque décision avec sa date et la preuve d’envoi du courrier.",
+  "Une fois cette famille stable, reliez la facturation et la révision des prix, puis passez à la famille suivante."
+]} />
 
-## Comment démarrer sans perdre de temps ?
-
-Commencez par une seule famille, celle qui vous coûte le plus quand une date passe : souvent les contrats de maintenance ou les fournisseurs reconduits sans le vouloir. L’outil reprend ces contrats, calcule leurs dates limites et envoie les premières alertes. Ensuite seulement, reliez la facturation et la révision des prix.
-
-Si vos contrats tournent déjà avec vos interventions, l’article sur le [logiciel de gestion d’intervention](/blog/logiciel-gestion-intervention) montre comment relier les deux. Si vos clients vivent dans un fichier, lisez celui sur le [CRM sur mesure](/blog/crm-sur-mesure). Et pour voir ce que l’outil peut reprendre chez vous, [prenez un appel en visio](/rdv?sujet=logiciel) avec trois contrats signés sous la main.
+Si vos contrats de maintenance déclenchent des visites, l’article sur le [logiciel de gestion d’intervention](/blog/logiciel-gestion-intervention) montre comment relier les deux. Si vos contrats clients finissent en factures impayées, celui sur le [logiciel de relance client](/blog/logiciel-relance-client) prend le relais. Pour voir ce que l’outil peut reprendre chez vous, [prenez un appel en visio](/rdv?sujet=logiciel) avec trois contrats signés sous la main.
 
 ## Questions fréquentes
 
+### Existe-t-il un logiciel qui envoie un SMS avant l’échéance d’un contrat ?
+
+Parmi les offres du marché relevées le 24 novembre 2026, les alertes d’échéance partent par e-mail ou dans l’application. Pour un SMS, il faut un outil relié à un service d’envoi de SMS : c’est simple à ajouter dans un logiciel conçu pour vous, avec une règle qui réserve le SMS aux contrats importants.
+
+### Quel logiciel choisir pour le suivi des échéances de contrats ?
+
+Pour moins de dix contrats, la version gratuite de Zoho Contracts ou un tableur bien tenu suffit. Pour une équipe qui rédige et signe beaucoup, PandaDoc ou Oneflow. Si vos contrats pilotent votre facturation ou si vous voulez des alertes par SMS, un outil sur mesure branché sur vos logiciels actuels.
+
 ### Un tableur suffit-il pour suivre ses contrats ?
 
-Pour une dizaine de contrats, oui, si une personne le relit chaque mois. Au-delà, le tableur ne prévient personne : il faut penser à l’ouvrir, et la date limite de dénonciation se calcule à la main.
+Jusqu’à une quarantaine de contrats, oui, si une personne le relit chaque mois et si chaque date limite est reportée dans un agenda. Au-delà, ou dès que plusieurs personnes le modifient, les oublis deviennent probables.
 
 ### Quelle différence entre échéance et date limite de dénonciation ?
 
 L’échéance est la fin de la période du contrat. La date limite de dénonciation la précède du préavis prévu au contrat : avec trois mois de préavis et une échéance au 31 décembre, vous devez agir au plus tard le 30 septembre.
+
+### La loi Chatel s’applique-t-elle entre entreprises ?
+
+Non. L’article L. 215-1 du Code de la consommation protège les consommateurs et, par l’article L. 215-3, les non-professionnels. Entre sociétés commerciales, seul le contrat fixe le préavis, et votre fournisseur n’a pas à vous rappeler l’échéance : c’est à vous de la suivre.
 
 ### Un logiciel de gestion des contrats peut-il facturer ?
 

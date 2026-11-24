@@ -1,200 +1,199 @@
-Shopify gagne quand votre boutique est standard, que vous voulez démarrer vite, et que
-la commission sur vos ventes reste petite devant le temps qu’elle vous fait
-gagner. Le sur-mesure gagne quand votre façon de vendre ne rentre dans aucune case,
-quand les extensions vous coûtent plus cher que du développement, ou quand la
-performance et la propriété deviennent des sujets stratégiques.
+Un Shopify sur mesure, c’est une boutique Shopify dont le thème, certaines règles de panier ou toute la vitrine ont été développés pour vous, alors que Shopify garde le catalogue, le paiement et les commandes. Pour la plupart des boutiques, c’est la bonne réponse : le site entièrement sur mesure ne se justifie que lorsque votre besoin exige Shopify Plus, facturé au moins 2 100 € par mois, ou ne rentre plus dans ce que la plateforme sait faire.
 
-C’est une question d’écart entre votre métier et ce que la plateforme prévoit.
-Voici comment le mesurer.
+Tous les tarifs de cet article ont été relevés le 24 novembre 2026 sur les pages officielles citées.
 
-## Ce que vous achetez dans chaque cas
+## Que veut dire « Shopify sur mesure » ?
 
-Une plateforme comme Shopify vend un **service complet et loué** : hébergement,
-paiement, sécurité, mises à jour, catalogue de milliers d’extensions. Vous payez
-un abonnement, souvent une commission, et vous n’avez rien à administrer. C’est un
-très bon produit, et je n’écris pas contre lui.
+Le terme recouvre trois demandes, et les prestataires qui y répondent ne vendent pas la même chose. Sur les places de marché de freelances, il désigne un thème dessiné pour votre marque à la place d’un modèle acheté. Chez les agences, il désigne du développement : une application privée, des règles de remise que Shopify ne propose pas, une connexion à votre ERP. Sur les gros projets, il désigne une boutique dite headless, où Shopify ne garde que le moteur et où la partie visible est une application écrite à part.
 
-Un site sur mesure vend un **actif que vous possédez** : le code est dans votre
-dépôt, l’hébergement est à votre nom, il n’y a pas de commission sur vos ventes,
-et rien ne change sans que vous l’ayez décidé. En contrepartie, vous êtes responsable
-de tout ce que la plateforme faisait pour vous.
+Dans les trois cas, vous restez chez Shopify : abonnement, paiement et code qui ne tourne que sur sa plateforme. Le site e-commerce sur mesure, au sens strict, est une boutique dont le code, la base de données et l’hébergement sont à vous.
 
-C’est louer ou acheter, avec les conséquences habituelles des deux.
+## Jusqu’où peut-on personnaliser Shopify ?
 
-## Les cinq critères qui décident
+Il y a six niveaux, du plus léger au plus lourd. Chacun ouvre des possibilités que le précédent n’a pas, et chacun coûte plus cher.
 
-Je les prends toujours dans cet ordre.
+### 1. L’éditeur de thème, sans code
 
-<Steps items={[
-  "L’écart au standard. Est-ce que vendre chez vous ressemble à vendre partout ailleurs ? Tarification par volume, lots composés, devis avant commande, comptes professionnels avec conditions négociées : plus votre modèle s’écarte, plus la plateforme devient un carcan.",
-  "Le coût réel, commissions et extensions comprises. Additionnez l’abonnement, chaque extension mensuelle, et le pourcentage sur vos ventes. Comparez au coût d’un développement amorti sur trois ans plus l’hébergement.",
-  "La performance. Une boutique chargée d’extensions accumule du code sur toutes les pages. Si votre trafic est payé, cette lenteur se paie deux fois.",
-  "La dépendance. Que se passe-t-il si les conditions tarifaires changent, si une extension dont vous dépendez est abandonnée, ou si vous voulez partir ? La réponse doit être connue avant de s’engager, pas après.",
-  "Votre équipe. Un site sur mesure demande quelqu’un pour l’entretenir, en interne ou en prestataire. Si personne ne peut porter ce rôle, la plateforme est le choix responsable."
-]} />
+Sections, blocs, couleurs, polices, ordre des éléments sur chaque page : l’éditeur couvre plus que ce que la plupart des boutiques en tirent. Les thèmes actuels reposent sur des [templates JSON](https://shopify.dev/docs/storefronts/themes/architecture) qui ne font qu’empiler des sections, ce qui permet de composer une page produit différente par gamme sans écrire une ligne de code.
 
-Quand le trafic est payé, la page où il atterrit compte autant que sa vitesse.
-J’ai comparé [landing page et page produit](/blog/landing-page-ou-page-produit)
-selon d’où vient le visiteur.
+### 2. Un thème payant du Theme Store
 
-## Le calcul qu’il faut faire, avec vos nombres
+Le [Theme Store](https://themes.shopify.com/themes?price%5B%5D=paid) listait 1 371 thèmes payants le jour du relevé, vendus de 100 $ à 420 $ en une fois. Un thème payant apporte des sections prêtes à l’emploi (filtres, méga-menu, vidéo produit) et les mises à jour de son éditeur. Pour une boutique qui démarre, c’est le meilleur rapport entre le prix et le résultat.
 
-La comparaison honnête ne met pas un abonnement en face d’un devis. Elle
-additionne tout, sur trois ans.
+### 3. Les applications
 
-Du côté plateforme : l’abonnement mensuel, la commission éventuelle sur chaque
-vente, le coût cumulé des extensions payantes, et le thème ou l’intégrateur qui
-l’a mis en place. La ligne qui surprend est presque toujours celle des
-extensions : cinq applications à trente euros font mille huit cents euros par
-an, sans compter les paliers qui montent avec le volume.
+L’[App Store de Shopify](https://apps.shopify.com/) annonce plus de 16 000 applications. Avis clients, abonnements, lots, traduction, filtres avancés : presque chaque besoin y a sa réponse, facturée au mois. Le coût se cache dans l’accumulation : une ligne de facture et souvent un script de plus par application.
 
-Du côté sur mesure : le développement initial, l’hébergement, et une part
-annuelle d’évolution et de maintenance qu’il faut chiffrer honnêtement. Un site
-sur mesure qu’on ne fait pas évoluer devient un site qu’on contourne.
+### 4. Le code Liquid : sections et thème sur mesure
 
-### Les chiffres officiels, pour que vous posiez les vôtres
+Liquid est le langage de gabarits de Shopify. Il fabrique le HTML de vos pages à partir des produits, des collections et des réglages du thème. Un développeur peut écrire la section qui vous manque (un guide des tailles, un tableau de prix dégressifs, un configurateur simple) ou un thème complet en partant de zéro. C’est ce que vendent la plupart des offres « Shopify sur mesure », et c’est souvent suffisant.
 
-J’ai relevé ces montants le 7 septembre 2026 sur la
-[grille tarifaire française de Shopify](https://www.shopify.com/fr/pricing),
-en paiement mensuel, formule par formule. Méthode : lecture directe de la page
-publique, sans intermédiaire ni comparateur, parce que les comparateurs
-recopient des tarifs périmés et que ceux-ci changent sans préavis.
+### 5. Les applications privées et Shopify Functions
 
-| Formule | Abonnement | Commission hors Shopify Payments | Carte via Shopify Payments |
+Liquid s’arrête où commence le panier. Pour changer la manière dont Shopify calcule une remise, propose une livraison, filtre les moyens de paiement, valide un panier ou répartit une commande entre deux entrepôts, il faut [Shopify Functions](https://shopify.dev/docs/api/functions). C’est là que tombe la limite la plus coûteuse : la documentation précise que seules les boutiques Shopify Plus peuvent utiliser une application personnalisée qui contient des Functions. En Basic, Grow ou Advanced, vous passez par une application publique qui fait à peu près ce que vous voulez, ou vous changez de formule.
+
+Le tunnel de commande suit la même règle. Les applications qui modifient les étapes d’informations, de livraison et de paiement sont [réservées à Shopify Plus](https://help.shopify.com/fr/manual/checkout-settings/checkout-extensibility) ; les autres formules ne peuvent intervenir que sur la page de remerciement et la page de suivi de commande.
+
+### 6. Le headless, avec Hydrogen
+
+Au dernier niveau, Shopify garde le catalogue, le panier et le paiement, et la partie visible devient une application indépendante. Shopify fournit pour cela Hydrogen, une base React Router préparée pour ses API, et Oxygen pour l’héberger, [inclus sans supplément dans les formules payantes](https://shopify.dev/docs/storefronts/headless/hydrogen/fundamentals). Vous obtenez une liberté complète sur l’affichage et la vitesse. Vous perdez l’éditeur de thème et les applications qui s’affichaient dans la boutique, et vous avez désormais une application web à maintenir.
+
+| Niveau | Ce que vous changez | Formule nécessaire | Type de coût | Limite |
+| --- | --- | --- | --- | --- |
+| Éditeur de thème | Mise en page, sections, styles | Toutes | Votre temps | Ce que le thème prévoit |
+| Thème payant | Design, sections prêtes | Toutes | 100 à 420 $ une fois | Le même thème chez d’autres |
+| Applications | Fonctions ajoutées | Toutes | Abonnement par application | Facture et poids des pages qui s’empilent |
+| Code Liquid | Sections ou thème entier | Toutes | Développement, au devis | Ne touche ni au panier ni au paiement |
+| Functions en application privée | Remises, livraison, paiement, validation | Plus | Développement et 2 100 € par mois au minimum | Le saut de formule |
+| Headless (Hydrogen) | Toute la vitrine | Toutes les formules payantes | Développement et maintenance d’une application | Plus d’éditeur ni d’applications de vitrine |
+
+## Combien coûte Shopify en 2026 ?
+
+Voici la grille de la [page tarifs française de Shopify](https://www.shopify.com/fr/pricing), relevée le 24 novembre 2026.
+
+| Formule | Paiement mensuel | Paiement annuel, par mois | Carte en ligne via Shopify Payments | Frais si vous encaissez ailleurs |
+| --- | --- | --- | --- | --- |
+| Basic | 36 € | 27 € | 1,5 % + 0,25 € | 2 % |
+| Grow | 105 € | 79 € | 1,3 % + 0,25 € | 1 % |
+| Advanced | 384 € | 289 € | 1,1 % + 0,25 € | 0,6 % |
+| Plus | 2 100 € au minimum | non publié | 1 % + 0,25 € | 0,2 % |
+
+La dernière colonne ne s’applique pas aux commandes payées par Shopify Payments, Shop Pay ou par un paiement manuel comme le virement, [selon l’aide de Shopify](https://help.shopify.com/en/manual/your-account/manage-billing/billing-charges/types-of-charges/third-party-charges/third-party-transaction-fees). Elle frappe la boutique qui garde son terminal de paiement bancaire en ligne : en Basic, 2 % de 150 000 € de ventes font 3 000 € par an, en plus des frais de la banque.
+
+Une erreur revient dans presque tous les comparatifs, et je la faisais moi-même dans la première version de cet article : compter les frais de carte comme un coût de Shopify. Un site sur mesure encaisse aussi par carte, et [Stripe facture 1,5 % + 0,25 €](https://stripe.com/fr/pricing) par carte standard de l’Espace économique européen. C’est le tarif de Shopify Basic, et c’est plus cher que Grow ou Advanced.
+
+## Combien coûte un Shopify sur mesure sur 3 ans ?
+
+**Coût de Shopify sur 3 ans pour trois boutiques types**, en euros, calculé sur les tarifs publics relevés le 24/11/2026 (relevé Eliott Bouquerel sur shopify.com/fr et stripe.com/fr). Les hypothèses sont posées en clair. L’abonnement est en paiement annuel. Les applications sont une hypothèse de travail : trois à 15 € par mois pour la petite boutique, six à 25 € pour la boutique installée, douze à 40 € pour la grosse. Remplacez-les par les lignes de votre propre facture.
+
+| Sur 3 ans | Petite boutique | Boutique installée | Grosse boutique |
 | --- | --- | --- | --- |
-| Basic | 36 €/mois | 2 % | 1,5 % + 0,25 € |
-| Grow | 105 €/mois | 1 % | 1,3 % + 0,25 € |
-| Advanced | 384 €/mois | 0,6 % | 1,1 % + 0,25 € |
+| Chiffre d’affaires annuel | 40 000 € | 150 000 € | 1 500 000 € |
+| Panier moyen | 60 € | 75 € | 90 € |
+| Commandes par an | 667 | 2 000 | 16 667 |
+| Formule | Basic | Grow | Advanced |
+| Abonnement | 972 € | 2 844 € | 10 404 € |
+| Frais de carte Shopify Payments | 2 300 € | 7 350 € | 62 000 € |
+| Applications (hypothèse) | 1 620 € | 5 400 € | 17 280 € |
+| Total Shopify | 4 892 € | 15 594 € | 89 684 € |
+| Frais de carte d’un site sur mesure avec Stripe | 2 300 € | 8 250 € | 80 000 € |
+| Écart que le sur mesure doit couvrir | 2 592 € | 7 344 € | 9 684 € |
 
-Deux lectures de ce tableau, et la seconde est celle qu’on oublie.
+La dernière ligne est ce que vous économiseriez en quittant Shopify, avant de payer le développement, l’hébergement et la maintenance de votre propre boutique. Pour la grosse boutique, les tarifs de carte plus bas d’Advanced effacent les deux tiers de ce que coûtent l’abonnement et les applications.
 
-La commission de 2 % en Basic ne s’applique pas si vous encaissez avec Shopify
-Payments, [ce que la documentation précise explicitement](https://help.shopify.com/en/manual/your-account/manage-billing/billing-charges/types-of-charges/third-party-charges/third-party-transaction-fees).
-C’est le prix d’encaisser ailleurs, pas le prix de vendre.
+Le tableau ne compte ni le thème, ni l’intégration de départ, ni le temps passé à faire tenir ensemble douze applications.
 
-Mais la commission bancaire, elle, tombe dans tous les cas. À 1,5 % + 0,25 € par
-commande, une boutique qui fait 40 000 € de chiffre d’affaires sur un panier
-moyen de 60 € paie environ 767 € de frais par an. À 400 000 €, environ 7 670 €.
-C’est ce second nombre qu’il faut mettre en face d’un développement, jamais
-l’abonnement.
+À formule égale, le coût seul fait donc rarement quitter Shopify. Le calcul change de nature quand votre besoin impose une autre formule.
 
-Le **coût total de possession** est la somme de tout ce que la solution vous
-coûte sur la durée où vous vous en servez : abonnement, commissions, extensions,
-hébergement, maintenance et temps humain. C’est la seule base de comparaison
-honnête entre louer et posséder, et c’est celle que personne ne pose parce
-qu’elle demande d’aller chercher six nombres au lieu d’un.
+<Stat value="75 600 €" label="d’abonnement Shopify Plus sur trois ans, au prix d’entrée de 2 100 € par mois (grille française de Shopify, relevée le 24/11/2026)" />
 
-<Callout title="Le seuil qui compte">
-La commission. Un abonnement fixe est un coût, un pourcentage sur vos ventes est
-une part de votre marge, et il grandit exactement au rythme de votre réussite. À
-faible volume, il ne se voit pas. À fort volume, il finance à lui seul un
-développement. Calculez le vôtre en euros annuels avant de faire quoi que ce soit
-d’autre.
+Si votre règle de remise maison ou votre tunnel de commande retouché n’existe qu’en Plus, c’est ce montant qu’il faut mettre en face d’un développement. C’est là que le sur mesure devient compétitif.
+
+## Combien de sites normands tournent sur Shopify ?
+
+Dans [l’étude des sites des entreprises normandes](/blog/etat-des-sites-des-entreprises-normandes-2026), j’ai identifié l’outil de création de 3 982 sites de commerces, d’artisans et d’entreprises, à partir des fiches Google Maps publiques relevées en juillet 2026. Shopify en fait tourner 137. PrestaShop n’apparaît que sur 11 sites, et WordPress, qui peut porter une boutique WooCommerce, n’est pas ventilé par usage dans l’étude.
+
+**Plateformes de boutique parmi les sites normands dont l’outil est identifiable**, en nombre de sites et en part des 3 982 sites, sites relevés le 20 juillet 2026 (source : étude Eliott Bouquerel sur les sites des entreprises normandes 2026) :
+
+| Outil | Sites | Part des sites identifiables |
+| --- | --- | --- |
+| WordPress, WooCommerce non distingué | 2 294 | 57,61 % |
+| Shopify | 137 | 3,44 % |
+| Odoo, site ou boutique | 22 | 0,55 % |
+| PrestaShop | 11 | 0,28 % |
+
+Parmi les plateformes dédiées à la vente en ligne, Shopify est donc de loin la plus répandue dans la région, douze fois plus que PrestaShop.
+
+## Quelles sont les limites de Shopify ?
+
+Les deux plus chères passent par Plus : le tunnel de commande et les Functions en application privée. Les autres pèsent surtout au quotidien.
+
+Les adresses sont imposées. Une fiche produit vit sous `/products/`, une catégorie sous `/collections/`, une page sous `/pages/`. Vous ne pouvez ni changer ces préfixes ni organiser vos adresses par univers, ce qui compte le jour où vous migrez vers Shopify ou en partez.
+
+Les applications alourdissent les pages, chacune avec son script. Sur un trafic payé, la lenteur se paie deux fois : voyez [ce que coûte un site e-commerce lent](/blog/site-e-commerce-lent-ce-que-ca-coute).
+
+Le B2B dépend de la formule. Shopify B2B est [disponible en Basic, Grow, Advanced et Plus](https://help.shopify.com/en/manual/b2b), mais les fonctions accessibles varient de l’une à l’autre : vérifiez la vôtre avant de promettre des prix nets ou un paiement à 30 jours.
+
+Le code ne vous suit pas. Un thème Liquid sur mesure vous appartient si le contrat le dit, mais il ne tourne nulle part ailleurs que chez Shopify. Vos produits, vos clients et vos commandes s’exportent en CSV ; le thème, les réglages des applications et les automatisations, non.
+
+Enfin, la boutique n’est qu’un outil parmi d’autres. Quand la comptabilité, la logistique et le service client tiennent chacun leur version du stock, changer de boutique ne règle rien. C’est le sujet de [connecter son ERP et son site e-commerce sans écart de stock](/blog/synchroniser-catalogue-stock-et-commandes).
+
+## Shopify ou site sur mesure : le tableau comparatif
+
+| Critère | Shopify, thème ou code sur mesure | Site e-commerce entièrement sur mesure |
+| --- | --- | --- |
+| Mise en ligne | En semaines | En mois |
+| Coût de départ | Faible à moyen | Élevé, fixé au devis |
+| Coût récurrent | Abonnement, applications, frais de carte | Hébergement, maintenance, frais de carte |
+| Paiement et sécurité | Pris en charge par Shopify | Confiés à un prestataire de paiement, le reste à votre charge |
+| Règles de prix et de panier | Applications, ou Functions en Plus | Sans limite |
+| Tunnel de commande | Modifiable en Plus seulement | Entièrement libre |
+| Structure des adresses | Imposée | Libre |
+| Propriété | Thème à vous, utilisable seulement chez Shopify | Code, données et hébergement à vous |
+| Cas typique | Catalogue classique, vente aux particuliers | Vente atypique, B2B complexe, place de marché |
+
+## Quand passer du Shopify sur mesure au site sur mesure ?
+
+### Votre besoin n’existe qu’en Plus
+
+C’est le signal le plus fréquent. Mettez les 75 600 € de Plus sur trois ans en face d’un développement : la boutique complète, ou seulement la pièce qui manque.
+
+### Vous dépassez dix applications
+
+Une dizaine d’applications, ce sont des centaines d’euros par mois et des conflits que personne ne sait arbitrer. Quand plusieurs d’entre elles compensent ce que Shopify ne fait pas pour votre métier, un seul développement les remplace.
+
+### Votre façon de vendre vit dans un tableur
+
+Votre grille de prix par volume, vos lots composés, votre procédure de retour existent à côté de la boutique parce qu’elle ne sait pas les gérer. Chaque commande passe par une ressaisie, et l’erreur arrive le jour où la personne qui tient le fichier est absente.
+
+### Vous vendez pour le compte d’autres vendeurs
+
+Shopify est conçu pour la boutique d’un marchand. Une place de marché qui encaisse pour plusieurs vendeurs et leur reverse leur part passe par des applications tierces. Quand ce modèle est le cœur de l’activité, tout se construit : c’est ce que j’ai fait pour [Kpsull, une place de marché de créateurs développée sur mesure](/realisations/kpsull), avec catalogue à facettes, panier et comptes acheteur et créateur.
+
+Restez sur Shopify si vous démarrez et ne savez pas encore ce qui se vendra, ou si personne ne peut porter la technique, chez vous ou chez un prestataire. Même chose si Shopify synchronise déjà vos canaux de vente.
+
+## Garder Shopify et développer la pièce qui manque
+
+C’est la voie que je recommande le plus souvent. Vous gardez Shopify pour ce qu’il fait bien : le catalogue, le paiement, les commandes, la conformité. Et vous faites construire à côté l’outil qui porte votre différence, branché sur les données de la boutique par son interface de programmation.
+
+Concrètement, cela donne un tableau de bord qui rassemble les commandes de trois canaux, un configurateur que le thème ne sait pas faire, une [automatisation des retours et des tâches répétitives](/services/automatisation), ou une synchronisation du stock avec votre gestion. Chaque brique se chiffre en jours plutôt qu’en mois, et aucune ne vous oblige à quitter Shopify. Pour un négociant ou un distributeur, la pièce la plus demandée est un [logiciel de gestion de négoce](/services/logiciel-metier/negoce-distribution) qui relie le catalogue professionnel au stock et aux tarifs de chaque client.
+
+<Callout title="Würth : construire à côté d’une plateforme fermée">
+Sur l’eShop B2B de Würth France, la plateforme allemande interdisait toute modification du code. J’ai reconstruit le parcours de création de compte par-dessus, relié au SIRET de l’INSEE et à la Base Adresse Nationale. Résultat mesuré en interne : −92 % d’erreurs et de sollicitations du support. Une boutique Shopify bloquée par sa formule se traite de la même façon. [Voir la réalisation Würth](/realisations/wurth-creation-de-compte).
 </Callout>
 
-## Quand je recommande la plateforme
+## Comment mener un projet Shopify sur mesure ?
 
-Sans hésiter, dans quatre cas.
+<Steps items={[
+  "Écrivez ce qui doit changer en phrases de vendeur, par exemple « un client professionnel voit ses prix nets dès sa connexion ».",
+  "Pour chaque besoin, cherchez le niveau le plus bas qui le couvre : éditeur, thème payant, application, section Liquid, Functions, headless.",
+  "Vérifiez la formule exigée par chaque besoin avant de signer quoi que ce soit. Un seul besoin réservé à Plus change tout le calcul.",
+  "Posez le coût sur trois ans, frais de carte comptés des deux côtés, avec vos chiffres et votre facture d’applications.",
+  "Exigez le code dans un dépôt à votre nom : Shopify relie un thème à un dépôt GitHub."
+]} />
 
-Vous démarrez et vous ne savez pas encore ce qui va marcher. Construire avant de
-savoir est le meilleur moyen de construire la mauvaise chose. Une plateforme est
-le moyen le moins cher de découvrir votre propre métier.
+## Questions fréquentes
 
-Votre catalogue est classique et votre volume modeste. La commission ne pèse pas
-encore, et le temps gagné vaut plus que la marge cédée.
+### Peut-on avoir un site Shopify entièrement sur mesure ?
 
-Vous n’avez personne pour porter la technique. Un site sur mesure sans interlocuteur
-technique devient un problème le jour où quelque chose casse.
+Oui : un thème Liquid écrit de zéro, qui reste modifiable dans l’éditeur, ou une vitrine headless avec Hydrogen. Le tunnel de commande reste celui de Shopify, modifiable en Plus seulement.
 
-Vous vendez sur plusieurs canaux et la plateforme les gère déjà. Réécrire une
-synchronisation de places de marché qui fonctionne serait absurde.
+### Combien coûte un thème Shopify sur mesure ?
 
-## Quand ça bascule
+Le prix se fixe au devis, selon le nombre de gabarits de pages et de sections à écrire. Comparez-le à un thème payant, vendu entre 100 $ et 420 $, complété par deux ou trois sections Liquid écrites pour vous : pour une boutique de catalogue classique, ce montage suffit dans la plupart des cas.
 
-Trois signaux, assez nets pour être reconnus sans expertise.
+### Faut-il Shopify Plus pour faire du développement sur mesure ?
 
-### Vous avez plus de dix extensions
+Non pour un thème, des sections Liquid, une vitrine headless ou une application publique. Oui pour une application privée qui contient des Shopify Functions et pour modifier les étapes d’informations, de livraison et de paiement du tunnel de commande.
 
-Chacune a été ajoutée pour une bonne raison. Ensemble, elles font une pile que
-personne ne maîtrise, qui ralentit toutes les pages, et dont le coût mensuel
-cumulé dépasse ce que vous imaginez. C’est le signal le plus fiable.
+### Hydrogen ou thème Liquid : que choisir ?
 
-### Votre différence vit dans un tableur
+Le thème Liquid par défaut. Hydrogen se justifie quand la vitrine est elle-même le produit, un configurateur poussé ou plusieurs marques sur un catalogue, et que quelqu’un maintiendra l’application React.
 
-Votre règle de tarification, votre composition de lots, votre processus de retour
-existent à côté de la boutique parce qu’elle ne sait pas les faire. Le jour où
-votre avantage commercial est dans un fichier partagé, la plateforme ne vous sert
-plus votre métier, elle vous en empêche.
+### Peut-on quitter Shopify sans perdre son référencement ?
 
-### Vos outils ne sont plus d’accord
+Oui, si la table des anciennes adresses vers les nouvelles est écrite avant la bascule et posée en redirections permanentes : toutes vos adresses en `/products/` et `/collections/` vont changer. La visibilité fluctue quelques semaines pendant une migration ; une baisse qui dure signale une redirection manquante. La méthode est celle d’une [refonte de site internet](/blog/refonte-site-internet-pme), avec l’export CSV de vos produits, clients et commandes comme point de départ.
 
-Boutique, comptabilité, logistique et service client tiennent chacun une
-vérité, et personne ne sait laquelle gagne. C’est le sujet de
-[pourquoi vos outils ne sont jamais d’accord sur le
-stock](/blog/synchroniser-catalogue-stock-et-commandes).
+## Faire le calcul avec vos chiffres
 
-<Quote>
-On ne quitte pas une plateforme parce qu’elle est mauvaise. On la quitte le jour
-où l’on passe plus de temps à la contourner qu’à s’en servir.
-</Quote>
-
-## La solution mixte, qui est souvent la bonne
-
-On oppose les deux options alors que la plupart des cas réels sont hybrides, et
-c’est la voie que je recommande le plus souvent.
-
-Vous gardez la plateforme pour ce qu’elle fait bien : le catalogue, le paiement,
-la gestion des commandes, la conformité. Et vous faites construire à côté la pièce
-qui porte votre différence, branchée sur ses données par son interface de
-programmation.
-
-Concrètement : un tableau de bord qui rassemble les commandes de trois canaux,
-un configurateur de produit que la plateforme ne sait pas faire, une
-automatisation des retours, une synchronisation de stock avec votre gestion.
-Chacune de ces briques se chiffre en jours, pas en mois, et elle ne remet rien
-en question.
-
-Une variante technique existe aussi, où l’on garde la plateforme pour le
-catalogue et le paiement, mais où l’on construit la boutique visible sur mesure.
-Ça permet de traiter la vitesse et le référencement sans migrer les données.
-C’est plus lourd qu’un simple branchement, et ça ne se justifie que si la
-performance est un vrai enjeu commercial chez vous.
-
-Pour un négociant ou un distributeur, la pièce la plus demandée est un
-[catalogue professionnel relié au stock et aux tarifs de chaque client](/services/logiciel-metier/negoce-distribution).
-Et quand rien de la plateforme ne colle au modèle, tout se construit : c’est ce
-que j’ai fait pour [Kpsull, une place de marché de créateurs développée sur mesure](/realisations/kpsull),
-avec catalogue à facettes, panier et comptes acheteur et créateur.
-
-## Ce qu’il ne faut pas décider sur ce critère
-
-Le design. Un site sur mesure n’est pas plus beau qu’un thème bien fait, et un
-thème bien fait n’est pas moins convaincant qu’un site sur mesure. La différence
-se joue sur l’ajustement au métier, pas sur l’apparence.
-
-Le référencement, dans une large mesure. Une boutique Shopify correctement tenue
-se classe très bien. Ce qui se classe mal, c’est un catalogue sans texte propre
-et sans structure, quelle que soit la technologie dessous.
-
-La sécurité. Une plateforme fait ce travail mieux que la plupart des sites sur
-mesure, et il faut le reconnaître.
-
-## Si vous décidez de migrer
-
-Ne le faites pas pour de mauvaises raisons, et surtout ne le faites pas sans
-plan de redirection. Une migration ratée coûte plusieurs mois de trafic, et
-c’est le genre de perte qui ne se rattrape pas toujours. Ce qui la limite tient
-en une ligne : la carte des anciennes adresses vers les nouvelles, écrite avant
-la bascule et non après.
-
-## Ce que je retiens
-
-La question, c’est de mesurer l’écart entre votre façon de vendre et ce que la
-plateforme prévoit, puis de mettre un chiffre en face de cet écart, commissions
-et extensions comprises.
-
-Si vous voulez que je fasse ce calcul avec vous, honnêtement, y compris si la
-conclusion est que vous devez rester où vous êtes, c’est le point de départ
-d’un [logiciel métier](/services/logiciel-metier) branché sur votre boutique actuelle.
-[Réservez un appel](/rdv?sujet=logiciel) : dites-moi ce que
-vous vendez et sur quoi vous êtes aujourd’hui.
+Envoyez-moi votre dernière facture Shopify et la liste de vos applications. Pendant [un appel en visio](/rdv?sujet=logiciel), on pose le coût sur trois ans et on cherche le niveau qui couvre votre besoin, y compris si la réponse est de rester exactement où vous êtes. Quand la pièce qui manque est un outil branché sur votre boutique, c’est un [logiciel métier sur mesure](/services/logiciel-metier), et le [prix d’un logiciel sur mesure](/services/logiciel-metier/prix) se fixe au devis. Vous pouvez aussi passer par la [page de contact](/contact).
