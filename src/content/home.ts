@@ -55,15 +55,15 @@ const JOURS_BUREAU = SEMAINE.map(({ jour, tache, taches }) => {
  * chiffre ce qu'une agence facture à côté du mien, source écrite.
  */
 /*
- * LE H1 DE L'ACCUEIL depuis le 2026-11-24 : l'avantage d'Eliott face aux
- * agences, en deux lignes ; son visage est posé entre les deux.
+ * LE H1 DE L'ACCUEIL depuis le 2026-11-24 (version 2 « trame géante ») :
+ * comment Eliott travaille, en deux lignes.
  */
-const LIGNES_TITRE = ["Plus de qualité qu’une agence,", "pour moins cher."] as const;
+const LIGNES_TITRE = ["Un développeur,", "une équipe d’IA."] as const;
 const TITRE_ACCUEIL = LIGNES_TITRE.join(" ");
 
-/** Comment : l'IA pour la vitesse, Eliott pour les décisions et la vérification. */
+/** Comment : une seule personne en face, des agents qui écrivent, Eliott qui décide et vérifie. */
 const COMMENT =
-  "L’IA écrit vite, je décide et je vérifie tout. Je livre plus vite qu’une agence, je facture moins, et le temps gagné passe dans les finitions : tests, vitesse, référencement.";
+  "Vous parlez à une seule personne, du premier appel au premier jour en ligne. Les agents écrivent, je décide et je vérifie.";
 
 
 /**
@@ -77,11 +77,12 @@ export const homeContent: HomeContent = {
   hero: {
     /*
      * HÉROS REFAIT LE 2026-11-24, demande d'Eliott : se présenter comme
-     * rubenmarcus.dev (« Hello, I'm… »), puis dire l'avantage concret face aux
-     * agences, puis comment il l'obtient. Plus de porte unique vers le
+     * rubenmarcus.dev (« Hello, I'm… »), puis dire comment il travaille (un
+     * développeur, une équipe d'IA ; version 2 « trame géante » retenue le
+     * même jour), puis ce qu'il construit. Plus de porte unique vers le
      * logiciel : sites, logiciels et IA passent au même rang.
      */
-    eyebrow: "Bonjour, je suis Eliott Bouquerel, développeur à Caen.",
+    eyebrow: "Bonjour, je suis Eliott Bouquerel",
     title: TITRE_ACCUEIL,
     titleLines: LIGNES_TITRE,
     buildPrefix: "Je construis",
@@ -89,7 +90,7 @@ export const homeContent: HomeContent = {
     subtitle: COMMENT,
     subtitleParagraphs: [{ text: COMMENT }],
     offerLink: { label: "Voir mes réalisations", href: "/realisations" },
-    // PHOTO RÉELLE d'Eliott (fournie le 2026-08-10), rendue en trame dans le titre.
+    // PHOTO RÉELLE d'Eliott (fournie le 2026-08-10), rendue en grande trame à droite du texte.
     person: {
       name: "Eliott Bouquerel",
       role: "Développeur à Caen",

@@ -13,9 +13,24 @@ import { HeroSection } from "./HeroSection";
 const html = renderToStaticMarkup(createElement(HeroSection, { hero: homeContent.hero }));
 
 describe("HeroSection", () => {
-  it("se présente avec le nom en clair", () => {
+  it("se présente avec le nom en clair, mis en accent", () => {
     expect(html).toContain("Bonjour, je suis");
-    expect(html).toContain("Eliott Bouquerel");
+    expect(html).toContain('<span class="text-accent">Eliott Bouquerel</span>');
+  });
+
+  it("pose le visage en trame à côté du titre, jamais dedans", () => {
+    expect(html).toContain('data-part="hero-visage"');
+    const h1 = html.slice(html.indexOf("<h1"), html.indexOf("</h1>"));
+    expect(h1).not.toContain("<canvas");
+  });
+
+  it("borne la largeur du héros sur la colonne de 1440 du site", () => {
+    expect(html).toContain("max-w-[1440px]");
+  });
+
+  it("n'a plus de bandeau qui défile", () => {
+    expect(html).not.toContain("animate-marquee");
+    expect(html).not.toContain('data-part="ruban"');
   });
 
   it("garde un seul h1, ancré sur #services pour les fils d'Ariane", () => {
