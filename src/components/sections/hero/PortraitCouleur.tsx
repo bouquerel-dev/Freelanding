@@ -16,8 +16,6 @@ export function PortraitCouleur({ src }: { src: string }) {
   const toile = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    const t = toile.current;
-    if (!t) return;
     const ordinateur = window.matchMedia("(min-width: 1200px)");
     let image: HTMLImageElement | null = null;
     const charger = () => {
@@ -25,8 +23,10 @@ export function PortraitCouleur({ src }: { src: string }) {
       const img = new window.Image();
       image = img;
       img.onload = () => {
-        const ctx = t.getContext("2d");
-        if (!ctx) return;
+        // Démontée avant la fin du chargement, la toile n'est plus là.
+        const t = toile.current;
+        const ctx = t?.getContext("2d");
+        if (!t || !ctx) return;
         t.width = img.naturalWidth;
         t.height = img.naturalHeight;
         ctx.drawImage(img, 0, 0);
@@ -36,10 +36,7 @@ export function PortraitCouleur({ src }: { src: string }) {
     };
     charger();
     ordinateur.addEventListener("change", charger);
-    return () => {
-      ordinateur.removeEventListener("change", charger);
-      if (image) image.onload = null;
-    };
+    return () => ordinateur.removeEventListener("change", charger);
   }, [src]);
 
   return <canvas ref={toile} aria-hidden data-part="hero-photo" className="hero-photo absolute hidden desktop:block" />;

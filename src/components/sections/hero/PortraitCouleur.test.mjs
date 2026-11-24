@@ -92,10 +92,16 @@ describe("PortraitCouleur", () => {
     const t = await monter();
     etat.images[0].onload();
     expect(t.dataset.pret).toBeUndefined();
+    await act(async () => etat.racine.unmount());
+    etat.racine = null;
+    expect(etat.ecoutes.size).toBe(0);
+    etat.restaurer();
+    installer();
+    await monter();
     const img = etat.images[0];
     await act(async () => etat.racine.unmount());
     etat.racine = null;
-    expect(img.onload).toBeNull();
-    expect(etat.ecoutes.size).toBe(0);
+    img.onload();
+    expect(etat.dessins).toBe(0);
   });
 });
