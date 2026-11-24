@@ -24,6 +24,14 @@ describe("HeroSection", () => {
     expect(h1).not.toContain("<canvas");
   });
 
+  it("pose les trois repères numérotés autour du visage", () => {
+    const reperes = html.match(/data-part="hero-repere"/gu) ?? [];
+    expect(reperes).toHaveLength(3);
+    for (const [i, note] of (homeContent.hero.faceNotes ?? []).entries()) {
+      expect(html).toContain(`>0${i + 1}</span>${note}`);
+    }
+  });
+
   it("borne la largeur du héros sur la colonne de 1440 du site", () => {
     expect(html).toContain("max-w-[1440px]");
   });

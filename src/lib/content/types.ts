@@ -621,6 +621,8 @@ export interface HeroContent {
   buildPrefix?: string;
   /** Les prestations qui défilent après `buildPrefix`, la première rendue par le serveur. */
   buildItems?: readonly string[];
+  /** Repères posés autour du visage (ordinateur seulement) : comment il travaille, en trois temps. */
+  faceNotes?: readonly string[];
 }
 
 /**

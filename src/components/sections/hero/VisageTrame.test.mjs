@@ -200,7 +200,7 @@ describe("VisageTrame", () => {
 
   it("recadre sans tracer les points hors de la toile", async () => {
     installer({ reduit: true, largeur: 10, hauteur: 300 });
-    await monter({ centre: 0.5 });
+    await monter({ centreOrdinateur: 0.4 });
     charger();
     jouer();
     const toile = document.querySelector("canvas");

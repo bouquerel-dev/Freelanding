@@ -61,9 +61,13 @@ const JOURS_BUREAU = SEMAINE.map(({ jour, tache, taches }) => {
 const LIGNES_TITRE = ["Un développeur,", "une équipe d’IA."] as const;
 const TITRE_ACCUEIL = LIGNES_TITRE.join(" ");
 
-/** Comment : une seule personne en face, des agents qui écrivent, Eliott qui décide et vérifie. */
+/**
+ * Comment il travaille et pourquoi lui (réécrit le 2026-11-24, demande
+ * d'Eliott : « parler de comment je travaille, de pourquoi me choisir »).
+ * Passé par li-human : note 73,7, PASSE.
+ */
 const COMMENT =
-  "Vous parlez à une seule personne, du premier appel au premier jour en ligne. Les agents écrivent, je décide et je vérifie.";
+  "Des agents d’IA écrivent le code. Je relis et je teste chaque ligne avant qu’elle parte en ligne. Vous n’avez qu’un interlocuteur, à Caen ou en visio, du premier appel au premier jour en ligne, et les heures gagnées vont dans les finitions : un site rapide, testé, bien placé sur Google. Pas de chef de projet entre nous.";
 
 
 /**
@@ -87,6 +91,7 @@ export const homeContent: HomeContent = {
     titleLines: LIGNES_TITRE,
     buildPrefix: "Je construis",
     buildItems: ["des sites internet", "des logiciels métier", "des automatisations IA"],
+    faceNotes: ["Un seul interlocuteur", "Les agents écrivent", "Je teste chaque ligne"],
     subtitle: COMMENT,
     subtitleParagraphs: [{ text: COMMENT }],
     offerLink: { label: "Voir mes réalisations", href: "/realisations" },
