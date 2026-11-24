@@ -450,3 +450,11 @@ avant de voir un créneau, case Turnstile sous le bouton, message en trois
 | impeccable · responsive | Mobile 390 | Bouton « Réserver l’appel » sur une ligne, champs nom / e-mail en pleine largeur, vide sous le calendrier réduit |
 | emil-design-eng · entrée d'étape | `.rdv-etape` | 180 ms, fondu et 6 px, `cubic-bezier(0.23, 1, 0.32, 1)` ; fondu seul en mouvement réduit |
 | emil-design-eng · retour à l'appui | Boutons d'étape | `scale(0.97)` à l'appui |
+
+### Deuxième passe, même jour (retours d'Eliott)
+
+| Skill · règle | Où | Effet |
+|---|---|---|
+| impeccable · « nested cards are always wrong », pas de conteneur par réflexe | Carte néomorphique du bloc | Retirée : le bloc se pose à plat sous le titre, filets à 12 %, coins `control`, aucune ombre, comme le reste du site |
+| impeccable · rythme, densité | Étape 3 | E-mail et téléphone côte à côte (`@container`, dès 448 px), l'étape tient en trois rangées |
+| impeccable · un repère plutôt qu'un écran de plus | Calendrier | La grille enchaîne sur le mois suivant ; le 1er porte « déc. » en volt, l'en-tête dit « novembre et décembre 2026 » |

@@ -57,8 +57,12 @@ import { lireTelephone } from "@/lib/contact/validation";
 import type { IdRendezVous, TypeRendezVous } from "@/content/rendez-vous";
 import {
   ajouterMois,
+  ecartEnJours,
+  formaterDeuxMois,
   formaterJour,
   grilleMois,
+  grilleSemaines,
+  moisCourt,
   JOURS_SEMAINE,
   lireReponseCreneaux,
   numeroDuJour,
@@ -247,30 +251,50 @@ function ChampTexte({
  */
 export function Calendrier({
   donnees,
+  suite,
   jourActif,
   chargement,
   onChoisirJour,
   onDecaler,
 }: {
   donnees: ReponseCreneaux;
+  /**
+   * Créneaux du mois suivant (2026-11-24) : la grille enchaîne dessus au lieu
+   * de s'arrêter au dernier jour du mois, et le 1er porte le nom de son mois.
+   */
+  suite?: ReponseCreneaux;
   jourActif: JourDeCreneaux | undefined;
   chargement: boolean;
   onChoisirJour: (jour: string) => void;
   onDecaler: (mois: number) => void;
 }) {
-  const disponibles = new Map(donnees.jours.map((jour) => [jour.jour, jour]));
+  const disponibles = new Map(
+    [...donnees.jours, ...(suite?.jours ?? [])].map((jour) => [jour.jour, jour]),
+  );
   /*
    * LES SEMAINES DÉJÀ PASSÉES DISPARAISSENT (2026-11-22) : en fin de mois, trois
    * rangées de jours grisés repoussaient les heures sous le pli du téléphone.
    * Une semaine reste dès qu'un de ses jours atteint le début de la fenêtre.
+   *
+   * AVEC LE MOIS SUIVANT, cinq semaines pleines depuis la semaine du premier
+   * jour ouvert (au moins jusqu'à la fin du mois affiché) : les jours d'après
+   * remplissent la grille au lieu de laisser une rangée vide.
    */
   const grille = grilleMois(donnees.fenetre.mois);
-  const cases = grille.filter((_, index) => {
-    const debutSemaine = index - (index % 7);
-    return grille
-      .slice(debutSemaine, debutSemaine + 7)
-      .some((jour) => jour !== null && jour >= donnees.fenetre.debut);
-  });
+  const cases: readonly (string | null)[] = suite
+    ? grilleSemaines(
+        donnees.fenetre.debut,
+        Math.max(5, Math.ceil((ecartEnJours(grilleSemaines(donnees.fenetre.debut, 1)[0] ?? donnees.fenetre.debut, donnees.fenetre.fin) + 1) / 7)),
+      )
+    : grille.filter((_, index) => {
+        const debutSemaine = index - (index % 7);
+        return grille
+          .slice(debutSemaine, debutSemaine + 7)
+          .some((jour) => jour !== null && jour >= donnees.fenetre.debut);
+      });
+  const libelle = suite
+    ? formaterDeuxMois(donnees.fenetre.mois, suite.fenetre.mois)
+    : donnees.fenetre.libelle;
   // `aria-disabled` et non `disabled` : un bouton désactivé perd le focus, et
   // il le perdrait au moment précis où le clavier vient de l'actionner (le
   // chargement du mois suivant, ou l'arrivée au bout de la fenêtre).
@@ -283,7 +307,7 @@ export function Calendrier({
     <div className="flex flex-col gap-[14px]">
       <div className="flex items-center justify-between gap-[16px]">
         <p className="m-0 text-[14px] font-medium uppercase leading-[1.2] tracking-[-0.01em] text-foreground">
-          {donnees.fenetre.libelle}
+          {libelle}
         </p>
         <div className="flex items-center gap-[8px]">
           <button
@@ -335,6 +359,8 @@ export function Calendrier({
           if (jour === null) return <span key={`vide-${index}`} aria-hidden />;
           const disponible = disponibles.get(jour);
           const actif = disponible !== undefined && jour === jourActif?.jour;
+          /** Le 1er du mois suivant porte le nom de son mois, au-dessus du chiffre. */
+          const nouveauMois = suite !== undefined && jour.endsWith("-01") && jour > donnees.fenetre.debut;
           return (
             <button
               key={jour}
@@ -343,7 +369,7 @@ export function Calendrier({
               aria-pressed={disponible ? actif : undefined}
               aria-label={disponible ? disponible.libelle : formaterJour(jour)}
               onClick={() => onChoisirJour(jour)}
-              className={`flex h-[44px] items-center justify-center rounded-control border text-[14px] font-medium leading-none tracking-[-0.01em] transition-colors motion-reduce:transition-none ${
+              className={`relative flex h-[44px] flex-col items-center justify-center rounded-control border text-[14px] font-medium leading-none tracking-[-0.01em] transition-colors motion-reduce:transition-none ${
                 actif
                   ? "border-accent bg-accent text-accent-ink"
                   : disponible
@@ -351,6 +377,16 @@ export function Calendrier({
                     : "cursor-default border-transparent text-white/40"
               }`}
             >
+              {nouveauMois ? (
+                <span
+                  aria-hidden
+                  className={`mb-[3px] text-[9px] font-semibold uppercase leading-none tracking-[0.02em] ${
+                    actif ? "text-accent-ink" : "text-accent"
+                  }`}
+                >
+                  {moisCourt(jour)}
+                </span>
+              ) : null}
               {numeroDuJour(jour)}
             </button>
           );
@@ -604,11 +640,21 @@ export function ReservationRendezVous({
   const etatCreneaux: EtatCreneaux =
     resultat.type === type && resultat.cle === cle ? resultat.etat : "aucune";
   /**
-   * Jour affiché — DÉDUIT, jamais synchronisé : le jour retenu s'il existe
-   * encore dans la donnée, sinon le premier jour disponible du mois.
+   * Le mois suivant, chargé derrière le mois affiché : le calendrier enchaîne
+   * dessus (2026-11-24). Même clef que la question posée, pour écarter une
+   * réponse arrivée après un changement de mois.
    */
-  const jourActif =
-    donnees?.jours.find((jour) => jour.jour === jourChoisi) ?? donnees?.jours[0];
+  const [suiteBrute, setSuiteBrute] = useState<{ cle: string; donnees: ReponseCreneaux } | undefined>(undefined);
+  const moisSuivant =
+    donnees && !donnees.fenetre.derniere ? ajouterMois(donnees.fenetre.mois, 1) : undefined;
+  const cleSuite = type && moisSuivant ? `${type}|${moisSuivant}|${tentative}` : "";
+  const suite = suiteBrute && suiteBrute.cle === cleSuite ? suiteBrute.donnees : undefined;
+  const joursOuverts = [...(donnees?.jours ?? []), ...(suite?.jours ?? [])];
+  /**
+   * Jour affiché — DÉDUIT, jamais synchronisé : le jour retenu s'il existe
+   * encore dans la donnée, sinon le premier jour disponible.
+   */
+  const jourActif = joursOuverts.find((jour) => jour.jour === jourChoisi) ?? joursOuverts[0];
   /**
    * L'heure retenue SURVIT À UN CHANGEMENT DE SUJET tant que le nouveau sujet
    * la propose aussi (chaque type a ses plages et sa durée au cockpit).
@@ -616,7 +662,7 @@ export function ReservationRendezVous({
   const creneauRetenu =
     creneau &&
     (chargement ||
-      donnees?.jours.some((jour) =>
+      joursOuverts.some((jour) =>
         jour.creneaux.some((offert) => offert.debut === creneau.debut),
       ))
       ? creneau
@@ -809,6 +855,21 @@ export function ReservationRendezVous({
 
     return () => controleur.abort();
   }, [type, mois, cle, proche]);
+
+  useEffect(() => {
+    if (!cleSuite || !type || !moisSuivant || !proche) return;
+    const controleur = new AbortController();
+    const parametres = new URLSearchParams({ type, mois: moisSuivant });
+    fetch(`/api/rendez-vous/creneaux?${parametres.toString()}`, { signal: controleur.signal })
+      .then(async (reponse) => {
+        if (!reponse.ok) return;
+        const charge = lireReponseCreneaux(await reponse.json());
+        // Sans le mois suivant, le calendrier reste au mois seul : pas d'erreur.
+        if (charge) setSuiteBrute({ cle: cleSuite, donnees: charge });
+      })
+      .catch(() => {});
+    return () => controleur.abort();
+  }, [cleSuite, type, moisSuivant, proche]);
 
   const effacerEtat = () => {
     setEtatEnvoi("repos");
@@ -1143,6 +1204,7 @@ export function ReservationRendezVous({
               <div className="grid grid-cols-1 gap-[24px] desktop:grid-cols-[minmax(0,1fr)_minmax(0,0.8fr)]">
                 <Calendrier
                   donnees={donnees}
+                  suite={suite}
                   jourActif={jourActif}
                   chargement={chargement}
                   onChoisirJour={setJourChoisi}
@@ -1210,6 +1272,7 @@ export function ReservationRendezVous({
             }}
           >
             {rappelCreneau}
+            <p className={`${CLASSE_TEXTE} m-0`}>{contenu.formulaire.apres}</p>
             <ChampTexte
               id={`${instance}-nom`}
               nom="nom"
@@ -1221,33 +1284,39 @@ export function ReservationRendezVous({
               autoComplete="name"
               requis
             />
-            <ChampTexte
-              id={`${instance}-email`}
-              nom="email"
-              type="email"
-              legende={contenu.formulaire.emailLabel}
-              valeur={email}
-              onChanger={setEmail}
-              placeholder={contenu.formulaire.emailPlaceholder}
-              erreur={champEnErreur === "email" ? messageEnvoi : undefined}
-              autoComplete="email"
-              inputMode="email"
-              requis
-            />
-            <ChampTexte
-              id={`${instance}-telephone`}
-              nom="telephone"
-              type="tel"
-              legende={client ? contenu.formulaire.telephoneLabelClient : contenu.formulaire.telephoneLabel}
-              aide={client ? undefined : contenu.formulaire.telephoneAide}
-              valeur={telephone}
-              onChanger={setTelephone}
-              placeholder={contenu.formulaire.telephonePlaceholder}
-              erreur={champEnErreur === "telephone" ? messageEnvoi : undefined}
-              autoComplete="tel"
-              inputMode="tel"
-              requis={!client}
-            />
+            {/* E-mail et téléphone côte à côte dès que la colonne le permet :
+                l'étape tient en trois lignes au lieu de cinq. */}
+            <div className="@container">
+              <div className="grid grid-cols-1 gap-[16px] @md:grid-cols-2">
+                <ChampTexte
+                  id={`${instance}-email`}
+                  nom="email"
+                  type="email"
+                  legende={contenu.formulaire.emailLabel}
+                  valeur={email}
+                  onChanger={setEmail}
+                  placeholder={contenu.formulaire.emailPlaceholder}
+                  erreur={champEnErreur === "email" ? messageEnvoi : undefined}
+                  autoComplete="email"
+                  inputMode="email"
+                  requis
+                />
+                <ChampTexte
+                  id={`${instance}-telephone`}
+                  nom="telephone"
+                  type="tel"
+                  legende={client ? contenu.formulaire.telephoneLabelClient : contenu.formulaire.telephoneLabel}
+                  aide={client ? undefined : contenu.formulaire.telephoneAide}
+                  valeur={telephone}
+                  onChanger={setTelephone}
+                  placeholder={contenu.formulaire.telephonePlaceholder}
+                  erreur={champEnErreur === "telephone" ? messageEnvoi : undefined}
+                  autoComplete="tel"
+                  inputMode="tel"
+                  requis={!client}
+                />
+              </div>
+            </div>
           </div>
         ) : null}
 
@@ -1282,7 +1351,6 @@ export function ReservationRendezVous({
           </div>
           {etape === 2 ? (
             <>
-              <p className={`${CLASSE_TEXTE} m-0 text-[12px]`}>{contenu.formulaire.apres}</p>
               <p className="m-0 text-[12px] font-medium leading-[1.4] tracking-[-0.01em] text-foreground-60">
                 {contenu.formulaire.mention}{" "}
                 <Link

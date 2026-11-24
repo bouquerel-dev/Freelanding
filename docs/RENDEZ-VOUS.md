@@ -41,6 +41,10 @@ navigateur ──> /api/rendez-vous          ──> cockpit POST /api/rdv
   Dans le pied de page, l'onglet « Réserver un appel » est ouvert par défaut, et
   les créneaux ne se chargent qu'à l'approche du bloc (800 px), pour ne pas
   interroger l'agenda à chaque page vue.
+  Le calendrier enchaîne sur le mois suivant (second appel `mois=`, son 1er
+  porte le nom du mois). Créneaux : débuts tous les quarts d'heure
+  (`PAS_MINUTES` du cockpit), durée par défaut du type (30 minutes pour le
+  premier échange).
 - **UN SEUL LIEN POUR LES CLIENTS : `/rdv/client`** (non indexé,
   `src/app/(site)/rdv/client/page.tsx`). Quatre boutons : Point rapide,
   Démonstration, Proposition, Point d'étape ; `?sujet=point-rapide|demonstration|

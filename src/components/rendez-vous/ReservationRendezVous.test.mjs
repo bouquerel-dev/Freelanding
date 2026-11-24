@@ -219,7 +219,6 @@ async function soumettre(conteneur) {
 
 /** Titre de l'étape affichée. */
 const titre = (conteneur) => conteneur.querySelector("h3")?.textContent;
-const etape = (conteneur) => conteneur.querySelector("form")?.getAttribute("data-etape");
 const champ = (conteneur, nom) => conteneur.querySelector(`input[name="${nom}"], textarea[name="${nom}"]`);
 
 const continuer = (conteneur) => cliquer(bouton(conteneur, C.etapes.continuer));
@@ -487,7 +486,8 @@ describe("ReservationRendezVous — trois étapes", () => {
     ]);
     const intercepte = globalThis.fetch;
     globalThis.fetch = async (url, options) => {
-      if (String(url).startsWith("/api/rendez-vous/creneaux")) lectures += 1;
+      // Le mois affiché seulement : le mois suivant se lit à part (`mois=`).
+      if (String(url).startsWith("/api/rendez-vous/creneaux") && !String(url).includes("mois=2026-12")) lectures += 1;
       return intercepte(url, options);
     };
     etat.montage = await monter("logiciel");
@@ -743,7 +743,8 @@ describe("ReservationRendezVous — états du créneau", () => {
     etat.contexte = installerDom();
     let lectures = 0;
     globalThis.fetch = async (url) => {
-      if (String(url).startsWith("/api/rendez-vous/creneaux")) lectures += 1;
+      // Le mois affiché seulement : le mois suivant se lit à part (`mois=`).
+      if (String(url).startsWith("/api/rendez-vous/creneaux") && !String(url).includes("mois=2026-12")) lectures += 1;
       return { ok: true, status: 200, json: async () => CRENEAUX };
     };
     const observateurs = [];
@@ -772,6 +773,38 @@ describe("ReservationRendezVous — états du créneau", () => {
     } finally {
       delete globalThis.IntersectionObserver;
     }
+  });
+
+  it("le calendrier enchaîne sur le mois suivant, son 1er porte le nom du mois, ses jours s'ouvrent", async () => {
+    etat.contexte = installerDom();
+    const DECEMBRE = {
+      ...CRENEAUX,
+      fenetre: { ...CRENEAUX.fenetre, debut: "2026-12-01", fin: "2026-12-31", mois: "2026-12", libelle: "décembre 2026", premiere: false },
+      jours: [
+        {
+          jour: "2026-12-01",
+          libelle: "mardi 1 décembre",
+          libelleCourt: "mar. 1",
+          creneaux: [{ debut: "2026-12-01T09:15:00.000Z", heure: "10:15", resume: "mardi 1 décembre à 10:15" }],
+        },
+      ],
+    };
+    const demandes = [];
+    globalThis.fetch = async (url) => {
+      demandes.push(String(url));
+      return { ok: true, status: 200, json: async () => (String(url).includes("mois=2026-12") ? DECEMBRE : CRENEAUX) };
+    };
+    etat.montage = await monter();
+    const { conteneur } = etat.montage;
+    expect(demandes.some((url) => url.includes("mois=2026-12"))).toBe(true);
+    expect(texte(conteneur)).toContain("novembre et décembre 2026");
+    const premier = conteneur.querySelector('button[aria-label="mardi 1 décembre"]');
+    expect(premier).not.toBeNull();
+    expect(premier.disabled).toBe(false);
+    expect(premier.textContent).toContain("1");
+    expect(premier.textContent.toLowerCase()).toContain("déc");
+    await cliquer(premier);
+    expect(bouton(conteneur, "10:15")).toBeDefined();
   });
 
   it("un refus sans champ garde le visiteur sur l'étape des coordonnées avec son message", async () => {
