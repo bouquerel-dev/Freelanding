@@ -676,18 +676,18 @@ body {
     transform: translateY(24px);
   }
 }
-.consent-entree {
+[data-consent-ui][data-consent-attente] {
   animation: consent-entree 0.36s cubic-bezier(0.68, 0, 0, 1);
 }
 html[data-consent-choisi] [data-consent-attente] {
   display: none;
 }
 @media (prefers-reduced-motion: reduce) {
-  .consent-entree {
+  [data-consent-ui][data-consent-attente] {
     animation: none;
   }
 }
-[data-profil="leger"] .consent-entree {
+[data-profil="leger"] [data-consent-ui][data-consent-attente] {
   animation: none;
 }
 

@@ -350,7 +350,7 @@ export function ConsentBanner() {
       {visible ? (
         <motion.div
           key="consent-banner"
-          /* Rendue au serveur, l'entrée est CSS (`.consent-entree`) : un état
+          /* Rendue au serveur, l'entrée est CSS (`[data-consent-ui][data-consent-attente]`) : un état
              initial framer-motion serait écrit masqué dans le HTML et
              n'animerait qu'à l'hydratation. */
           initial={
@@ -372,15 +372,13 @@ export function ConsentBanner() {
              comprise ; elle couvre la pastille du menu le temps du choix.
              Tablette : coin bas droit à 24 px. Ordinateur : coin bas droit à
              16 px, sur 360 px de large au plus.
-             L'espace avant `${…}` compte : collé, Tailwind lisait
-             « desktop:bottom-[…]$ » et ne générait pas la classe.
 
              CLICS. `pointer-events-none` sur l'enveloppe, `auto` sur la carte :
              l'enveloppe fait toute la largeur de la fenêtre alors que la carte
              plafonne à 460 px. Sans cela, la bande vide à sa droite avalerait
              les clics sur le contenu — et pendant l'animation de sortie, une
              carte déjà invisible continuerait de bloquer la page. */
-          className={`pointer-events-none fixed inset-x-[12px] bottom-[max(12px,env(safe-area-inset-bottom))] z-[60] flex justify-end tablet:inset-x-[24px] tablet:bottom-[24px] desktop:inset-x-[16px] desktop:bottom-[16px] ${enAttente ? "consent-entree" : ""}`}
+          className="pointer-events-none fixed inset-x-[12px] bottom-[max(12px,env(safe-area-inset-bottom))] z-[60] flex justify-end tablet:inset-x-[24px] tablet:bottom-[24px] desktop:inset-x-[16px] desktop:bottom-[16px]"
         >
           <div
             ref={cardRef}

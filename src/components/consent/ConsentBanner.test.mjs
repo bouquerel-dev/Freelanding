@@ -16,17 +16,15 @@ const html = renderToStaticMarkup(createElement(ConsentProvider, null, createEle
 
 describe("ConsentBanner, rendu serveur", () => {
   it("est rendue en attente, avec son entrée CSS", () => {
-    expect(html).toContain("data-consent-attente");
-    expect(html).toMatch(/class="[^"]* consent-entree"/u);
+    // L'animation d'entrée se lit sur cet attribut (globals.css).
+    expect(html).toMatch(/data-consent-ui="" data-consent-attente=""/u);
   });
 
   it("colle au bas sur téléphone, coin bas droit au-delà, compacte", () => {
     expect(html).toContain("bottom-[max(12px,env(safe-area-inset-bottom))]");
     expect(html).not.toContain("bottom-[88px]");
     expect(html).toContain("justify-end");
-    // La classe d'ordinateur est séparée de l'expression qui suit : collée,
-    // Tailwind ne la générait pas.
-    expect(html).toContain("desktop:inset-x-[16px] desktop:bottom-[16px] consent-entree");
+    expect(html).toContain("desktop:inset-x-[16px] desktop:bottom-[16px]");
     expect(html).toContain("tablet:max-w-[360px]");
     expect(html).not.toContain("desktop:max-w-[min(520px");
   });
