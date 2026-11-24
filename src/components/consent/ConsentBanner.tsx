@@ -350,7 +350,7 @@ export function ConsentBanner() {
       {visible ? (
         <motion.div
           key="consent-banner"
-          /* Rendue au serveur, l'entrée est CSS (`.consent-entree`) : un état
+          /* Rendue au serveur, l'entrée est CSS (`[data-consent-ui][data-consent-attente]`) : un état
              initial framer-motion serait écrit masqué dans le HTML et
              n'animerait qu'à l'hydratation. */
           initial={
@@ -365,22 +365,20 @@ export function ConsentBanner() {
           transition={transition}
           data-consent-ui=""
           data-consent-attente={enAttente ? "" : undefined}
-          /* PLACEMENT. Au-dessus du menu flottant (z-9) et de tout le contenu.
-             Remontée à 88 px du bas tant qu'on n'est pas en desktop : la
-             pastille du menu est centrée en bas et croiserait la carte sur les
-             largeurs intermédiaires. Sur ordinateur, calée dans le coin bas
-             gauche à 16 px des bords, sur 360 px de large au plus (demande
-             d'Eliott du 2026-11-24 : « en bas à gauche, plus compacte »).
-             L'espace avant `${…}` compte : collé, Tailwind lisait
-             « desktop:bottom-[…]$ » et ne générait pas la classe, si bien que
-             la carte restait à 88 px du bas sur ordinateur.
+          /* PLACEMENT (demande d'Eliott du 2026-11-24 : « fixe en bas de
+             l'écran sur mobile et en bas à droite sur desktop »). Au-dessus du
+             menu flottant (z-9) et de tout le contenu. Téléphone : collée en
+             bas, pleine largeur à 12 px des bords, zone sûre de l'iPhone
+             comprise ; elle couvre la pastille du menu le temps du choix.
+             Tablette : coin bas droit à 24 px. Ordinateur : coin bas droit à
+             16 px, sur 360 px de large au plus.
 
              CLICS. `pointer-events-none` sur l'enveloppe, `auto` sur la carte :
              l'enveloppe fait toute la largeur de la fenêtre alors que la carte
              plafonne à 460 px. Sans cela, la bande vide à sa droite avalerait
              les clics sur le contenu — et pendant l'animation de sortie, une
              carte déjà invisible continuerait de bloquer la page. */
-          className={`pointer-events-none fixed inset-x-[16px] bottom-[88px] z-[60] flex justify-start tablet:inset-x-[24px] desktop:inset-x-[16px] desktop:bottom-[16px] ${enAttente ? "consent-entree" : ""}`}
+          className="pointer-events-none fixed inset-x-[12px] bottom-[max(12px,env(safe-area-inset-bottom))] z-[60] flex justify-end tablet:inset-x-[24px] tablet:bottom-[24px] desktop:inset-x-[16px] desktop:bottom-[16px]"
         >
           <div
             ref={cardRef}
@@ -392,7 +390,7 @@ export function ConsentBanner() {
             /* Même matière que le panneau du menu flottant : fond très sombre
                translucide, flou d'arrière-plan, filet 1px en pseudo-élément
                (jamais un `border`, qui décalerait la boîte), angles arrondis (token `card`). */
-            className="pointer-events-auto relative w-full max-w-[360px] overflow-hidden rounded-card bg-[rgba(23,23,23,0.94)] [backdrop-filter:blur(9px)] before:pointer-events-none before:absolute before:inset-0 before:z-[2] before:rounded-[inherit] before:border before:border-[rgba(255,255,255,0.12)] before:content-['']"
+            className="pointer-events-auto relative w-full overflow-hidden tablet:max-w-[360px] rounded-card bg-[rgba(23,23,23,0.94)] [backdrop-filter:blur(9px)] before:pointer-events-none before:absolute before:inset-0 before:z-[2] before:rounded-[inherit] before:border before:border-[rgba(255,255,255,0.12)] before:content-['']"
           >
             {/* HAUTEUR BORNÉE, avec défilement interne. Le panneau déplié
                 mesure près de 700 px : sur un téléphone court (360 × 640) il

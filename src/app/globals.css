@@ -676,18 +676,18 @@ body {
     transform: translateY(24px);
   }
 }
-.consent-entree {
+[data-consent-ui][data-consent-attente] {
   animation: consent-entree 0.36s cubic-bezier(0.68, 0, 0, 1);
 }
 html[data-consent-choisi] [data-consent-attente] {
   display: none;
 }
 @media (prefers-reduced-motion: reduce) {
-  .consent-entree {
+  [data-consent-ui][data-consent-attente] {
     animation: none;
   }
 }
-[data-profil="leger"] .consent-entree {
+[data-profil="leger"] [data-consent-ui][data-consent-attente] {
   animation: none;
 }
 
@@ -1165,7 +1165,8 @@ html[data-consent-choisi] [data-consent-attente] {
 /* ---------------------------------------------------------------------------
    Fond vivant du héros, ordinateur seulement (2026-11-24, `AmbianceHeros`).
    Une seule matière, la trame du visage : champ pâle, lampe volt qui suit la
-   souris, halo qui respire, balayage du viseur. Tout bouge en transform ou en
+   souris, halo qui respire (le balayage du viseur, jugé « cheap »
+   par Eliott le 2026-11-24, est retiré). Tout bouge en transform ou en
    opacité ; `data-ambiance="pause"` (héros hors écran) fige tout.
    --------------------------------------------------------------------------- */
 .amb-champ,
@@ -1245,26 +1246,6 @@ html[data-consent-choisi] [data-consent-attente] {
   50% { opacity: 1; transform: scale(1.06); }
 }
 
-/* Balayage du viseur : un trait volt et sa traîne descendent le cadre du
-   visage, puis marquent une pause (70 % de la course, 30 % de repos). */
-.hero-balayage { overflow: hidden; }
-.hero-balayage::before {
-  content: "";
-  position: absolute;
-  inset-inline: 0;
-  top: 0;
-  height: 100%;
-  background: linear-gradient(to bottom, transparent 88%, color-mix(in oklab, var(--accent) 6%, transparent) 99.4%, color-mix(in oklab, var(--accent) 55%, transparent) 99.7%, transparent);
-  -webkit-mask-image: linear-gradient(to right, transparent, #000 25%, #000 75%, transparent);
-  mask-image: linear-gradient(to right, transparent, #000 25%, #000 75%, transparent);
-  transform: translateY(-100%);
-  animation: hero-balayage 7.5s cubic-bezier(0.77, 0, 0.175, 1) 1.6s infinite;
-}
-@keyframes hero-balayage {
-  0% { transform: translateY(-100%); }
-  70%, 100% { transform: translateY(100%); }
-}
-
 /* Repère : le trait se trace vers le visage après l'entrée de l'étiquette. */
 @media (min-width: 1200px) {
   .hero-repere::before {
@@ -1311,7 +1292,6 @@ html[data-consent-choisi] [data-consent-attente] {
 [data-ambiance="pause"] .amb-halo,
 [data-ambiance="pause"] .amb-ronde,
 [data-ambiance="pause"] .amb-ronde > span,
-[data-ambiance="pause"] .hero-balayage::before,
 [data-ambiance="pause"] .fil-suite::after,
 [data-schema="pause"] .schema-lien,
 [data-schema="pause"] .fil-suite::after {
@@ -1322,12 +1302,10 @@ html[data-consent-choisi] [data-consent-attente] {
   .amb-ronde,
   .amb-ronde > span,
   .amb-halo,
-  .hero-balayage::before,
   .fil-suite::after,
   .hero-repere::before {
     animation: none;
   }
-  .hero-balayage { display: none; }
 }
 
 /* Bouton « Réserver un appel » de l'en-tête : le volt s'éclaircit à peine,

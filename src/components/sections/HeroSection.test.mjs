@@ -60,7 +60,8 @@ describe("HeroSection", () => {
     expect(balise).toContain('aria-hidden="true"');
     expect(balise).toMatch(/class="[^"]*pointer-events-none[^"]*hidden[^"]*desktop:block/u);
     for (const couche of ["amb-champ", "amb-halo", "amb-ronde", "amb-lampe"]) expect(html).toContain(couche);
-    expect(html).toContain("hero-balayage");
+    // Balayage du viseur retiré (2026-11-24, « ça fait cheap »).
+    expect(html).not.toContain("hero-balayage");
   });
 
   it("amorce le fil vers la section suivante sur la colonne du texte", () => {

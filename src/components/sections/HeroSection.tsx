@@ -67,10 +67,8 @@ export function HeroSection({ hero }: { hero: HeroContent }) {
             <div className="hero-visage absolute inset-0">
               <VisageTrame src="/images/eliott-portrait-large.jpg" centreOrdinateur={0.44} />
             </div>
-            {/* Repères de viseur aux quatre coins du cadre, et le trait volt qui
-                le balaie de haut en bas (ordinateur seulement). */}
+            {/* Repères de viseur aux quatre coins du cadre (ordinateur seulement). */}
             <span className="hero-viseur absolute inset-0 hidden desktop:block" />
-            <span className="hero-balayage absolute inset-0 hidden desktop:block" />
             {hero.faceNotes?.map((note, i) => (
               <span
                 key={note}

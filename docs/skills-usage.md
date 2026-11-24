@@ -516,7 +516,7 @@ mouvement.
 | impeccable · layout (une colonne) | Schéma dans 1200 px centrés : 90 px de décalage avec le héros à 1440 | Même colonne de 1440, marges de 20 puis 30 px ; titre du schéma et texte du héros sur la même verticale, onglets calés sur le bord droit du visage |
 | impeccable · rythme entre sections | Rupture de fond nette héros / schéma (grain d'un côté, aplat de l'autre) | Même grain sur ordinateur ; un fil part du bas du héros sur la colonne du texte, descend et tourne dans le trait du sur-titre, une goutte volt le parcourt ; angles de viseur repris sur le panneau |
 | emil-design-eng · cascade courte | Le schéma apparaissait d'un bloc | Entrée en cascade (en-tête, panneau, cartes à 60 ms d'écart), la première fois seulement, ordinateur seulement ; sans script, tout est visible |
-| emil-design-eng · mouvement réduit | — | Ni ronde, ni lampe, ni balayage, ni goutte ; champ et halo immobiles |
+| emil-design-eng · mouvement réduit | — | Ni ronde, ni lampe, ni goutte (balayage retiré, « ça fait cheap ») ; champ et halo immobiles |
 
 LCP vérifié au navigateur à 1440 et 390 : le h1 (`hero-titre`). Image de
 partage régénérée (le champ et le halo y apparaissent, immobiles).
