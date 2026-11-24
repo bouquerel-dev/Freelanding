@@ -168,7 +168,7 @@ export const habillage = {
     // `overflow-x-auto` sur le bloc lui-même : une ligne de code longue doit
     // défiler DANS son cadre, jamais faire défiler la page entière.
     <pre
-      className={`${ECART} overflow-x-auto rounded-[4px] bg-background/[0.06] p-[16px] font-mono text-[13px] leading-[1.5] text-background`}
+      className={`${ECART} overflow-x-auto rounded-card bg-background/[0.06] p-[16px] font-mono text-[13px] leading-[1.5] text-background`}
     >
       {children}
     </pre>

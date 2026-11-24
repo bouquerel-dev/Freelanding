@@ -75,7 +75,7 @@ function CoverCard({ post }: { post: BlogPost }) {
       {/* framer-1j3k91u : conteneur image (clip). La hauteur = aspect naturel du
           fichier (via ParallaxImage `aspect-ratio`), fidèle au spacer Framer.
           framer-ikpxhu-container « Parallax image » : dérive Y subtile au scroll. */}
-      <div className="relative z-[2] w-full">
+      <div className="relative z-[2] w-full overflow-hidden rounded-card">
         <ParallaxImage
           src={post.cover.src}
           alt={post.cover.alt}
@@ -116,7 +116,7 @@ function FeaturedCard({ post }: { post: BlogPost }) {
       data-part="article-card-featured"
       className={
         FONT +
-        " relative flex h-[340px] w-full flex-col items-center justify-center self-start " +
+        " relative flex h-[340px] w-full flex-col items-center justify-center self-start rounded-card " +
         "overflow-hidden bg-foreground p-[20px] tablet:h-[320px] desktop:p-[22px]"
       }
     >

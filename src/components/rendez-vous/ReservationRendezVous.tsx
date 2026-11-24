@@ -103,7 +103,7 @@ export const CLASSE_LIBELLE =
   "text-[13px] font-medium uppercase leading-[1.2] tracking-[-0.01em] text-foreground/80";
 
 export const CLASSE_CHAMP =
-  "h-[52px] w-full border border-white/45 bg-white/[0.04] px-[16px] text-[16px] font-medium leading-[1.2] tracking-[-0.01em] text-foreground transition-colors placeholder:text-white/45 hover:border-white/60 focus:border-accent tablet:text-[15px]";
+  "h-[52px] w-full rounded-control border border-white/45 bg-white/[0.04] px-[16px] text-[16px] font-medium leading-[1.2] tracking-[-0.01em] text-foreground transition-colors placeholder:text-white/45 hover:border-white/60 focus:border-accent tablet:text-[15px]";
 
 export const CLASSE_TEXTE =
   "text-[14px] font-medium leading-[1.3] tracking-[-0.01em] text-foreground-60";
@@ -112,7 +112,7 @@ export const CLASSE_BOUTON_SECONDAIRE =
   "flex min-h-[44px] items-center gap-[8px] text-[12px] font-medium uppercase leading-[1.2] tracking-[-0.01em] text-foreground-60 transition-colors hover:text-accent motion-reduce:transition-none";
 
 export const CLASSE_BOUTON_PRINCIPAL =
-  "flex h-[52px] w-full items-center justify-center bg-accent px-[28px] text-[13px] font-semibold uppercase leading-[1.2] tracking-[-0.01em] text-accent-ink transition-[opacity,transform] duration-150 ease-out active:scale-[0.98] disabled:cursor-progress disabled:opacity-60 motion-reduce:transition-none tablet:w-fit";
+  "flex h-[52px] w-full items-center justify-center rounded-control bg-accent px-[28px] text-[13px] font-semibold uppercase leading-[1.2] tracking-[-0.01em] text-accent-ink transition-[opacity,transform] duration-150 ease-out active:scale-[0.98] disabled:cursor-progress disabled:opacity-60 motion-reduce:transition-none tablet:w-fit";
 
 
 /** Vrai quand le visiteur a demandé moins de mouvement ; faux là où la requête n'existe pas. */
@@ -192,7 +192,7 @@ function ChampTexte({
           {...commun}
           ref={refChamp as RefObject<HTMLTextAreaElement | null> | undefined}
           onChange={(evenement) => onChanger(evenement.target.value)}
-          className={`min-h-[110px] w-full resize-y border border-white/45 bg-white/[0.04] p-[16px] text-[16px] font-medium leading-[1.3] tracking-[-0.01em] text-foreground transition-colors placeholder:text-white/45 hover:border-white/60 focus:border-accent tablet:text-[15px] ${erreur || invalide ? "border-accent" : ""}`}
+          className={`min-h-[110px] w-full resize-y rounded-control border border-white/45 bg-white/[0.04] p-[16px] text-[16px] font-medium leading-[1.3] tracking-[-0.01em] text-foreground transition-colors placeholder:text-white/45 hover:border-white/60 focus:border-accent tablet:text-[15px] ${erreur || invalide ? "border-accent" : ""}`}
         />
       ) : (
         <input
@@ -261,7 +261,7 @@ export function Calendrier({
   // il le perdrait au moment précis où le clavier vient de l'actionner (le
   // chargement du mois suivant, ou l'arrivée au bout de la fenêtre).
   const classeNavigation =
-    "flex size-[36px] items-center justify-center border border-border text-foreground transition-colors hover:border-accent hover:text-accent aria-disabled:cursor-not-allowed aria-disabled:opacity-30 aria-disabled:hover:border-border aria-disabled:hover:text-foreground motion-reduce:transition-none";
+    "flex size-[36px] items-center justify-center rounded-control border border-border text-foreground transition-colors hover:border-accent hover:text-accent aria-disabled:cursor-not-allowed aria-disabled:opacity-30 aria-disabled:hover:border-border aria-disabled:hover:text-foreground motion-reduce:transition-none";
   const precedentBloque = donnees.fenetre.premiere || chargement;
   const suivantBloque = donnees.fenetre.derniere || chargement;
 
@@ -329,7 +329,7 @@ export function Calendrier({
               aria-pressed={disponible ? actif : undefined}
               aria-label={disponible ? disponible.libelle : formaterJour(jour)}
               onClick={() => onChoisirJour(jour)}
-              className={`flex h-[44px] items-center justify-center border text-[14px] font-medium leading-none tracking-[-0.01em] transition-colors motion-reduce:transition-none ${
+              className={`flex h-[44px] items-center justify-center rounded-control border text-[14px] font-medium leading-none tracking-[-0.01em] transition-colors motion-reduce:transition-none ${
                 actif
                   ? "border-accent bg-accent text-accent-ink"
                   : disponible
@@ -385,7 +385,7 @@ export function Heures({
               // serait rogné par le bord du conteneur.
               data-focus-ring="inset"
               onClick={() => onChoisir(creneau)}
-              className={`h-[44px] border text-[13px] font-medium leading-[1.2] tracking-[-0.01em] transition-colors motion-reduce:transition-none ${
+              className={`h-[44px] rounded-control border text-[13px] font-medium leading-[1.2] tracking-[-0.01em] transition-colors motion-reduce:transition-none ${
                 actif
                   ? "border-accent bg-accent text-accent-ink"
                   : "border-border text-foreground hover:border-accent hover:text-accent"
@@ -431,7 +431,7 @@ function BoutonsSujet({
             <label
               key={type.id}
               htmlFor={id}
-              className={`flex h-[52px] cursor-pointer items-center justify-center border px-[12px] text-center text-[16px] font-medium leading-[1.2] tracking-[-0.01em] transition-colors has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-accent motion-reduce:transition-none ${
+              className={`flex h-[52px] cursor-pointer items-center justify-center rounded-control border px-[12px] text-center text-[16px] font-medium leading-[1.2] tracking-[-0.01em] transition-colors has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-accent motion-reduce:transition-none ${
                 actif
                   ? "border-accent bg-accent text-accent-ink"
                   : "border-white/45 text-foreground hover:border-white/70"
@@ -916,7 +916,7 @@ export function ReservationRendezVous({
 
   if (etatEnvoi === "succes") {
     return (
-      <div className="flex flex-col gap-[16px] border border-accent bg-accent/[0.07] p-[20px]">
+      <div className="flex flex-col gap-[16px] rounded-card border border-accent bg-accent/[0.07] p-[20px]">
         <p
           ref={refSucces}
           tabIndex={-1}
@@ -931,7 +931,7 @@ export function ReservationRendezVous({
         <button
           type="button"
           onClick={recommencer}
-          className="mt-[4px] flex h-[50px] w-full items-center justify-center border border-border px-[20px] text-[13px] font-medium uppercase leading-[1.2] tracking-[-0.01em] text-foreground transition-colors hover:border-accent hover:text-accent motion-reduce:transition-none tablet:w-fit"
+          className="mt-[4px] flex h-[50px] w-full items-center justify-center rounded-control border border-border px-[20px] text-[13px] font-medium uppercase leading-[1.2] tracking-[-0.01em] text-foreground transition-colors hover:border-accent hover:text-accent motion-reduce:transition-none tablet:w-fit"
         >
           {contenu.succes.autre}
         </button>
@@ -998,7 +998,7 @@ export function ReservationRendezVous({
               <button
                 type="button"
                 onClick={() => setTentative((valeur) => valeur + 1)}
-                className="min-h-[44px] border border-border px-[16px] text-[13px] font-medium uppercase leading-[1.2] tracking-[-0.01em] text-foreground transition-colors hover:border-accent hover:text-accent motion-reduce:transition-none"
+                className="min-h-[44px] rounded-control border border-border px-[16px] text-[13px] font-medium uppercase leading-[1.2] tracking-[-0.01em] text-foreground transition-colors hover:border-accent hover:text-accent motion-reduce:transition-none"
               >
                 {contenu.actions.reessayer}
               </button>
@@ -1045,7 +1045,7 @@ export function ReservationRendezVous({
           {/* La région existe avant son contenu : le choix d'une heure s'annonce. */}
           <div aria-live="polite">
             {creneauRetenu ? (
-              <div className="flex flex-col gap-[6px] border border-accent bg-accent/[0.07] px-[16px] py-[12px]">
+              <div className="flex flex-col gap-[6px] rounded-card border border-accent bg-accent/[0.07] px-[16px] py-[12px]">
                 <p className={`${CLASSE_LIBELLE} m-0`}>{contenu.recapitulatif}</p>
                 <span className="sr-only">{contenu.formulaire.confirmerCiDessous}</span>
                 <p className="m-0 text-[16px] font-medium leading-[1.3] tracking-[-0.01em] text-foreground">

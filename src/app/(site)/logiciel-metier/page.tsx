@@ -63,7 +63,7 @@ export default async function HubMetiers() {
                 </p>
                 <Link
                   href={lienRendezVous("logiciel")}
-                  className="flex h-[48px] items-center bg-accent px-[20px] text-[13px] font-semibold uppercase leading-none tracking-[-0.01em] text-accent-ink no-underline"
+                  className="flex h-[48px] items-center rounded-control bg-accent px-[20px] text-[13px] font-semibold uppercase leading-none tracking-[-0.01em] text-accent-ink no-underline"
                 >
                   {hubMetiers.autre.cta}
                 </Link>

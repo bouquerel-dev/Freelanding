@@ -129,7 +129,7 @@ export function LogicielDemo({ demo }: { demo: LogicielDemoContent["demo"] }) {
   return (
     <div
       ref={observer}
-      className="relative w-full border border-white/10 bg-surface-1 text-foreground"
+      className="relative w-full rounded-card border border-white/10 bg-surface-1 text-foreground"
     >
       <div className="flex flex-col gap-[14px] border-b border-white/10 px-[16px] py-[14px] tablet:px-[20px] min-[1360px]:flex-row min-[1360px]:items-center min-[1360px]:justify-between">
         <p className="m-0 text-[12px] font-medium uppercase leading-[1.2] tracking-[-0.01em] text-foreground-60">
@@ -320,7 +320,7 @@ function Jour({
       </span>
       <span className="flex h-[230px] flex-col gap-[2px] tablet:h-[260px]">
         <span
-          className="relative block overflow-hidden bg-white/[0.14]"
+          className="relative block overflow-hidden rounded-tag bg-white/[0.14]"
           style={{ height: `${jour.part * 72}%` }}
         >
           <span
@@ -361,7 +361,7 @@ function Jour({
             {jour.tache}
           </span>
         </span>
-        <span className="flex-1 bg-white/[0.05] p-[4px] text-[11px] tablet:p-[6px] font-medium hyphens-auto leading-[1.15] tracking-[-0.01em] text-foreground-60 tablet:text-[12px]">
+        <span className="flex-1 rounded-tag bg-white/[0.05] p-[4px] text-[11px] tablet:p-[6px] font-medium hyphens-auto leading-[1.15] tracking-[-0.01em] text-foreground-60 tablet:text-[12px]">
           {votreMetier}
         </span>
       </span>

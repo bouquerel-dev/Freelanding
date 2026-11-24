@@ -1,6 +1,6 @@
 # DESIGN — eliottbouquerel.fr
 
-Direction : dark premium, éditorial, anguleux, typo dominante. Extrait fidèle du site d'origine.
+Direction : dark premium, éditorial, coins arrondis, typo dominante. Extrait fidèle du site d'origine.
 
 ## Couleurs (tokens = `globals.css`)
 - `background` `#0b0b0b` · `foreground` `#ffffff` · `accent` `#ff4500` (unique, CTA/highlights) · `muted` `#e9e9e9`
@@ -14,7 +14,7 @@ Direction : dark premium, éditorial, anguleux, typo dominante. Extrait fidèle 
 - Échelle : 11·12·14·16·18·22·26·32·44·52·68·92·100.
 
 ## Formes / espace
-- Radius anguleux : `0` par défaut, `50px` pilules, `100%` ronds. Pas d'intermédiaire.
+- Radius (tokens `globals.css`, utilitaires `rounded-*`) : `control` 12px boutons et champs · `card` 20px cartes, encadrés, panneaux, médias cadrés, menus, modales, bandeau cookies · `panel` 24px grands panneaux (carte du formulaire de contact) · `tag` 8px étiquettes et badges · `pill` 50px pilules · `full` ronds. `none` (0) seulement pour les filets 1px et les fonds de section bord à bord. Un média dans un cadre arrondi : `overflow-hidden` sur le cadre (ou `rounded-[inherit]` sur un pseudo-élément de bord).
 - Spacing dominant : 10 / 20 / 30. Conteneur padding X : 20–24.
 
 ## Motion

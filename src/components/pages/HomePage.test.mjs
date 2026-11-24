@@ -1,13 +1,14 @@
-import { afterEach, describe, expect, it } from "bun:test";
+import { describe, expect, it } from "bun:test";
 
-import { LogicielSection } from "@/components/sections/LogicielSection";
+import { SchemaSection } from "@/components/sections/SchemaSection";
+import { schemaAccueil } from "@/content/schema";
 import { homeContent } from "@/content/home";
 import { HomePage } from "./HomePage";
 
 /**
  * Composant SERVEUR asynchrone : l'appeler directement construit l'arbre de la
- * page sans exécuter ses sections. Depuis le 2026-10-31, la section noire du
- * logiciel suit le héros, et la section des métiers la suit.
+ * page sans exécuter ses sections. Depuis le 2026-11-24, le schéma « Ce que je
+ * construis » suit le héros, à la place de la section noire du logiciel.
  */
 function sectionsRendues(arbre) {
   const racine = Array.isArray(arbre.props.children) ? arbre.props.children : [arbre.props.children];
@@ -18,31 +19,15 @@ function sectionsRendues(arbre) {
   }));
 }
 
-describe("HomePage, section du logiciel", () => {
-  const logiciel = homeContent.logiciel;
-
-  afterEach(() => {
-    homeContent.logiciel = logiciel;
-  });
-
-  it("rend la démonstration du logiciel avec la bande claire du bas", async () => {
+describe("HomePage, schéma sous le héros", () => {
+  it("rend les sections dans l'ordre du contenu, le schéma juste après le héros", async () => {
     const sections = sectionsRendues(await HomePage());
     const cles = sections.map((section) => section.cle);
-    expect(cles).not.toContain("methode");
-    expect(cles).not.toContain("metiers");
     expect(cles).toEqual(homeContent.sectionOrder);
-
-    const { element } = sections.find((section) => section.cle === "logiciel");
-    expect(element.type).toBe(LogicielSection);
-    expect(element.props.logiciel).toBe(logiciel);
-    // « Pourquoi moi », sur fond clair, suit : la bande claire l'annonce.
-    expect(element.props.bottomAccent).toBe("muted");
-  });
-
-  it("n'en rend aucune quand le contenu n'a pas de logiciel", async () => {
-    homeContent.logiciel = undefined;
-    const sections = sectionsRendues(await HomePage());
-    const { element } = sections.find((section) => section.cle === "logiciel");
-    expect(element).toBeNull();
+    expect(cles.indexOf("schema")).toBe(cles.indexOf("hero") + 1);
+    expect(cles).not.toContain("logiciel");
+    const { element } = sections.find((section) => section.cle === "schema");
+    expect(element.type).toBe(SchemaSection);
+    expect(element.props.schema).toBe(schemaAccueil);
   });
 });

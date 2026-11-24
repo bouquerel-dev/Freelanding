@@ -264,7 +264,7 @@ export function ShowreelSection({ showreel }: { showreel: ShowreelContent }) {
               className="relative z-[1] aspect-[1.575] w-px flex-[1_0_0] desktop:h-[240px] desktop:w-[378px] desktop:flex-none"
             >
               {/* framer-milu93 (Variant 1) : rempli à 100 % (styles inline) */}
-              <div className="relative flex h-full w-full flex-col items-start gap-[10px] overflow-hidden">
+              <div className="relative flex h-full w-full flex-col items-start gap-[10px] overflow-hidden rounded-card">
                 {/* framer-1ambeg8-container : média, reveal opacity + scale(1.1) */}
                 <Reveal
                   className="relative h-px w-full flex-[1_0_0]"

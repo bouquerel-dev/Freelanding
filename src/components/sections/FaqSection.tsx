@@ -314,7 +314,7 @@ export function FaqSection({
                 // absolu est correct partout et insensible à l'endroit où la
                 // section est montée.
                 href={cta?.href ?? "/contact"}
-                className="surface-dark group relative flex h-full w-full cursor-pointer items-center justify-center gap-[10px] overflow-hidden p-[10px] no-underline tablet:h-[30px] tablet:w-min"
+                className="surface-dark group relative flex h-full w-full cursor-pointer rounded-control items-center justify-center gap-[10px] overflow-hidden p-[10px] no-underline tablet:h-[30px] tablet:w-min"
                 style={{ backgroundColor: INK }}
               >
                 {/* framer-12ut4h8 : conteneur (les deux calques de texte = swap au hover).

@@ -167,7 +167,7 @@ export function WorkExplorer({
               setQuery("");
             }}
             // Focus : voir `src/app/focus.css` (source de vérité unique).
-            className="min-h-[44px] border border-white/20 px-[18px] text-[12px] font-medium uppercase hover:border-white"
+            className="min-h-[44px] rounded-control border border-white/20 px-[18px] text-[12px] font-medium uppercase hover:border-white"
           >
             {uiLabels.filters.workResetLabel}
           </button>

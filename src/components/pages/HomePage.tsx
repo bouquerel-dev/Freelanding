@@ -6,10 +6,11 @@ import { ArticlesSection } from "@/components/sections/ArticlesSection";
 import { FaqSection } from "@/components/sections/FaqSection";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { LogicielSection } from "@/components/sections/LogicielSection";
-import { LogoBandSection } from "@/components/sections/LogoBandSection";
 import { MoyensSection } from "@/components/sections/MoyensSection";
 import { ServicesSection } from "@/components/sections/ServicesSection";
+import { SchemaSection } from "@/components/sections/SchemaSection";
 import { ShowreelSection } from "@/components/sections/ShowreelSection";
+import { schemaAccueil } from "@/content/schema";
 import { StatsSection } from "@/components/sections/StatsSection";
 import { TestimonialsSection } from "@/components/sections/TestimonialsSection";
 import { WhyUsSection } from "@/components/sections/WhyUsSection";
@@ -43,17 +44,8 @@ export async function HomePage() {
        côté de la ligne de preuve : c'est la seule place où ils sont vus sans
        défiler. Ils ne sont donc plus une entrée de `sections`, sinon un
        `logoBand` remis dans l'ordre les afficherait deux fois. */
-    hero: (
-      <HeroSection
-        hero={home.hero}
-        site={site}
-        logos={
-          home.logoBand ? (
-            <LogoBandSection logoBand={home.logoBand} variant="heros" />
-          ) : null
-        }
-      />
-    ),
+    hero: <HeroSection hero={home.hero} />,
+    schema: <SchemaSection schema={schemaAccueil} />,
     about: <AboutSection about={home.about} />,
     showreel: <ShowreelSection showreel={home.showreel} />,
     works: <WorksSection works={works} />,

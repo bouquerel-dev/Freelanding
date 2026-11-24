@@ -143,6 +143,7 @@ function TestimonialCard({ person }: { person: FooterPerson }) {
              cette même carte : lui EST l'accent. */
           src="/images/eliott-nature-paysage.jpg"
           imgClassName="grayscale"
+          className="rounded-t-card"
           overshoot={0.07}
           /* APPARITION DU VISUEL, absente jusqu'ici sur les NEUF routes : le
              pied de page est le seul bloc commun à tout le site, et sa photo
@@ -204,7 +205,7 @@ function TestimonialCard({ person }: { person: FooterPerson }) {
       </div>
 
       {/* framer-1bz9lop "Quote" : bloc blanc au-dessus de la photo (relative, en flux) */}
-      <div className="relative z-[3] flex w-full flex-col items-end gap-[10px] bg-foreground p-[14px]">
+      <div className="relative z-[3] flex w-full flex-col items-end gap-[10px] rounded-b-card bg-foreground p-[14px]">
         {/* framer-zxx5xd : note (preset 2okhk1, 14px, #0b0b0b, aligné droite) */}
         <p className="h-auto w-full max-w-[260px] whitespace-pre-wrap break-words text-right text-[14px] font-medium leading-[1.3] tracking-[-0.01em] text-[#0b0b0b]">
           {person.note}

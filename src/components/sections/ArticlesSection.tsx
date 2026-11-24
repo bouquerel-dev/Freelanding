@@ -42,7 +42,7 @@ function SeeMoreButton({ cta }: { cta?: { label: string; href: string } }) {
     <div className="relative h-[30px] w-auto">
       <Link
         href={cta?.href ?? "/blog"}
-        className="group relative flex h-[30px] w-min items-center justify-center gap-[10px] overflow-hidden border border-transparent bg-background p-[10px] no-underline"
+        className="group relative flex h-[30px] w-min items-center justify-center gap-[10px] overflow-hidden rounded-control border border-transparent bg-background p-[10px] no-underline"
       >
         {/* framer-12ut4h8 / framer-1e6ynpd.
             Le libellé permute VERS LE HAUT. Relevé sur le live : la copie

@@ -31,8 +31,8 @@ export const siteConfig: SiteConfig = {
    * toutes les pages. LE FRAGMENT DOIT EXISTER DANS `tagline`, sinon `Header`
    * concatène le texte entier et le fragment introuvable.
    */
-  tagline: "Logiciels métier sur mesure",
-  taglineEmphasis: ["Logiciels métier"],
+  tagline: "Sites, logiciels et IA",
+  taglineEmphasis: ["Sites, logiciels"],
   nav: [
     { label: "Accueil", href: "/" },
     { label: "Réalisations", href: "/realisations" },
@@ -317,7 +317,7 @@ export const siteConfig: SiteConfig = {
     // exposées de tout le site : elles sortent dans l'onglet du navigateur et
     // dans chaque résultat Google, là où la fausse allégation se lit le plus.
     // Le retrait n'était donc pas fait, il était seulement invisible à l'écran.
-    defaultTitle: "Eliott Bouquerel · Logiciel métier sur mesure",
+    defaultTitle: "Eliott Bouquerel · Sites, logiciels et IA à Caen",
     // GABARIT DOCUMENTAIRE, plus branché sur `Metadata` depuis le
     // 2026-08-28 : toutes les pages posent leur titre en `absolute`
     // (`pageMetadata`), et le laisser déclaré dans le layout faisait écrire la

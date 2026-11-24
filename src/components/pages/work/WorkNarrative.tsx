@@ -166,7 +166,7 @@ function ProjectButton({ href }: { href: string }) {
       target="_blank"
       rel="noopener noreferrer"
       // Focus : voir `src/app/focus.css` (source de vérité unique).
-      className="group flex h-[30px] w-min items-center justify-center gap-[10px] overflow-hidden bg-background p-[10px] text-[12px] font-semibold uppercase leading-[1.2] tracking-[-0.01em] text-white no-underline"
+      className="group flex h-[30px] w-min items-center justify-center gap-[10px] overflow-hidden rounded-control bg-background p-[10px] text-[12px] font-semibold uppercase leading-[1.2] tracking-[-0.01em] text-white no-underline"
     >
       {/* Motif `.framer-1sk0ilg` : 22 px vers le haut, fondu croisé, 320 ms. */}
       <SwapText travel={22}>{uiLabels.work.liveProjectLabel}</SwapText>
@@ -227,7 +227,7 @@ function GalleryImage({
       sizes={sizes}
       overshoot={overshoot}
       reveal={reveal}
-      className={image.caption ? "w-full" : `w-full ${className ?? ""}`}
+      className={image.caption ? "w-full rounded-card" : `w-full rounded-card ${className ?? ""}`}
       imgClassName={imageClassName ?? ""}
     />
   );
@@ -667,7 +667,7 @@ export function WorkNarrative({
                   au-dessus, pour un libellé de 28). */}
               <div className="relative w-full" style={{ aspectRatio: "378 / 240" }}>
                 <div
-                  className="absolute inset-x-0 top-1/2 -translate-y-1/2 overflow-hidden"
+                  className="absolute inset-x-0 top-1/2 -translate-y-1/2 overflow-hidden rounded-card"
                   style={{ aspectRatio: "378 / 269" }}
                 >
                   {/* Calque dérivant à 6 %, comme la source : cette vignette est
@@ -852,7 +852,7 @@ export function WorkNarrative({
             >
               {/* Cadre au repos, sans parallaxe : voir la note de `BlocEtape`. */}
               <div
-                className="relative w-full overflow-hidden"
+                className="relative w-full overflow-hidden rounded-card"
                 style={{
                   aspectRatio:
                     entree.image.width && entree.image.height

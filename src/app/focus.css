@@ -191,6 +191,7 @@ main[tabindex="-1"]:focus-visible {
    L'ANNEAU, lui, reste piloté par la règle globale `:focus-visible` ci-dessus.
    ------------------------------------------------------------ */
 .skip-link {
+  border-radius: var(--radius-control);
   position: fixed;
   top: 0;
   left: 0;

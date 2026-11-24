@@ -1,14 +1,13 @@
 import { duree } from "@/lib/duree";
-import type { HeroComparaison, HomeContent } from "@/lib/content/types";
+import type { HomeContent } from "@/lib/content/types";
 import { slugsMisEnAvant } from "@/content/blog";
 import { faqItems } from "@/content/faq";
 import { services } from "@/content/services";
-import { euros, prestation, repereAgenceLogiciel, SUR_DEVIS } from "@/content/offre";
+
 import { TACHES_BUREAU } from "@/content/page-automatisation";
 import { lienRendezVous } from "@/content/rendez-vous";
 import { howWeDoItStats, reputationStats } from "@/content/stats";
 
-const LOGICIEL = prestation("logiciel");
 
 /* LE GAIN DE L'ACCUEIL, dérivé des hypothèses de `page-automatisation.ts`. */
 const PART_RELECTURE = 0.2;
@@ -55,49 +54,17 @@ const JOURS_BUREAU = SEMAINE.map(({ jour, tache, taches }) => {
  * comparaison le rendait exact (`offre.ts`). Le héros dit « une fraction » et
  * chiffre ce qu'une agence facture à côté du mien, source écrite.
  */
-const POSITIONNEMENT = "Développeur à Caen, je fais gagner du temps aux PME.";
-
 /*
- * LE H1 DE L'ACCUEIL. Depuis le 2026-11-12 (test des 5 secondes d'un reel) : le
- * titre dit ce qui est vendu et ce qu'il fait à la place du client ; le
- * sur-titre dit pour qui. « Moins de papier » ne disait pas ce qui était vendu.
+ * LE H1 DE L'ACCUEIL depuis le 2026-11-24 : l'avantage d'Eliott face aux
+ * agences, en deux lignes ; son visage est posé entre les deux.
  */
-const PORTES = [
-  {
-    lines: ["L’IA recopie, trie, relance.", "Votre équipe avance."],
-    href: "#logiciel",
-    price: "Voir ce que vous y gagnez",
-  },
-] as const;
+const LIGNES_TITRE = ["Plus de qualité qu’une agence,", "pour moins cher."] as const;
+const TITRE_ACCUEIL = LIGNES_TITRE.join(" ");
 
-const TITRE_ACCUEIL = PORTES.map((porte) => porte.lines.join(" ")).join(" ");
+/** Comment : l'IA pour la vitesse, Eliott pour les décisions et la vérification. */
+const COMMENT =
+  "L’IA écrit vite, je décide et je vérifie tout. Je livre plus vite qu’une agence, je facture moins, et le temps gagné passe dans les finitions : tests, vitesse, référencement.";
 
-/** Le message d'Eliott, sous le titre. */
-const CE_QUI_DISPARAIT =
-  "Commandes à recopier, mails à trier, factures à relancer : je construis le logiciel ou j’installe l’IA qui s’en charge. Votre équipe reprend ses heures, pour une fraction de ce qu’une agence facture.";
-
-/*
- * CE QU'UNE AGENCE FACTURE, ET LE MIEN SUR DEVIS (décision d'Eliott du
- * 2026-11-01 : aucun montant de sa part). Chiffres et source :
- * `repereAgenceLogiciel`.
- */
-function comparaisonAgence(): HeroComparaison {
-  const agence = repereAgenceLogiciel;
-  return {
-    sujet: "Un logiciel métier sur mesure",
-    lignes: [
-      {
-        qui: "En agence",
-        prix: `${euros(agence.premierOutilMin).replace(/\s€$/u, "")} à ${euros(agence.mediane)}`,
-      },
-      { qui: "Avec moi", prix: SUR_DEVIS, fort: true },
-    ],
-    source: {
-      label: `${agence.source.nom}, ${agence.source.releve}`,
-      href: agence.source.href,
-    },
-  };
-}
 
 /**
  * Contenu de la page d'accueil. Chaque section pointe vers sa source unique
@@ -108,34 +75,21 @@ function comparaisonAgence(): HeroComparaison {
  */
 export const homeContent: HomeContent = {
   hero: {
-    // Au-dessus du titre : ce qui est vendu, et ce qui distingue Eliott d'une agence.
-    eyebrow: POSITIONNEMENT,
-    // LE H1 DE L'ACCUEIL. Le héros rend la porte comme un lien vers l'offre.
-    title: TITRE_ACCUEIL,
-    titleLines: PORTES.map((porte) => porte.lines.join(" ")),
-    doors: PORTES,
-    /* Test des visiteurs du 2026-10-31 : une porte pour qui n'est pas prêt à appeler. */
-    offerLink: { label: "Voir mes réalisations", href: "/realisations" },
-    subtitle: CE_QUI_DISPARAIT,
-    subtitleParagraphs: [{ text: CE_QUI_DISPARAIT }],
     /*
-     * UNE SEULE PREUVE DANS LE PREMIER ÉCRAN depuis le 2026-10-16 : le prix
-     * d'une agence, à côté du mien sur devis. Le −92 % de Würth est
-     * sorti du héros, décision d'Eliott ; il reste dans la section chiffres.
+     * HÉROS REFAIT LE 2026-11-24, demande d'Eliott : se présenter comme
+     * rubenmarcus.dev (« Hello, I'm… »), puis dire l'avantage concret face aux
+     * agences, puis comment il l'obtient. Plus de porte unique vers le
+     * logiciel : sites, logiciels et IA passent au même rang.
      */
-    comparison: comparaisonAgence(),
-    // Fond du hero : macro d'un mouvement d'horlogerie, asset généré et
-    // possédé (2026-08-10), calibré sombre par `scripts/hero-loop.mjs`
-    // (moyenne 13,7/255) pour porter du texte blanc.
-    media: {
-      kind: "video",
-      src: "/videos/hero-loop.mp4",
-      // Première image de la boucle, 14 Ko : sans affiche, l'élément LCP du
-      // mobile était la vidéo elle-même.
-      poster: "/videos/hero-loop-poster.webp",
-    },
-    // PHOTO RÉELLE d'Eliott (fournie le 2026-08-10). `alt` vide : le nom est
-    // rendu en texte juste à côté, la vignette est décorative au sens WCAG.
+    eyebrow: "Bonjour, je suis Eliott Bouquerel, développeur à Caen.",
+    title: TITRE_ACCUEIL,
+    titleLines: LIGNES_TITRE,
+    buildPrefix: "Je construis",
+    buildItems: ["des sites internet", "des logiciels métier", "des automatisations IA"],
+    subtitle: COMMENT,
+    subtitleParagraphs: [{ text: COMMENT }],
+    offerLink: { label: "Voir mes réalisations", href: "/realisations" },
+    // PHOTO RÉELLE d'Eliott (fournie le 2026-08-10), rendue en trame dans le titre.
     person: {
       name: "Eliott Bouquerel",
       role: "Développeur à Caen",
@@ -296,14 +250,14 @@ export const homeContent: HomeContent = {
      * MECA SERVICES en alternance. Aucun n'est présenté comme client.
      */
     body: [
-      "Je suis développeur full-stack, installé à Caen, et je travaille seul. Du premier appel à la mise en service, vous parlez à celui qui conçoit et qui code votre logiciel.",
+      "Je suis développeur full-stack, installé à Caen, et je travaille seul. Du premier appel à la mise en service, vous parlez à celui qui conçoit et qui code votre projet.",
       "Avant de me lancer, j’ai développé chez Médiapilote, Würth France, MeilleursBiens, puis MECA SERVICES, où je tenais aussi la boutique en ligne. J’y ai appris à partir de ce qu’un outil doit rapporter, et à regarder comment les gens travaillent avant d’écrire la première ligne de code.",
     ],
     // Emphase (source Framer) : ces expressions passent en noir plein au
     // milieu du paragraphe rendu à 70 %.
     highlights: [
       "je travaille seul",
-      "vous parlez à celui qui conçoit et qui code votre logiciel",
+      "vous parlez à celui qui conçoit et qui code votre projet",
       "partir de ce qu’un outil doit rapporter",
     ],
     /*
@@ -502,7 +456,7 @@ export const homeContent: HomeContent = {
    */
   sectionOrder: [
     "hero",
-    "logiciel",
+    "schema",
     "moyens",
     "about",
     "showreel",
@@ -515,9 +469,9 @@ export const homeContent: HomeContent = {
 
   seo: {
     // Mot-clé en tête, marque en fin.
-    title: "Logiciel métier sur mesure · Eliott Bouquerel",
+    title: "Développeur à Caen : sites, logiciels et IA · Eliott Bouquerel",
     description:
-      "Le logiciel métier qui fait disparaître la tâche qui vous bloque. L’IA fait le sale boulot, votre équipe reprend son temps. Basé à Caen, en visio partout.",
+      "Sites internet, logiciels métier et automatisations IA pour les TPE et PME. Je travaille avec l’IA : plus de qualité qu’une agence, pour moins cher. Basé à Caen, en visio partout.",
     ogImage: {
       src: "/images/og.jpg",
       alt: "Eliott Bouquerel",

@@ -312,7 +312,7 @@ export function WhyUsSection({ whyUs }: { whyUs: HomeContent["whyUs"] }) {
                 >
                   <Reveal
                     as="div"
-                    className={`relative flex h-[220px] w-full flex-col items-center justify-between p-[20px] tablet:aspect-[1.34643] tablet:h-[280px] tablet:w-[377px] ${
+                    className={`relative flex h-[220px] w-full flex-col items-center justify-between rounded-card p-[20px] tablet:aspect-[1.34643] tablet:h-[280px] tablet:w-[377px] ${
                       sombre ? "bg-background" : "bg-foreground"
                     }`}
                     initialOpacity={0.001}
@@ -353,7 +353,7 @@ export function WhyUsSection({ whyUs }: { whyUs: HomeContent["whyUs"] }) {
                    l'image (luminance moyenne relevée à 19,5/255, le jeton
                    `--background` vaut #0b0b0b) rend la plaque correcte dès la
                    première peinture, que l'image soit là ou non. */
-                className="relative flex h-[100px] w-[100px] flex-row items-center justify-center gap-[10px] overflow-hidden bg-background tablet:aspect-square"
+                className="relative flex h-[100px] w-[100px] flex-row items-center justify-center gap-[10px] overflow-hidden rounded-card bg-background tablet:aspect-square"
                 initialOpacity={0.001}
                 duration={0.8}
               >

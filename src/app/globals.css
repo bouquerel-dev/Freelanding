@@ -88,8 +88,13 @@
   --tracking-tight: -0.02em;
   --tracking-normal: -0.01em;
 
-  /* Radius (anguleux : 0, pilule 50px, rond) */
+  /* Radius : contrôles 12, cartes 20, grands panneaux 24, étiquettes 8,
+     pilule 50px, rond. 0 réservé aux filets et fonds bord à bord. */
   --radius-none: 0px;
+  --radius-tag: 8px;
+  --radius-control: 12px;
+  --radius-card: 20px;
+  --radius-panel: 24px;
   --radius-pill: 50px;
   --radius-full: 100%;
 
@@ -928,7 +933,7 @@ html[data-consent-choisi] [data-consent-attente] {
 .neo-carte {
   container-type: inline-size;
   padding: 24px 20px;
-  border-radius: 28px;
+  border-radius: var(--radius-panel);
   background: var(--neo-matiere);
   box-shadow: var(--neo-relief);
 }
@@ -1003,7 +1008,7 @@ html[data-consent-choisi] [data-consent-attente] {
   min-height: 46px;
   padding: 12px 18px;
   border: 1px solid transparent;
-  border-radius: 16px;
+  border-radius: var(--radius-control);
   background: var(--neo-matiere);
   box-shadow: var(--neo-relief-doux);
   color: var(--color-foreground);
@@ -1068,7 +1073,7 @@ html[data-consent-choisi] [data-consent-attente] {
 
 /* Champs en creux. `--focus-shadow-keep` garde le creux sous l'anneau clavier. */
 .neo-champ {
-  border-radius: 16px;
+  border-radius: var(--radius-control);
   background-color: var(--neo-matiere);
   box-shadow: var(--neo-creux);
   --focus-shadow-keep: var(--neo-creux);
@@ -1210,3 +1215,30 @@ html[data-consent-choisi] [data-consent-attente] {
     transform: translateX(-48px);
   }
 }
+
+/* Schéma « Ce que je construis » (2026-11-24) : liens en tirets qui coulent
+   vers la droite, coupés en mouvement réduit. */
+.schema-lien {
+  color: color-mix(in oklab, var(--accent) 55%, transparent);
+  stroke-width: 1.2;
+  stroke-dasharray: 4 6;
+  animation: schema-flux 1.2s linear infinite;
+}
+@keyframes schema-flux { to { stroke-dashoffset: -20; } }
+@media (prefers-reduced-motion: reduce) { .schema-lien { animation: none; } }
+
+/* Encadré blanc de « Moi, c'est Eliott » (2026-11-24) : il se pose en montant
+   et en se dépliant légèrement quand il entre à l'écran. Sans prise en charge
+   de `animation-timeline`, il est simplement là. */
+@supports (animation-timeline: view()) {
+  .about-cadre {
+    animation: about-cadre-entree linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 70%;
+  }
+}
+@keyframes about-cadre-entree {
+  from { opacity: 0; transform: translateY(60px) scale(0.94); border-radius: 64px; }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) { .about-cadre { animation: none; } }

@@ -302,7 +302,7 @@ export function WorkCard({ work, index }: { work: WorkItem; index?: number }) {
                     DANS le média (voir `scripts/mockup-projets.mjs`), pas
                     autour : un châssis dessiné en CSS par-dessus une scène qui
                     en porte déjà un montrait deux ordinateurs emboîtés. */}
-                <div className="relative h-full w-full overflow-hidden">
+                <div className="relative h-full w-full overflow-hidden rounded-card">
                   <WorkCardMedia
                     media={media}
                     reducedMotion={reducedMotion}
