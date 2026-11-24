@@ -331,8 +331,8 @@ export function ConsentBanner() {
      Écrite une fois, elle ne peut pas diverger — c'est ce qui garantit que le
      refus ne se dégrade pas au fil des retouches. */
   const decisionButton =
-    "flex min-h-[40px] flex-1 items-center justify-center rounded-control px-[16px] " +
-    "text-[12px] font-semibold uppercase leading-[1.2] tracking-[-0.01em] " +
+    "flex min-h-[36px] flex-1 items-center justify-center rounded-control px-[12px] " +
+    "text-[11px] font-semibold uppercase leading-[1.2] tracking-[-0.01em] " +
     "transition-opacity duration-200 hover:opacity-85 motion-reduce:transition-none";
 
   const inlineLink =
@@ -368,14 +368,19 @@ export function ConsentBanner() {
           /* PLACEMENT. Au-dessus du menu flottant (z-9) et de tout le contenu.
              Remontée à 88 px du bas tant qu'on n'est pas en desktop : la
              pastille du menu est centrée en bas et croiserait la carte sur les
-             largeurs intermédiaires.
+             largeurs intermédiaires. Sur ordinateur, calée dans le coin bas
+             gauche à 16 px des bords, sur 360 px de large au plus (demande
+             d'Eliott du 2026-11-24 : « en bas à gauche, plus compacte »).
+             L'espace avant `${…}` compte : collé, Tailwind lisait
+             « desktop:bottom-[…]$ » et ne générait pas la classe, si bien que
+             la carte restait à 88 px du bas sur ordinateur.
 
              CLICS. `pointer-events-none` sur l'enveloppe, `auto` sur la carte :
              l'enveloppe fait toute la largeur de la fenêtre alors que la carte
              plafonne à 460 px. Sans cela, la bande vide à sa droite avalerait
              les clics sur le contenu — et pendant l'animation de sortie, une
              carte déjà invisible continuerait de bloquer la page. */
-          className={`pointer-events-none fixed inset-x-[16px] bottom-[88px] z-[60] flex justify-start tablet:inset-x-[24px] desktop:inset-x-[30px] desktop:bottom-[20px]${enAttente ? " consent-entree" : ""}`}
+          className={`pointer-events-none fixed inset-x-[16px] bottom-[88px] z-[60] flex justify-start tablet:inset-x-[24px] desktop:inset-x-[16px] desktop:bottom-[16px] ${enAttente ? "consent-entree" : ""}`}
         >
           <div
             ref={cardRef}
@@ -387,7 +392,7 @@ export function ConsentBanner() {
             /* Même matière que le panneau du menu flottant : fond très sombre
                translucide, flou d'arrière-plan, filet 1px en pseudo-élément
                (jamais un `border`, qui décalerait la boîte), angles arrondis (token `card`). */
-            className="pointer-events-auto relative w-full max-w-[460px] overflow-hidden rounded-card desktop:max-w-[min(520px,calc(50vw-211px))] bg-[rgba(23,23,23,0.94)] [backdrop-filter:blur(9px)] before:pointer-events-none before:absolute before:inset-0 before:z-[2] before:rounded-[inherit] before:border before:border-[rgba(255,255,255,0.12)] before:content-['']"
+            className="pointer-events-auto relative w-full max-w-[360px] overflow-hidden rounded-card bg-[rgba(23,23,23,0.94)] [backdrop-filter:blur(9px)] before:pointer-events-none before:absolute before:inset-0 before:z-[2] before:rounded-[inherit] before:border before:border-[rgba(255,255,255,0.12)] before:content-['']"
           >
             {/* HAUTEUR BORNÉE, avec défilement interne. Le panneau déplié
                 mesure près de 700 px : sur un téléphone court (360 × 640) il
@@ -395,7 +400,7 @@ export function ConsentBanner() {
                 inatteignables — c'est-à-dire un refus impossible. La borne est
                 calculée sur `svh` et non `vh` : sur iOS, `vh` compte la barre
                 d'adresse rétractée et surestime la place disponible. */}
-            <div className="relative z-[1] flex max-h-[calc(calc(100svh/var(--zoom-ecran,1))-120px)] flex-col gap-[10px] overflow-y-auto p-[12px]">
+            <div className="relative z-[1] flex max-h-[calc(calc(100svh/var(--zoom-ecran,1))-120px)] flex-col gap-[8px] overflow-y-auto p-[10px]">
               {/* BARRE FINE AU PREMIER ÉCRAN : une phrase, ses deux liens, et
                   les deux boutons. Mesuré le 2026-10-26 sur la prod : l'ancienne
                   carte était le premier obstacle cité par 60 visiteurs simulés
@@ -420,7 +425,7 @@ export function ConsentBanner() {
                 </h2>
                 <p
                   id={descriptionId}
-                  className="text-[12px] font-medium leading-[1.4] tracking-[-0.01em] text-white/70"
+                  className="text-[11px] font-medium leading-[1.35] tracking-[-0.01em] text-white/70"
                 >
                   {consentCopy.body}{" "}
                   <Link
@@ -456,7 +461,7 @@ export function ConsentBanner() {
 
               {/* Premier écran : les deux décisions, de même poids. Même
                   chaîne de classes de géométrie, deux aplats pleins, refus en
-                  premier. Mesuré au rendu : 206 × 44 px l'un comme l'autre. */}
+                  premier. Mesurés au rendu : même largeur, 36 px de haut l'un comme l'autre. */}
               <div className="flex flex-row gap-[8px]">
                 <button
                   type="button"
