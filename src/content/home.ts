@@ -472,7 +472,7 @@ export const homeContent: HomeContent = {
     // Mot-clé en tête, marque en fin.
     title: "Développeur à Caen : sites, logiciels et IA · Eliott Bouquerel",
     description:
-      "Sites internet, logiciels métier et automatisations IA pour les TPE et PME. Je travaille avec l’IA : plus de qualité qu’une agence, pour moins cher. Basé à Caen, en visio partout.",
+      "Sites internet, logiciels métier et automatisations IA pour les TPE et PME. Un développeur, une équipe d’IA : une seule personne du premier appel à la mise en ligne. Basé à Caen, en visio partout.",
     ogImage: {
       src: "/images/og.jpg",
       alt: "Eliott Bouquerel",
