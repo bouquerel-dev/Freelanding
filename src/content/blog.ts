@@ -277,9 +277,9 @@ export const blogPosts: BlogPost[] = [
 
   {
     slug: "refonte-site-internet-pme",
-    title: "Refonte de site internet : prix moyen et méthode",
+    title: "Refonte de site internet : prix moyen et plan de migration",
     date: "2026-10-02",
-    updated: "2026-10-16",
+    updated: "2026-11-24",
     dateSource: "editorial",
     listedInIndex: true,
     category: "Méthode",
@@ -313,15 +313,15 @@ export const blogPosts: BlogPost[] = [
     },
     excerpt:
       "Une refonte coûte 6 500 € de médiane en agence pour une PME. Voici ce qui fait varier votre devis, quand refondre plutôt que réparer, et comment garder votre référencement.",
-    readingTime: "6 min de lecture",
-    tags: ["refonte", "référencement", "redirections"],
+    readingTime: "9 min de lecture",
+    tags: ["refonte site internet prix", "plan de migration refonte", "redirections 301"],
     seo: {
-      // Réécrit le 2026-10-16 sur « refonte site internet prix » (fiche du
-      // vault `blog-etat-articles.md`, n° 7). « plan de migration refonte »
-      // reste en section ; « refonte site internet caen » va à la page Caen.
-      title: "Refonte de site internet : prix moyen 2026 et méthode",
+      // Réécrit le 2026-10-16 sur « refonte site internet prix », renforcé le
+      // 2026-11-24 sur « plan de migration refonte » (pos. 71,9 en GSC) :
+      // plan en 8 étapes et rétroplanning (vault `blog-etat-articles.md`, n° 7).
+      title: "Refonte de site internet : prix 2026 et plan de migration",
       description:
-        "Prix moyen d’une refonte de site en 2026, agence contre indépendant, ce qui fait varier le devis, et le plan de redirections qui garde votre référencement.",
+        "Prix moyen d’une refonte de site en 2026, ce qui fait varier le devis, et le plan de migration en 8 étapes avec rétroplanning, qui garde votre référencement.",
       ogImage: {
         src: "/images/og-blog-refonte-site-internet-pme.jpg",
         alt: "Deux colonnes d’adresses sur fond noir, reliées une à une par des courbes vertes",
