@@ -137,10 +137,13 @@ export function VisageTrame({ src }: { src: string }) {
         // Chaque point attend selon sa distance au visage (0,5 ; 0,4).
         const ne = naissant ? sortie((age - Math.hypot(u - 0.5, v - 0.4) * 1.6 * VAGUE_MS) / NAISSANCE_MS) : 1;
         if (ne <= 0) continue;
-        ctx.globalAlpha = (0.14 + lum * 0.72) * ne;
+        // Plancher relevé (2026-11-25) : sous la lampe, la trame passe sur la
+        // photo, et les points des cheveux et de la veste, sombres, doivent
+        // se voir autant que ceux du visage, comme le motif du bandana.
+        ctx.globalAlpha = (0.34 + lum * 0.6) * ne;
         ctx.beginPath();
         // Jamais de zéro : le point naît à 40 % de sa taille, en fondu.
-        ctx.arc(x, y, pas * (0.1 + lum * 0.36) * (0.4 + 0.6 * ne), 0, Math.PI * 2);
+        ctx.arc(x, y, pas * (0.17 + lum * 0.3) * (0.4 + 0.6 * ne), 0, Math.PI * 2);
         ctx.fill();
       }
       // Amorti vers la souris : la boucle s'arrête une fois la cible rejointe.

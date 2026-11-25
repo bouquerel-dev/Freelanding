@@ -152,16 +152,35 @@ describe("AmbianceHeros", () => {
     expect(lx).toBeLessThan(-100);
   });
 
+  it("garde la lampe sous la souris quand la page est zoomée (grand écran)", async () => {
+    installer();
+    await monter({ visage: true });
+    // Zoom 4/3 (`--zoom-ecran` dès 2560 px) : 1000 px d'écran pour 750 px CSS.
+    const decor = etat.section.querySelector('[data-part="hero-ambiance"]');
+    Object.defineProperty(decor, "offsetWidth", { configurable: true, get: () => 750 });
+    souris(500, 300);
+    jouer(1);
+    // Souris à (400, 250) px d'écran, visage à (600, 150) : tout divisé par 4/3.
+    expect(etat.visage.style.getPropertyValue("--lx")).toBe("-150px");
+    expect(etat.visage.style.getPropertyValue("--ly")).toBe("75px");
+  });
+
   it("éteint la trame quand la souris quitte le héros", async () => {
     installer();
     await monter({ visage: true });
     souris(500, 300);
     jouer(1);
+    jouer(60);
+    const ouvert = Number.parseFloat(etat.visage.style.getPropertyValue("--lr"));
+    expect(ouvert).toBeGreaterThan(150);
     etat.section.dispatchEvent(new window.Event("pointerleave"));
     expect(etat.section.dataset.pointeur).toBe("");
-    expect(etat.visage.style.getPropertyValue("--lx")).toBe("");
+    // Elle se referme en douceur, puis s'efface tout à fait.
     jouer(3);
+    expect(Number.parseFloat(etat.visage.style.getPropertyValue("--lr"))).toBeLessThan(ouvert);
+    jouer(120);
     expect(etat.visage.style.getPropertyValue("--lx")).toBe("");
+    expect(etat.visage.style.getPropertyValue("--lr")).toBe("");
   });
 
   it("met la section en pause hors écran, annule la boucle et repart au retour", async () => {
