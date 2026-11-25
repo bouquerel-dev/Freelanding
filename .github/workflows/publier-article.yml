@@ -12,7 +12,9 @@ on:
     # Tous les jours, chaque heure de 8 h à 18 h à Paris (heure d'été ; une heure
     # plus tôt l'hiver) : un article par jour, week-end compris (2026-11-23). Le
     # script laisse les pages par métier au repos le week-end et s'arrête dès
-    # qu'un article est parti dans la journée.
+    # qu'un article est parti dans la journée. GitHub retarde et saute ce cron
+    # sous charge : le Mac le lance aussi chaque heure par workflow_dispatch
+    # (docs/BLOG.md, « Ce qui se passe après la validation »).
     - cron: "17 6-16 * * *"
   workflow_dispatch:
 
