@@ -1311,7 +1311,7 @@ html[data-consent-choisi] [data-consent-attente] {
   animation: fil-goutte 3.2s cubic-bezier(0.65, 0, 0.35, 1) 2s infinite;
 }
 .fil-suite-debut::after { display: none; }
-.fil-suite-fin { --fil: 111px; background: rgba(255, 255, 255, 0.16); }
+.fil-suite-fin { --fil: 95px; background: rgba(255, 255, 255, 0.16); }
 
 /* Entrée en cascade du schéma, ordinateur seulement : `data-vu="0"` n'est posé
    par le script que si la section n'a pas encore paru, donc sans script tout
