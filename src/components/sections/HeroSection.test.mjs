@@ -42,8 +42,9 @@ describe("HeroSection", () => {
     // Deux jeux de traits : biais au téléphone, horizontal sur ordinateur.
     expect(html).toContain('class="hero-traits absolute inset-0 h-full w-full overflow-visible desktop:hidden"');
     expect(html).toContain("hidden desktop:block");
-    // Sur ordinateur, l'œil : colonne gauche à 30,2 %, point à 44,4 % et 40,6 %, trait horizontal.
-    expect(html).toContain('x1="30.2%" y1="40.6%" x2="44.4%" y2="40.6%"');
+    // Sur ordinateur, l'œil : colonne gauche à 30,2 %, point au coin extérieur
+    // de l'œil (41,7 % et 40,6 %) pour laisser l'œil visible, trait horizontal.
+    expect(html).toContain('x1="30.2%" y1="40.6%" x2="41.7%" y2="40.6%"');
     // Au téléphone, l'épaule : le trait part sous l'étiquette (60 % + 4,5) et descend au point.
     expect(html).toContain('x1="68%" y1="64.5%" x2="74.4%" y2="67.9%"');
   });

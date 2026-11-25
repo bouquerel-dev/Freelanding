@@ -52,7 +52,8 @@ import { VisageTrame } from "./hero/VisageTrame";
  */
 const POINTS_VISAGE: Record<PartieVisage, { u: number; v: number; vMobile: number; vPointMobile?: number; gauche: boolean }> = {
   front: { u: 0.504, v: 0.353, vMobile: 0.3, gauche: true },
-  oeil: { u: 0.444, v: 0.406, vMobile: 0.4, gauche: true },
+  // Au coin extérieur de l'œil, côté titre : l'œil reste visible.
+  oeil: { u: 0.417, v: 0.406, vMobile: 0.4, gauche: true },
   bouche: { u: 0.51, v: 0.502, vMobile: 0.5, gauche: true },
   oreille: { u: 0.66, v: 0.427, vMobile: 0.36, gauche: false },
   epaule: { u: 0.744, v: 0.679, vMobile: 0.6, gauche: false },
