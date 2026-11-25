@@ -75,6 +75,11 @@ describe("SchemaSection sur téléphone", () => {
     expect(html).toContain("desktop:truncate");
   });
 
+  it("garde sur ordinateur la carte à deux colonnes et le badge « fait » posé en coin", () => {
+    expect(html).toContain("desktop:grid-cols-[auto_minmax(0,1fr)]");
+    expect(html).toMatch(/desktop:absolute desktop:col-auto desktop:row-auto/u);
+  });
+
   it("met en avant une entrée et une sortie à la fois", () => {
     expect(html.match(/bg-white\/\[0\.035\]/gu)).toHaveLength(1);
     expect(html.match(/bg-accent\/\[0\.06\]/gu)).toHaveLength(1);

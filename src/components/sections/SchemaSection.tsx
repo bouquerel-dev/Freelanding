@@ -56,7 +56,7 @@ function Noeud({
     <div
       data-noeud
       style={delai(260 + ordre * 60)}
-      className={`schema-entree relative grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-[12px] px-[14px] py-[12px] text-left transition-colors duration-300 desktop:gap-x-[10px] desktop:rounded-control desktop:border desktop:bg-surface-1 desktop:px-[12px] desktop:py-[10px] ${
+      className={`schema-entree relative grid grid-cols-[auto_minmax(0,1fr)_auto] items-center desktop:grid-cols-[auto_minmax(0,1fr)] gap-x-[12px] px-[14px] py-[12px] text-left transition-colors duration-300 desktop:gap-x-[10px] desktop:rounded-control desktop:border desktop:bg-surface-1 desktop:px-[12px] desktop:py-[10px] ${
         actif ? "bg-accent/[0.06] desktop:border-accent/70" : entre ? "bg-white/[0.035] desktop:bg-surface-1 desktop:border-white/10" : "desktop:border-white/10"
       }`}
     >
@@ -77,7 +77,7 @@ function Noeud({
         {noeud.detail}
       </span>
       {actif ? (
-        <span className="col-start-3 row-span-2 row-start-1 self-center font-mono text-[10px] uppercase text-accent desktop:absolute desktop:right-[10px] desktop:top-[8px] desktop:text-[9px]">
+        <span className="col-start-3 row-span-2 row-start-1 self-center font-mono text-[10px] uppercase text-accent desktop:absolute desktop:col-auto desktop:row-auto desktop:self-auto desktop:right-[10px] desktop:top-[8px] desktop:text-[9px]">
           {fait}
         </span>
       ) : null}
@@ -224,7 +224,7 @@ export function SchemaSection({ schema }: { schema: SchemaContent }) {
                   // neuves arrivent tout de suite.
                   if (section.current?.dataset.vu === "1") section.current.dataset.vu = "2";
                 }}
-                className={`rounded-[10px] px-[14px] py-[9px] text-[12px] font-semibold uppercase tracking-[-0.01em] transition-[color,background-color,transform] duration-200 ease-out active:scale-[0.97] ${
+                className={`rounded-[10px] px-[14px] py-[9px] text-[12px] font-semibold uppercase tracking-[-0.01em] transition-[color,background-color,transform] duration-200 ease-out motion-safe:active:scale-[0.97] ${
                   i === mode ? "bg-accent text-accent-ink" : "text-foreground-60 hover:text-foreground"
                 }`}
               >
