@@ -19,6 +19,9 @@ import type { NoeudSchema, SchemaContent } from "@/content/schema";
  * Sur ordinateur, l'en-tête puis les cartes entrent en cascade la première
  * fois que la section paraît.
  *
+ * COMPACT (2026-11-25) : section, cartes, fils et journal resserrés, environ
+ * 25 % de hauteur en moins sur téléphone, 12 % sur ordinateur.
+ *
  * HORS ÉCRAN, RIEN NE TOURNE : le pas du cœur s'arrête et la section reçoit
  * `data-schema="pause"`, qui fige les tirets des liens et la goutte du fil.
  */
@@ -26,7 +29,7 @@ import type { NoeudSchema, SchemaContent } from "@/content/schema";
 const PAS_MS = 1400;
 /** Colonne d'entrées ou de sorties : une liste groupée sur téléphone, des cartes séparées sur ordinateur. */
 const COLONNE =
-  "grid divide-y divide-white/[0.07] overflow-hidden rounded-card border border-white/10 bg-surface-1 desktop:gap-[10px] desktop:divide-y-0 desktop:overflow-visible desktop:rounded-none desktop:border-0 desktop:bg-transparent";
+  "grid divide-y divide-white/[0.07] overflow-hidden rounded-card border border-white/10 bg-surface-1 desktop:gap-[8px] desktop:divide-y-0 desktop:overflow-visible desktop:rounded-none desktop:border-0 desktop:bg-transparent";
 /** Durée de la cascade d'entrée : dernier décalage (680 ms) plus l'animation (760 ms). */
 const CASCADE_MS = 1500;
 
@@ -56,13 +59,13 @@ function Noeud({
     <div
       data-noeud
       style={delai(260 + ordre * 60)}
-      className={`schema-entree relative grid grid-cols-[auto_minmax(0,1fr)_auto] items-center desktop:grid-cols-[auto_minmax(0,1fr)] gap-x-[12px] px-[14px] py-[12px] text-left transition-colors duration-300 desktop:gap-x-[10px] desktop:rounded-control desktop:border desktop:bg-surface-1 desktop:px-[12px] desktop:py-[10px] ${
+      className={`schema-entree relative grid grid-cols-[auto_minmax(0,1fr)_auto] items-center desktop:grid-cols-[auto_minmax(0,1fr)] gap-x-[12px] px-[14px] py-[6px] text-left transition-colors duration-300 desktop:gap-x-[10px] desktop:rounded-control desktop:border desktop:bg-surface-1 desktop:px-[12px] desktop:py-[8px] ${
         actif ? "bg-accent/[0.06] desktop:border-accent/70" : entre ? "bg-white/[0.035] desktop:bg-surface-1 desktop:border-white/10" : "desktop:border-white/10"
       }`}
     >
       <span
         aria-hidden
-        className={`row-span-2 grid h-[30px] w-[30px] place-items-center rounded-[9px] border text-[13px] transition-colors duration-300 ${
+        className={`row-span-2 grid h-[26px] w-[26px] place-items-center desktop:h-[30px] desktop:w-[30px] rounded-[9px] border text-[13px] transition-colors duration-300 ${
           actif || entre
             ? "border-accent/60 text-accent desktop:border-white/10 desktop:text-foreground-60"
             : "border-white/10 text-foreground-60"
@@ -70,10 +73,10 @@ function Noeud({
       >
         {noeud.icone}
       </span>
-      <span className="text-[14px] font-semibold leading-[1.25] tracking-[-0.02em] text-foreground desktop:truncate desktop:leading-[1.2]">
+      <span className="text-[14px] font-semibold leading-[1.2] tracking-[-0.02em] text-foreground desktop:truncate">
         {noeud.titre}
       </span>
-      <span className="col-start-2 font-mono text-[10px] uppercase leading-[1.4] text-foreground-60 desktop:truncate">
+      <span className="col-start-2 font-mono text-[10px] uppercase leading-[1.3] text-foreground-60 desktop:truncate">
         {noeud.detail}
       </span>
       {actif ? (
@@ -88,8 +91,8 @@ function Noeud({
 /** Sur téléphone, le fil qui descend d'un bloc au suivant. */
 function Descente() {
   return (
-    <div aria-hidden className="flex flex-col items-center py-[6px] desktop:hidden">
-      <span className="schema-descente h-[26px] w-px" />
+    <div aria-hidden className="flex flex-col items-center py-[2px] desktop:hidden">
+      <span className="schema-descente h-[12px] w-px" />
       <svg width="10" height="6" viewBox="0 0 10 6" className="text-accent/70">
         <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
@@ -99,7 +102,7 @@ function Descente() {
 
 /** Titre d'une colonne, lu seulement sur téléphone. */
 function TitreColonne({ children }: { children: string }) {
-  return <p className="m-0 mb-[8px] px-[2px] font-mono text-[11px] uppercase text-foreground-60 desktop:hidden">{children}</p>;
+  return <p className="m-0 mb-[6px] px-[2px] font-mono text-[11px] uppercase text-foreground-60 desktop:hidden">{children}</p>;
 }
 
 export function SchemaSection({ schema }: { schema: SchemaContent }) {
@@ -185,7 +188,7 @@ export function SchemaSection({ schema }: { schema: SchemaContent }) {
     <section
       ref={section}
       data-section="schema"
-      className="relative isolate bg-background py-[72px] tablet:py-[96px] desktop:pt-[104px] desktop:pb-[120px]"
+      className="relative isolate bg-background py-[32px] tablet:py-[64px] desktop:pt-[88px] desktop:pb-[96px]"
     >
       <Grain opacity={0.1} className="z-0 hidden desktop:block" />
       <div className="relative mx-auto max-w-[1440px] px-[20px] tablet:px-[30px]">
@@ -193,17 +196,17 @@ export function SchemaSection({ schema }: { schema: SchemaContent }) {
             tourne dans le trait du sur-titre. */}
         <span
           aria-hidden
-          className="fil-suite fil-suite-fin pointer-events-none absolute left-[30px] top-[-104px] hidden h-[111px] w-px desktop:block"
+          className="fil-suite fil-suite-fin pointer-events-none absolute left-[30px] top-[-88px] hidden h-[95px] w-px desktop:block"
         />
-        <div className="schema-entree flex flex-col gap-[20px] desktop:flex-row desktop:items-end desktop:justify-between" style={delai(0)}>
+        <div className="schema-entree flex flex-col gap-[10px] desktop:flex-row desktop:items-end desktop:justify-between" style={delai(0)}>
           <div>
             <p className="m-0 font-mono text-[12px] uppercase text-accent desktop:flex desktop:items-center desktop:gap-[10px] desktop:leading-[14px] desktop:before:h-px desktop:before:w-[28px] desktop:before:bg-accent/60 desktop:before:content-['']">
               {schema.eyebrow}
             </p>
-            <h2 className="m-0 mt-[10px] text-[clamp(34px,5vw,52px)] font-semibold leading-[1] tracking-[-0.05em] text-foreground">
+            <h2 className="m-0 mt-[8px] text-[clamp(30px,5vw,52px)] font-semibold leading-[1] tracking-[-0.05em] text-foreground">
               {schema.titre}
             </h2>
-            <p className="m-0 mt-[12px] max-w-[46ch] text-[15px] leading-[1.45] text-foreground-60">{schema.texte}</p>
+            <p className="m-0 mt-[6px] max-w-[46ch] tablet:mt-[8px] text-[15px] leading-[1.45] text-foreground-60">{schema.texte}</p>
           </div>
           <div
             role="tablist"
@@ -224,7 +227,7 @@ export function SchemaSection({ schema }: { schema: SchemaContent }) {
                   // neuves arrivent tout de suite.
                   if (section.current?.dataset.vu === "1") section.current.dataset.vu = "2";
                 }}
-                className={`rounded-[10px] px-[14px] py-[9px] text-[12px] font-semibold uppercase tracking-[-0.01em] transition-[color,background-color,transform] duration-200 ease-out motion-safe:active:scale-[0.97] ${
+                className={`rounded-[10px] px-[14px] py-[8px] text-[12px] font-semibold uppercase tracking-[-0.01em] transition-[color,background-color,transform] duration-200 ease-out motion-safe:active:scale-[0.97] ${
                   i === mode ? "bg-accent text-accent-ink" : "text-foreground-60 hover:text-foreground"
                 }`}
               >
@@ -239,7 +242,7 @@ export function SchemaSection({ schema }: { schema: SchemaContent }) {
           ref={plan}
           role="tabpanel"
           style={delai(140)}
-          className="schema-entree relative mt-[24px] desktop:overflow-hidden schema-cadre rounded-panel desktop:border desktop:border-white/10 desktop:p-[22px]"
+          className="schema-entree relative mt-[12px] desktop:mt-[20px] desktop:overflow-hidden schema-cadre rounded-panel desktop:border desktop:border-white/10 desktop:p-[18px]"
         >
           <svg aria-hidden className="pointer-events-none absolute inset-0 hidden h-full w-full desktop:block">
             {liens.map((d, i) => (
@@ -256,7 +259,7 @@ export function SchemaSection({ schema }: { schema: SchemaContent }) {
               </div>
             </div>
             <Descente />
-            <div ref={coeur} style={delai(380)} className="schema-entree rounded-card border border-accent/45 bg-surface-2 p-[16px]">
+            <div ref={coeur} style={delai(380)} className="schema-entree rounded-card border border-accent/45 bg-surface-2 p-[12px] desktop:p-[16px]">
               <div className="flex items-center justify-between">
                 <span className="text-[16px] font-semibold tracking-[-0.02em] text-foreground">{m.coeur}</span>
                 <span className="flex items-center gap-[6px] font-mono text-[10px] uppercase text-accent">
@@ -264,15 +267,15 @@ export function SchemaSection({ schema }: { schema: SchemaContent }) {
                   {m.etat}
                 </span>
               </div>
-              <p className="m-0 mt-[12px] min-h-[40px] text-[14px] leading-[1.4] text-foreground">
+              <p className="m-0 mt-[8px] min-h-[40px] desktop:mt-[12px] text-[14px] leading-[1.4] text-foreground">
                 <span aria-hidden className="text-accent">→ </span>
                 {m.actions[pas % m.actions.length]}
               </p>
-              <div className="mt-[12px] grid grid-cols-4 gap-[6px]">
+              <div className="mt-[8px] grid grid-cols-4 gap-[6px] desktop:mt-[12px]">
                 {m.etapes.map((e, i) => (
                   <span
                     key={e}
-                    className={`rounded-[8px] border py-[7px] text-center font-mono text-[10px] uppercase desktop:py-[6px] desktop:text-[9px] transition-colors duration-300 ${
+                    className={`rounded-[8px] border py-[5px] text-center font-mono text-[10px] uppercase desktop:py-[6px] desktop:text-[9px] transition-colors duration-300 ${
                       i <= etape ? "border-accent text-accent" : "border-white/10 text-foreground-60"
                     }`}
                   >
@@ -291,7 +294,7 @@ export function SchemaSection({ schema }: { schema: SchemaContent }) {
               </div>
             </div>
           </div>
-          <div className="relative mt-[20px] flex flex-col gap-[8px] border-t border-white/10 pt-[14px] font-mono desktop:mt-[16px] desktop:gap-[6px] desktop:border-0 desktop:pt-0 text-[10px] uppercase text-foreground-60 tablet:flex-row tablet:items-center tablet:justify-between">
+          <div className="relative mt-[12px] flex flex-col gap-[4px] border-t border-white/10 pt-[10px] font-mono desktop:mt-[14px] desktop:gap-[6px] desktop:border-0 desktop:pt-0 text-[10px] uppercase text-foreground-60 tablet:flex-row tablet:items-center tablet:justify-between">
             <span className="flex items-center gap-[6px]">
               <span aria-hidden className="h-[6px] w-[6px] rounded-full bg-accent" />
               {m.journal}

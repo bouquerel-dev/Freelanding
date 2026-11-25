@@ -23,6 +23,15 @@ describe("SchemaSection", () => {
     expect(html).toContain("desktop:before:w-[28px]");
   });
 
+  it("fait partir le fil du haut de la section, quel que soit son padding (compactée le 2026-11-25)", () => {
+    const haut = Number(html.match(/desktop:pt-\[(\d+)px\]/u)?.[1]);
+    expect(haut).toBe(88);
+    expect(html).toContain(`top-[-${haut}px]`);
+    const css = readFileSync(new URL("../../app/globals.css", import.meta.url), "utf8");
+    expect(css).toContain(`.fil-suite-fin { --fil: ${haut + 7}px;`);
+    expect(html).toContain(`h-[${haut + 7}px]`);
+  });
+
   it("partage le grain du héros sur ordinateur, sans toucher au téléphone", () => {
     expect(html).toContain("z-0 hidden desktop:block");
   });
@@ -67,7 +76,7 @@ describe("SchemaSection sur téléphone", () => {
     expect(html).toContain(schemaAccueil.arrive);
     expect(html).toContain(schemaAccueil.sort);
     expect(html.match(/schema-descente/gu)).toHaveLength(2);
-    expect(html).toMatch(/flex flex-col items-center py-\[6px\] desktop:hidden/u);
+    expect(html).toMatch(/flex flex-col items-center py-\[2px\] desktop:hidden/u);
   });
 
   it("ne tronque aucun texte de carte hors ordinateur", () => {
