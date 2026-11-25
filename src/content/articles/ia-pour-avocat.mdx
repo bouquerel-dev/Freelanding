@@ -1,0 +1,78 @@
+Un avocat peut confier à l’IA tout ce qui entoure le dossier sans toucher au raisonnement juridique : qualifier les demandes de premier contact, trier et nommer les pièces que le client envoie, dresser une chronologie à partir de ces pièces, rédiger le compte rendu d’un rendez-vous, préparer les relances. À une condition, qui tient au secret professionnel : ce qui identifie votre client ne sort pas du cabinet, et chaque texte produit est relu par vous avant de servir. La recherche de jurisprudence a ses outils d’éditeurs ; le temps qui vous échappe se perd souvent ailleurs, dans la messagerie.
+
+Je conçois et je branche ce type d’automatisation sur les outils du cabinet : messagerie, logiciel de gestion, espace de stockage des dossiers. Pendant [un appel en visio](/rdv?sujet=ia), montrez-moi le parcours d’une demande, du premier mail à l’ouverture du dossier : je vous dis ce qui peut se préparer seul.
+
+## Que couvre le secret professionnel quand vous utilisez une IA ?
+
+L’article 66-5 de la loi du 31 décembre 1971 couvre par le secret les consultations, les correspondances entre le client et son avocat, les notes d’entretien et, plus largement, toutes les pièces du dossier. Envoyer l’une d’elles, telle quelle, à un service d’IA qui la conserve ou s’en sert pour entraîner son modèle revient à la confier à un tiers.
+
+Le Conseil national des barreaux a adopté le 17 mars 2026 un [guide sur la déontologie et l’intelligence artificielle](https://cnb.avocat.fr/actualite/le-cnb-adopte-un-guide-sur-la-deontologie-et-l-intelligence-artificielle). Il rattache l’usage de ces outils aux principes de la profession : secret professionnel, respect du RGPD, compétence, prudence, indépendance, information du client. Concrètement, trois questions précèdent toute mise en place :
+
+- quelles données partent vers le modèle, et sous quelle forme ;
+- ce que le fournisseur en fait : conservation, réutilisation, lieu d’hébergement, et le contrat qui l’écrit ;
+- qui relit ce que l’outil produit avant que cela serve au client ou au juge.
+
+## Quelles tâches du cabinet l’IA peut-elle prendre ?
+
+| Tâche | Ce que l’IA prépare | Ce qui sort du cabinet | Qui valide |
+| --- | --- | --- | --- |
+| Premier contact (formulaire, mail, message vocal) | Un résumé, le domaine du droit, une date ou un délai cité, les pièces à demander | Le récit, noms et coordonnées masqués | Vous, avant de rappeler |
+| Pièces reçues du client | Chaque pièce nommée, datée, classée dans le dossier | Le texte de la pièce, masqué | Votre assistant ou votre collaborateur |
+| Chronologie des faits | Un tableau daté, chaque ligne renvoyant à sa pièce | Les pièces masquées | Vous |
+| Compte rendu de rendez-vous | Le compte rendu et la liste des suites à donner, depuis votre note dictée | La note masquée | Vous |
+| Relances de pièces ou d’honoraires | Le message, dans votre registre | Rien d’identifiant | Vous ou votre assistant |
+
+Le premier contact a une étape propre à la profession : la vérification des conflits d’intérêts. Elle ne passe jamais par le modèle. Le résumé préparé liste les parties citées par le demandeur sous leurs alias ; votre logiciel remet les vrais noms, sur vos serveurs, et les compare à vos dossiers ouverts et passés, par une recherche exacte sur les noms. Si une partie adverse est déjà votre client, la demande s’arrête là et vous le voyez avant de décrocher le téléphone.
+
+Aucune de ces tâches ne demande à l’IA de dire le droit. Chacune vous rend du temps sur une lecture ou une saisie que vous faites aujourd’hui vous-même, souvent tard.
+
+<Figure src="/images/blog/corps/ia-pour-avocat-1.jpg" alt="Des demandes à gauche entrent dans un tri qui les répartit en trois rangées à droite ; avant la sortie, toutes passent par un point vert unique" caption="Chaque demande est résumée et classée par domaine ; aucune ne reçoit de réponse sans passer par vous." />
+
+## Masquer avant d’envoyer : le montage que j’utilise pour mon activité
+
+Ce principe tourne déjà pour ma propre activité. Chaque mail qui arrive dans mes boîtes est classé à l’arrivée, rattaché à la fiche du bon client, et sa réponse est préparée en brouillon. Avant de partir vers le modèle de langage, le texte perd les noms et les coordonnées des personnes. Le coût est plafonné par jour dans le code, chaque décision est inscrite dans un journal, et rien ne part sans ma validation.
+
+Dans un cabinet, le même montage donne ceci : la table de correspondance entre « Client A » et le vrai nom reste sur vos serveurs, le modèle travaille sur un récit où Madame Martin devient « la cliente » et la SARL Durand « la société B ». Le compte ouvert chez le fournisseur du modèle est au nom du cabinet, sans réutilisation des données pour l’entraînement. Le journal vous dit, pour chaque pièce, ce qui est parti et ce qui est revenu.
+
+<Figure src="/images/blog/corps/ia-pour-avocat-2.jpg" alt="Un document aux lignes grises traverse une paroi verticale verte ; de l’autre côté, certains segments sont remplacés par des blocs pleins, puis le document revient intact à gauche" caption="Les noms restent du côté du cabinet : le modèle ne voit que le récit masqué, et le document revient complet chez vous." />
+
+## Vérifier ce que l’IA écrit
+
+En juin 2023, dans l’affaire Mata contre Avianca, un juge fédéral de New York a condamné deux avocats et leur cabinet à 5 000 dollars d’amende pour avoir cité devant lui des décisions inventées par un outil d’IA. Les décisions avaient l’air réelles : numéros, juridictions, extraits.
+
+Le montage que je décris tient compte de cette affaire. L’IA travaille sur vos pièces et sur ce que vous lui dictez, elle ne cite pas de jurisprudence et ne rédige pas de conclusions. Une chronologie renvoie chaque ligne à la pièce qui la fonde, ce qui la rend vérifiable en un clic. Les premières semaines, chaque résultat passe par votre relecture ; quand vous connaissez son taux d’erreur sur vos dossiers, vous décidez de ce qui peut partir seul, par exemple un accusé de réception de pièces.
+
+## Combien de temps les premiers contacts prennent-ils au cabinet ?
+
+Prenons un cabinet de trois avocats qui reçoit quinze demandes par semaine, par formulaire, par mail et par téléphone. L’exemple est inventé pour compter : les durées sont une hypothèse, à remplacer par les vôtres.
+
+| Par semaine | À la main | Avec le tri préparé |
+| --- | --- | --- |
+| Lire la demande, rappeler, décider de la suite | 15 minutes par demande | 5 minutes, résumé et pièces à demander déjà écrits |
+| Pour quinze demandes | 3 h 45 | 1 h 15 |
+
+Dans cet exemple, deux heures et demie reviennent chaque semaine. Une demande hors de vos domaines reçoit aussi plus vite une réponse courtoise qui l’oriente ailleurs, au lieu d’attendre dans la boîte.
+
+Le gain se voit aussi au premier rendez-vous. Une demande arrivée par le formulaire à 22 heures reçoit le lendemain matin, après votre relecture, la liste des pièces à apporter : le contrat de travail et les trois derniers bulletins pour un licenciement, le bail et l’état des lieux pour un litige locatif. Le client arrive avec son dossier, et l’heure passée ensemble sert au conseil plutôt qu’à l’inventaire.
+
+Je travaille seul, du cadrage à la mise en service, avec le soin d’une agence : vous parlez à celui qui écrit le code et règle le masquage. Le prix se fixe au devis et se paie une fois ; le modèle d’IA tourne sur un compte au nom du cabinet. La page [Automatisation et IA pour PME](/services/automatisation) décrit la démarche complète.
+
+## Par où commencer ?
+
+<Steps items={[
+  "**Choisissez une tâche** : le tri des premiers contacts ou le classement des pièces reçues. La première se mesure le plus vite.",
+  "**Gardez cinquante demandes récentes**, avec la suite que vous leur avez donnée : elles servent à mesurer le tri avant de lui confier quoi que ce soit.",
+  "**Relisez la politique de données** de l’outil que vous envisagez : conservation, entraînement, hébergement. Une réponse floue suffit à l’écarter.",
+  "**Réservez une heure en visio** et apportez une demande récente, anonymisée : nous la suivons ensemble jusqu’à l’ouverture du dossier, et je vous dis ce qu’un outil en ferait."
+]} />
+
+## Questions fréquentes
+
+**Faut-il informer le client que l’IA intervient sur son dossier ?**
+Le guide du CNB range l’information du client parmi les principes à respecter. Le plus simple est de le prévoir dans la convention d’honoraires, en disant quelles tâches sont préparées par un outil et relues par vous.
+
+**L’IA peut-elle rédiger une première version de conclusions ?**
+Ce montage ne le fait pas : la rédaction juridique demande une recherche que l’outil peut inventer. Il prépare la chronologie et le tableau des pièces sur lesquels vous rédigez.
+
+**Le notariat peut-il utiliser le même montage ?**
+Oui pour le tri des demandes, le classement des pièces et les relances. Les actes eux-mêmes restent dans les outils de la profession.
