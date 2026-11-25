@@ -36,9 +36,15 @@ validation vaut feu vert** : personne n'a de PR à ouvrir ni de bouton à pousse
 
 ### Ce qui se passe après la validation
 
-Le travail planifié `.github/workflows/publier-article.yml` tourne du lundi au
-vendredi, chaque heure de 8 h à 18 h (heure de Paris en été), sur un runner
-hébergé par GitHub, gratuit pour un dépôt public. Il lance
+Le travail `.github/workflows/publier-article.yml` tourne tous les jours, chaque
+heure de 8 h à 18 h à Paris, sur un runner hébergé par GitHub, gratuit pour un
+dépôt public. Le cron de GitHub seul ne passait qu'une ou deux fois par jour,
+souvent des heures en retard (novembre 2026) : le Mac d'Eliott le lance donc
+chaque heure à 5 par `workflow_dispatch` (job launchd
+`fr.eliottbouquerel.blog-publication-relais`, source
+`~/ai-config/core/scripts/blog-publication-relais.ts`, journal
+`~/Library/Logs/blog-publication-relais.log`) ; le cron reste en filet quand le
+Mac dort. Il lance
 `bun scripts/publier-articles.ts --auto` (`scripts/publication.ts`), qui :
 
 1. marque « Publié » au cockpit tout article récent du registre, et toute page
