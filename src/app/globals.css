@@ -1091,7 +1091,19 @@ html[data-consent-choisi] [data-consent-attente] {
   animation: schema-flux 1.2s linear infinite;
 }
 @keyframes schema-flux { to { stroke-dashoffset: -20; } }
-@media (prefers-reduced-motion: reduce) { .schema-lien { animation: none; } }
+/* Sur téléphone, le même flux descend d'un bloc au suivant. Les tirets
+   glissent en `transform` sur un pseudo-élément plus haut que le fil, pour ne
+   rien repeindre. */
+.schema-descente { position: relative; overflow: hidden; }
+.schema-descente::before {
+  content: "";
+  position: absolute;
+  inset: -10px 0 0;
+  background: repeating-linear-gradient(to bottom, color-mix(in oklab, var(--accent) 55%, transparent) 0 4px, transparent 4px 10px);
+  animation: schema-descente 1.2s linear infinite;
+}
+@keyframes schema-descente { to { transform: translateY(10px); } }
+@media (prefers-reduced-motion: reduce) { .schema-lien, .schema-descente::before { animation: none; } }
 
 /* Encadré blanc de « Moi, c'est Eliott » (2026-11-24) : il se pose en montant
    et en se dépliant légèrement quand il entre à l'écran. Sans prise en charge
@@ -1319,6 +1331,7 @@ html[data-consent-choisi] [data-consent-attente] {
 [data-ambiance="pause"] .amb-halo,
 [data-ambiance="pause"] .fil-suite::after,
 [data-schema="pause"] .schema-lien,
+[data-schema="pause"] .schema-descente::before,
 [data-schema="pause"] .fil-suite::after {
   animation-play-state: paused;
 }
@@ -1368,9 +1381,11 @@ html[data-consent-choisi] [data-consent-attente] {
 /* Cadre du schéma « Ce que je construis » : plus de trame de points. Une
    lueur volt très basse sous le cœur et un reflet en haut du cadre, le grain
    de la section fait le reste. */
-.schema-cadre {
-  background:
-    radial-gradient(ellipse 50% 60% at 50% 46%, color-mix(in oklab, var(--accent) 7%, transparent), transparent 75%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0) 40%);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+@media (min-width: 1200px) {
+  .schema-cadre {
+    background:
+      radial-gradient(ellipse 50% 60% at 50% 46%, color-mix(in oklab, var(--accent) 7%, transparent), transparent 75%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0) 40%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
 }
