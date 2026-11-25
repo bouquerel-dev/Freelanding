@@ -12,7 +12,7 @@ export const TRAME_MAX_MS = 1400;
 /**
  * PORTRAIT COULEUR DU HÉROS, TOUTES TAILLES (2026-11-24 : Eliott veut la vraie
  * photo sur téléphone aussi). La photo détourée par
- * `scripts/detourer-portrait.mjs` est peinte dans une toile plutôt qu'en
+ * `scripts/detourer-portrait.py` est peinte dans une toile plutôt qu'en
  * `<img>` : une toile n'est jamais candidate au LCP, qui reste le titre.
  *
  * L'ARRIVÉE. La trame (`VisageTrame`, petite image de 8 ko) naît d'abord ;

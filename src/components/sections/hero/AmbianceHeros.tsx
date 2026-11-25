@@ -94,9 +94,14 @@ export function AmbianceHeros() {
       pos.x += (cible.x - pos.x) * AMORTI;
       pos.y += (cible.y - pos.y) * AMORTI;
       presence += ((dedans ? 1 : 0) - presence) * 0.06;
-      if (visage && dedans) {
+      // La lampe s'ouvre et se referme avec la présence : rayon de 0 à
+      // 170 px, au lieu d'apparaître ou de s'éteindre d'un coup.
+      if (visage && (dedans || presence > 0.02)) {
         visage.style.setProperty("--lx", `${pos.x - decalage.x}px`);
         visage.style.setProperty("--ly", `${pos.y - decalage.y}px`);
+        visage.style.setProperty("--lr", `${Math.round(presence * 170)}px`);
+      } else if (visage?.style.getPropertyValue("--lx")) {
+        for (const v of ["--lx", "--ly", "--lr"]) visage.style.removeProperty(v);
       }
 
       const temps = immobile ? 0 : (maintenant - debut) / 1000;
@@ -142,12 +147,16 @@ export function AmbianceHeros() {
     const suivre = (e: PointerEvent) => {
       if (!ordinateur.matches) return;
       const b = r.getBoundingClientRect();
-      cible.x = e.clientX - b.left;
-      cible.y = e.clientY - b.top;
+      // Grand écran : la page est zoomée (`--zoom-ecran`), la souris et les
+      // boîtes parlent en pixels d'écran, la toile et la lampe en pixels CSS.
+      // Sans cette division, la lampe partait loin de la souris.
+      const zoom = r.offsetWidth ? b.width / r.offsetWidth : 1;
+      cible.x = (e.clientX - b.left) / zoom;
+      cible.y = (e.clientY - b.top) / zoom;
       if (visage) {
         const v = visage.getBoundingClientRect();
-        decalage.x = v.left - b.left;
-        decalage.y = v.top - b.top;
+        decalage.x = (v.left - b.left) / zoom;
+        decalage.y = (v.top - b.top) / zoom;
       }
       if (!dedans) {
         // Première entrée : la lampe naît sous la souris, sans traverser l'écran.
@@ -161,8 +170,8 @@ export function AmbianceHeros() {
     const quitter = () => {
       dedans = false;
       section.dataset.pointeur = "";
-      visage?.style.removeProperty("--lx");
-      visage?.style.removeProperty("--ly");
+      // La lampe se referme en quelques images (voir `presence`).
+      relancer();
     };
     const obs = new IntersectionObserver(([entree]) => {
       visible = entree?.isIntersecting ?? true;

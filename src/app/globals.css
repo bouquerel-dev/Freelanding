@@ -1134,7 +1134,8 @@ html[data-consent-choisi] [data-consent-attente] {
      - `photo` : la photo arrive, du flou au net, depuis le visage ; la trame
        s'efface au même rythme ;
      - `lampe` : la trame ne revient que sous la lampe de la souris (ordinateur,
-       `--lx` et `--ly` posés par AmbianceHeros). Au doigt, elle reste éteinte.
+       `--lx`, `--ly` et le rayon `--lr`, qui s'ouvre et se referme, posés par
+       AmbianceHeros). Au doigt, elle reste éteinte.
    Bas de la photo et de la trame fondu de la même façon : aucun bord.
    --------------------------------------------------------------------------- */
 /* Avant le script : une lueur volt à la place du visage, qui respire, pour
@@ -1185,11 +1186,11 @@ html[data-consent-choisi] [data-consent-attente] {
     opacity: 1;
     transition: none;
     -webkit-mask-image:
-      radial-gradient(circle 170px at var(--lx, -400px) var(--ly, -400px), #000 30%, transparent 100%),
+      radial-gradient(circle max(var(--lr, 170px), 1px) at var(--lx, -400px) var(--ly, -400px), #000 30%, transparent 100%),
       linear-gradient(to bottom, #000 62%, transparent 82%);
     -webkit-mask-composite: source-in;
     mask-image:
-      radial-gradient(circle 170px at var(--lx, -400px) var(--ly, -400px), #000 30%, transparent 100%),
+      radial-gradient(circle max(var(--lr, 170px), 1px) at var(--lx, -400px) var(--ly, -400px), #000 30%, transparent 100%),
       linear-gradient(to bottom, #000 62%, transparent 82%);
     mask-composite: intersect;
   }
