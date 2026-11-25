@@ -51,6 +51,42 @@ describe("SchemaSection", () => {
 });
 
 /*
+ * Téléphone (2026-11-25) : le schéma se lit de haut en bas. Ce qui arrive,
+ * le fil, le cœur, le fil, ce qui en sort ; ordinateur inchangé.
+ */
+describe("SchemaSection sur téléphone", () => {
+  it("tient les trois onglets sur une ligne, libellé court, nom complet pour les lecteurs d'écran", () => {
+    expect(html).toContain("grid w-full grid-cols-3");
+    for (const m of schemaAccueil.modes) {
+      expect(html).toContain(`aria-label="${m.onglet}"`);
+      expect(html).toContain(`<span class="tablet:hidden">${m.ongletCourt}</span>`);
+    }
+  });
+
+  it("titre les deux colonnes et les relie au cœur par un fil, cachés sur ordinateur", () => {
+    expect(html).toContain(schemaAccueil.arrive);
+    expect(html).toContain(schemaAccueil.sort);
+    expect(html.match(/schema-descente/gu)).toHaveLength(2);
+    expect(html).toMatch(/flex flex-col items-center py-\[6px\] desktop:hidden/u);
+  });
+
+  it("ne tronque aucun texte de carte hors ordinateur", () => {
+    expect(html).not.toMatch(/class="[^"]*(?<!desktop:)\btruncate\b/u);
+    expect(html).toContain("desktop:truncate");
+  });
+
+  it("garde sur ordinateur la carte à deux colonnes et le badge « fait » posé en coin", () => {
+    expect(html).toContain("desktop:grid-cols-[auto_minmax(0,1fr)]");
+    expect(html).toMatch(/desktop:absolute desktop:col-auto desktop:row-auto/u);
+  });
+
+  it("met en avant une entrée et une sortie à la fois", () => {
+    expect(html.match(/bg-white\/\[0\.035\]/gu)).toHaveLength(1);
+    expect(html.match(/bg-accent\/\[0\.06\]/gu)).toHaveLength(1);
+  });
+});
+
+/*
  * Squircles (2026-11-24) : une seule règle globale, sous `@supports`, qui
  * laisse les ronds et les pilules en arc de cercle.
  */

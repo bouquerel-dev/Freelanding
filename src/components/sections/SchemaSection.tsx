@@ -24,6 +24,9 @@ import type { NoeudSchema, SchemaContent } from "@/content/schema";
  */
 
 const PAS_MS = 1400;
+/** Colonne d'entrées ou de sorties : une liste groupée sur téléphone, des cartes séparées sur ordinateur. */
+const COLONNE =
+  "grid divide-y divide-white/[0.07] overflow-hidden rounded-card border border-white/10 bg-surface-1 desktop:gap-[10px] desktop:divide-y-0 desktop:overflow-visible desktop:rounded-none desktop:border-0 desktop:bg-transparent";
 /** Durée de la cascade d'entrée : dernier décalage (680 ms) plus l'animation (760 ms). */
 const CASCADE_MS = 1500;
 
@@ -32,32 +35,71 @@ function delai(ms: number) {
   return { "--d": `${ms}ms` } as CSSProperties;
 }
 
-function Noeud({ noeud, actif, fait, ordre }: { noeud: NoeudSchema; actif?: boolean; fait: string; ordre: number }) {
+function Noeud({
+  noeud,
+  actif,
+  entre,
+  fait,
+  ordre,
+}: {
+  noeud: NoeudSchema;
+  /** Sortie atteinte : allumée partout, marquée « fait ». */
+  actif?: boolean;
+  /** Entrée en cours de traitement : allumée sur téléphone seulement. */
+  entre?: boolean;
+  fait: string;
+  ordre: number;
+}) {
+  // Sur téléphone, une ligne d'une liste groupée ; sur ordinateur, une carte
+  // à part que les liens SVG viennent chercher.
   return (
     <div
       data-noeud
       style={delai(260 + ordre * 60)}
-      className={`schema-entree relative grid grid-cols-[auto_minmax(0,1fr)] items-center gap-x-[10px] rounded-control border bg-surface-1 px-[12px] py-[10px] text-left transition-colors duration-300 ${
-        actif ? "border-accent/70" : "border-white/10"
+      className={`schema-entree relative grid grid-cols-[auto_minmax(0,1fr)_auto] items-center desktop:grid-cols-[auto_minmax(0,1fr)] gap-x-[12px] px-[14px] py-[12px] text-left transition-colors duration-300 desktop:gap-x-[10px] desktop:rounded-control desktop:border desktop:bg-surface-1 desktop:px-[12px] desktop:py-[10px] ${
+        actif ? "bg-accent/[0.06] desktop:border-accent/70" : entre ? "bg-white/[0.035] desktop:bg-surface-1 desktop:border-white/10" : "desktop:border-white/10"
       }`}
     >
       <span
         aria-hidden
-        className="row-span-2 grid h-[30px] w-[30px] place-items-center rounded-[9px] border border-white/10 text-[13px] text-foreground-60"
+        className={`row-span-2 grid h-[30px] w-[30px] place-items-center rounded-[9px] border text-[13px] transition-colors duration-300 ${
+          actif || entre
+            ? "border-accent/60 text-accent desktop:border-white/10 desktop:text-foreground-60"
+            : "border-white/10 text-foreground-60"
+        }`}
       >
         {noeud.icone}
       </span>
-      <span className="truncate text-[14px] font-semibold leading-[1.2] tracking-[-0.02em] text-foreground">
+      <span className="text-[14px] font-semibold leading-[1.25] tracking-[-0.02em] text-foreground desktop:truncate desktop:leading-[1.2]">
         {noeud.titre}
       </span>
-      <span className="truncate font-mono text-[10px] uppercase leading-[1.4] text-foreground-60">
+      <span className="col-start-2 font-mono text-[10px] uppercase leading-[1.4] text-foreground-60 desktop:truncate">
         {noeud.detail}
       </span>
       {actif ? (
-        <span className="absolute right-[10px] top-[8px] font-mono text-[9px] uppercase text-accent">{fait}</span>
+        <span className="col-start-3 row-span-2 row-start-1 self-center font-mono text-[10px] uppercase text-accent desktop:absolute desktop:col-auto desktop:row-auto desktop:self-auto desktop:right-[10px] desktop:top-[8px] desktop:text-[9px]">
+          {fait}
+        </span>
       ) : null}
     </div>
   );
+}
+
+/** Sur téléphone, le fil qui descend d'un bloc au suivant. */
+function Descente() {
+  return (
+    <div aria-hidden className="flex flex-col items-center py-[6px] desktop:hidden">
+      <span className="schema-descente h-[26px] w-px" />
+      <svg width="10" height="6" viewBox="0 0 10 6" className="text-accent/70">
+        <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    </div>
+  );
+}
+
+/** Titre d'une colonne, lu seulement sur téléphone. */
+function TitreColonne({ children }: { children: string }) {
+  return <p className="m-0 mb-[8px] px-[2px] font-mono text-[11px] uppercase text-foreground-60 desktop:hidden">{children}</p>;
 }
 
 export function SchemaSection({ schema }: { schema: SchemaContent }) {
@@ -137,6 +179,7 @@ export function SchemaSection({ schema }: { schema: SchemaContent }) {
   if (!m) return null;
   const etape = pas % m.etapes.length;
   const sortie = pas % m.sorties.length;
+  const entree = pas % m.entrees.length;
 
   return (
     <section
@@ -162,12 +205,17 @@ export function SchemaSection({ schema }: { schema: SchemaContent }) {
             </h2>
             <p className="m-0 mt-[12px] max-w-[46ch] text-[15px] leading-[1.45] text-foreground-60">{schema.texte}</p>
           </div>
-          <div role="tablist" aria-label={schema.eyebrow} className="flex w-max gap-[4px] rounded-control border border-white/10 p-[4px]">
+          <div
+            role="tablist"
+            aria-label={schema.eyebrow}
+            className="grid w-full grid-cols-3 gap-[4px] rounded-control border border-white/10 p-[4px] tablet:flex tablet:w-max"
+          >
             {schema.modes.map((x, i) => (
               <button
                 key={x.id}
                 type="button"
                 role="tab"
+                aria-label={x.onglet}
                 aria-selected={i === mode}
                 onClick={() => {
                   setMode(i);
@@ -176,11 +224,12 @@ export function SchemaSection({ schema }: { schema: SchemaContent }) {
                   // neuves arrivent tout de suite.
                   if (section.current?.dataset.vu === "1") section.current.dataset.vu = "2";
                 }}
-                className={`rounded-[10px] px-[14px] py-[9px] text-[12px] font-semibold uppercase tracking-[-0.01em] transition-colors duration-200 ${
+                className={`rounded-[10px] px-[14px] py-[9px] text-[12px] font-semibold uppercase tracking-[-0.01em] transition-[color,background-color,transform] duration-200 ease-out motion-safe:active:scale-[0.97] ${
                   i === mode ? "bg-accent text-accent-ink" : "text-foreground-60 hover:text-foreground"
                 }`}
               >
-                {x.onglet}
+                <span className="tablet:hidden">{x.ongletCourt}</span>
+                <span className="hidden tablet:inline">{x.onglet}</span>
               </button>
             ))}
           </div>
@@ -190,19 +239,23 @@ export function SchemaSection({ schema }: { schema: SchemaContent }) {
           ref={plan}
           role="tabpanel"
           style={delai(140)}
-          className="schema-entree relative mt-[24px] overflow-hidden schema-cadre rounded-panel border border-white/10 p-[16px] tablet:p-[22px]"
+          className="schema-entree relative mt-[24px] desktop:overflow-hidden schema-cadre rounded-panel desktop:border desktop:border-white/10 desktop:p-[22px]"
         >
           <svg aria-hidden className="pointer-events-none absolute inset-0 hidden h-full w-full desktop:block">
             {liens.map((d, i) => (
               <path key={i} d={d} className="schema-lien" fill="none" stroke="currentColor" />
             ))}
           </svg>
-          <div className="relative grid gap-[14px] desktop:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)_minmax(0,1fr)] desktop:items-center desktop:gap-[72px]">
-            <div data-colonne="entrees" className="grid gap-[10px]">
-              {m.entrees.map((n, i) => (
-                <Noeud key={n.titre} noeud={n} fait={schema.fait} ordre={i} />
-              ))}
+          <div className="relative grid desktop:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)_minmax(0,1fr)] desktop:items-center desktop:gap-[72px]">
+            <div>
+              <TitreColonne>{schema.arrive}</TitreColonne>
+              <div data-colonne="entrees" className={COLONNE}>
+                {m.entrees.map((n, i) => (
+                  <Noeud key={n.titre} noeud={n} entre={i === entree} fait={schema.fait} ordre={i} />
+                ))}
+              </div>
             </div>
+            <Descente />
             <div ref={coeur} style={delai(380)} className="schema-entree rounded-card border border-accent/45 bg-surface-2 p-[16px]">
               <div className="flex items-center justify-between">
                 <span className="text-[16px] font-semibold tracking-[-0.02em] text-foreground">{m.coeur}</span>
@@ -219,7 +272,7 @@ export function SchemaSection({ schema }: { schema: SchemaContent }) {
                 {m.etapes.map((e, i) => (
                   <span
                     key={e}
-                    className={`rounded-[8px] border py-[6px] text-center font-mono text-[9px] uppercase transition-colors duration-300 ${
+                    className={`rounded-[8px] border py-[7px] text-center font-mono text-[10px] uppercase desktop:py-[6px] desktop:text-[9px] transition-colors duration-300 ${
                       i <= etape ? "border-accent text-accent" : "border-white/10 text-foreground-60"
                     }`}
                   >
@@ -228,20 +281,24 @@ export function SchemaSection({ schema }: { schema: SchemaContent }) {
                 ))}
               </div>
             </div>
-            <div data-colonne="sorties" className="grid gap-[10px]">
-              {m.sorties.map((n, i) => (
-                <Noeud key={n.titre} noeud={n} actif={i === sortie} fait={schema.fait} ordre={i + 4} />
-              ))}
+            <Descente />
+            <div>
+              <TitreColonne>{schema.sort}</TitreColonne>
+              <div data-colonne="sorties" className={COLONNE}>
+                {m.sorties.map((n, i) => (
+                  <Noeud key={n.titre} noeud={n} actif={i === sortie} fait={schema.fait} ordre={i + 4} />
+                ))}
+              </div>
             </div>
           </div>
-          <div className="relative mt-[16px] flex flex-col gap-[6px] font-mono text-[10px] uppercase text-foreground-60 tablet:flex-row tablet:items-center tablet:justify-between">
+          <div className="relative mt-[20px] flex flex-col gap-[8px] border-t border-white/10 pt-[14px] font-mono desktop:mt-[16px] desktop:gap-[6px] desktop:border-0 desktop:pt-0 text-[10px] uppercase text-foreground-60 tablet:flex-row tablet:items-center tablet:justify-between">
             <span className="flex items-center gap-[6px]">
               <span aria-hidden className="h-[6px] w-[6px] rounded-full bg-accent" />
               {m.journal}
             </span>
-            <span className="flex gap-[16px]">
+            <span className="flex flex-wrap items-center gap-x-[16px] gap-y-[6px]">
               {m.chiffres.map(([k, v]) => (
-                <span key={k}>
+                <span key={k} className="whitespace-nowrap">
                   {k} <b className="font-medium text-foreground">{v}</b>
                 </span>
               ))}

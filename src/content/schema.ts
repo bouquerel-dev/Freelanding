@@ -16,6 +16,8 @@ export interface NoeudSchema {
 export interface ModeSchema {
   readonly id: "ia" | "site" | "logiciel";
   readonly onglet: string;
+  /** Libellé de l'onglet sur téléphone, où les trois tiennent sur une ligne. */
+  readonly ongletCourt: string;
   readonly coeur: string;
   readonly etat: string;
   readonly etapes: readonly string[];
@@ -32,6 +34,9 @@ export interface SchemaContent {
   readonly texte: string;
   readonly mention: string;
   readonly fait: string;
+  /** Titres des deux colonnes, lus sur téléphone où le schéma se lit de haut en bas. */
+  readonly arrive: string;
+  readonly sort: string;
   readonly modes: readonly ModeSchema[];
 }
 
@@ -41,10 +46,13 @@ export const schemaAccueil: SchemaContent = {
   texte: "Choisissez ce que vous voulez améliorer. Le schéma suit une demande, de son arrivée jusqu’au résultat.",
   mention: "Exemple",
   fait: "fait",
+  arrive: "Ce qui arrive",
+  sort: "Ce qui en sort",
   modes: [
     {
       id: "site",
       onglet: "Site internet",
+      ongletCourt: "Site",
       coeur: "Votre site",
       etat: "en ligne",
       etapes: ["Trouvé", "Compris", "Rassuré", "Contacté"],
@@ -68,6 +76,7 @@ export const schemaAccueil: SchemaContent = {
     {
       id: "logiciel",
       onglet: "Logiciel métier",
+      ongletCourt: "Logiciel",
       coeur: "Votre logiciel",
       etat: "à jour",
       etapes: ["Saisi", "Planifié", "Livré", "Facturé"],
@@ -91,6 +100,7 @@ export const schemaAccueil: SchemaContent = {
     {
       id: "ia",
       onglet: "Intégration d’IA",
+      ongletCourt: "IA",
       coeur: "Assistant IA",
       etat: "en marche",
       etapes: ["Lit", "Comprend", "Rédige", "Accord"],
