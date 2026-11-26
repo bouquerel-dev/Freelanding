@@ -228,7 +228,8 @@ export const legalDocuments: readonly LegalDocument[] = [
     title: "Politique de confidentialité",
     summary:
       "Ce que je collecte, pourquoi, combien de temps, et comment reprendre la main. Sans brouillard.",
-    lastUpdated,
+    // Section 10 (API YouTube) ajoutée le 2026-11-26 pour l’audit Google du cockpit.
+    lastUpdated: "2026-11-26",
     body: [
       { type: "heading", level: 2, text: "1. Qui traite vos données" },
       {
@@ -411,17 +412,54 @@ export const legalDocuments: readonly LegalDocument[] = [
         type: "paragraph",
         text: "Si ma réponse ne vous satisfait pas, ou si vous préférez ne pas passer par moi, vous avez le droit d’introduire une réclamation auprès de la Commission nationale de l’informatique et des libertés (CNIL), 3 place de Fontenoy, TSA 80715, 75334 Paris Cedex 07, ou en ligne sur www.cnil.fr.",
       },
-      { type: "heading", level: 2, text: "10. Liens vers d’autres sites" },
+      { type: "heading", level: 2, text: "10. Mes vidéos YouTube et les services d’API YouTube" },
+      {
+        type: "paragraph",
+        text: "Je publie mes propres vidéos sur ma chaîne YouTube « Eliott BOUQUEREL » depuis un outil interne, le cockpit (admin.eliottbouquerel.fr). Il utilise les services d’API YouTube. J’en suis le seul utilisateur : il n’est ni vendu ni ouvert à quelqu’un d’autre.",
+      },
+      { type: "heading", level: 3, text: "10.1 Ce que le cockpit reçoit de Google" },
+      {
+        type: "paragraph",
+        text: "Quand je connecte ma chaîne, Google délivre au cockpit un jeton d’accès et un jeton de renouvellement, avec un seul droit : envoyer des vidéos (portée youtube.upload). Pour chaque vidéo envoyée, le cockpit garde l’identifiant et l’adresse que YouTube lui donne.",
+      },
+      {
+        type: "paragraph",
+        text: "Le cockpit ne lit ni les vidéos, ni les commentaires, ni les statistiques, ni les abonnés de la chaîne. Il n’accède à aucune autre donnée du compte Google.",
+      },
+      { type: "heading", level: 3, text: "10.2 Usage, conservation, partage" },
+      {
+        type: "paragraph",
+        text: "Ces données servent à envoyer sur ma chaîne les vidéos que j’ai validées, puis à retrouver chacune une fois en ligne. Les jetons restent dans la base de données du cockpit, sur mon serveur en France, jamais dans un journal. Rien n’est vendu ni partagé, rien ne sert à la publicité.",
+      },
+      {
+        type: "paragraph",
+        text: "Côté navigateur, la connexion à Google pose un seul cookie technique, pendant dix minutes, pour vérifier que la réponse de Google correspond bien à ma demande.",
+      },
+      { type: "heading", level: 3, text: "10.3 Retirer l’accès et effacer les données" },
+      {
+        type: "paragraph",
+        text: "L’accès se retire à tout moment dans les autorisations du compte Google : https://myaccount.google.com/permissions. Le jeton cesse alors de fonctionner. Sur demande à l’adresse en fin de page, les jetons et les identifiants de vidéos enregistrés sont effacés du cockpit sous 30 jours.",
+      },
+      { type: "heading", level: 3, text: "10.4 Règles de Google et conditions d’utilisation" },
+      {
+        type: "paragraph",
+        text: "Les données transmises à Google suivent les Règles de confidentialité de Google : https://policies.google.com/privacy.",
+      },
+      {
+        type: "paragraph",
+        text: "Le cockpit est un outil privé. Qui s’y connecte accepte les Conditions d’utilisation de YouTube (https://www.youtube.com/t/terms) et n’envoie que des vidéos dont il détient les droits, sur une chaîne qu’il contrôle.",
+      },
+      { type: "heading", level: 2, text: "11. Liens vers d’autres sites" },
       {
         type: "paragraph",
         text: "Certains liens mènent hors de ce site. Ce qui s’y passe échappe à cette politique : lisez la leur avant de leur confier quoi que ce soit.",
       },
-      { type: "heading", level: 2, text: "11. Mises à jour" },
+      { type: "heading", level: 2, text: "12. Mises à jour" },
       {
         type: "paragraph",
         text: "Cette politique change quand le site, mes outils ou la réglementation changent. La date de dernière mise à jour figure en tête de page. Si une modification touche à ce que vous avez consenti, la question vous est reposée.",
       },
-      { type: "heading", level: 2, text: "12. Me joindre" },
+      { type: "heading", level: 2, text: "13. Me joindre" },
       {
         type: "paragraph",
         text: "Pour une question sur cette politique ou pour exercer un droit :",
