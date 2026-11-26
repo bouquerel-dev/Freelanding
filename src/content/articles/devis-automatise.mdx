@@ -1,0 +1,101 @@
+Un devis automatisé part de la demande de votre client et vous rend un devis chiffré, prêt à relire : les lignes viennent de votre catalogue, les prix et les remises sortent de vos règles de calcul, la numérotation et les mentions sont en place, et la relance est déjà programmée. Votre travail se réduit à vérifier et à envoyer. Un tableur Excel bien construit fait une partie de ce chemin avec des formules. Il cède quand plusieurs personnes chiffrent, quand un tarif fournisseur change, et quand il faut savoir quels devis ont été signés.
+
+Je conçois et je branche seul ces outils pour des PME, du cadrage à la mise en service. Si vos devis se font encore en copiant le précédent, [prenons un appel en visio](/rdv?sujet=ia) : montrez-moi vos trois derniers, je vous dis ce qu’un outil peut calculer à votre place.
+
+## Pourquoi le devis Excel finit-il par coûter cher ?
+
+Le fichier de devis a souvent commencé comme une bonne idée : un modèle propre, quelques formules, le logo en haut. Les problèmes arrivent avec le volume.
+
+- **Le devis se fait en copiant le dernier.** Le prix d’une ligne reste celui d’il y a six mois, et personne ne le voit avant la facture fournisseur.
+- **Le tarif vit dans plusieurs fichiers.** Quand le fournisseur augmente un article, il faut penser à corriger chaque modèle, sur chaque poste.
+- **La numérotation se tient à la main.** Deux devis portent le même numéro, ou un numéro manque, et la comptabilité pose la question.
+- **Personne ne sait où en est un devis.** Envoyé, relancé, signé, perdu : l’information est dans la boîte mail de celui qui l’a envoyé.
+- **Le devis signé se ressaisit.** La commande, puis la facture, reprennent les mêmes lignes, tapées une deuxième et une troisième fois.
+
+Chacun de ces défauts coûte quelques minutes. Ensemble, ils coûtent surtout du délai, et un client qui attend son devis trois jours en demande un autre ailleurs.
+
+## Que fait un devis automatisé, étape par étape ?
+
+<Steps items={[
+  "**La demande arrive** par mail, par le formulaire de votre site ou après un appel.",
+  "**L’IA la lit** et en tire ce qui compte pour chiffrer : produits ou prestations, quantités, dimensions, options, date souhaitée.",
+  "**La grille calcule** à partir de votre catalogue et de vos règles : prix, remises par volume, minimum de commande, frais de livraison.",
+  "**Le devis se génère** à votre en-tête, numéroté, avec ses mentions et sa durée de validité.",
+  "**Vous relisez et envoyez**, en corrigeant une ligne si besoin.",
+  "**La relance part seule** quelques jours plus tard si le client n’a pas répondu, et le devis signé devient commande puis facture sans ressaisie."
+]} />
+
+<Figure src="/images/blog/corps/devis-automatise-1.jpg" alt="Une chaîne de six maillons de gauche à droite ; le cinquième maillon est cerclé de vert et marqué d’une coche, une flèche en boucle part du sixième et revient vers le cinquième" caption="De la demande à la facture, une seule étape demande une personne : la relecture avant l’envoi ; la relance revient seule si le client se tait." />
+
+L’étape 4 règle la plupart des défauts du tableur : le catalogue existe en un seul endroit, la numérotation se fait seule, et chaque devis garde son statut.
+
+## Pourquoi l’IA ne doit-elle jamais calculer le prix ?
+
+Le site sur lequel vous lisez cet article a [un outil d’estimation](/estimation) que j’ai construit sur ce principe. Vous répondez à quatre questions et décrivez votre projet en quelques lignes. Un modèle de langage lit la description et en tire des éléments comptables : combien de processus à informatiser, combien d’outils à relier, combien de personnes qui se connectent, combien de tâches confiées à une IA. Il ne voit jamais un prix. C’est une grille fixe, écrite en code, qui transforme ces éléments en fourchette.
+
+J’ai fait ce choix pour trois raisons, qui valent pour vos devis :
+
+- **La même demande donne le même prix.** Un modèle de langage peut formuler deux réponses différentes à la même question ; une grille, non.
+- **Le calcul se vérifie.** Quand un client conteste une ligne, vous retrouvez la règle qui l’a produite.
+- **L’outil marche sans l’IA.** Si le modèle ne répond pas, mon outil se rabat sur les seules réponses aux questions et donne une fourchette plus large. Chez vous, le commercial saisit les quantités à la main et la grille calcule pareil.
+
+<Figure src="/images/blog/corps/devis-automatise-2.jpg" alt="Des lignes de texte grises entrent dans un entonnoir ; une paroi verte percée d’une fente laisse passer quatre petits carrés vers une grille régulière, qui sort une barre" caption="L’IA lit la demande et n’en laisse passer que des éléments comptés ; le prix sort d’une grille fixe, que le modèle ne voit jamais." />
+
+## Combien de temps un devis automatisé vous rend-il ?
+
+Prenons une entreprise qui envoie 12 devis par semaine. L’exemple est construit pour le calcul, à remplacer par vos chiffres.
+
+| | Devis Excel | Devis automatisé |
+| --- | --- | --- |
+| Relire la demande, noter les quantités | 10 min | 0 min, l’IA le prépare |
+| Retrouver les prix et les remises | 15 min | 0 min, la grille calcule |
+| Mettre en forme, numéroter, exporter en PDF | 10 min | 0 min |
+| Relire et envoyer | 5 min | 8 min |
+| Relancer, suivre la signature | 5 min | 0 min |
+| Par devis | 45 min | 8 min |
+| Par semaine, pour 12 devis | 9 h | 1 h 36 |
+
+Plus de 7 heures reviennent chaque semaine à la personne qui chiffre. Le devis part le jour de la demande, et c’est souvent là que se joue la signature.
+
+## Que doit contenir un devis, automatisé ou non ?
+
+Un devis signé par votre client forme le contrat : c’est la rencontre d’une offre et d’une acceptation que décrit l’article 1113 du Code civil. Le prix écrit vous engage donc, et une erreur de formule se paie. Un devis porte au minimum la date, sa durée de validité, l’identité des deux parties, le détail des produits ou prestations avec leur prix unitaire et leur quantité, le total hors taxes, la TVA et le total toutes taxes comprises. Certaines activités imposent un devis et des mentions propres à leur métier : la grille les place sur chaque devis, sans qu’on ait à s’en souvenir.
+
+## Excel amélioré, logiciel de devis ou outil branché sur vos règles ?
+
+| Critère | Excel avec macros | Logiciel de devis par abonnement | Outil construit sur vos règles |
+| --- | --- | --- | --- |
+| Catalogue | Une feuille par fichier, copiée sur chaque poste | Un catalogue unique, dans les champs de l’éditeur | Un catalogue unique, avec vos propres attributs |
+| Règles de prix | Formules, fragiles quand on insère une ligne | Remises simples prévues par le logiciel | Toutes vos règles : volumes, dimensions, options, minimum |
+| Lecture de la demande | À la main | À la main | Par l’IA, avec relecture |
+| Suivi et relance | À la main | Oui | Oui, branché sur votre messagerie |
+| Coût | Le temps de celui qui maintient le fichier | Abonnement mensuel par utilisateur | Un prix fixé au devis, payé une fois |
+
+Je vous conseille un logiciel de devis du marché si vos prix tiennent dans une liste d’articles avec une remise. Un outil construit sur vos règles prend l’avantage quand le prix dépend d’un calcul : une découpe, une surface, un temps de main-d’œuvre, une option qui en entraîne une autre. C’est souvent le cas en atelier, en négoce et dans le bâtiment.
+
+Je fais ce travail avec la qualité d’une agence, pour environ deux fois moins cher, et vous parlez directement à la personne qui conçoit et qui code. Le détail de l’offre est sur la page [Automatisation et IA](/services/automatisation). Si le devis n’est qu’une partie d’un outil plus large (commandes, stock, facturation), la page [Logiciel métier sur mesure](/services/logiciel-metier) le couvre.
+
+## Par où commencer ?
+
+<Steps items={[
+  "**Rassemblez vos vingt derniers devis**, signés ou non.",
+  "**Écrivez les règles que vous appliquez de tête** : la remise à partir de quelle quantité, le minimum de commande, ce qui se facture en plus.",
+  "**Listez les exceptions** : les clients à prix particuliers, les produits qui se chiffrent toujours à la main.",
+  "**Prenez une heure en visio** avec ces trois documents : vous repartez avec ce qu’un outil peut calculer seul et un ordre de prix."
+]} />
+
+## Questions fréquentes
+
+**Peut-on garder Excel pour le catalogue ?**
+Oui, au début. L’outil lit votre fichier de tarifs, et vous le faites évoluer quand vous êtes prêt à quitter le tableur.
+
+**Que se passe-t-il pour une demande hors catalogue ?**
+L’IA la signale comme telle et prépare un devis avec une ligne vide à chiffrer. Vous gardez la main sur tout ce que la grille ne connaît pas.
+
+**L’IA peut-elle envoyer le devis toute seule ?**
+Elle le pourrait, je ne vous le conseille pas. Le devis engage votre entreprise, une relecture de quelques minutes reste le bon réglage.
+
+**Mes clients verront-ils la différence ?**
+Ils verront un devis plus rapide, toujours à la même présentation, avec un numéro qui se suit. Le reste se passe chez vous.
+
+Pour regarder vos devis, [prenez rendez-vous en visio](/rdv?sujet=ia) avec les trois derniers sous la main.

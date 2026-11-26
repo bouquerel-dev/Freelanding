@@ -1,5 +1,21 @@
 [
   {
+    "slug": "devis-automatise",
+    "title": "Comment passer du devis Excel au devis automatisé ?",
+    "date": "2026-11-26",
+    "category": "Outils métier",
+    "description": "Vos devis se font encore en copiant le précédent dans Excel ? Ce qu’un devis automatisé calcule seul, ce que vous gardez en main et le temps rendu par semaine.",
+    "readingTime": "8 min de lecture",
+    "tags": [
+      "devis automatisé",
+      "devis automatisé excel",
+      "automatiser devis excel",
+      "devis automatique excel"
+    ],
+    "alt": "Un boulier en traits blancs, perles grises poussées à gauche sur six tringles ; sur la tringle du milieu, quatre perles vertes poussées à droite",
+    "validationId": "138681e9-2db2-4d41-8a57-45ebd52d120a"
+  },
+  {
     "slug": "ia-pour-avocat",
     "title": "Une IA pour avocat qui ne voit jamais le nom du client",
     "date": "2026-11-25",
