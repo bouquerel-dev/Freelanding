@@ -261,6 +261,21 @@ describe("documents légaux", () => {
     expect(texte).toContain("code de réponse");
   });
 
+  test("la politique couvre l’usage des services d’API YouTube", () => {
+    // Règlement des développeurs YouTube (III.A.2), exigé par l’audit Google
+    // du cockpit : usage de l’API, lien vers les règles de Google, retrait de
+    // l’accès dans le compte Google, conditions d’utilisation de YouTube.
+    const politique = legalDocuments.find(
+      ({ slug }) => slug === "politique-de-confidentialite",
+    );
+    const texte = bodyText([politique]);
+
+    expect(texte).toContain("services d’API YouTube");
+    expect(texte).toContain("https://policies.google.com/privacy");
+    expect(texte).toContain("https://myaccount.google.com/permissions");
+    expect(texte).toContain("https://www.youtube.com/t/terms");
+  });
+
   test("aucune donnée pseudonyme n'est présentée comme anonyme", () => {
     // Considérant 26 du RGPD : « anonyme » ne vaut que si la personne n'est plus
     // identifiable. Avec autocapture, identifiant persistant et adresse IP
