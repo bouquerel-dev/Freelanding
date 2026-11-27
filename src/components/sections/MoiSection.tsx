@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { aboutContent } from "@/content/about";
 import { Highlighted } from "@/components/ui";
-import type { HomeAboutSection, ParcoursEtape } from "@/lib/content/types";
+import type { AboutContent, HomeAboutSection, ParcoursEtape } from "@/lib/content/types";
 
 /**
  * « MOI, C'EST ELIOTT » EN SCHÉMA (2026-11-27, demande d'Eliott : plus
@@ -22,8 +22,8 @@ function annee(periode: string): string {
   return periode.match(/\d{4}/)?.[0] ?? periode;
 }
 
-function etapesChronologiques(): ParcoursEtape[] {
-  const experience = aboutContent.parcours?.groupes.find((g) => g.titre === "Expérience");
+function etapesChronologiques(parcours: AboutContent["parcours"]): ParcoursEtape[] {
+  const experience = parcours?.groupes.find((g) => g.titre === "Expérience");
   return [...(experience?.etapes ?? [])].reverse();
 }
 
@@ -70,8 +70,15 @@ function Etape({ etape, derniere }: { etape: ParcoursEtape; derniere: boolean })
   );
 }
 
-export function MoiSection({ about }: { about: HomeAboutSection }) {
-  const etapes = etapesChronologiques();
+export function MoiSection({
+  about,
+  parcours = aboutContent.parcours,
+}: {
+  about: HomeAboutSection;
+  /** Le parcours de `/a-propos` par défaut. */
+  parcours?: AboutContent["parcours"];
+}) {
+  const etapes = etapesChronologiques(parcours);
   return (
     <section
       data-section="about"
@@ -113,7 +120,7 @@ export function MoiSection({ about }: { about: HomeAboutSection }) {
               <div className="relative aspect-[4/5] w-[56%] max-w-[300px] overflow-hidden rounded-[18px] tablet:w-[240px] desktop:w-[300px]">
                 <Image
                   src={about.image.src}
-                  alt={about.image.alt ?? ""}
+                  alt={about.image.alt}
                   fill
                   sizes="(min-width: 1200px) 300px, (min-width: 810px) 240px, 56vw"
                   className="object-cover grayscale"

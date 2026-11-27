@@ -43,8 +43,21 @@ describe("MoiSection", () => {
     expect(html).toContain("about-cadre");
   });
 
-  it("tient sans photo, sans repères, sans étiquette ni lien", async () => {
-    const nu = await rendre(createElement(MoiSection, { about: { title: "Moi", body: ["Une phrase."] } }));
+  it("tient sur un poste sans année ni résumé, et sans étiquette de frise", async () => {
+    const parcours = {
+      groupes: [{ titre: "Expérience", etapes: [{ periode: "En cours", structure: "Atelier", role: "Dev", nature: "Stage" }] }],
+    };
+    const rendu = await rendre(createElement(MoiSection, { about: { title: "Moi", body: ["Une phrase."] }, parcours }));
+    expect(rendu).toContain(">En cours</span>");
+    expect(rendu).toContain(">Atelier</span>");
+    expect(rendu).not.toContain("text-accent-ink/70\">Dev");
+  });
+
+  it("tient sans photo, sans repères, sans frise, sans étiquette ni lien", async () => {
+    const nu = await rendre(createElement(MoiSection, { about: { title: "Moi", body: ["Une phrase."] }, parcours: { groupes: [] } }));
+    expect(nu).not.toContain("<ol");
+    const sansParcours = await rendre(createElement(MoiSection, { about: { title: "Moi", body: ["Une phrase."] }, parcours: null }));
+    expect(sansParcours).not.toContain("<ol");
     expect(nu).toContain(">Moi</span>");
     expect(nu).not.toContain("<img");
     expect(nu).not.toContain("rounded-full px-[12px]");
