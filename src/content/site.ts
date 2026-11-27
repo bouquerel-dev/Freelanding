@@ -39,6 +39,7 @@ export const siteConfig: SiteConfig = {
   // Panneau du menu flottant — ordre source, différent de la nav d'en-tête et
   // de la colonne « Navigation » du pied de page (qui, elle, contient « 404 »).
   menuNav: [
+    { label: "Accueil", href: "/" },
     { label: "Réalisations", href: "/realisations" },
     { label: "À propos", href: "/a-propos" },
     { label: "Contact", href: "/contact" },

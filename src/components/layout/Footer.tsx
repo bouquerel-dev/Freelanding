@@ -243,8 +243,9 @@ export async function Footer({
           </div>
 
           {/* Étage 2 : une seule bande de liens. `pb-[70px]` sous 810 : le
-              bouton du menu flottant recouvrait la dernière ligne. */}
-          <div className="relative flex w-full flex-col gap-[22px] border-t border-foreground/10 pt-[24px] pb-[70px] tablet:flex-row tablet:flex-wrap tablet:items-center tablet:justify-between tablet:gap-x-[32px] tablet:gap-y-[16px] tablet:pb-0">
+              bouton du menu flottant recouvrait la dernière ligne, sur toutes les
+              largeurs (il est centré en bas, revue design du 2026-11-27). */}
+          <div className="relative flex w-full flex-col gap-[22px] border-t border-foreground/10 pt-[24px] pb-[70px] tablet:flex-row tablet:flex-wrap tablet:items-center tablet:justify-between tablet:gap-x-[32px] tablet:gap-y-[16px]">
             <Logo brand={brand} className="w-min" />
             <nav aria-label={uiLabels.chrome.footerNavAriaLabel} className="flex flex-wrap items-center gap-x-[20px] gap-y-[8px]">
               {footerNav.map((l) => (
