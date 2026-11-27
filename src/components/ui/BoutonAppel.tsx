@@ -84,6 +84,9 @@ export function BoutonAppel({
       data-part="bouton-appel"
       data-ton={ton}
       data-icone={forme}
+      // Un bouton de rendez-vous compte comme CTA dans PostHog quel que soit
+      // son ton : `GlobalAnalytics` ne reconnaît sinon que le fond volt.
+      {...(forme === "agenda" ? { "data-cta": "true" } : {})}
       {...rest}
       href={href}
       className={`bouton-appel group relative flex flex-none flex-row items-center justify-center rounded-control no-underline outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background ${LARGEURS[largeur]} ${TAILLES[taille]} ${c.bouton} ${className}`.trim()}

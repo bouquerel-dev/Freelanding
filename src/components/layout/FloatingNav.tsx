@@ -149,6 +149,9 @@ function BurgerIcon({ open }: { open: boolean }) {
 
 export function FloatingNav({ site }: { site: SiteConfig }) {
   const { primaryCta, contact, legalLinks } = site;
+  // Le numéro est déjà écrit dans le bloc contact du panneau : le grand bouton
+  // y prend la prise de rendez-vous (2026-11-27).
+  const boutonMenu = site.floatingCta ?? primaryCta;
   // Le menu lit la donnée (`menuNav`, repli `nav`) : c'est elle qui porte les
   // libellés traduits ET le retrait des sections éteintes.
   const menuLinks = site.menuNav ?? site.nav;
@@ -411,8 +414,8 @@ export function FloatingNav({ site }: { site: SiteConfig }) {
             {/* Le bouton d'appel partagé, pleine largeur, le même volt que
                 celui de l'en-tête. */}
             <BoutonAppel
-              href={primaryCta.href}
-              label={primaryCta.label}
+              href={boutonMenu.href}
+              label={boutonMenu.label}
               taille="grand"
               largeur="pleine"
               tabIndex={tab}
