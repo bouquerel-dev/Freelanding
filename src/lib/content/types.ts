@@ -831,8 +831,17 @@ export interface HomeAboutSection {
   faits?: readonly string[];
   /** Sur-titre de la section (accueil). */
   eyebrow?: string;
-  /** Libellés des deux lignes de la frise et de l'étape en cours. */
-  lignes?: { formation: string; experience: string; enCours: string };
+  /** Libellés des deux lignes de la frise, de l'étape en cours et de la leçon d'une étape. */
+  lignes?: { formation: string; experience: string; enCours: string; retenu: string };
+  /**
+   * Ce qui précède les études, avant l'axe des années (2026-11-27) : trois
+   * verbes de l'enfance, puis la phrase qui les relie au métier.
+   */
+  prologue?: {
+    titre: string;
+    items: readonly { mot: string; texte: string }[];
+    fil: string;
+  };
 }
 
 /** Une journée de la démonstration : sa corvée, à la main puis rendue. */
@@ -938,6 +947,10 @@ export interface ParcoursEtape {
   apport?: string;
   /** Domaines travaillés, rendus en étiquettes sous l'apport. */
   domaines?: readonly string[];
+  /** Ce qui s'est passé, en une phrase, pour la frise de l'accueil. */
+  recit?: string;
+  /** Ce que j'en ai retenu, en quelques mots. */
+  retenu?: string;
 }
 
 export interface ParcoursGroupe {

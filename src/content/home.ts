@@ -193,7 +193,25 @@ export const homeContent: HomeContent = {
     body: ["Développeur full-stack à Caen. Je travaille seul : vous parlez à celui qui code votre projet."],
     highlights: ["vous parlez à celui qui code votre projet"],
     faits: ["Bac+5", "Caen et visio"],
-    lignes: { formation: "Formation", experience: "Expérience", enCours: "Aujourd’hui" },
+    lignes: { formation: "Formation", experience: "Expérience", enCours: "Aujourd’hui", retenu: "Retenu" },
+    /*
+     * AVANT LE LYCÉE (2026-11-27, demande d’Eliott : que sa personnalité
+     * ressorte). Faits dictés par lui, tels quels : les questions techniques à
+     * ses parents, Minecraft et Pokémon, trois PC montés (benchmarks, rapport
+     * qualité-prix, configs, FPS), le club robotique et l’atelier Scratch de
+     * troisième (un Pong), l’esprit logique qui lui sert pour ses clients.
+     * Le lycée est sur l’axe. Ni nom de parent ni de frère.
+     */
+    prologue: {
+      titre: "Avant le lycée",
+      items: [
+        { mot: "Comprendre", texte: "Tout petit, je voulais savoir comment marchaient les choses. Mes parents avaient droit à des questions très techniques." },
+        { mot: "Jouer", texte: "Minecraft, Pokémon. Et l’ordinateur, plus encore que les jeux." },
+        { mot: "Optimiser", texte: "J’ai monté trois PC, dont certains pour mon petit frère : je lisais les benchmarks pour le meilleur rapport qualité-prix, je réglais tout pour gagner des FPS." },
+        { mot: "Coder", texte: "En troisième, un club robotique : un robot construit de toutes pièces, programmé pour un petit parcours. Et un atelier Scratch, où j’ai codé un Pong." },
+      ],
+      fil: "Cet esprit logique me sert toujours : avant d’écrire une ligne de code, je regarde comment vous travaillez pour trouver la meilleure solution.",
+    },
     cta: { label: "Mon parcours en détail", href: "/a-propos" },
   },
 

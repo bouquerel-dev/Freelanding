@@ -14,9 +14,34 @@ import { placer, positionAujourdhui } from "./moi/frise";
  * repères, puis la frise du parcours : formation au-dessus de l'axe des
  * années, expérience en dessous, l'étape en cours en volt. La nature de chaque
  * poste est écrite sur sa carte : aucun employeur ne passe pour un client.
+ *
+ * AVANT LE BAC (2026-11-27, troisième passe) : le récit de l'enfance ouvre la
+ * frise, trois verbes et la phrase qui les relie au métier.
  */
 
-const LIGNES_PAR_DEFAUT = { formation: "", experience: "", enCours: "" };
+function Prologue({ prologue }: { prologue: NonNullable<HomeAboutSection["prologue"]> }) {
+  return (
+    <div className="flex flex-col gap-[18px]">
+      <p className="m-0 flex items-center gap-[10px] font-mono text-[12px] uppercase leading-[14px] text-accent before:h-px before:w-[28px] before:bg-accent/60 before:content-['']">
+        {prologue.titre}
+      </p>
+      <ol className="m-0 list-none border-b border-white/10 p-0">
+        {prologue.items.map((item) => (
+          <li
+            key={item.mot}
+            className="grid gap-[4px] border-t border-white/10 py-[12px] tablet:grid-cols-[150px_1fr] tablet:items-baseline tablet:gap-[16px]"
+          >
+            <span className="text-[24px] font-semibold leading-[1] tracking-[-0.04em] text-foreground">{item.mot}</span>
+            <span className="text-[14px] leading-[1.45] text-foreground-60">{item.texte}</span>
+          </li>
+        ))}
+      </ol>
+      <p className="m-0 max-w-[44ch] text-[17px] font-medium leading-[1.4] tracking-[-0.02em] text-foreground">{prologue.fil}</p>
+    </div>
+  );
+}
+
+const LIGNES_PAR_DEFAUT = { formation: "", experience: "", enCours: "", retenu: "" };
 
 function groupe(parcours: AboutContent["parcours"], titre: string) {
   return parcours?.groupes.find((g) => g.titre === titre)?.etapes ?? [];
@@ -64,7 +89,7 @@ export function MoiSection({
         {about.faits?.map((fait) => (
           <span
             key={fait}
-            className="rounded-full border border-white/12 px-[12px] py-[7px] font-mono text-[11px] uppercase leading-none tracking-[0.04em] text-foreground"
+            className="rounded-tag border border-white/15 px-[10px] py-[7px] font-mono text-[11px] uppercase leading-none tracking-[0.04em] text-foreground"
           >
             {fait}
           </span>
@@ -72,7 +97,7 @@ export function MoiSection({
         {about.cta ? (
           <Link
             href={about.cta.href}
-            className="rounded-full px-[4px] py-[7px] text-[13px] font-medium text-foreground underline decoration-white/25 underline-offset-[4px] transition-colors hover:text-accent hover:decoration-accent"
+            className="rounded-tag px-[4px] py-[7px] text-[13px] font-medium text-foreground underline decoration-white/25 underline-offset-[4px] transition-colors hover:text-accent hover:decoration-accent"
           >
             {about.cta.label}
           </Link>
@@ -92,6 +117,7 @@ export function MoiSection({
             aujourdhui={positionAujourdhui(de, a, aujourdhui)}
             lignes={about.lignes ?? LIGNES_PAR_DEFAUT}
             entete={entete}
+            prologue={about.prologue ? <Prologue prologue={about.prologue} /> : undefined}
           />
         ) : (
           entete

@@ -110,6 +110,7 @@ export const aboutContent: AboutContent = {
             nature: "Freelance",
             debut: "2026-07",
             court: "Sites, logiciels, IA",
+            recit: "Je construis des logiciels métier, des sites et des intégrations d’IA.",
           },
           {
             periode: "Sept. 2025 à juil. 2026",
@@ -120,6 +121,8 @@ export const aboutContent: AboutContent = {
             debut: "2025-09",
             fin: "2026-07",
             court: "Full-stack et e-commerce",
+            recit: "J’ai construit leur application de gestion, qui tient plus d’un million de références produits.",
+            retenu: "Sans architecture propre, un gros catalogue s’effondre.",
           },
           {
             periode: "Sept. 2024 à mai 2025",
@@ -130,6 +133,8 @@ export const aboutContent: AboutContent = {
             debut: "2024-09",
             fin: "2025-05",
             court: "Front-end",
+            recit: "Des interfaces pour l’outil des agents immobiliers, et surtout un support client par IA formé à leur métier et aux lois.",
+            retenu: "Une IA fiable se nourrit du métier.",
           },
           {
             periode: "Mars à juin 2024",
@@ -140,6 +145,8 @@ export const aboutContent: AboutContent = {
             debut: "2024-03",
             fin: "2024-06",
             court: "Parcours B2B, −92 % d’erreurs",
+            recit: "J’ai refait le parcours de création de compte des clients professionnels : 92 % d’erreurs en moins.",
+            retenu: "Mesurer avant, mesurer après.",
             href: "/realisations/wurth-creation-de-compte",
           },
           {
@@ -151,6 +158,8 @@ export const aboutContent: AboutContent = {
             debut: "2023-04",
             fin: "2023-06",
             court: "Intégration WordPress",
+            recit: "Deux mois d’intégration WordPress dans une agence de Caen.",
+            retenu: "Une agence, vue de l’intérieur.",
           },
         ],
       },
@@ -171,6 +180,8 @@ export const aboutContent: AboutContent = {
             debut: "2024-09",
             fin: "2026-07",
             court: "MBA Développeur Full-Stack",
+            recit: "Architecture, DevOps, gestion de projet et création d’entreprise.",
+            retenu: "Penser à la mise en service dès le premier jour.",
             apport:
               "Le développement approfondi jusqu’à l’architecture et la mise en production, avec ce qu’il faut pour mener un projet et une entreprise.",
             domaines: [
@@ -190,6 +201,8 @@ export const aboutContent: AboutContent = {
             debut: "2021-09",
             fin: "2024-06",
             court: "BUT MMI, développement web",
+            recit: "Le code, avec le design et l’ergonomie qui font qu’on s’en sert vraiment.",
+            retenu: "Un outil qu’on ne comprend pas finit au placard.",
             apport:
               "Le développement au centre, entouré de tout ce qui fait qu’un outil se comprend et donne envie de s’en servir.",
             domaines: [
@@ -201,6 +214,25 @@ export const aboutContent: AboutContent = {
               "Infographie",
               "Photo et vidéo",
             ],
+          },
+          /* AJOUTÉE LE 2026-11-27, faits dictés par Eliott : seconde générale
+             avec l’option sciences de l’ingénieur, puis bac STI2D au lycée
+             Arcisse de Caumont, à Bayeux. En terminale, le robot de la classe,
+             c’est lui qui l’a programmé (Arduino) pour suivre un parcours.
+             Années déduites du BUT, entré en septembre 2021. */
+          {
+            periode: "2018 à 2021",
+            structure: "Lycée Arcisse de Caumont",
+            lieu: "Bayeux",
+            role: "Seconde option sciences de l’ingénieur, puis bac STI2D",
+            nature: "Bac STI2D",
+            debut: "2018-09",
+            fin: "2021-07",
+            court: "Bac STI2D, le robot du bac",
+            recit: "En terminale, j’ai programmé en Arduino le robot construit avec ma classe, pour qu’il suive un parcours.",
+            retenu: "Un programme se juge sur la piste.",
+            apport: "Les sciences de l’ingénieur, et un robot programmé en Arduino pour qu’il suive seul un parcours.",
+            domaines: ["Sciences de l’ingénieur", "Arduino", "Robotique"],
           },
         ],
       },

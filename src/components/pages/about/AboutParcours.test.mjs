@@ -20,9 +20,10 @@ describe("parcours de la page À propos", () => {
   const formation = parcours.groupes.find((g) => g.titre === "Formation");
   const experience = parcours.groupes.find((g) => g.titre === "Expérience");
 
-  it("annonce Bac+5 puis Bac+3, du plus récent au plus ancien", () => {
+  it("annonce Bac+5, Bac+3 puis le bac, du plus récent au plus ancien", () => {
     const niveaux = formation?.etapes.map((etape) => etape.nature);
-    expect(niveaux).toEqual(["Bac+5", "Bac+3"]);
+    expect(niveaux).toEqual(["Bac+5", "Bac+3", "Bac STI2D"]);
+    expect(html.indexOf("IUT de Saint-Lô")).toBeLessThan(html.indexOf("Arcisse de Caumont"));
     expect(html.indexOf("MyDigitalSchool")).toBeLessThan(html.indexOf("IUT de Saint-Lô"));
   });
 
