@@ -112,7 +112,7 @@ export function SiteDocument({
             script pour les animer, cet état resterait posé pour toujours. Cette
             feuille n'existe QUE si le navigateur a le script désactivé. */}
         <noscript>
-          <style>{`[data-reveal]{opacity:1!important;transform:none!important}`}</style>
+          <style>{`[data-reveal]{opacity:1!important;transform:none!important}[data-part=ouverture] *{clip-path:none!important;transform:none!important}`}</style>
         </noscript>
         {/* LA police du premier écran, préchargée. Découverte seulement après
             la feuille de style, elle arrivait après la première peinture et le

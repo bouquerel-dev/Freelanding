@@ -39,7 +39,6 @@ export const siteConfig: SiteConfig = {
   // Panneau du menu flottant — ordre source, différent de la nav d'en-tête et
   // de la colonne « Navigation » du pied de page (qui, elle, contient « 404 »).
   menuNav: [
-    { label: "Accueil", href: "/" },
     { label: "Réalisations", href: "/realisations" },
     { label: "À propos", href: "/a-propos" },
     { label: "Contact", href: "/contact" },
@@ -125,7 +124,6 @@ export const siteConfig: SiteConfig = {
    * simplement plus annoncée.
    */
   footerNav: [
-    { label: "Accueil", href: "/" },
     { label: "Réalisations", href: "/realisations" },
     { label: "À propos", href: "/a-propos" },
     { label: "Blog", href: "/blog" },
@@ -229,16 +227,18 @@ export const siteConfig: SiteConfig = {
   },
   // Titres des deux colonnes du pied de page (habillage, pas de l'éditorial).
   footerColumnLabels: { contact: "Contact", navigation: "Navigation" },
+  /*
+   * « PARLONS DE VOTRE PROJET » depuis le 2026-11-27, demande d'Eliott : un
+   * titre simple, en fin de page, à la place de « Montrez-moi ce qui vous
+   * bloque », qui se lisait comme un diagnostic. La phrase discrète du
+   * 2026-10-30 (une autre demande se dit ici, sur toutes les pages) reste.
+   */
   footerCta: {
-    heading: "Montrez-moi ce qui vous bloque.",
-    /*
-     * LA PHRASE DISCRÈTE, décision d'Eliott du 2026-10-30 : une seule offre,
-     * « en restant ouvert aux propositions ». Pas de bloc d'offre : une autre
-     * demande se dit ici, sur toutes les pages, et nulle part ailleurs.
-     */
+    heading: "Parlons de votre projet.",
+    headingLines: ["Parlons de", "votre projet."],
     subtext:
-      "Une tâche à faire disparaître : écrivez-moi deux lignes, ou réservez un appel en visio. Une autre demande ? Dites-la quand même, je vous réponds franchement.",
-    subtextEmphasis: ["réservez un appel en visio."],
+      "Appelez-moi, réservez un créneau en visio ou écrivez-moi deux lignes. Une autre demande ? Dites-la quand même, je vous réponds franchement.",
+    subtextEmphasis: ["réservez un créneau en visio"],
   },
   footerForm: {
     modes: {

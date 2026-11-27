@@ -1,5 +1,4 @@
 import { ImageProgressive } from "@/components/ui/ImageProgressive";
-import { LineReveal } from "@/components/motion/LineReveal";
 import { Reveal } from "@/components/motion/Reveal";
 import type {
   Stat,
@@ -10,6 +9,8 @@ import { Highlighted } from "@/components/ui";
 import { CompteurDefilement } from "@/components/motion/CompteurDefilement";
 import { parseCounterValue } from "@/components/motion/animated-counter";
 import { uiLabels } from "@/content/ui";
+import { Ouverture } from "@/components/motion/Ouverture";
+import { TitreDemi } from "@/components/sections/demi/TitreDemi";
 
 /**
  * StatsSection — PILOTE Étape 2 (traduction CSS Framer → Tailwind).
@@ -51,17 +52,10 @@ const GRID_LAYOUT = [
 function Dot({ side }: { side: "left" | "right" }) {
   // framer-1h215vn / ac44d9 / 9u6m7p : cellule de grille (h-full, w-full, self-start)
   return (
-    <div data-part="dotcell" className="relative h-full w-full self-start overflow-hidden">
+    <div data-part="dotcell" data-side={side} className="relative h-full w-full self-start overflow-hidden">
       {/* framer-1gdmi9n / 98r1i8 / awl382 : point 8×8 blanc, ancré en haut */}
-      <div
-        data-part="dot"
-        className={
-          "absolute top-0 z-[1] aspect-square h-[8px] w-[8px] rounded-full bg-accent-ink " +
-          (side === "left"
-            ? "left-0"
-            : "right-0 tablet:right-[24px] desktop:right-0")
-        }
-      />
+      {/* Le point décoratif est parti le 2026-11-27 : la revue design le
+          lisait comme un reste de mise en page. La cellule garde le zigzag. */}
     </div>
   );
 }
@@ -225,7 +219,12 @@ function Testimonial({ testimonial }: { testimonial: TestimonialContent }) {
   );
 }
 
-export function StatsSection({ numbers }: { numbers: StatsSectionContent }) {
+/**
+ * `autour` (accueil, 2026-11-27) : la couleur de la section précédente. L'aplat
+ * volt s'ouvre alors depuis elle au défilement (`Ouverture`), avec plus d'air
+ * en haut et en bas. Sans lui, l'aplat est posé d'un bloc, comme avant.
+ */
+export function StatsSection({ numbers, autour }: { numbers: StatsSectionContent; autour?: string }) {
   const counters = numbers.stats.slice(0, 3);
   return (
     // framer-2iabe2 : section (fond orange, flex col centrée)
@@ -233,14 +232,16 @@ export function StatsSection({ numbers }: { numbers: StatsSectionContent }) {
       data-section="numbers"
       className={
         FONT +
-        " relative flex w-full flex-col items-center justify-start gap-[10px] overflow-hidden bg-accent " +
-        "pt-[20px] pr-[20px] pb-[50px] pl-[20px] " +
-        "tablet:pt-[30px] tablet:pr-[24px] tablet:pb-[120px] tablet:pl-[24px] " +
+        " relative flex w-full flex-col items-center justify-start gap-[10px] overflow-hidden " +
+        (autour
+          ? "pt-[72px] pr-[20px] pb-[72px] pl-[20px] tablet:pt-[130px] tablet:pr-[24px] tablet:pb-[150px] tablet:pl-[24px] "
+          : "bg-accent pt-[20px] pr-[20px] pb-[50px] pl-[20px] tablet:pt-[30px] tablet:pr-[24px] tablet:pb-[120px] tablet:pl-[24px] ") +
         "desktop:pr-[30px] desktop:pl-[30px]"
       }
     >
+      {autour ? <Ouverture fond="bg-accent" autour={autour} filet="bg-accent-ink/20" /> : null}
       {/* framer-cilo4b : Container (max 1440, aligné à gauche) */}
-      <div className="relative flex w-full max-w-[1440px] flex-col items-start gap-[12px] tablet:gap-[30px]">
+      <div className="relative z-[1] flex w-full max-w-[1440px] flex-col items-start gap-[12px] tablet:gap-[30px]">
         {/* framer-kqrkbn : Label (preset wwtw0z, uppercase 12px, blanc 70%) */}
         {numbers.eyebrow ? (
           <p data-part="label" className="h-auto w-auto whitespace-pre text-[12px] font-medium uppercase leading-[1.2] tracking-[-0.01em] text-accent-ink/70">
@@ -264,40 +265,11 @@ export function StatsSection({ numbers }: { numbers: StatsSectionContent }) {
           {/* framer-1cdzglh : colonne droite (titre + témoignage), order 0 en mobile */}
           <div className="relative order-0 flex w-full flex-col items-start gap-[30px] tablet:order-none tablet:w-px tablet:flex-[1_0_0] tablet:gap-[50px]">
             {/* framer-1xsiil0-container : conteneur titre */}
-            <div className="relative h-auto w-full max-w-[360px] tablet:max-w-[440px] desktop:max-w-[600px]">
+            <div className="relative h-auto w-full">
               {/* framer-1xsiil0 h2 (92/68/52px, ls -0.05em, lh 0.82) */}
-              <h2 className="relative m-0 flex w-full max-w-full flex-col justify-center p-0 text-left text-[52px] font-semibold uppercase leading-[0.82] tracking-[-0.05em] text-accent-ink tablet:text-[68px] desktop:text-[92px]">
-                {numbers.titleLines?.length ? (
-                  /* LIGNES DÉCLARÉES PAR LA DONNÉE : le titre est écrit pour
-                     tomber sur ces coupures-là, à toutes les largeurs. */
-                  numbers.titleLines.map((ligne, i) => (
-                    <span
-                      key={ligne}
-                      className="accent-room descender-room block w-full overflow-hidden leading-[0.82]"
-                    >
-                      <Reveal
-                        as="span"
-                        className="inline-block whitespace-pre"
-                        initialOpacity={0.001}
-                        initialY={40}
-                        duration={0.8}
-                        delay={0.1 * i}
-                      >
-                        {ligne}
-                      </Reveal>
-                    </span>
-                  ))
-                ) : (
-                  /* Sans lignes déclarées, le découpage est MESURÉ sur le rendu
-                     du navigateur : il dépend de la largeur de la fenêtre. */
-                  <LineReveal
-                    text={numbers.title ?? ""}
-                    className="block w-full"
-                    lineClassName="w-full overflow-hidden"
-                    delay={0.1}
-                  />
-                )}
-              </h2>
+              {/* Même titre que les autres sections en deux parties (2026-11-27) :
+                  l'échelle ne saute plus d'une section à l'autre. */}
+              <TitreDemi lignes={numbers.titleLines ?? [numbers.title ?? ""]} encre="text-accent-ink" />
             </div>
             {numbers.intro ? (
               <Reveal
@@ -318,7 +290,9 @@ export function StatsSection({ numbers }: { numbers: StatsSectionContent }) {
       </div>
 
       {/* framer-1hqjbn5 : filet vertical central (blanc 18%) */}
-      <div className="absolute left-[calc(50%-0.5px)] top-0 z-[1] h-full w-px hidden tablet:block bg-accent-ink opacity-[0.18]" />
+      {autour ? null : (
+        <div className="absolute left-[calc(50%-0.5px)] top-0 z-[1] h-full w-px hidden tablet:block bg-accent-ink opacity-[0.18]" />
+      )}
     </section>
   );
 }

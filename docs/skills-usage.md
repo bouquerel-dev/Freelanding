@@ -1,3 +1,45 @@
+# Accueil, sections sous les projets en deux parties, 2026-11-27
+
+Demande d'Eliott : accueil propre, aéré, lisible, surprenant au scroll, dans
+la DA d'origine (moitiés splittées, volt pétant ou fond blanc, titres géants
+en capitales). Captures avant / après et étapes : `docs/captures/2026-11-27-accueil-da/`.
+
+## impeccable (registre marque : `brand.md` et `animate.md` lus en entier)
+
+- Stratégie de couleur « Committed » tenue en alternance : papier `#f6f6f1`
+  (pas de blanc pur à côté du volt), volt, papier, volt, puis noir pour fermer.
+- Règle cassée exprès : le texte reste fixe, c'est le FOND qui bouge. Chaque
+  section s'ouvre depuis la couleur de la précédente (`Ouverture`, clip-path
+  arrondi qui s'élargit au défilement, filet central qui se trace). Raison :
+  la surprise demandée sans jamais rendre un mot illisible.
+- Carte « 100 % » noire retirée au profit d'une ligne sur la grille de filets
+  (revue anti-slop : gabarit de template).
+- FAQ : questions en 18 à 20 px, casse normale, à l'encre pleine (avant :
+  12 px capitales à 60 %, illisibles).
+
+## taste-skill
+
+- Plus de grille de cartes dans les actualités : une liste avec vignette,
+  date et titre (une carte sur deux montrait un rond noir de 50 px).
+- Points décoratifs de la section volt retirés (lus comme des restes).
+- Titres à une seule échelle pour toutes les sections (`TitreDemi`), calée
+  sur la ligne la plus large et la police de secours.
+
+## emil-design-eng
+
+- Entrées : titres ligne par ligne sur un seul déclencheur (`LineReveal`),
+  stagger 80 ms, arguments et articles en fondu + 16 px.
+- Pied de page : apparition ramenée de 40 px / 1 s à 16 px / 0,6 s.
+- Mouvement réduit : fond plein et filet entier, sans style animé ; sans JS,
+  `<noscript>` annule la découpe.
+
+## design-council (5 lentilles, rendu réel 1440 et 390)
+
+- Passe 1 : L1 FAIL (titres coupés avec la police de secours), L2 FAIL léger,
+  L3 21/30, L4 FAIL (masque de ligne qui pouvait ne jamais se déclencher),
+  L5 3 violations AA non bloquantes. Tout corrigé, sauf la répétition de la
+  mise en page en deux parties, qui est la DA demandée par Eliott.
+
 # Outil de chiffrage `/estimation`, 2026-11-12
 
 Nouvelle page publique, téléphone d'abord. Captures de chaque étape dans le
