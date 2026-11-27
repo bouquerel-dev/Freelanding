@@ -1,15 +1,13 @@
 import { Fragment, type ReactNode } from "react";
 import { SvgSprite } from "@/components/SvgSprite";
 import { FloatingNav, Footer, Header } from "@/components/layout";
-import { AboutSection } from "@/components/sections/AboutSection";
+import { MoiSection } from "@/components/sections/MoiSection";
 import { ArticlesSection } from "@/components/sections/ArticlesSection";
 import { FaqSection } from "@/components/sections/FaqSection";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { LogicielSection } from "@/components/sections/LogicielSection";
-import { MoyensSection } from "@/components/sections/MoyensSection";
 import { ServicesSection } from "@/components/sections/ServicesSection";
 import { SchemaSection } from "@/components/sections/SchemaSection";
-import { ShowreelSection } from "@/components/sections/ShowreelSection";
 import { schemaAccueil } from "@/content/schema";
 import { StatsSection } from "@/components/sections/StatsSection";
 import { TestimonialsSection } from "@/components/sections/TestimonialsSection";
@@ -46,10 +44,8 @@ export async function HomePage() {
        `logoBand` remis dans l'ordre les afficherait deux fois. */
     hero: <HeroSection hero={home.hero} />,
     schema: <SchemaSection schema={schemaAccueil} />,
-    about: <AboutSection about={home.about} />,
-    showreel: <ShowreelSection showreel={home.showreel} />,
+    about: <MoiSection about={home.about} />,
     works: <WorksSection works={works} />,
-    moyens: <MoyensSection moyens={home.moyens} />,
     whyUs: <WhyUsSection whyUs={home.whyUs} />,
     services: (
       <ServicesSection

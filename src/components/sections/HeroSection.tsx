@@ -4,6 +4,7 @@ import type { HeroContent, PartieVisage } from "@/lib/content/types";
 import { Grain } from "@/components/effects/Grain";
 import { BoutonAppel } from "@/components/ui/BoutonAppel";
 import { lienRendezVous } from "@/content/rendez-vous";
+import { siteConfig } from "@/content/site";
 import { uiLabels } from "@/content/ui";
 import { AmbianceHeros } from "./hero/AmbianceHeros";
 import { JeConstruis } from "./hero/JeConstruis";
@@ -129,6 +130,7 @@ function Salutation({ texte, nom }: { texte: string; nom?: string }) {
 }
 
 export function HeroSection({ hero }: { hero: HeroContent }) {
+  const appel = siteConfig.primaryCta;
   const [avant, apres] = hero.titleLines ?? [hero.title];
   const sousTitre = hero.subtitleParagraphs?.[0]?.text ?? hero.subtitle;
   // La trame est le premier visuel du portrait : demandée dès le HTML.
@@ -173,7 +175,6 @@ export function HeroSection({ hero }: { hero: HeroContent }) {
                     style={{ ...placeEtiquette(trait.partie), ...delai(560 + i * 90) }}
                   >
                     <span className="font-mono text-[10px] uppercase leading-none tracking-[0.04em] text-foreground desktop:text-[11px]">{trait.titre}</span>
-                    <span className="text-[11px] leading-[1.2] tracking-[-0.01em] text-foreground-60 desktop:text-[12px]">{trait.detail}</span>
                   </span>
                 </span>
               );
@@ -234,18 +235,17 @@ export function HeroSection({ hero }: { hero: HeroContent }) {
             className="hero-fond mt-[26px] flex w-full flex-col gap-[10px] tablet:w-auto tablet:flex-row tablet:mt-[32px] tablet:gap-[14px]"
             style={delai(520)}
           >
-            {/* Le bouton partagé de l'en-tête, en grand : même habillage, même logo. */}
-            <BoutonAppel href={lienRendezVous("decouverte")} label={uiLabels.services.rdvLabel} taille="grand" largeur="pleine-mobile" data-part="hero-cta" />
-            {hero.offerLink ? (
-              <BoutonAppel
-                href={hero.offerLink.href}
-                label={hero.offerLink.label}
-                taille="grand"
-                ton="encre"
-                largeur="pleine-mobile"
-                data-part="hero-cta-secondaire"
-              />
-            ) : null}
+            {/* Le numéro d'abord (2026-11-27) : appeler pour poser une
+                question engage moins que réserver. Le créneau reste à côté. */}
+            <BoutonAppel href={appel.href} label={appel.label} taille="grand" largeur="pleine-mobile" data-part="hero-cta" />
+            <BoutonAppel
+              href={lienRendezVous("decouverte")}
+              label={uiLabels.services.rdvLabel}
+              taille="grand"
+              ton="encre"
+              largeur="pleine-mobile"
+              data-part="hero-cta-secondaire"
+            />
           </div>
         </div>
 

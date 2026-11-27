@@ -245,7 +245,7 @@ export const pagePrixLogiciel: PagePrix = {
             description: "Pour les PME du Calvados, de la Manche et de l’Orne.",
           },
           {
-            libelle: "Réserver un appel",
+            libelle: "Réserver un créneau",
             href: lienRendezVous("logiciel"),
             description: "Choisissez un créneau en visio pour chiffrer votre projet.",
           },

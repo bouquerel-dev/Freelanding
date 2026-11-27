@@ -43,7 +43,7 @@ describe("profil complet de la vue Agent", () => {
   });
 
   it("nomme le rendez-vous avec le libellé unique du site", () => {
-    expect(markdown).toContain("Réserver un appel\u00A0: ");
+    expect(markdown).toContain("Réserver un créneau\u00A0: ");
     expect(markdown).not.toContain("En parler");
   });
 
@@ -205,10 +205,10 @@ describe("profil : contenu facultatif absent", () => {
     expect(autresServices).toEqual([]);
     const sans = profilEnMarkdown(await construireProfil(sourcesDepouillees));
     const ligneSans = sans.split(`### ${premierService.title}`)[1].split("\n### ")[0];
-    expect(ligneSans).not.toContain("Réserver un appel\u00A0:");
+    expect(ligneSans).not.toContain("Réserver un créneau\u00A0:");
     const avec = profilEnMarkdown(await construireProfil());
     const ligneAvec = avec.split(`### ${premierService.title}`)[1].split("\n### ")[0];
-    expect(ligneAvec).toContain(`Réserver un appel\u00A0: ${absoluteUrl(premierService.rdvHref)}`);
+    expect(ligneAvec).toContain(`Réserver un créneau\u00A0: ${absoluteUrl(premierService.rdvHref)}`);
   });
 
   it("garde les limites sans aucun montant, quel que soit l'ordre des prestations", async () => {

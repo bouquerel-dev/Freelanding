@@ -23,9 +23,7 @@ describe("accueil", () => {
     expect(ordre).toEqual([
       "hero",
       "schema",
-      "moyens",
       "about",
-      "showreel",
       "works",
       "whyUs",
       "numbers",
@@ -69,17 +67,18 @@ describe("accueil", () => {
 
   test("les offres ne sont pas redites sous le héros, chacune a sa section", () => {
     expect(ordre).not.toContain("services");
-    expect(ordre.indexOf("showreel")).toBe(ordre.indexOf("about") + 1);
   });
 
-  test("trois moyens rendent le temps, sans aucun nom de prospect", () => {
-    const { moyens } = homeContent;
-    expect(moyens.lignes.map((l) => l.lien.href)).toContain("/services/automatisation#referent");
-    expect(moyens.lignes).toHaveLength(3);
-    expect(moyens.lignes.at(-1).corps).toContain("ponctuelles");
+  test("le schéma suffit : ni « trois façons » ni « Regardez ce que je construis » (2026-11-27)", () => {
+    expect(ordre).not.toContain("moyens");
+    expect(ordre).not.toContain("showreel");
+    // Les projets suivent directement « Moi, c'est Eliott ».
+    expect(ordre.indexOf("works")).toBe(ordre.indexOf("about") + 1);
+  });
+
+  test("le haut de l'accueil ne mène pas vers le logiciel métier seul", () => {
     const { hero, logiciel, whyUs } = homeContent;
-    expect(JSON.stringify({ hero, logiciel, moyens, whyUs })).not.toContain("/services/logiciel-metier");
-    expect(JSON.stringify(moyens).toLowerCase()).not.toContain("sitpo");
+    expect(JSON.stringify({ hero, logiciel, whyUs })).not.toContain("/services/logiciel-metier");
   });
 
   test("la semaine rend exactement le gain annoncé", () => {
@@ -149,16 +148,35 @@ describe("accueil", () => {
 
   test("« 1 projet à la fois » n'est dit qu'une fois, par la section chiffres", () => {
     const about = homeContent.about;
-    const textes = [about.launchedLabel, about.projectsLabel, about.counter?.caption, ...about.body];
+    const textes = [...(about.faits ?? []), ...about.body];
     for (const texte of textes) expect(texte ?? "").not.toMatch(/projet à la fois/u);
+  });
+});
+
+describe("le numéro en bouton principal (2026-11-27)", () => {
+  test("l'en-tête affiche le numéro et l'appelle", () => {
+    expect(siteConfig.primaryCta.label).toBe(siteConfig.contact.phone);
+    expect(siteConfig.primaryCta.href).toBe(`tel:+33${siteConfig.contact.phone.replace(/\s/g, "").slice(1)}`);
+  });
+
+  test("le menu du haut n'a plus d'« Accueil » : le logo y ramène", () => {
+    expect(siteConfig.nav.map((l) => l.href)).not.toContain("/");
+  });
+
+  test("« Moi, c'est Eliott » tient en une phrase et deux repères", () => {
+    expect(homeContent.about.body).toHaveLength(1);
+    expect(homeContent.about.faits?.length).toBeLessThanOrEqual(3);
+  });
+
+  test("les traits du visage n'ont plus de description", () => {
+    for (const trait of homeContent.hero.faceNotes ?? []) expect(Object.keys(trait).sort()).toEqual(["partie", "titre"]);
   });
 });
 
 describe("un seul libellé pour le rendez-vous", () => {
   const libelle = uiLabels.services.rdvLabel;
 
-  test("l'en-tête, le bouton flottant et « Pourquoi moi » disent le même mot", () => {
-    expect(siteConfig.primaryCta.label.toLowerCase()).toBe(libelle.toLowerCase());
+  test("le bouton flottant et « Pourquoi moi » disent le même mot", () => {
     expect(siteConfig.floatingCta?.label).toBe(libelle);
     expect(homeContent.whyUs.ctas?.[0]?.label).toBe(libelle);
   });

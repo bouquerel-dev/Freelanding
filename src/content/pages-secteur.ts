@@ -330,7 +330,7 @@ const pageBtp: PageSecteur = {
               "Un parcours refait à partir des erreurs relevées, dans la distribution.",
           },
           {
-            libelle: "Réserver un appel",
+            libelle: "Réserver un créneau",
             href: lienRendezVous("logiciel"),
             description: "Choisissez un créneau en visio pour parler de vos chantiers.",
           },
@@ -598,7 +598,7 @@ const pageLocation: PageSecteur = {
               "Un parcours de création de compte refait à partir des erreurs relevées.",
           },
           {
-            libelle: "Réserver un appel",
+            libelle: "Réserver un créneau",
             href: lienRendezVous("logiciel"),
             description: "Choisissez un créneau en visio pour parler de votre parc.",
           },
@@ -861,7 +861,7 @@ const pageNegoce: PageSecteur = {
           },
           LIEN_PRIX,
           {
-            libelle: "Réserver un appel",
+            libelle: "Réserver un créneau",
             href: lienRendezVous("logiciel"),
             description: "Choisissez un créneau en visio pour parler de votre comptoir.",
           },

@@ -29,8 +29,9 @@ export const siteConfig: SiteConfig = {
   // LE BLOG N'EST PLUS DANS L'EN-TÊTE NI DANS LE MENU MOBILE (2026-11-24,
   // demande d'Eliott). Il reste un point d'entrée Google : le pied de page,
   // le plan du site et les liens des articles y mènent toujours.
+  // PAS D'« ACCUEIL » DANS L'EN-TÊTE (2026-11-27, demande d'Eliott) : sur
+  // l'accueil il ne mène nulle part, ailleurs le logo y ramène déjà.
   nav: [
-    { label: "Accueil", href: "/" },
     { label: "Réalisations", href: "/realisations" },
     { label: "À propos", href: "/a-propos" },
     { label: "Contact", href: "/contact" },
@@ -44,20 +45,18 @@ export const siteConfig: SiteConfig = {
     { label: "Contact", href: "/contact" },
   ],
   /*
-   * « RÉSERVER UN APPEL » depuis le 2026-09-24 (phase C) : un seul libellé
-   * pour le rendez-vous sur tout le site. « Démarrer un projet » menait déjà au
-   * même endroit, sujet « découverte », sous un autre nom que le bouton du
-   * héros, de l'accordéon et des pages de prestation : le visiteur pouvait y
-   * lire deux actions. Écrire reste possible par « Contact » dans le menu et
-   * par « Poser une question » sous la FAQ.
+   * LE NUMÉRO EST LE BOUTON PRINCIPAL depuis le 2026-11-27 (demande d'Eliott).
+   * Sa cible appelle plutôt qu'elle ne réserve : un numéro affiché fait
+   * humain, n'engage à rien et pousse à poser une question. La prise de
+   * rendez-vous reste à côté, dans le héros, les prestations et le menu.
    *
-   * `shortLabel` ne sort que sous 390 px, où le libellé complet pousse le
-   * bouton hors de l'écran.
+   * `shortLabel` ne sort que sous 390 px, où le numéro pousse le bouton hors
+   * de l'écran.
    */
   primaryCta: {
-    label: "RÉSERVER UN APPEL",
-    shortLabel: "RÉSERVER",
-    href: lienRendezVous("logiciel"),
+    label: "06 32 21 37 11",
+    shortLabel: "Appeler",
+    href: "tel:+33632213711",
   },
   contact: {
     // Domaine arrêté : eliottbouquerel.fr (site servi sur
@@ -245,7 +244,7 @@ export const siteConfig: SiteConfig = {
     modes: {
       label: "Comment me contacter",
       message: "Écrire un message",
-      rendezVous: "Réserver un appel",
+      rendezVous: "Réserver un créneau",
     },
     nameLabel: "Nom",
     namePlaceholder: "Alex Dupont",
@@ -285,7 +284,7 @@ export const siteConfig: SiteConfig = {
     ],
   },
   // La source distingue la casse du bouton flottant de celle de la nav.
-  floatingCta: { label: "Réserver un appel", href: lienRendezVous("logiciel") },
+  floatingCta: { label: "Réserver un créneau", href: lienRendezVous("logiciel") },
   meta: {
     // « ® » RETIRÉ DES TITRES le 2026-09-01. Le symbole avait été vidé de
     // `brand.mark` le 2026-08-29 pour la raison écrite en tête de ce fichier :

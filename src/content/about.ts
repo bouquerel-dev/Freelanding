@@ -108,6 +108,7 @@ export const aboutContent: AboutContent = {
             lieu: "Normandie, et à distance",
             role: "Développeur full-stack : logiciels métier sur mesure",
             nature: "Freelance",
+            court: "Sites, logiciels, IA",
           },
           {
             periode: "Sept. 2025 à juil. 2026",
@@ -115,6 +116,7 @@ export const aboutContent: AboutContent = {
             lieu: "Carantilly",
             role: "Développeur full-stack, responsable e-commerce",
             nature: "Alternance",
+            court: "Full-stack et e-commerce",
           },
           {
             periode: "Sept. 2024 à mai 2025",
@@ -122,6 +124,7 @@ export const aboutContent: AboutContent = {
             lieu: "Courbevoie",
             role: "Développeur web front-end",
             nature: "Alternance",
+            court: "Front-end",
           },
           {
             periode: "Mars à juin 2024",
@@ -129,6 +132,7 @@ export const aboutContent: AboutContent = {
             lieu: "Erstein",
             role: "Développeur web front-end",
             nature: "Stage",
+            court: "Parcours B2B, −92 % d’erreurs",
             href: "/realisations/wurth-creation-de-compte",
           },
           {
@@ -137,6 +141,7 @@ export const aboutContent: AboutContent = {
             lieu: "Caen",
             role: "Intégration WordPress",
             nature: "Stage",
+            court: "Intégration WordPress",
           },
         ],
       },

@@ -133,8 +133,8 @@ export const uiLabels: UiLabels = {
      */
     // UN SEUL LIBELLÉ POUR LE RENDEZ-VOUS sur tout le site depuis le
     // 2026-09-24 : les pages de prestation disaient déjà « Réserver un appel ».
-    rdvLabel: "Réserver un appel",
-    rdvAriaPrefix: "Réserver un appel à propos de : ",
+    rdvLabel: "Réserver un créneau",
+    rdvAriaPrefix: "Réserver un créneau à propos de : ",
   },
 
   testimonials: {
@@ -173,7 +173,7 @@ export const uiLabels: UiLabels = {
        sans aucune action, le lecteur convaincu n'avait qu'à remonter. */
     rendezVousEyebrow: "Votre projet",
     rendezVousTitleLines: ["Un besoin", "proche ?"],
-    rendezVousLabel: "Réserver un appel",
+    rendezVousLabel: "Réserver un créneau",
     /* Comparateur avant / après des pages projet. Le libellé du curseur n'est
        jamais peint : il est lu par les lecteurs d'écran, et c'est la seule
        chose qui dit à quoi sert la poignée quand on ne voit pas les images.

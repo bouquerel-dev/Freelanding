@@ -72,7 +72,7 @@ export const pageLogicielCaen: PageLocale = {
         description: "Quand une tâche répétitive se règle sans logiciel entier.",
       },
       {
-        libelle: "Réserver un appel",
+        libelle: "Réserver un créneau",
         href: lienRendezVous("logiciel"),
         description: "Choisissez un créneau en visio pour parler de votre projet.",
       },

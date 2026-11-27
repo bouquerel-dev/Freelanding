@@ -7,7 +7,7 @@ const rendre = (props) =>
   renderToStaticMarkup(createElement(BoutonAppel, { href: "/rdv?sujet=logiciel", label: "Réserver un appel", ...props }));
 
 describe("BoutonAppel", () => {
-  it("par défaut : volt, compact, à la largeur du contenu, avec la flèche dans sa pastille", () => {
+  it("par défaut : volt, compact, à la largeur du contenu, une icône sans pastille", () => {
     const html = rendre({});
     expect(html).toContain('href="/rdv?sujet=logiciel"');
     expect(html).toContain('data-part="bouton-appel"');
@@ -16,8 +16,15 @@ describe("BoutonAppel", () => {
     expect(html).toContain("w-fit");
     expect(html).toContain("h-[36px]");
     expect(html).toMatch(/ bg-accent"/);
-    expect(html).toMatch(/rounded-tag [^"]*bg-accent-ink text-accent"/);
+    expect(html).not.toContain("rounded-tag");
     expect(html).toContain("bouton-appel-fleche");
+    expect(html).toContain('data-icone="agenda"');
+  });
+
+  it("l'icône suit la cible : téléphone pour un numéro, flèche ailleurs", () => {
+    expect(rendre({ href: "tel:+33632213711" })).toContain('data-icone="telephone"');
+    expect(rendre({ href: "/realisations" })).toContain('data-icone="fleche"');
+    expect(rendre({ href: "/realisations", icone: "agenda" })).toContain('data-icone="agenda"');
   });
 
   it("le libellé est lu une fois : la copie de permutation est masquée", () => {
@@ -29,10 +36,9 @@ describe("BoutonAppel", () => {
   it("grand, encre et pleine largeur sur mobile", () => {
     const html = rendre({ taille: "grand", ton: "encre", largeur: "pleine-mobile" });
     expect(html).toContain("h-[48px]");
-    expect(html).toContain("size-[36px]");
     expect(html).toContain('data-ton="encre"');
     expect(html).toContain("bg-background");
-    expect(html).toMatch(/rounded-tag [^"]*bg-accent text-accent-ink"/);
+    expect(html).toMatch(/bouton-appel-fleche [^"]*text-accent"/);
     expect(html).toContain("w-full tablet:w-fit");
   });
 
