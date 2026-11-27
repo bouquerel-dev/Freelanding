@@ -108,6 +108,7 @@ export const aboutContent: AboutContent = {
             lieu: "Normandie, et à distance",
             role: "Développeur full-stack : logiciels métier sur mesure",
             nature: "Freelance",
+            debut: "2026-07",
             court: "Sites, logiciels, IA",
           },
           {
@@ -116,6 +117,8 @@ export const aboutContent: AboutContent = {
             lieu: "Carantilly",
             role: "Développeur full-stack, responsable e-commerce",
             nature: "Alternance",
+            debut: "2025-09",
+            fin: "2026-07",
             court: "Full-stack et e-commerce",
           },
           {
@@ -124,6 +127,8 @@ export const aboutContent: AboutContent = {
             lieu: "Courbevoie",
             role: "Développeur web front-end",
             nature: "Alternance",
+            debut: "2024-09",
+            fin: "2025-05",
             court: "Front-end",
           },
           {
@@ -132,6 +137,8 @@ export const aboutContent: AboutContent = {
             lieu: "Erstein",
             role: "Développeur web front-end",
             nature: "Stage",
+            debut: "2024-03",
+            fin: "2024-06",
             court: "Parcours B2B, −92 % d’erreurs",
             href: "/realisations/wurth-creation-de-compte",
           },
@@ -141,6 +148,8 @@ export const aboutContent: AboutContent = {
             lieu: "Caen",
             role: "Intégration WordPress",
             nature: "Stage",
+            debut: "2023-04",
+            fin: "2023-06",
             court: "Intégration WordPress",
           },
         ],
@@ -159,6 +168,9 @@ export const aboutContent: AboutContent = {
             lieu: "En alternance",
             role: "MBA Développeur Full-Stack, diplômé en juillet 2026",
             nature: "Bac+5",
+            debut: "2024-09",
+            fin: "2026-07",
+            court: "MBA Développeur Full-Stack",
             apport:
               "Le développement approfondi jusqu’à l’architecture et la mise en production, avec ce qu’il faut pour mener un projet et une entreprise.",
             domaines: [
@@ -175,6 +187,9 @@ export const aboutContent: AboutContent = {
             lieu: "Saint-Lô",
             role: "BUT MMI, Métiers du multimédia et de l’internet, parcours développement web",
             nature: "Bac+3",
+            debut: "2021-09",
+            fin: "2024-06",
+            court: "BUT MMI, développement web",
             apport:
               "Le développement au centre, entouré de tout ce qui fait qu’un outil se comprend et donne envie de s’en servir.",
             domaines: [

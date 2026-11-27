@@ -829,8 +829,10 @@ export interface HomeAboutSection {
   image?: ImageAsset;
   /** Repères courts posés sous la phrase (accueil, 2026-11-27). */
   faits?: readonly string[];
-  /** Étiquette de la frise du parcours. */
-  parcoursLabel?: string;
+  /** Sur-titre de la section (accueil). */
+  eyebrow?: string;
+  /** Libellés des deux lignes de la frise et de l'étape en cours. */
+  lignes?: { formation: string; experience: string; enCours: string };
 }
 
 /** Une journée de la démonstration : sa corvée, à la main puis rendue. */
@@ -927,6 +929,9 @@ export interface ParcoursEtape {
   nature: string;
   /** Ce qui a été fait, en trois mots, pour la frise de l'accueil. */
   court?: string;
+  /** Début et fin au mois (« 2024-09 »), pour placer l'étape sur la frise. Sans fin : en cours. */
+  debut?: string;
+  fin?: string;
   /** Étude de cas liée, quand elle existe. */
   href?: string;
   /** Ce que l'étape a apporté, en une phrase (formations surtout). */
