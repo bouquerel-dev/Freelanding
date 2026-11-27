@@ -623,3 +623,13 @@ Captures : `docs/captures/2026-11-27-moi-vertical/` (`avant-*` en production, `e
 | emil-design-eng · ne pas animer sans raison | Défilement détourné à l'horizontale | Plus d'épinglage ni de JavaScript : la section est rendue côté serveur, seul le repère en cours pulse (coupé en mouvement réduit) |
 | impeccable · point de vue | Jeux vidéo et Pong sans intérêt pour un client | « Optimiser » mis en avant en volt (PC montés au meilleur rapport qualité-prix), la phrase finale le relie au métier |
 | li-human | Textes à partir des faits dictés | `detect.py` 56 ; faible en CONCRET, aucun chiffre inventé (concours sans nombre d'équipes, faute de source) |
+
+### « Moi, c'est Eliott » : version courte, 2026-11-27 (cinquième passe)
+
+Captures : `docs/captures/2026-11-27-moi-court/` (`avant-*` = en ligne après #124, `apres-*`). Panel : 40 visiteurs simulés (skill `visiteurs`, protocole resserré sur la section), rapport local `.visiteurs/2026-11-27-moi/rapport.html`.
+
+| Skill · règle | Constat | Ce qui a changé |
+|---|---|---|
+| visiteurs · verdict élément par élément | 17 dirigeants sur 28 trouvent la section trop longue ; enfance, troisième, lycée et stage d'agence coupés ou ignorés | Prologue retiré, lycée et Mediapilote hors de l'accueil (`accueil: false`, gardés sur /a-propos) |
+| visiteurs · ce qui fait appeler | Phrase de méthode gardée par 26 sur 28, Würth 21, Indépendant 23, MECA 17 | Phrase de méthode sous le titre ; expérience en tête, de la plus récente à la plus ancienne |
+| impeccable · distill | Section de 1 138 px à 1440, 2 350 px sur mobile | 840 px et 1 340 px : expérience en grille de deux, formation en lignes courtes sans récit |

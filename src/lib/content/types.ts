@@ -833,16 +833,6 @@ export interface HomeAboutSection {
   eyebrow?: string;
   /** Titres des colonnes du parcours, de l'étape en cours et de la leçon d'une étape. */
   lignes?: { formation: string; experience: string; enCours: string; retenu: string };
-  /**
-   * Ce qui précède les études, avant l'axe des années (2026-11-27) : trois
-   * verbes de l'enfance, puis la phrase qui les relie au métier.
-   */
-  prologue?: {
-    titre: string;
-    /** `accent` : l'idée mise en avant, en volt. */
-    items: readonly { mot: string; texte: string; accent?: boolean }[];
-    fil: string;
-  };
 }
 
 /** Une journée de la démonstration : sa corvée, à la main puis rendue. */
@@ -952,6 +942,8 @@ export interface ParcoursEtape {
   recit?: string;
   /** Ce que j'en ai retenu, en quelques mots. */
   retenu?: string;
+  /** `false` : l'étape reste sur `/a-propos` mais pas sur l'accueil. */
+  accueil?: boolean;
 }
 
 export interface ParcoursGroupe {
