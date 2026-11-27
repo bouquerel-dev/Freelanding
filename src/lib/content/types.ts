@@ -269,6 +269,8 @@ export interface SiteConfig {
   /** Bloc CTA du footer (« Start a project. » + sous-texte). */
   footerCta?: {
     heading: string;
+    /** Découpage du titre en lignes, comme les sections en deux parties. */
+    headingLines?: readonly string[];
     subtext?: string;
     /** Fragments du sous-texte rendus en blanc plein. */
     subtextEmphasis?: readonly string[];
@@ -731,6 +733,20 @@ export interface StatsSection {
   ctas?: Link[];
 }
 
+/** Un argument de « Pourquoi moi » : une affirmation courte, puis sa preuve. */
+export interface PointPourquoi {
+  titre: string;
+  texte: string;
+}
+
+/**
+ * « Pourquoi moi » en deux parties (2026-11-27) : titre à gauche, conviction,
+ * arguments numérotés et chiffre de propriété à droite.
+ */
+export interface WhyUsSection extends StatsSection {
+  points: readonly PointPourquoi[];
+}
+
 /**
  * Une cellule de la bande défilante (section11).
  *
@@ -892,7 +908,7 @@ export interface HomeContent {
   /** « How we do it » — grille de chiffres + témoignage intégré (numbers.ts). */
   numbers: StatsSection;
   /** « Built on reputation » — bloc « Why us? » (number.ts). */
-  whyUs: StatsSection;
+  whyUs: WhyUsSection;
   /** Prestations en accordéon (section06). */
   services: ServicesSection;
   /**

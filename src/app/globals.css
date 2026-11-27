@@ -26,6 +26,10 @@
      ponctue (logo, sélection de texte, accents ponctuels). */
   --volt: #c8f24a;
   --muted: #e9e9e9;
+  /* Papier : le « fond blanc » des sections en deux parties de l'accueil
+     (demande d'Eliott du 2026-11-27). Un blanc à peine chaud, jamais #fff :
+     à côté de l'aplat volt, le blanc pur claque et fatigue. */
+  --papier: #f6f6f1;
 
   /* Surfaces (dark alt) */
   --surface-1: #0e0e0e;
@@ -48,6 +52,7 @@
   --color-accent-ink: var(--accent-ink);
   --color-volt: var(--volt);
   --color-muted: var(--muted);
+  --color-papier: var(--papier);
   --color-surface-1: var(--surface-1);
   --color-surface-2: var(--surface-2);
   --color-border: var(--border);

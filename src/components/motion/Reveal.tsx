@@ -391,12 +391,13 @@ export function appearReveal(
 }
 
 /** Balises HTML supportées par le composant {@link Reveal} (`as`). */
-type RevealTag = "div" | "span" | "p" | "header" | "footer" | "nav" | "section";
+type RevealTag = "div" | "span" | "p" | "li" | "header" | "footer" | "nav" | "section";
 
 const MOTION_TAGS = {
   div: motion.div,
   span: motion.span,
   p: motion.p,
+  li: motion.li,
   header: motion.header,
   footer: motion.footer,
   nav: motion.nav,

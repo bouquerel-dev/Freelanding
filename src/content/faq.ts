@@ -72,6 +72,17 @@ import type { FaqItem } from "@/lib/content/types";
  * nombre.
  */
 export const faqItems: FaqItem[] = [
+  /*
+   * LES TROIS MÉTIERS D'ELIOTT, entrés le 2026-11-27 (demande d'Eliott : la
+   * FAQ doit dire ce qu'il fait aujourd'hui, sites, logiciels métier et
+   * intégration d'IA, plus seulement le logiciel). Aucun prix d'Eliott : tout
+   * est sur devis depuis le 2026-11-12.
+   */
+  {
+    question: "Qu’est-ce que vous construisez, concrètement ?",
+    answer:
+      "Des sites internet qui vous amènent des demandes, des logiciels métier faits pour votre façon de travailler, et des automatisations IA qui prennent le recopiage, les relances ou le tri des mails. Au premier appel, je vous dis ce qui vous rapporte le plus pour ce que ça coûte.",
+  },
   {
     question: "Combien coûte un projet, et comment c’est facturé ?",
     /* Aucun prix d'Eliott depuis le 2026-11-01 : il se fixe au devis. L'échéancier se dit sans ses
@@ -81,12 +92,24 @@ export const faqItems: FaqItem[] = [
 
        LE REPÈRE D'AGENCE vient lui aussi d'`offre.ts`, avec sa source et sa
        date. */
-    answer: `${PRIX_AU_DEVIS} Il suit le nombre de modules, les outils à relier et la reprise de vos données. En agence, un premier outil se facture ${euros(repereAgenceLogiciel.premierOutilMin)} à ${euros(repereAgenceLogiciel.premierOutilMax)} selon ${repereAgenceLogiciel.source.nom} (${repereAgenceLogiciel.source.releve}). Je conçois et je code moi-même, sans chef de projet ni structure à payer. Vous réglez le montant selon un échéancier écrit au devis et étalé jusqu’à la livraison : vous ne payez jamais tout d’avance.`,
+    answer: `${PRIX_AU_DEVIS} Il suit ce qu’il faut construire : les pages ou les écrans, les outils à relier, la reprise de vos données. En agence, un premier outil logiciel se facture ${euros(repereAgenceLogiciel.premierOutilMin)} à ${euros(repereAgenceLogiciel.premierOutilMax)} selon ${repereAgenceLogiciel.source.nom} (${repereAgenceLogiciel.source.releve}). Je conçois et je code moi-même, sans chef de projet ni structure à payer. Vous réglez le montant selon un échéancier écrit au devis et étalé jusqu’à la livraison : vous ne payez jamais tout d’avance.`,
+  },
+  {
+    question: "L’IA, je ne vois pas ce qu’elle ferait chez moi.",
+    answer:
+      "C’est le sujet du premier appel. On regarde votre semaine : ce que vous triez, recopiez, relancez ou rapprochez à la main. L’IA en prend la plus grosse part, vous relisez et vous validez. Je fais tourner ça chaque jour sur ma propre boîte mail.",
   },
   {
     question: "Combien de temps ça prend ?",
     answer:
       "La date de mise en service est écrite dans le devis, avant que vous signiez. Elle dépend de votre projet et de la rapidité de vos retours : vos exemples de documents, vos accès, vos réponses à mes questions. Je ne mène qu’un projet à la fois : une fois le devis signé, je travaille sur le vôtre, et vous le voyez avancer sur une adresse en ligne.",
+  },
+  {
+    /* La zone est celle du pied de page (`site.ts`). Aucun déplacement promis :
+       le premier échange est en visio, règle d'Eliott. */
+    question: "Vous travaillez seulement à Caen ?",
+    answer:
+      "Je suis à Caen. J’interviens dans le Calvados, la Manche et l’Orne, et partout en France à distance. Le premier échange se fait en visio, sur un créneau que vous réservez en ligne.",
   },
   {
     question: "Est-ce que je reste propriétaire de ce que vous construisez ?",

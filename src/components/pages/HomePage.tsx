@@ -2,7 +2,7 @@ import { Fragment, type ReactNode } from "react";
 import { SvgSprite } from "@/components/SvgSprite";
 import { FloatingNav, Footer, Header } from "@/components/layout";
 import { MoiSection } from "@/components/sections/MoiSection";
-import { ArticlesSection } from "@/components/sections/ArticlesSection";
+import { ActualitesSection } from "@/components/sections/ActualitesSection";
 import { FaqSection } from "@/components/sections/FaqSection";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { LogicielSection } from "@/components/sections/LogicielSection";
@@ -64,14 +64,15 @@ export async function HomePage() {
     logiciel: home.logiciel ? (
       <LogicielSection logiciel={home.logiciel} bottomAccent="muted" />
     ) : null,
-    numbers: <StatsSection numbers={home.numbers} />,
+    /* L'aplat volt s'ouvre depuis le blanc de « Pourquoi moi » (2026-11-27). */
+    numbers: <StatsSection numbers={home.numbers} autour="bg-papier" />,
     /* Pas de bande en tête de la FAQ sur l'accueil : elle suit « Pourquoi
        moi », déjà clair, et la bande y recouvrait le bas de sa carte droite. */
-    faq: <FaqSection faq={home.faq ?? []} topAccent={false} />,
+    faq: <FaqSection faq={home.faq ?? []} topAccent={false} fond="bg-papier" autour="bg-accent" />,
     testimonials: home.testimonials ? (
       <TestimonialsSection testimonials={home.testimonials.items} />
     ) : null,
-    articles: <ArticlesSection posts={featuredPosts} />,
+    articles: <ActualitesSection posts={featuredPosts} articles={home.articles} autour="bg-papier" />,
   } satisfies Record<string, ReactNode>;
 
   return (

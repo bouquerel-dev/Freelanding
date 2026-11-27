@@ -80,7 +80,6 @@ export const reputationStats: Stat[] = [
   {
     value: "100",
     label: "Du code, de l’hébergement et des données à votre nom",
-    prefix: "/",
     suffix: "%",
     format: "integer",
   },

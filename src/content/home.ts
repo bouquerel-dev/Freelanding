@@ -240,8 +240,25 @@ export const homeContent: HomeContent = {
        code et des données, dite sans viser personne. */
     title: "L’IA fait le sale boulot.",
     titleLines: ["L’IA fait", "le sale", "boulot."],
+    /* EN DEUX PARTIES DEPUIS LE 2026-11-27, demande d'Eliott : le bloc de
+       soixante mots est coupé en une conviction et trois arguments, mêmes
+       faits et mêmes mots que sa version du 2026-11-02. */
     intro:
-      "Ma conviction : une machine ne remplace pas la personne qui connaît vos clients, elle la débarrasse de ce qui l’empêche de s’en occuper. Le recopiage et les factures partent au logiciel et à l’IA, et le temps rendu revient à ce qui rend votre équipe indispensable. Chaque détail est décidé, testé et documenté avant de vous être remis : rien n’est laissé au hasard.",
+      "Une machine ne remplace pas la personne qui connaît vos clients. Elle lui enlève ce qui l’empêche de s’en occuper.",
+    points: [
+      {
+        titre: "Le recopiage part à la machine.",
+        texte: "Factures, relances, saisies : le logiciel et l’IA les font, vous validez.",
+      },
+      {
+        titre: "Les heures reviennent à votre équipe.",
+        texte: "Elle les passe avec vos clients, sur ce qui la rend indispensable.",
+      },
+      {
+        titre: "Rien n’est laissé au hasard.",
+        texte: "Chaque détail est décidé, testé et documenté avant de vous être remis.",
+      },
+    ],
     stats: reputationStats,
     // LE RENDEZ-VOUS EST LE CHEMIN PRINCIPAL du site. « Voir les réalisations »
     // est parti : la section des réalisations est juste au-dessus.
@@ -350,7 +367,7 @@ export const homeContent: HomeContent = {
   articles: {
     eyebrow: "Actualités et nouveautés.",
     titleLines: ["Actualités et", "nouveautés."],
-    cta: { label: "Voir plus", href: "/blog" },
+    cta: { label: "Tous les articles", href: "/blog" },
     // DÉRIVÉE DU REGISTRE depuis le 2026-08-28, plus écrite à la main.
     //
     // Cette liste portait quatre slugs recopiés, et la MÊME liste vivait dans
