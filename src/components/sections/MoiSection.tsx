@@ -12,7 +12,8 @@ import type { AboutContent, HomeAboutSection, ParcoursEtape } from "@/lib/conten
  * méthode et l'expérience chez Würth, MeilleursBiens et MECA SERVICES aident
  * un dirigeant à appeler. L'enfance, la troisième et le lycée sont coupés, le
  * stage d'agence aussi (champ `accueil: false`, ils restent sur `/a-propos`).
- * Deux colonnes : l'expérience, de la plus récente à la plus ancienne, puis
+ * Deux colonnes : l'expérience, de la plus récente à la plus ancienne (sur
+ * ordinateur, colonne par colonne : on lit de haut en bas, puis à droite), puis
  * la formation en lignes courtes, sans récit.
  */
 
@@ -90,7 +91,9 @@ function Colonne({ titre, etapes, lignes, compact = false }: { titre: string; et
   return (
     <div className="flex flex-col gap-[22px]">
       <TitreColonne>{titre}</TitreColonne>
-      <ol className={`m-0 list-none p-0 ${compact ? "" : "desktop:grid desktop:grid-cols-2 desktop:gap-x-[48px]"}`}>
+      <ol
+        style={{ "--rangs": Math.ceil(etapes.length / 2) } as React.CSSProperties}
+        className={`m-0 list-none p-0 ${compact ? "" : "desktop:grid desktop:grid-flow-col desktop:grid-cols-2 desktop:grid-rows-[repeat(var(--rangs),auto)] desktop:gap-x-[48px]"}`}>
         {etapes.map((etape) => (
           <Etape key={etape.structure} etape={etape} lignes={lignes} compact={compact} />
         ))}

@@ -49,6 +49,12 @@ describe("MoiSection", () => {
     expect(html.indexOf("MyDigitalSchool")).toBeLessThan(html.indexOf("IUT de Saint-Lô"));
   });
 
+  it("se lit colonne par colonne sur ordinateur : Indépendant puis MECA, MeilleursBiens puis Würth", () => {
+    expect(html).toContain("desktop:grid-flow-col");
+    expect(html).toContain("--rangs:2");
+    expect(html).toContain(">Depuis août 2026</span>");
+  });
+
   it("coupe l'enfance et monte la phrase de méthode sous le titre", () => {
     for (const absent of ["Avant le lycée", "Comprendre", "Optimiser", "Lorient", "frise-piste", "sticky"]) expect(html).not.toContain(absent);
     expect(about.body).toHaveLength(2);
