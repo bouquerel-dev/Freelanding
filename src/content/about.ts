@@ -229,7 +229,7 @@ export const aboutContent: AboutContent = {
             debut: "2018-09",
             fin: "2021-07",
             court: "Bac STI2D, le robot du bac",
-            recit: "En terminale, j’ai programmé en Arduino le robot construit avec ma classe, pour qu’il suive un parcours.",
+            recit: "Seconde option sciences de l’ingénieur, puis bac STI2D. En terminale, on a construit un robot avec ma classe, et c’est moi qui l’ai programmé en Arduino. Son parcours : suivre une ligne noire dans les virages, attraper une canette et la déposer au bon endroit, allumer ses phares, passer sur un pont.",
             retenu: "Un programme se juge sur la piste.",
             apport: "Les sciences de l’ingénieur, et un robot programmé en Arduino pour qu’il suive seul un parcours.",
             domaines: ["Sciences de l’ingénieur", "Arduino", "Robotique"],

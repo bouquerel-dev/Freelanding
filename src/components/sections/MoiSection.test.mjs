@@ -3,7 +3,6 @@ import { createElement } from "react";
 import { renderToReadableStream } from "react-dom/server";
 import { HomePage } from "@/components/pages/HomePage";
 import { MoiSection } from "@/components/sections/MoiSection";
-import { bornes, moisEnAnnee, placer, positionAujourdhui } from "@/components/sections/moi/frise";
 import { aboutContent } from "@/content/about";
 import { homeContent } from "@/content/home";
 
@@ -14,126 +13,97 @@ async function rendre(element) {
 }
 
 /*
- * « Moi, c'est Eliott » (2026-11-27, seconde passe) : fond noir, pas de photo,
- * formation et expérience sur un même axe des années.
+ * « Moi, c'est Eliott » (2026-11-27, quatrième passe) : plus de frise
+ * horizontale. Trois colonnes, avant le lycée, formation, expérience, chacune
+ * un rail vertical ; seules les périodes portent des années.
  */
-const maintenant = new Date(2026, 10, 27);
-const html = await rendre(createElement(MoiSection, { about: homeContent.about, maintenant }));
+const html = await rendre(createElement(MoiSection, { about: homeContent.about }));
 const groupes = aboutContent.parcours.groupes;
+const { about } = homeContent;
 
 describe("MoiSection", () => {
-  it("montre la formation et l'expérience, chaque étape avec sa nature", () => {
+  it("montre la formation et l'expérience, chaque étape avec sa nature, son récit et sa leçon", () => {
     for (const g of groupes) {
       for (const e of g.etapes) {
         expect(html).toContain(`>${e.structure}</span>`);
         expect(html).toContain(`>${e.nature}</span>`);
-      }
-    }
-    expect(html).toContain(`>${homeContent.about.lignes.formation}</span>`);
-    expect(html).toContain(`>${homeContent.about.lignes.experience}</span>`);
-  });
-
-  it("n'affiche plus de photo : le visage est déjà dans le héros", () => {
-    expect(html).not.toContain("<img");
-    expect(homeContent.about.image).toBeUndefined();
-  });
-
-  it("pose une année par colonne, de la première étape à l'année en cours", () => {
-    for (const an of [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026]) expect(html).toContain(`>${an}</span>`);
-    expect(html).not.toContain(">2027</span>");
-  });
-
-  it("marque l'étape en cours, et relie l'étude de cas Würth et le parcours détaillé", () => {
-    expect(html).toContain(`>${homeContent.about.lignes.enCours}</span>`);
-    expect(html).toContain('href="/realisations/wurth-creation-de-compte"');
-    expect(html).toContain(`href="${homeContent.about.cta.href}"`);
-  });
-
-  it("raconte avant le bac, puis chaque étape avec ce que j'en ai retenu", () => {
-    const { prologue } = homeContent.about;
-    expect(html).toContain(`>${prologue.titre}</p>`);
-    for (const item of prologue.items) {
-      expect(html).toContain(`>${item.mot}</span>`);
-      expect(html).toContain(`>${item.texte}</span>`);
-    }
-    expect(html).toContain(`>${prologue.fil}</p>`);
-    const terminale = groupes.find((g) => g.titre === "Formation").etapes.find((e) => e.nature === "Bac STI2D");
-    expect(terminale.recit).toContain("Arduino");
-    for (const g of groupes) {
-      for (const e of g.etapes) {
-        if (e.recit) expect(html).toContain(e.recit);
+        if (e.recit) expect(html).toContain(`>${e.recit}</p>`);
         if (e.retenu) expect(html).toContain(e.retenu);
       }
     }
-    expect(html).toContain(`>${homeContent.about.lignes.retenu}</span>`);
+    expect(html).toContain(`>${about.lignes.formation}</p>`);
+    expect(html).toContain(`>${about.lignes.experience}</p>`);
+    expect(html).toContain(`>${about.lignes.retenu}</span>`);
   });
 
-  it("ne dessine plus aucune pilule : étiquettes au rayon des tags, barres à angles droits", () => {
-    expect(html).not.toMatch(/rounded-full (border|px|bg-gradient|bg-white|bg-accent\/80)/u);
+  it("range chaque colonne du plus ancien au plus récent", () => {
+    expect(html.indexOf("Lycée Arcisse de Caumont")).toBeLessThan(html.indexOf("IUT de Saint-Lô"));
+    expect(html.indexOf("IUT de Saint-Lô")).toBeLessThan(html.indexOf("MyDigitalSchool"));
+    expect(html.indexOf("Mediapilote")).toBeLessThan(html.indexOf("MECA SERVICES"));
+    expect(html.indexOf("MECA SERVICES")).toBeLessThan(html.indexOf(">Indépendant<"));
+  });
+
+  it("n'a plus de frise horizontale ni de colonne d'années vide", () => {
+    expect(html).not.toContain("frise-piste");
+    expect(html).not.toContain("sticky");
+    for (const an of ["2018", "2020"]) expect(html).not.toContain(`>${an}</span>`);
+  });
+
+  it("raconte avant le lycée, met en avant l'optimisation, sans jeux vidéo ni Pong", () => {
+    const { prologue } = about;
+    expect(html).toContain(`>${prologue.titre}</p>`);
+    for (const item of prologue.items) expect(html).toContain(`>${item.texte}</span>`);
+    expect(html).toContain('text-accent">Optimiser</span>');
+    expect(html).toContain(`>${prologue.fil}</p>`);
+    for (const absent of ["Minecraft", "Pokémon", "Pong", "Scratch"]) expect(html).not.toContain(absent);
+    expect(html).toContain("Lorient");
+  });
+
+  it("détaille le parcours du robot de terminale", () => {
+    const lycee = groupes.find((g) => g.titre === "Formation").etapes.find((e) => e.nature === "Bac STI2D");
+    for (const mot of ["Arduino", "ligne noire", "canette", "phares", "pont"]) expect(lycee.recit).toContain(mot);
+  });
+
+  it("marque l'étape en cours, relie l'étude de cas Würth et le parcours détaillé", () => {
+    expect(html).toContain(`>${about.lignes.enCours}</span>`);
+    expect(html).toContain("frise-pouls bg-accent");
+    expect(html).toContain('href="/realisations/wurth-creation-de-compte"');
+    expect(html).toContain(`href="${about.cta.href}"`);
+  });
+
+  it("ne dessine aucune pilule", () => {
+    expect(html).not.toMatch(/rounded-full/u);
     expect(html).toContain("rounded-tag border border-white/15");
-    expect(html).toContain("rounded-[2px]");
   });
 
   it("garde la zone analytics « about »", () => {
     expect(html).toContain('data-section="about"');
   });
 
-  it("tient sans parcours, sans repères, sans sur-titre ni lien", async () => {
+  it("tient sans parcours, sans prologue, sans repères, sans sur-titre ni lien", async () => {
     const nu = await rendre(createElement(MoiSection, { about: { title: "Moi", body: ["Une phrase."] }, parcours: null }));
     expect(nu).toContain(">Moi</h2>");
-    expect(nu).not.toContain("frise-piste");
-    expect(nu).not.toContain("text-accent desktop:flex");
+    expect(nu).not.toContain("<ol");
+    expect(nu).not.toContain("font-mono text-[12px] uppercase text-accent");
   });
 
-  it("tient sur une étape sans résumé ni lien, avec la date du jour par défaut", async () => {
+  it("tient sur une étape sans résumé, sans date ni lien, avec ou sans résumé court", async () => {
     const parcours = {
-      groupes: [{ titre: "Expérience", etapes: [{ periode: "2025", structure: "Atelier", role: "Dev", nature: "Stage", debut: "2025-01", fin: "2025-03" }] }],
-    };
-    const rendu = await rendre(createElement(MoiSection, { about: { title: "Moi", body: ["Une phrase."] }, parcours }));
-    expect(rendu).toContain(">Atelier</span>");
-    expect(rendu).toContain("frise-piste");
-  });
-});
-
-describe("géométrie de la frise", () => {
-  it("lit un mois, refuse le reste", () => {
-    expect(moisEnAnnee("2024-09")).toBeCloseTo(2024 + 8 / 12);
-    expect(moisEnAnnee("2024")).toBeNull();
-    expect(moisEnAnnee(undefined)).toBeNull();
-  });
-
-  it("borne l'axe de la première année à l'année qui suit aujourd'hui", () => {
-    expect(bornes([{ debut: "2021-09" }, { debut: "nope" }], 2026.8)).toEqual({ de: 2021, a: 2027 });
-    expect(bornes([], 2026.8)).toEqual({ de: 2026, a: 2027 });
-  });
-
-  it("décale d'un rang deux cartes trop proches, ignore une étape sans date", () => {
-    const { etapes } = placer(
-      [
+      groupes: [
         {
-          ligne: "experience",
+          titre: "Expérience",
           etapes: [
-            { structure: "B", debut: "2024-06" },
-            { structure: "A", debut: "2024-03", fin: "2024-06" },
-            { structure: "C", debut: "2026-07" },
-            { structure: "X" },
+            { periode: "2025", structure: "Atelier", role: "Dev", nature: "Stage" },
+            { periode: "2024", structure: "Bureau", role: "Dev", nature: "Stage", court: "Trois mots", debut: "2024-01", fin: "2024-03" },
           ],
         },
       ],
-      2026.9,
-    );
-    expect(etapes.map((e) => [e.etape.structure, e.rang])).toEqual([["A", 0], ["B", 1], ["C", 0]]);
-    expect(etapes.at(-1).enCours).toBe(true);
-    expect(etapes.at(-1).fin).toBe(1);
-  });
-
-  it("tient deux étapes à six mois d'écart sur une même rangée", () => {
-    const { etapes } = placer([{ ligne: "experience", etapes: [{ structure: "A", debut: "2024-03" }, { structure: "B", debut: "2024-09" }] }], 2026.9);
-    expect(etapes.map((e) => e.rang)).toEqual([0, 0]);
-  });
-
-  it("place aujourd'hui sur la piste", () => {
-    expect(positionAujourdhui(2021, 2027, 2024)).toBe(0.5);
+    };
+    const rendu = await rendre(createElement(MoiSection, { about: { title: "Moi", body: ["Une phrase."] }, parcours }));
+    expect(rendu).toContain(">Atelier</span>");
+    expect(rendu).toContain(">Trois mots</p>");
+    // Sans date, une étape n'est pas « en cours ».
+    expect(rendu).not.toContain("bg-accent text-accent-ink");
   });
 });
 

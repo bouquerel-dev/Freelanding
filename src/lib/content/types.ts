@@ -831,7 +831,7 @@ export interface HomeAboutSection {
   faits?: readonly string[];
   /** Sur-titre de la section (accueil). */
   eyebrow?: string;
-  /** Libellés des deux lignes de la frise, de l'étape en cours et de la leçon d'une étape. */
+  /** Titres des colonnes du parcours, de l'étape en cours et de la leçon d'une étape. */
   lignes?: { formation: string; experience: string; enCours: string; retenu: string };
   /**
    * Ce qui précède les études, avant l'axe des années (2026-11-27) : trois
@@ -839,7 +839,8 @@ export interface HomeAboutSection {
    */
   prologue?: {
     titre: string;
-    items: readonly { mot: string; texte: string }[];
+    /** `accent` : l'idée mise en avant, en volt. */
+    items: readonly { mot: string; texte: string; accent?: boolean }[];
     fil: string;
   };
 }
@@ -938,7 +939,7 @@ export interface ParcoursEtape {
   nature: string;
   /** Ce qui a été fait, en trois mots, pour la frise de l'accueil. */
   court?: string;
-  /** Début et fin au mois (« 2024-09 »), pour placer l'étape sur la frise. Sans fin : en cours. */
+  /** Début et fin au mois (« 2024-09 »), pour ranger l'étape dans le parcours. Sans fin : en cours. */
   debut?: string;
   fin?: string;
   /** Étude de cas liée, quand elle existe. */

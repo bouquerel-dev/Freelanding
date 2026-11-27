@@ -195,22 +195,25 @@ export const homeContent: HomeContent = {
     faits: ["Bac+5", "Caen et visio"],
     lignes: { formation: "Formation", experience: "Expérience", enCours: "Aujourd’hui", retenu: "Retenu" },
     /*
-     * AVANT LE LYCÉE (2026-11-27, demande d’Eliott : que sa personnalité
-     * ressorte). Faits dictés par lui, tels quels : les questions techniques à
-     * ses parents, Minecraft et Pokémon, trois PC montés (benchmarks, rapport
-     * qualité-prix, configs, FPS), le club robotique et l’atelier Scratch de
-     * troisième (un Pong), l’esprit logique qui lui sert pour ses clients.
-     * Le lycée est sur l’axe. Ni nom de parent ni de frère.
+     * AVANT LE LYCÉE (2026-11-27, quatrième passe, demande d’Eliott). Faits
+     * dictés par lui : les questions techniques à ses parents, trois PC montés
+     * au meilleur rapport qualité-prix (benchmarks, configs, FPS), le club
+     * robotique de troisième et son concours à Lorient, 7e face à des classes
+     * de lycée. Jeux vidéo et Pong retirés : ses clients s’en moquent.
+     * « Optimiser » est mis en avant, il parle de son métier.
      */
     prologue: {
       titre: "Avant le lycée",
       items: [
         { mot: "Comprendre", texte: "Tout petit, je voulais savoir comment marchaient les choses. Mes parents avaient droit à des questions très techniques." },
-        { mot: "Jouer", texte: "Minecraft, Pokémon. Et l’ordinateur, plus encore que les jeux." },
-        { mot: "Optimiser", texte: "J’ai monté trois PC, dont certains pour mon petit frère : je lisais les benchmarks pour le meilleur rapport qualité-prix, je réglais tout pour gagner des FPS." },
-        { mot: "Coder", texte: "En troisième, un club robotique : un robot construit de toutes pièces, programmé pour un petit parcours. Et un atelier Scratch, où j’ai codé un Pong." },
+        {
+          mot: "Optimiser",
+          texte: "J’ai monté trois PC, dont certains pour mon petit frère. Je comparais les benchmarks pour trouver le meilleur rapport qualité-prix, puis je réglais chaque config pour gagner des FPS.",
+          accent: true,
+        },
+        { mot: "Coder", texte: "En troisième, au club robotique, on a construit un robot de toutes pièces et on l’a programmé pour un parcours. Au concours de Lorient, on a fini 7e face à des classes de lycée." },
       ],
-      fil: "Cet esprit logique me sert toujours : avant d’écrire une ligne de code, je regarde comment vous travaillez pour trouver la meilleure solution.",
+      fil: "Je fais pareil pour vous : avant d’écrire une ligne de code, je regarde comment vous travaillez, puis je cherche la solution qui vous rapporte le plus pour ce qu’elle coûte.",
     },
     cta: { label: "Mon parcours en détail", href: "/a-propos" },
   },
