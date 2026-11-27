@@ -81,6 +81,12 @@ describe("StatsSection", () => {
     expect(html).not.toContain("opacity-[0.18]");
   });
 
+  it("sans lignes, le titre retombe sur le titre entier, ou sur rien", () => {
+    const { numbers } = homeContent;
+    expect(rendre(StatsSection, { numbers: { ...numbers, titleLines: undefined } })).toContain(numbers.title);
+    expect(rendre(StatsSection, { numbers: { ...numbers, titleLines: undefined, title: undefined } })).toContain("<h2");
+  });
+
   it("sans elle, l'aplat est posé d'un bloc", () => {
     const html = rendre(StatsSection, { numbers: homeContent.numbers });
     expect(html).not.toContain('data-part="ouverture"');
