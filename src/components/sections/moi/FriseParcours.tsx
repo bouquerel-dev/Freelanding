@@ -190,14 +190,14 @@ function FriseEpinglee({ etapes, annees, aujourdhui, lignes, entete }: Props) {
   const [debord, setDebord] = useState(0);
 
   useEffect(() => {
-    const mesurer = () => {
-      const f = fenetre.current;
-      const p = piste.current;
-      if (f && p) setDebord(Math.max(0, p.scrollWidth - f.clientWidth));
-    };
+    // Les deux éléments sont rendus sans condition par ce composant : après
+    // le montage, leurs refs sont toujours posées.
+    const f = fenetre.current as HTMLDivElement;
+    const p = piste.current as HTMLDivElement;
+    const mesurer = () => setDebord(Math.max(0, p.scrollWidth - f.clientWidth));
     mesurer();
     const ro = new ResizeObserver(mesurer);
-    if (fenetre.current) ro.observe(fenetre.current);
+    ro.observe(f);
     return () => ro.disconnect();
   }, []);
 
