@@ -30,10 +30,17 @@ const home = await content.getHome();
 const works = await content.getWorks();
 
 describe("boutons d'appel partagés", () => {
-  it("menu flottant : un bouton pleine largeur vers le rendez-vous", async () => {
+  it("menu flottant : un bouton pleine largeur vers le rendez-vous, le numéro reste au bloc contact", async () => {
     const [bouton] = boutons(await rendre(createElement(FloatingNav, { site })));
-    expect(bouton).toContain(`href="${site.primaryCta.href.replace(/&/g, "&amp;")}"`);
+    expect(bouton).toContain(`href="${site.floatingCta.href.replace(/&/g, "&amp;")}"`);
+    expect(bouton).toContain('data-cta="true"');
     expect(bouton).toContain("w-full");
+  });
+
+  it("menu flottant : sans bouton de menu dédié, il reprend le bouton principal", async () => {
+    const sansMenu = { ...site, floatingCta: undefined };
+    const [bouton] = boutons(await rendre(createElement(FloatingNav, { site: sansMenu })));
+    expect(bouton).toContain(`href="${site.primaryCta.href}"`);
   });
 
   it("menu flottant : le blog n'y figure plus", async () => {

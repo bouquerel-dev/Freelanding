@@ -581,7 +581,6 @@ export type PartieVisage = "front" | "oeil" | "bouche" | "oreille" | "epaule" | 
 export interface HeroTraitVisage {
   partie: PartieVisage;
   titre: string;
-  detail: string;
 }
 
 export interface HeroContent {
@@ -659,36 +658,6 @@ export interface HeroDoor {
   href: string;
   /** Le prix, tel qu'il s'affiche (« Sur devis »). */
   price: string;
-}
-
-/** Bloc « Showreel » — marquee défilant + phrase manifeste + millésime. */
-export interface ShowreelContent {
-  /** Texte du marquee défilant (répété dans l'UI). Ex. « We build websites. » */
-  marquee: string;
-  /**
-   * Découpage du titre en LIGNES, une entrée par ligne.
-   *
-   * Le titre était découpé automatiquement à chaque espace : un mot par ligne.
-   * La phrase anglaise de la source en compte trois, la française sept, et le
-   * bloc rendait « JE / CONSTRUIS / DES / SITES / ET / DES / OUTILS. » — quatre
-   * lignes d'un ou deux caractères dans un corps de 92 px. Le découpage est une
-   * décision de mise en page, elle appartient donc à la donnée, comme
-   * `hero.titleLines` ou `about.teamTitleLines`. Sans ce champ, le composant
-   * retombe sur l'ancien comportement mot à mot.
-   */
-  marqueeLines?: readonly string[];
-  /** Phrase manifeste sous le marquee. */
-  statement: string;
-  /** Fragments de la phrase manifeste rendus en noir plein. */
-  statementEmphasis?: readonly string[];
-  /** Millésime affiché à côté du marquee. Ex. « 2019-26© ». */
-  vintage: string;
-  /** Lien d'appel (« ↓ SEE THE WORK »). */
-  cta?: Link;
-  /** Caractère précédant le libellé du lien (« ↓ »). */
-  ctaPrefix?: string;
-  /** Affiche figée de la vidéo. */
-  poster?: ImageAsset;
 }
 
 /** Une prestation (bloc accordéon « Services », section06). */
@@ -854,18 +823,14 @@ export interface HomeAboutSection {
   body: string[];
   /** Fragments des paragraphes rendus en blanc plein. */
   highlights?: string[];
-  /** Libellé de gauche de la grille d'infos (« Launched »). */
-  launchedLabel?: string;
-  /** Libellé de droite de la grille d'infos (« 24+ projects »). */
-  projectsLabel?: string;
-  /** Millésime affiché au-dessus du titre (« 2019-26© »). */
-  vintage?: string;
-  /** Compteur du coin inférieur droit (« 12+ » + légende). */
-  counter?: { value: string; suffix?: string; caption?: string };
-  /** Lien de bas de colonne (« About us »). */
+  /** Lien vers le parcours détaillé. */
   cta?: Link;
-  /** Photo de la colonne droite. */
+  /** Portrait. */
   image?: ImageAsset;
+  /** Repères courts posés sous la phrase (accueil, 2026-11-27). */
+  faits?: readonly string[];
+  /** Étiquette de la frise du parcours. */
+  parcoursLabel?: string;
 }
 
 /** Une journée de la démonstration : sa corvée, à la main puis rendue. */
@@ -890,14 +855,6 @@ export interface CompteurDemo {
  * La section qui montre ce qu'un logiciel métier rend : une semaine de bureau,
  * à la main puis avec le logiciel.
  */
-/** Les trois moyens de rendre du temps, sous la démonstration. */
-export interface MoyensContent {
-  eyebrow: string;
-  titleLines: readonly string[];
-  intro: string;
-  lignes: readonly { titre: string; corps: string; lien: Link }[];
-}
-
 export interface LogicielDemoContent {
   eyebrow: string;
   titleLines: readonly string[];
@@ -927,9 +884,6 @@ export interface HomeContent {
   hero: HeroContent;
   /** Démonstration du logiciel métier, en section noire. */
   logiciel?: LogicielDemoContent;
-  /** Les trois moyens de rendre du temps. */
-  moyens: MoyensContent;
-  showreel: ShowreelContent;
   about: HomeAboutSection;
   /** Projets mis en avant sur la home, dans l'ordre éditorial. */
   featuredWorkSlugs: readonly string[];
@@ -971,6 +925,8 @@ export interface ParcoursEtape {
   role: string;
   /** Alternance, stage, freelance, diplôme. */
   nature: string;
+  /** Ce qui a été fait, en trois mots, pour la frise de l'accueil. */
+  court?: string;
   /** Étude de cas liée, quand elle existe. */
   href?: string;
   /** Ce que l'étape a apporté, en une phrase (formations surtout). */

@@ -22,7 +22,7 @@ const lienTheme = (id: Parameters<typeof pageTheme>[0]) => {
 };
 
 /** Libellé de tout lien vers l'ancre `#rendez-vous` d'une page de prestation. */
-const RESERVER_UN_APPEL = "Réserver un appel";
+const RESERVER_UN_APPEL = "Réserver un créneau";
 
 /**
  * TITRE DE RECHERCHE ET TITRE DE PAGE, prestation par prestation.

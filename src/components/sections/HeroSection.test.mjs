@@ -35,7 +35,6 @@ describe("HeroSection", () => {
     expect(reperes.filter((r) => r.includes("gauche"))).toHaveLength(3);
     for (const trait of homeContent.hero.faceNotes ?? []) {
       expect(html).toContain(`>${trait.titre}</span>`);
-      expect(html).toContain(`>${trait.detail}</span>`);
     }
     // Plus de « hidden desktop:flex » : les étiquettes s'affichent aussi au téléphone.
     expect(html).not.toMatch(/data-part="hero-repere"[^>]*hidden/u);
@@ -47,10 +46,6 @@ describe("HeroSection", () => {
     expect(html).toContain('x1="30.2%" y1="40.6%" x2="41.7%" y2="40.6%"');
     // Au téléphone, l'épaule : le trait part sous l'étiquette (60 % + 4,5) et descend au point.
     expect(html).toContain('x1="68%" y1="64.5%" x2="74.4%" y2="67.9%"');
-  });
-
-  it("tient chaque petite description sur une ligne : vingt signes au plus", () => {
-    for (const trait of homeContent.hero.faceNotes ?? []) expect(trait.detail.length).toBeLessThanOrEqual(23);
   });
 
   it("pose la trame et la photo dans le même carré, et précharge la trame", () => {
@@ -120,9 +115,12 @@ describe("HeroSection", () => {
     for (const element of homeContent.hero.buildItems ?? []) expect(html).toContain(element);
   });
 
-  it("garde le rendez-vous et les réalisations comme seules actions", () => {
+  it("met le numéro en premier, le créneau à côté (2026-11-27)", () => {
+    const cta = html.match(/<a[^>]*data-part="hero-cta"[^>]*>/u)?.[0] ?? "";
+    expect(cta).toContain('href="tel:+33632213711"');
+    expect(cta).toContain('data-icone="telephone"');
     expect(html).toContain(uiLabels.services.rdvLabel);
-    expect(html).toContain('href="/realisations"');
+    expect(html).not.toContain('href="/realisations"');
   });
 
   it("n'a plus de barre du bas ni de vidéo", () => {
@@ -136,7 +134,6 @@ describe("HeroSection", () => {
     expect(nu).not.toContain('data-part="hero-visage"');
     expect(nu).not.toContain('data-part="hero-salut"');
     expect(nu).not.toContain('data-part="hero-pour-qui"');
-    expect(nu).not.toContain('data-part="hero-cta-secondaire"');
   });
 
   it("garde la salutation entière quand le nom n'y figure pas", () => {

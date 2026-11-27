@@ -420,7 +420,7 @@ export const hubMetiers = {
     titre: "Votre besoin n’est pas dans la liste ?",
     corps:
       "Décrivez-moi la tâche qui vous bloque, je vous dis ce qu’elle deviendrait.",
-    cta: "Réserver un appel",
+    cta: "Réserver un créneau",
   },
   maillage: {
     voisins: "Pages voisines",

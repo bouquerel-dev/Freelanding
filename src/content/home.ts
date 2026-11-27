@@ -98,16 +98,17 @@ export const homeContent: HomeContent = {
     buildPrefix: "Je construis",
     buildItems: ["des sites internet", "des logiciels métier", "des automatisations IA"],
     faceNotes: [
-      { partie: "front", titre: "Curieux", detail: "J’apprends votre métier" },
-      { partie: "oeil", titre: "Exigeant", detail: "Testé, puis livré" },
-      { partie: "bouche", titre: "Franc", detail: "Je dis ce qui cloche" },
-      { partie: "oreille", titre: "À l’écoute", detail: "Vous parlez d’abord" },
-      { partie: "epaule", titre: "Fiable", detail: "Parole tenue" },
-      { partie: "coeur", titre: "Passionné", detail: "Par goût du métier" },
+      { partie: "front", titre: "Curieux" },
+      { partie: "oeil", titre: "Exigeant" },
+      { partie: "bouche", titre: "Franc" },
+      { partie: "oreille", titre: "À l’écoute" },
+      { partie: "epaule", titre: "Fiable" },
+      { partie: "coeur", titre: "Passionné" },
     ],
     subtitle: COMMENT,
     subtitleParagraphs: [{ text: COMMENT }],
-    offerLink: { label: "Voir mes réalisations", href: "/realisations" },
+    // Plus de « Voir mes réalisations » dans le héros (2026-11-27) : le
+    // numéro et le créneau suffisent, les projets suivent plus bas.
     // PHOTO RÉELLE d'Eliott (fournie le 2026-08-10), rendue en grande trame à droite du texte.
     person: {
       name: "Eliott Bouquerel",
@@ -138,7 +139,7 @@ export const homeContent: HomeContent = {
     statement:
       "Trier, recopier, relancer, rapprocher : une semaine de bureau part là-dedans, quel que soit votre métier. L’IA fait le sale boulot, vous validez, et le temps revient à ce qui vous rend indispensable.",
     statementEmphasis: ["vous validez, et le temps revient à ce qui vous rend indispensable."],
-    cta: { label: "Voir comment", href: "#moyens" },
+    cta: { label: "Voir comment", href: "/services/automatisation" },
     demo: {
       titre: "Une semaine de bureau, en exemple",
       onglets: { main: "À la main", outil: "Avec moi" },
@@ -165,89 +166,6 @@ export const homeContent: HomeContent = {
     },
   },
 
-  /*
-   * LES TROIS MOYENS, décision d'Eliott du 2026-11-01 : ce qu'il ferait pour une
-   * entreprise qui veut gagner du temps, sans aucun nom ni donnée d'un prospect.
-   * Le prix n'est écrit que pour le logiciel : l'accompagnement se chiffre au devis.
-   */
-  moyens: {
-    eyebrow: "Trois façons de vous rendre ces heures",
-    titleLines: ["Le bon remède", "pour chaque", "corvée."],
-    intro:
-      "Une corvée ne se règle pas toujours avec un logiciel. Je regarde où part votre temps, puis je prends le moyen le plus simple.",
-    lignes: [
-      {
-        titre: "Installer l’IA dans vos outils",
-        corps:
-          "Mails, comptes rendus, devis simples : vos équipes s’en servent sur leurs vraies tâches, sans rien remplacer.",
-        lien: { label: "Voir l’automatisation", href: "/services/automatisation" },
-      },
-      {
-        titre: "Construire le logiciel qui manque",
-        corps:
-          "Votre façon de travailler n’entre dans aucun outil du marché : je le construis, et il vous appartient. Le prix se fixe au devis.",
-        lien: { label: "En parler", href: lienRendezVous("logiciel") },
-      },
-      {
-        titre: "Si besoin, devenir votre référent",
-        corps:
-          "Mes missions sont le plus souvent ponctuelles. Certaines entreprises préfèrent un interlocuteur régulier : je deviens alors leur référent IA ou développement, voire leur recherche et développement.",
-        lien: { label: "Voir cette option", href: "/services/automatisation#referent" },
-      },
-    ],
-  },
-
-  /*
-   * LES RÉALISATIONS, RÉÉCRITES LE 2026-10-31 : « On vous compare avant
-   * d'appeler » parlait au client du site vitrine. Ce sont des produits réels,
-   * jamais présentés comme des logiciels livrés à un client : la section invite
-   * à regarder, elle n'affirme aucune référence.
-   *
-   * LIGNES DE 12 SIGNES AU PLUS, le titre est rendu à 92 px dans une demi-
-   * colonne de 683 px, aligné à droite dès 810.
-   */
-  showreel: {
-    marquee: "Regardez ce que je construis.",
-    marqueeLines: ["Regardez", "ce que je", "construis."],
-    statement:
-      "Avant de me confier votre métier, vous voulez voir du concret. Voici des produits que j’ai développés et mis en service, écran par écran.",
-    // Rendue en noir 60 %, ce fragment passe en noir plein.
-    statementEmphasis: ["mis en service, écran par écran."],
-    vintage: "2026©",
-    /*
-     * SEUL CONTRÔLE DE LA SECTION depuis le 2026-08-27, et il est enfin
-     * cliquable. Le bouton « Showreel » qui l'accompagnait a été supprimé : il
-     * n'avait aucun gestionnaire et venait du template, où le studio d'origine
-     * avait une bande démo à ouvrir. `playLabel` a disparu avec lui.
-     */
-    cta: { label: "VOIR LES RÉALISATIONS", href: "/realisations" },
-    ctaPrefix: "↓ ",
-    /*
-     * AFFICHE DE LA SECTION, REMPLACÉE LE 2026-09-24 (phase E).
-     *
-     * L'ESCALIER DE BÉTON illustrait l'ancien titre (« où avancer semble
-     * évident »). Sous « Ton client te compare avant d'appeler », il ne disait
-     * plus rien. Eliott : « la photo n'est pas hyper pertinente ».
-     *
-     * CE QUI LA REMPLACE montre la scène du titre : quelqu'un tient son
-     * téléphone devant son ordinateur ouvert, deux écrans côte à côte. Le
-     * téléphone et l'ordinateur sont détourés en lignes volt, comme les sujets
-     * des héros du blog et de la page Caen ; le reste de la photo est
-     * légèrement assombri.
-     *
-     * Photographie Alejandro Escamilla, CC0 (Wikimedia Commons, publiée à
-     * l'origine sur Unsplash). Provenance et traitement dans `docs/ASSETS.md`.
-     *
-     * 1512 × 960, le double de la boîte de mise en page (378 × 240 dès 1200).
-     */
-    poster: {
-      src: "/images/telephone-et-ordinateur.jpg",
-      alt: "Une personne tient son téléphone devant son ordinateur portable ouvert",
-      width: 1512,
-      height: 960,
-    },
-  },
-
   about: {
     /*
      * UNE VRAIE SECTION « À PROPOS » depuis le 2026-10-16, demande d'Eliott :
@@ -264,34 +182,17 @@ export const homeContent: HomeContent = {
     title: "Moi, c’est Eliott.",
     titleLines: ["Moi,", "c’est Eliott."],
     /*
-     * LE PARCOURS EST CELUI DE `/a-propos` (`about.ts`), relevé sur LinkedIn,
-     * le CV et Malt : Médiapilote et Würth France en stage, MeilleursBiens et
-     * MECA SERVICES en alternance. Aucun n'est présenté comme client.
+     * SCHÉMATIQUE DEPUIS LE 2026-11-27 (demande d'Eliott : « plus concis, mon
+     * expérience et mon parcours de manière schématique »). Une phrase, trois
+     * repères, puis la frise des postes, tirée de `/a-propos` (`about.ts`) :
+     * une seule source pour le parcours. Aucun employeur n'est présenté comme
+     * client, la nature de chaque poste est écrite sur la frise.
      */
-    body: [
-      "Je suis développeur full-stack, installé à Caen, et je travaille seul. Du premier appel à la mise en service, vous parlez à celui qui conçoit et qui code votre projet.",
-      "Avant de me lancer, j’ai développé chez Médiapilote, Würth France, MeilleursBiens, puis MECA SERVICES, où je tenais aussi la boutique en ligne. J’y ai appris à partir de ce qu’un outil doit rapporter, et à regarder comment les gens travaillent avant d’écrire la première ligne de code.",
-    ],
-    // Emphase (source Framer) : ces expressions passent en noir plein au
-    // milieu du paragraphe rendu à 70 %.
-    highlights: [
-      "je travaille seul",
-      "vous parlez à celui qui conçoit et qui code votre projet",
-      "partir de ce qu’un outil doit rapporter",
-    ],
-    /*
-     * GRILLE D'INFOS ET COMPTEUR RENDUS le 2026-10-16 : Eliott trouvait la
-     * section vide de repères. Ils disent ce qu'aucune autre section ne dit,
-     * le métier, le lieu et le parcours ; « 1 projet à la fois » reste à la
-     * section chiffres.
-     */
-    launchedLabel: "Développeur full-stack",
-    projectsLabel: "Caen, et en visio",
-    counter: {
-      value: "4",
-      caption: "entreprises où j’ai développé avant de me lancer",
-    },
-    cta: { label: "Mon parcours", href: "/a-propos" },
+    body: ["Développeur full-stack à Caen. Je travaille seul : vous parlez à celui qui code votre projet."],
+    highlights: ["vous parlez à celui qui code votre projet"],
+    faits: ["Full-stack · Bac+5", "Caen et visio"],
+    parcoursLabel: "Parcours",
+    cta: { label: "Mon parcours en détail", href: "/a-propos" },
     image: {
       src: "/images/eliott-nature-bloc.jpg",
       alt: "Portrait d’Eliott Bouquerel, développeur web freelance, au bord d’un lac",
@@ -336,7 +237,7 @@ export const homeContent: HomeContent = {
     stats: reputationStats,
     // LE RENDEZ-VOUS EST LE CHEMIN PRINCIPAL du site. « Voir les réalisations »
     // est parti : la section des réalisations est juste au-dessus.
-    ctas: [{ label: "Réserver un appel", href: lienRendezVous("logiciel") }],
+    ctas: [{ label: "Réserver un créneau", href: lienRendezVous("logiciel") }],
   },
 
   // section06.ts — prestations en accordéon.
@@ -476,9 +377,7 @@ export const homeContent: HomeContent = {
   sectionOrder: [
     "hero",
     "schema",
-    "moyens",
     "about",
-    "showreel",
     "works",
     "whyUs",
     "numbers",
