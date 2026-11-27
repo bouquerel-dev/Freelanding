@@ -22,7 +22,8 @@ type Lignes = NonNullable<HomeAboutSection["lignes"]>;
 function groupe(parcours: AboutContent["parcours"], titre: string): ParcoursEtape[] {
   const etapes = parcours?.groupes.find((g) => g.titre === titre)?.etapes ?? [];
   // Du plus ancien au plus récent : le récit se lit de haut en bas.
-  return [...etapes].sort((a, b) => (a.debut ?? "").localeCompare(b.debut ?? ""));
+  const cle = (e: ParcoursEtape) => e.debut ?? "";
+  return [...etapes].sort((a, b) => cle(a).localeCompare(cle(b)));
 }
 
 function TitreColonne({ children }: { children: React.ReactNode }) {
