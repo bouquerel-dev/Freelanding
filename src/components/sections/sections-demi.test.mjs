@@ -29,9 +29,13 @@ const article = (n) => ({
 describe("TitreDemi", () => {
   it("rend une ligne par entrée, dans un h2", () => {
     const html = rendre(TitreDemi, { lignes: ["Un", "Deux"], encre: "text-background" });
-    expect(html).toStartWith("<h2");
+    expect(html.startsWith("<h2")).toBe(true);
     expect(html).toContain("Un");
     expect(html).toContain("Deux");
+  });
+
+  it("sans ligne, rend un titre vide sans planter", () => {
+    expect(rendre(TitreDemi, { lignes: [], encre: "e" })).toContain("<h2");
   });
 
   it("l'étiquette garde l'encre demandée", () => {
@@ -62,6 +66,8 @@ describe("WhyUsSection", () => {
     expect(html).toContain("Titre seul");
     expect(html).toContain("Plus vite");
     expect(rendre(WhyUsSection, { whyUs: { ...reste, stats: [entier] } })).toContain("Sans décimale");
+    const unite = { value: "3", suffix: "h", label: "Unité à part" };
+    expect(rendre(WhyUsSection, { whyUs: { ...reste, stats: [unite] } })).toContain("Unité à part");
     const sansTitre = rendre(WhyUsSection, { whyUs: { ...reste, title: undefined, stats: [] } });
     expect(sansTitre).not.toContain("Plus vite");
   });

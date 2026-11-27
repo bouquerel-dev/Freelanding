@@ -260,11 +260,6 @@ export async function Footer({
               ))}
             </nav>
             <div className="flex flex-wrap items-center gap-x-[18px] gap-y-[14px] text-[12px] font-medium uppercase leading-[1.2] tracking-[-0.01em]">
-              {contact.localLinks?.map((lien) => (
-                <HoverPrefetchLink key={lien.href} href={lien.href} className={petitLienCls}>
-                  {lien.label}
-                </HoverPrefetchLink>
-              ))}
               {legalLinks.map((l) => (
                 <HoverPrefetchLink key={l.href} href={l.href} className={petitLienCls}>
                   {l.shortLabel ?? l.label}
