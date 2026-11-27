@@ -163,8 +163,9 @@ describe("le numéro en bouton principal (2026-11-27)", () => {
     expect(siteConfig.nav.map((l) => l.href)).not.toContain("/");
   });
 
-  test("« Moi, c'est Eliott » tient en une phrase et deux repères", () => {
-    expect(homeContent.about.body).toHaveLength(1);
+  test("« Moi, c'est Eliott » tient en deux phrases et deux repères", () => {
+    // La phrase de méthode a rejoint la première le 2026-11-27 (panel visiteurs).
+    expect(homeContent.about.body).toHaveLength(2);
     expect(homeContent.about.faits?.length).toBeLessThanOrEqual(3);
   });
 

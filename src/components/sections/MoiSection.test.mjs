@@ -22,46 +22,37 @@ const groupes = aboutContent.parcours.groupes;
 const { about } = homeContent;
 
 describe("MoiSection", () => {
-  it("montre la formation et l'expérience, chaque étape avec sa nature, son récit et sa leçon", () => {
+  it("ne garde que les étapes qui servent un dirigeant, avec leur leçon", () => {
     for (const g of groupes) {
       for (const e of g.etapes) {
+        if (e.accueil === false) {
+          expect(html).not.toContain(`>${e.structure}</span>`);
+          continue;
+        }
         expect(html).toContain(`>${e.structure}</span>`);
         expect(html).toContain(`>${e.nature}</span>`);
-        if (e.recit) expect(html).toContain(`>${e.recit}</p>`);
         if (e.retenu) expect(html).toContain(e.retenu);
       }
     }
+    expect(html).not.toContain("Mediapilote");
+    expect(html).not.toContain("Arcisse de Caumont");
     expect(html).toContain(`>${about.lignes.formation}</p>`);
     expect(html).toContain(`>${about.lignes.experience}</p>`);
-    expect(html).toContain(`>${about.lignes.retenu}</span>`);
   });
 
-  it("range chaque colonne du plus ancien au plus récent", () => {
-    expect(html.indexOf("Lycée Arcisse de Caumont")).toBeLessThan(html.indexOf("IUT de Saint-Lô"));
-    expect(html.indexOf("IUT de Saint-Lô")).toBeLessThan(html.indexOf("MyDigitalSchool"));
-    expect(html.indexOf("Mediapilote")).toBeLessThan(html.indexOf("MECA SERVICES"));
-    expect(html.indexOf("MECA SERVICES")).toBeLessThan(html.indexOf(">Indépendant<"));
+  it("raconte l'expérience, pas la formation, et met l'expérience la plus récente en tête", () => {
+    const experience = groupes.find((g) => g.titre === "Expérience").etapes;
+    for (const e of experience.filter((x) => x.recit && x.accueil !== false)) expect(html).toContain(`>${e.recit}</p>`);
+    for (const e of groupes.find((g) => g.titre === "Formation").etapes) if (e.recit) expect(html).not.toContain(e.recit);
+    expect(html.indexOf(">Indépendant<")).toBeLessThan(html.indexOf("MECA SERVICES"));
+    expect(html.indexOf("MECA SERVICES")).toBeLessThan(html.indexOf("Würth France"));
+    expect(html.indexOf("MyDigitalSchool")).toBeLessThan(html.indexOf("IUT de Saint-Lô"));
   });
 
-  it("n'a plus de frise horizontale ni de colonne d'années vide", () => {
-    expect(html).not.toContain("frise-piste");
-    expect(html).not.toContain("sticky");
-    for (const an of ["2018", "2020"]) expect(html).not.toContain(`>${an}</span>`);
-  });
-
-  it("raconte avant le lycée, met en avant l'optimisation, sans jeux vidéo ni Pong", () => {
-    const { prologue } = about;
-    expect(html).toContain(`>${prologue.titre}</p>`);
-    for (const item of prologue.items) expect(html).toContain(`>${item.texte}</span>`);
-    expect(html).toContain('text-accent">Optimiser</span>');
-    expect(html).toContain(`>${prologue.fil}</p>`);
-    for (const absent of ["Minecraft", "Pokémon", "Pong", "Scratch"]) expect(html).not.toContain(absent);
-    expect(html).toContain("Lorient");
-  });
-
-  it("détaille le parcours du robot de terminale", () => {
-    const lycee = groupes.find((g) => g.titre === "Formation").etapes.find((e) => e.nature === "Bac STI2D");
-    for (const mot of ["Arduino", "ligne noire", "canette", "phares", "pont"]) expect(lycee.recit).toContain(mot);
+  it("coupe l'enfance et monte la phrase de méthode sous le titre", () => {
+    for (const absent of ["Avant le lycée", "Comprendre", "Optimiser", "Lorient", "frise-piste", "sticky"]) expect(html).not.toContain(absent);
+    expect(about.body).toHaveLength(2);
+    expect(html).toContain("je regarde comment vous travaillez");
   });
 
   it("marque l'étape en cours, relie l'étude de cas Würth et le parcours détaillé", () => {
@@ -80,7 +71,7 @@ describe("MoiSection", () => {
     expect(html).toContain('data-section="about"');
   });
 
-  it("tient sans parcours, sans prologue, sans repères, sans sur-titre ni lien", async () => {
+  it("tient sans parcours, sans repères, sans sur-titre ni lien", async () => {
     const nu = await rendre(createElement(MoiSection, { about: { title: "Moi", body: ["Une phrase."] }, parcours: null }));
     expect(nu).toContain(">Moi</h2>");
     expect(nu).not.toContain("<ol");

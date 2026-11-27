@@ -185,36 +185,25 @@ export const homeContent: HomeContent = {
      * FOND NOIR ET FRISE QUI DÉFILE (2026-11-27, seconde passe, demande
      * d'Eliott) : l'aplat volt « extravagant » et la photo sont partis, le
      * visiteur a déjà vu son visage dans le héros. La section reprend
-     * l'identité du schéma (noir, trame, volt en accent) et montre formation
-     * et expérience sur un même axe des années, qui défile à l'horizontale.
-     * Le parcours est lu dans `about.ts` : une seule source.
+     * l'identité du schéma (noir, trame, volt en accent) et montre
+     * l'expérience et la formation. Le parcours est lu dans `about.ts` : une
+     * seule source.
      */
     eyebrow: "Qui je suis",
-    body: ["Développeur full-stack à Caen. Je travaille seul : vous parlez à celui qui code votre projet."],
-    highlights: ["vous parlez à celui qui code votre projet"],
+    /*
+     * RACCOURCIE LE 2026-11-27 (cinquième passe) après un panel de 40
+     * visiteurs simulés : « trop long, trop d'infos sur moi petit » (Eliott),
+     * 17 dirigeants sur 28 l'ont trouvée trop longue. L'enfance, la troisième
+     * et le lycée sont coupés (rapport `.visiteurs/2026-11-27-moi/`) ; la
+     * phrase la mieux notée (26 sur 28) monte sous le titre.
+     */
+    body: [
+      "Développeur full-stack à Caen. Je travaille seul : vous parlez à celui qui code votre projet.",
+      "Avant d’écrire une ligne de code, je regarde comment vous travaillez, puis je cherche la solution qui vous rapporte le plus pour ce qu’elle coûte.",
+    ],
+    highlights: ["vous parlez à celui qui code votre projet", "la solution qui vous rapporte le plus pour ce qu’elle coûte"],
     faits: ["Bac+5", "Caen et visio"],
     lignes: { formation: "Formation", experience: "Expérience", enCours: "Aujourd’hui", retenu: "Retenu" },
-    /*
-     * AVANT LE LYCÉE (2026-11-27, quatrième passe, demande d’Eliott). Faits
-     * dictés par lui : les questions techniques à ses parents, trois PC montés
-     * au meilleur rapport qualité-prix (benchmarks, configs, FPS), le club
-     * robotique de troisième et son concours à Lorient, 7e face à des classes
-     * de lycée. Jeux vidéo et Pong retirés : ses clients s’en moquent.
-     * « Optimiser » est mis en avant, il parle de son métier.
-     */
-    prologue: {
-      titre: "Avant le lycée",
-      items: [
-        { mot: "Comprendre", texte: "Tout petit, je voulais savoir comment marchaient les choses. Mes parents avaient droit à des questions très techniques." },
-        {
-          mot: "Optimiser",
-          texte: "J’ai monté trois PC, dont certains pour mon petit frère. Je comparais les benchmarks pour trouver le meilleur rapport qualité-prix, puis je réglais chaque config pour gagner des FPS.",
-          accent: true,
-        },
-        { mot: "Coder", texte: "En troisième, au club robotique, on a construit un robot de toutes pièces et on l’a programmé pour un parcours. Au concours de Lorient, on a fini 7e face à des classes de lycée." },
-      ],
-      fil: "Je fais pareil pour vous : avant d’écrire une ligne de code, je regarde comment vous travaillez, puis je cherche la solution qui vous rapporte le plus pour ce qu’elle coûte.",
-    },
     cta: { label: "Mon parcours en détail", href: "/a-propos" },
   },
 

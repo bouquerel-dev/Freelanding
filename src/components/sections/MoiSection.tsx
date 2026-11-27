@@ -5,14 +5,15 @@ import { Highlighted } from "@/components/ui";
 import type { AboutContent, HomeAboutSection, ParcoursEtape } from "@/lib/content/types";
 
 /**
- * « MOI, C'EST ELIOTT » (2026-11-27, quatrième passe, demande d'Eliott).
+ * « MOI, C'EST ELIOTT » (2026-11-27, cinquième passe, demande d'Eliott :
+ * « trop long, trop d'infos sur moi petit »).
  *
- * La frise horizontale épinglée est partie : trop grande pour ce qu'elle
- * contenait, avec des colonnes d'années vides. Le parcours se lit maintenant
- * d'un coup d'œil, en trois colonnes côte à côte sur ordinateur et l'une sous
- * l'autre ailleurs : avant le lycée, la formation, l'expérience. Chaque
- * colonne est un rail vertical, une étape par repère, l'étape en cours en
- * volt. Seules les périodes des étapes portent des années.
+ * Un panel de 40 visiteurs simulés a tranché : seuls l'en-tête, la phrase de
+ * méthode et l'expérience chez Würth, MeilleursBiens et MECA SERVICES aident
+ * un dirigeant à appeler. L'enfance, la troisième et le lycée sont coupés, le
+ * stage d'agence aussi (champ `accueil: false`, ils restent sur `/a-propos`).
+ * Deux colonnes : l'expérience, de la plus récente à la plus ancienne, puis
+ * la formation en lignes courtes, sans récit.
  */
 
 const LIGNES_PAR_DEFAUT = { formation: "", experience: "", enCours: "", retenu: "" };
@@ -21,9 +22,9 @@ type Lignes = NonNullable<HomeAboutSection["lignes"]>;
 
 function groupe(parcours: AboutContent["parcours"], titre: string): ParcoursEtape[] {
   const etapes = parcours?.groupes.find((g) => g.titre === titre)?.etapes ?? [];
-  // Du plus ancien au plus récent : le récit se lit de haut en bas.
   const cle = (e: ParcoursEtape) => e.debut ?? "";
-  return [...etapes].sort((a, b) => cle(a).localeCompare(cle(b)));
+  // De la plus récente à la plus ancienne : « aujourd'hui » d'abord.
+  return etapes.filter((e) => e.accueil !== false).sort((a, b) => cle(b).localeCompare(cle(a)));
 }
 
 function TitreColonne({ children }: { children: React.ReactNode }) {
@@ -44,11 +45,11 @@ function Repere({ actif }: { actif: boolean }) {
   );
 }
 
-function Etape({ etape, lignes }: { etape: ParcoursEtape; lignes: Lignes }) {
+function Etape({ etape, lignes, compact }: { etape: ParcoursEtape; lignes: Lignes; compact: boolean }) {
   const enCours = Boolean(etape.debut) && !etape.fin;
   const titre = <span className="text-[18px] font-semibold leading-[1.15] tracking-[-0.03em] text-foreground">{etape.structure}</span>;
   return (
-    <li className="relative pb-[26px] pl-[22px] last:pb-0">
+    <li className={`relative border-l border-white/12 pl-[22px] last:pb-0 ${compact ? "pb-[18px]" : "pb-[26px] desktop:pb-[30px]"}`}>
       <Repere actif={enCours} />
       <div className="flex flex-wrap items-center gap-x-[10px] gap-y-[6px]">
         <span className="font-mono text-[11px] uppercase leading-none tracking-[0.04em] text-foreground-60">{etape.periode}</span>
@@ -72,7 +73,7 @@ function Etape({ etape, lignes }: { etape: ParcoursEtape; lignes: Lignes }) {
           titre
         )}
       </div>
-      {etape.recit ?? etape.court ? (
+      {!compact && (etape.recit ?? etape.court) ? (
         <p className="m-0 mt-[6px] max-w-[46ch] text-[14px] leading-[1.45] text-foreground-60">{etape.recit ?? etape.court}</p>
       ) : null}
       {etape.retenu ? (
@@ -85,34 +86,15 @@ function Etape({ etape, lignes }: { etape: ParcoursEtape; lignes: Lignes }) {
   );
 }
 
-function Colonne({ titre, etapes, lignes }: { titre: string; etapes: ParcoursEtape[]; lignes: Lignes }) {
+function Colonne({ titre, etapes, lignes, compact = false }: { titre: string; etapes: ParcoursEtape[]; lignes: Lignes; compact?: boolean }) {
   return (
     <div className="flex flex-col gap-[22px]">
       <TitreColonne>{titre}</TitreColonne>
-      <ol className="m-0 list-none border-l border-white/12 p-0">
+      <ol className={`m-0 list-none p-0 ${compact ? "" : "desktop:grid desktop:grid-cols-2 desktop:gap-x-[48px]"}`}>
         {etapes.map((etape) => (
-          <Etape key={etape.structure} etape={etape} lignes={lignes} />
+          <Etape key={etape.structure} etape={etape} lignes={lignes} compact={compact} />
         ))}
       </ol>
-    </div>
-  );
-}
-
-function Prologue({ prologue }: { prologue: NonNullable<HomeAboutSection["prologue"]> }) {
-  return (
-    <div className="flex flex-col gap-[22px]">
-      <TitreColonne>{prologue.titre}</TitreColonne>
-      <ol className="m-0 list-none p-0">
-        {prologue.items.map((item) => (
-          <li key={item.mot} className="border-t border-white/10 py-[14px] first:border-t-0 first:pt-0">
-            <span className={`block text-[22px] font-semibold leading-[1] tracking-[-0.04em] ${item.accent ? "text-accent" : "text-foreground"}`}>
-              {item.mot}
-            </span>
-            <span className="mt-[8px] block text-[14px] leading-[1.45] text-foreground-60">{item.texte}</span>
-          </li>
-        ))}
-      </ol>
-      <p className="m-0 border-t border-white/10 pt-[16px] text-[16px] font-medium leading-[1.4] tracking-[-0.02em] text-foreground">{prologue.fil}</p>
     </div>
   );
 }
@@ -167,10 +149,9 @@ export function MoiSection({
           </div>
         </div>
 
-        <div className="grid gap-[48px] tablet:grid-cols-2 tablet:gap-x-[40px] desktop:grid-cols-3 desktop:gap-x-[56px]">
-          {about.prologue ? <Prologue prologue={about.prologue} /> : null}
-          {formation.length ? <Colonne titre={lignes.formation} etapes={formation} lignes={lignes} /> : null}
+        <div className="grid gap-[48px] tablet:grid-cols-2 tablet:gap-x-[40px] desktop:grid-cols-[2fr_1fr] desktop:gap-x-[64px]">
           {experience.length ? <Colonne titre={lignes.experience} etapes={experience} lignes={lignes} /> : null}
+          {formation.length ? <Colonne titre={lignes.formation} etapes={formation} lignes={lignes} compact /> : null}
         </div>
       </div>
     </section>

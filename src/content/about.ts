@@ -152,6 +152,8 @@ export const aboutContent: AboutContent = {
           {
             periode: "Avr. à juin 2023",
             structure: "Mediapilote",
+            // Hors de l’accueil : aucun des 28 dirigeants du panel du 2026-11-27 ne l’a gardée.
+            accueil: false,
             lieu: "Caen",
             role: "Intégration WordPress",
             nature: "Stage",
@@ -223,6 +225,8 @@ export const aboutContent: AboutContent = {
           {
             periode: "2018 à 2021",
             structure: "Lycée Arcisse de Caumont",
+            // Hors de l’accueil : aucun des 28 dirigeants du panel du 2026-11-27 ne l’a gardée.
+            accueil: false,
             lieu: "Bayeux",
             role: "Seconde option sciences de l’ingénieur, puis bac STI2D",
             nature: "Bac STI2D",
