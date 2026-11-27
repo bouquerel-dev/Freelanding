@@ -103,12 +103,13 @@ export const aboutContent: AboutContent = {
         titre: "Expérience",
         etapes: [
           {
-            periode: "Depuis juil. 2026",
+            periode: "Depuis août 2026",
             structure: "Indépendant",
             lieu: "Normandie, et à distance",
             role: "Développeur full-stack : logiciels métier sur mesure",
             nature: "Freelance",
-            debut: "2026-07",
+            // Lancement réel : août 2026, après la fin de l’alternance fin juillet (Eliott, 2026-11-27).
+            debut: "2026-08",
             court: "Sites, logiciels, IA",
             recit: "Je construis des logiciels métier, des sites et des intégrations d’IA.",
           },
