@@ -37,6 +37,12 @@ describe("boutons d'appel partagés", () => {
     expect(bouton).toContain("w-full");
   });
 
+  it("menu flottant : sans bouton de menu dédié, il reprend le bouton principal", async () => {
+    const sansMenu = { ...site, floatingCta: undefined };
+    const [bouton] = boutons(await rendre(createElement(FloatingNav, { site: sansMenu })));
+    expect(bouton).toContain(`href="${site.primaryCta.href}"`);
+  });
+
   it("menu flottant : le blog n'y figure plus", async () => {
     expect(await rendre(createElement(FloatingNav, { site }))).not.toContain('href="/blog"');
   });
