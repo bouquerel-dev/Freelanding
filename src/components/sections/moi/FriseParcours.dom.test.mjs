@@ -14,7 +14,14 @@ let etat;
 
 function installer({ ordinateur }) {
   const dom = new JSDOM("<!doctype html><html><body></body></html>", { url: "http://localhost/", pretendToBeVisual: true });
-  const precedent = { window: globalThis.window, document: globalThis.document, ResizeObserver: globalThis.ResizeObserver };
+  const precedent = {
+    window: globalThis.window,
+    document: globalThis.document,
+    self: globalThis.self,
+    ResizeObserver: globalThis.ResizeObserver,
+    requestAnimationFrame: globalThis.requestAnimationFrame,
+    cancelAnimationFrame: globalThis.cancelAnimationFrame,
+  };
   const w = dom.window;
   etat = { ecouteurs: [], observes: 0, deconnectes: 0, ordinateur };
   w.matchMedia = () => ({
@@ -30,6 +37,9 @@ function installer({ ordinateur }) {
   Object.defineProperty(w.HTMLElement.prototype, "clientWidth", { configurable: true, get: () => 1440 });
   globalThis.window = w;
   globalThis.document = w.document;
+  globalThis.self = w;
+  globalThis.requestAnimationFrame = w.requestAnimationFrame.bind(w);
+  globalThis.cancelAnimationFrame = w.cancelAnimationFrame.bind(w);
   globalThis.ResizeObserver = class {
     constructor(rappel) {
       etat.mesure = rappel;
