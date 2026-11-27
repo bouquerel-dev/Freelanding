@@ -85,8 +85,9 @@ describe("FriseParcours", () => {
     const cadre = hote.firstElementChild;
     expect(cadre.style.height).toContain("1560px");
     expect(hote.querySelector(".sticky")).not.toBeNull();
-    // Un observateur pour l'ouverture au doigt (premier rendu), un pour la mesure épinglée.
-    expect(etat.observes).toBe(2);
+    // L'ouverture au doigt observe la piste (premier rendu) ; la mesure
+    // épinglée observe la fenêtre et la piste.
+    expect(etat.observes).toBe(3);
     await act(async () => etat.mesure());
     expect(hote.textContent).toContain("Indépendant");
     expect(hote.querySelector('a[href="/realisations/x"]')).not.toBeNull();

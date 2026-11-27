@@ -214,6 +214,8 @@ function FriseEpinglee({ etapes, annees, aujourdhui, lignes, entete, prologue }:
     mesurer();
     const ro = new ResizeObserver(mesurer);
     ro.observe(f);
+    // La piste change aussi seule : prologue, polices chargées en retard.
+    ro.observe(p);
     return () => ro.disconnect();
   }, []);
 

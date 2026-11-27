@@ -221,7 +221,7 @@ export const aboutContent: AboutContent = {
           {
             periode: "2020 à 2021",
             structure: "Terminale",
-            role: "Terminale, projet du bac : un robot qui suit un circuit",
+            role: "Projet du bac : un robot qui suit un circuit",
             nature: "Bac",
             debut: "2020-09",
             fin: "2021-07",
