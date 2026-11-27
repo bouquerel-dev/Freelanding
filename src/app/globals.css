@@ -1332,9 +1332,6 @@ html[data-consent-choisi] [data-consent-attente] {
 
 /* Frise du parcours (« Moi, c'est Eliott », 2026-11-27) : la piste glisse au
    doigt sans barre de défilement, l'étape en cours respire. */
-.frise-glisse { scrollbar-width: none; scroll-snap-type: x proximity; }
-.frise-glisse::-webkit-scrollbar { display: none; }
-.frise-carte { scroll-snap-align: start; scroll-margin-left: 20px; }
 .frise-pouls { animation: frise-pouls 1.8s ease-in-out infinite; }
 @keyframes frise-pouls { 50% { opacity: 0.35; transform: scale(0.8); } }
 @media (prefers-reduced-motion: reduce) { .frise-pouls { animation: none; } }

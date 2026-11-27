@@ -611,3 +611,15 @@ Captures : `docs/captures/2026-11-27-moi-frise/` (`avant-*` en production, `etap
 | li-human | Textes écrits à partir des faits donnés | `detect.py` : 51,7 puis 59,3 ; reste faible en CONCRET (aucun chiffre inventé), le concret est porté par les dates et les noms des cartes |
 
 Défaut trouvé sur le rendu : au doigt, la deuxième mesure ramenait la piste à 0 (écart relatif au cadre déjà défilé). Corrigé en ajoutant `scrollLeft` au calcul.
+
+### « Moi, c'est Eliott » : parcours vertical, 2026-11-27 (quatrième passe)
+
+Captures : `docs/captures/2026-11-27-moi-vertical/` (`avant-*` en production, `etape1-*` rendu livré).
+
+| Skill · règle | Constat sur le rendu | Ce qui a changé |
+|---|---|---|
+| impeccable · distill | Frise épinglée de 9 colonnes d'années, la plupart vides (2018, 2019, 2020, 2022) | Trois colonnes côte à côte (avant le lycée, formation, expérience), un rail vertical par colonne ; seules les périodes portent des années ; section de 1 138 px à 1440 |
+| impeccable · lisible d'un coup d'œil | Formation et expérience séparées par l'axe, lues en défilant | Titres de colonne volt, une étape par repère carré, l'étape en cours en volt |
+| emil-design-eng · ne pas animer sans raison | Défilement détourné à l'horizontale | Plus d'épinglage ni de JavaScript : la section est rendue côté serveur, seul le repère en cours pulse (coupé en mouvement réduit) |
+| impeccable · point de vue | Jeux vidéo et Pong sans intérêt pour un client | « Optimiser » mis en avant en volt (PC montés au meilleur rapport qualité-prix), la phrase finale le relie au métier |
+| li-human | Textes à partir des faits dictés | `detect.py` 56 ; faible en CONCRET, aucun chiffre inventé (concours sans nombre d'équipes, faute de source) |
