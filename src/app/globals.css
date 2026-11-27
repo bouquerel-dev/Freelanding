@@ -1059,21 +1059,6 @@ html[data-consent-choisi] [data-consent-attente] {
 @keyframes schema-descente { to { transform: translateY(10px); } }
 @media (prefers-reduced-motion: reduce) { .schema-lien, .schema-descente::before { animation: none; } }
 
-/* Encadré blanc de « Moi, c'est Eliott » (2026-11-24) : il se pose en montant
-   et en se dépliant légèrement quand il entre à l'écran. Sans prise en charge
-   de `animation-timeline`, il est simplement là. */
-@supports (animation-timeline: view()) {
-  .about-cadre {
-    animation: about-cadre-entree linear both;
-    animation-timeline: view();
-    animation-range: entry 0% entry 70%;
-  }
-}
-@keyframes about-cadre-entree {
-  from { opacity: 0; transform: translateY(60px) scale(0.94); border-radius: 64px; }
-  to { opacity: 1; transform: none; }
-}
-@media (prefers-reduced-motion: reduce) { .about-cadre { animation: none; } }
 
 /* reCAPTCHA v3 : le badge flottant de Google est masqué, la mention exigée
    s'affiche sous chaque bouton d'envoi (`MentionRecaptcha`). */
