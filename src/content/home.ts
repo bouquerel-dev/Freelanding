@@ -182,21 +182,19 @@ export const homeContent: HomeContent = {
     title: "Moi, c’est Eliott.",
     titleLines: ["Moi,", "c’est Eliott."],
     /*
-     * SCHÉMATIQUE DEPUIS LE 2026-11-27 (demande d'Eliott : « plus concis, mon
-     * expérience et mon parcours de manière schématique »). Une phrase, trois
-     * repères, puis la frise des postes, tirée de `/a-propos` (`about.ts`) :
-     * une seule source pour le parcours. Aucun employeur n'est présenté comme
-     * client, la nature de chaque poste est écrite sur la frise.
+     * FOND NOIR ET FRISE QUI DÉFILE (2026-11-27, seconde passe, demande
+     * d'Eliott) : l'aplat volt « extravagant » et la photo sont partis, le
+     * visiteur a déjà vu son visage dans le héros. La section reprend
+     * l'identité du schéma (noir, trame, volt en accent) et montre formation
+     * et expérience sur un même axe des années, qui défile à l'horizontale.
+     * Le parcours est lu dans `about.ts` : une seule source.
      */
+    eyebrow: "Qui je suis",
     body: ["Développeur full-stack à Caen. Je travaille seul : vous parlez à celui qui code votre projet."],
     highlights: ["vous parlez à celui qui code votre projet"],
-    faits: ["Full-stack · Bac+5", "Caen et visio"],
-    parcoursLabel: "Parcours",
+    faits: ["Bac+5", "Caen et visio"],
+    lignes: { formation: "Formation", experience: "Expérience", enCours: "Aujourd’hui" },
     cta: { label: "Mon parcours en détail", href: "/a-propos" },
-    image: {
-      src: "/images/eliott-nature-bloc.jpg",
-      alt: "Portrait d’Eliott Bouquerel, développeur web freelance, au bord d’un lac",
-    },
   },
 
   featuredWorkSlugs: ["kpsull", "wurth-creation-de-compte", "nslysium"],
