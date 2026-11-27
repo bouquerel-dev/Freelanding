@@ -7,7 +7,7 @@ import { FriseParcours } from "./FriseParcours";
 
 /**
  * La frise dans jsdom : épinglée et parcourue au défilement sur ordinateur,
- * glissée au doigt ailleurs, ouverte sur aujourd'hui ; elle suit un
+ * glissée au doigt ailleurs, ouverte sur la première étape ; elle suit un
  * changement de largeur d'écran.
  */
 let etat;
@@ -60,7 +60,7 @@ const etapes = [
   { etape: { structure: "Atelier", periode: "2023", nature: "Stage", href: "/realisations/x" }, ligne: "experience", debut: 0.3, fin: 0.35, enCours: false, rang: 1 },
   { etape: { structure: "Indépendant", periode: "Depuis 2026", nature: "Freelance" }, ligne: "experience", debut: 0.9, fin: 1, enCours: true, rang: 0 },
 ];
-const lignes = { formation: "Formation", experience: "Expérience", enCours: "Aujourd’hui" };
+const lignes = { formation: "Formation", experience: "Expérience", enCours: "Aujourd’hui", retenu: "Retenu" };
 
 async function monter() {
   const hote = document.createElement("div");
@@ -85,19 +85,45 @@ describe("FriseParcours", () => {
     const cadre = hote.firstElementChild;
     expect(cadre.style.height).toContain("1560px");
     expect(hote.querySelector(".sticky")).not.toBeNull();
-    expect(etat.observes).toBe(1);
+    // Un observateur pour l'ouverture au doigt (premier rendu), un pour la mesure épinglée.
+    expect(etat.observes).toBe(2);
     await act(async () => etat.mesure());
     expect(hote.textContent).toContain("Indépendant");
     expect(hote.querySelector('a[href="/realisations/x"]')).not.toBeNull();
   });
 
-  it("ailleurs, la piste glisse au doigt et s'ouvre sur aujourd'hui", async () => {
+  it("ailleurs, la piste glisse au doigt et s'ouvre sur la première étape, une fois mise en page", async () => {
     installer({ ordinateur: false });
+    // Avant la mise en page, tout est à zéro : la piste ne bouge pas.
     const hote = await monter();
     const glisse = hote.querySelector(".frise-glisse");
     expect(glisse).not.toBeNull();
-    expect(glisse.scrollLeft).toBe(3000);
+    expect(glisse.scrollLeft).toBe(0);
     expect(hote.querySelector(".sticky")).toBeNull();
+    // La mesure arrive : la première carte est à 300 px, on l'ouvre à 20 px du bord.
+    window.HTMLElement.prototype.getBoundingClientRect = function () {
+      return { left: this.classList.contains("frise-carte") ? 300 : 0 };
+    };
+    await act(async () => etat.mesure());
+    expect(glisse.scrollLeft).toBe(280);
+    expect(etat.deconnectes).toBe(1);
+  });
+
+  it("montre le récit avant la piste quand il y en a un", async () => {
+    installer({ ordinateur: false });
+    const hote = document.createElement("div");
+    document.body.append(hote);
+    etat.racine = createRoot(hote);
+    await act(async () => {
+      etat.racine.render(
+        createElement(FriseParcours, { etapes, annees: [2021], aujourdhui: 0.5, lignes, entete: null, prologue: createElement("p", null, "Avant") }),
+      );
+    });
+    expect(hote.textContent.indexOf("Avant")).toBeLessThan(hote.textContent.indexOf("École"));
+    // Sur ordinateur, le récit ouvre la piste qui défile.
+    etat.ordinateur = true;
+    await act(async () => etat.ecouteurs.forEach((f) => f()));
+    expect(hote.querySelector(".sticky .w-\\[500px\\]").textContent).toBe("Avant");
   });
 
   it("suit le passage d'un écran étroit à un écran large", async () => {

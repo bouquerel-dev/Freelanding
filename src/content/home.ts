@@ -193,7 +193,24 @@ export const homeContent: HomeContent = {
     body: ["Développeur full-stack à Caen. Je travaille seul : vous parlez à celui qui code votre projet."],
     highlights: ["vous parlez à celui qui code votre projet"],
     faits: ["Bac+5", "Caen et visio"],
-    lignes: { formation: "Formation", experience: "Expérience", enCours: "Aujourd’hui" },
+    lignes: { formation: "Formation", experience: "Expérience", enCours: "Aujourd’hui", retenu: "Retenu" },
+    /*
+     * AVANT LE BAC (2026-11-27, demande d’Eliott : que sa personnalité
+     * ressorte). Faits donnés par lui, tels quels : l’informatique le
+     * passionnait, il adorait les jeux vidéo, il aimait optimiser (gagner des
+     * FPS), il démontait et remontait les objets pour comprendre. Le fil relie
+     * ce gamin à l’argument du site : regarder comment vous travaillez avant
+     * d’écrire du code. Aucun nom, aucune date ni aucun jeu inventé.
+     */
+    prologue: {
+      titre: "Avant le bac",
+      items: [
+        { mot: "Démonter", texte: "Petit, je démontais tout ce qui passait sous mes mains, puis je le remontais pour comprendre comment ça marchait." },
+        { mot: "Jouer", texte: "J’adorais les jeux vidéo. L’ordinateur, encore plus." },
+        { mot: "Optimiser", texte: "Je réglais la machine pour gagner des FPS." },
+      ],
+      fil: "J’ai gardé le réflexe : avant d’écrire une ligne de code, je démonte votre façon de travailler pour voir où ça coince.",
+    },
     cta: { label: "Mon parcours en détail", href: "/a-propos" },
   },
 

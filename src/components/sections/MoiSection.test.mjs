@@ -39,7 +39,7 @@ describe("MoiSection", () => {
   });
 
   it("pose une année par colonne, de la première étape à l'année en cours", () => {
-    for (const an of [2021, 2022, 2023, 2024, 2025, 2026]) expect(html).toContain(`>${an}</span>`);
+    for (const an of [2020, 2021, 2022, 2023, 2024, 2025, 2026]) expect(html).toContain(`>${an}</span>`);
     expect(html).not.toContain(">2027</span>");
   });
 
@@ -47,6 +47,31 @@ describe("MoiSection", () => {
     expect(html).toContain(`>${homeContent.about.lignes.enCours}</span>`);
     expect(html).toContain('href="/realisations/wurth-creation-de-compte"');
     expect(html).toContain(`href="${homeContent.about.cta.href}"`);
+  });
+
+  it("raconte avant le bac, puis chaque étape avec ce que j'en ai retenu", () => {
+    const { prologue } = homeContent.about;
+    expect(html).toContain(`>${prologue.titre}</p>`);
+    for (const item of prologue.items) {
+      expect(html).toContain(`>${item.mot}</span>`);
+      expect(html).toContain(`>${item.texte}</span>`);
+    }
+    expect(html).toContain(`>${prologue.fil}</p>`);
+    const terminale = groupes.find((g) => g.titre === "Formation").etapes.find((e) => e.structure === "Terminale");
+    expect(terminale.recit).toContain("robot");
+    for (const g of groupes) {
+      for (const e of g.etapes) {
+        if (e.recit) expect(html).toContain(e.recit);
+        if (e.retenu) expect(html).toContain(e.retenu);
+      }
+    }
+    expect(html).toContain(`>${homeContent.about.lignes.retenu}</span>`);
+  });
+
+  it("ne dessine plus aucune pilule : étiquettes au rayon des tags, barres à angles droits", () => {
+    expect(html).not.toMatch(/rounded-full (border|px|bg-gradient|bg-white|bg-accent\/80)/u);
+    expect(html).toContain("rounded-tag border border-white/15");
+    expect(html).toContain("rounded-[2px]");
   });
 
   it("garde la zone analytics « about »", () => {
@@ -88,7 +113,7 @@ describe("géométrie de la frise", () => {
         {
           ligne: "experience",
           etapes: [
-            { structure: "B", debut: "2024-09" },
+            { structure: "B", debut: "2024-06" },
             { structure: "A", debut: "2024-03", fin: "2024-06" },
             { structure: "C", debut: "2026-07" },
             { structure: "X" },
@@ -100,6 +125,11 @@ describe("géométrie de la frise", () => {
     expect(etapes.map((e) => [e.etape.structure, e.rang])).toEqual([["A", 0], ["B", 1], ["C", 0]]);
     expect(etapes.at(-1).enCours).toBe(true);
     expect(etapes.at(-1).fin).toBe(1);
+  });
+
+  it("tient deux étapes à six mois d'écart sur une même rangée", () => {
+    const { etapes } = placer([{ ligne: "experience", etapes: [{ structure: "A", debut: "2024-03" }, { structure: "B", debut: "2024-09" }] }], 2026.9);
+    expect(etapes.map((e) => e.rang)).toEqual([0, 0]);
   });
 
   it("place aujourd'hui sur la piste", () => {

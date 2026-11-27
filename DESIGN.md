@@ -14,7 +14,7 @@ Direction : dark premium, éditorial, coins arrondis, typo dominante. Extrait fi
 - Échelle : 11·12·14·16·18·22·26·32·44·52·68·92·100.
 
 ## Formes / espace
-- Radius (tokens `globals.css`, utilitaires `rounded-*`) : `control` 12px boutons et champs · `card` 20px cartes, encadrés, panneaux, médias cadrés, menus, modales, bandeau cookies · `panel` 24px grands panneaux (carte du formulaire de contact) · `tag` 8px étiquettes et badges · `pill` 50px pilules · `full` ronds. `none` (0) seulement pour les filets 1px et les fonds de section bord à bord. Un média dans un cadre arrondi : `overflow-hidden` sur le cadre (ou `rounded-[inherit]` sur un pseudo-élément de bord).
+- Radius (tokens `globals.css`, utilitaires `rounded-*`) : `control` 12px boutons et champs · `card` 20px cartes, encadrés, panneaux, médias cadrés, menus, modales, bandeau cookies · `panel` 24px grands panneaux (carte du formulaire de contact) · `tag` 8px étiquettes et badges · `pill` 50px pilules · `full` ronds. Une étiquette ou une barre basse ne prend jamais `rounded-full` : à 20 px de haut, elle se lit comme un ovale (relecture d'Eliott, 2026-11-27) ; `full` reste aux points et aux avatars. `none` (0) seulement pour les filets 1px et les fonds de section bord à bord. Un média dans un cadre arrondi : `overflow-hidden` sur le cadre (ou `rounded-[inherit]` sur un pseudo-élément de bord).
 - Spacing dominant : 10 / 20 / 30. Conteneur padding X : 20–24.
 
 ## Motion

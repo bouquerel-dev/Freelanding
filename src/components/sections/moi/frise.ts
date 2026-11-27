@@ -21,8 +21,12 @@ export interface EtapePlacee {
   rang: number;
 }
 
-/** Largeur d'une carte, marge comprise, en années (220 px pour 400 px par an). */
-const LARGEUR_CARTE_ANS = 0.6;
+/**
+ * Largeur d'une carte, marge comprise, en années : 224 px pour 480 px par an
+ * sur ordinateur, 204 pour 440 ailleurs. Sous un demi-an, deux étapes à six
+ * mois d'écart (Würth puis MeilleursBiens) tiennent sur une seule rangée.
+ */
+const LARGEUR_CARTE_ANS = 0.49;
 
 /** « 2024-09 » → 2024,666… ; `null` si la date manque ou ne se lit pas. */
 export function moisEnAnnee(mois: string | undefined): number | null {

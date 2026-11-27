@@ -11,41 +11,54 @@ import type { EtapePlacee } from "./frise";
  * de volt au fil des années. Ailleurs (téléphone, tablette, sans JavaScript),
  * la piste se fait glisser au doigt, sans épinglage : rien n'est jamais
  * coupé.
+ *
+ * SECONDE PASSE (2026-11-27, relecture d'Eliott). Plus aucune forme en
+ * pilule : étiquettes au rayon `tag`, cartes au rayon `control` (squircle là
+ * où le navigateur le dessine), barres de durée à angles quasi droits. Les
+ * années deviennent des repères lisibles sur l'axe, une colonne chacune. Le
+ * récit précède la piste (« Avant le bac ») et elle se lit dans l'ordre, de
+ * la terminale à aujourd'hui.
  */
 
 const PALIER_EPINGLE = "(min-width: 1200px)";
 
-function Carte({ p, enCoursLabel }: { p: EtapePlacee; enCoursLabel: string }) {
+export type Lignes = { formation: string; experience: string; enCours: string; retenu: string };
+
+function Carte({ p, lignes }: { p: EtapePlacee; lignes: Lignes }) {
   const { etape } = p;
   const haut = p.ligne === "formation";
   const contenu = (
     <>
-      <span className="font-mono text-[10px] uppercase leading-none tracking-[0.04em] text-foreground-60">
-        {etape.periode}
-      </span>
-      <span className="text-[16px] font-semibold leading-[1.1] tracking-[-0.03em] text-foreground">{etape.structure}</span>
-      {etape.court ? (
-        <span className="text-[13px] leading-[1.3] tracking-[-0.01em] text-foreground-60">{etape.court}</span>
+      <span className="font-mono text-[11px] uppercase leading-none tracking-[0.04em] text-foreground-60">{etape.periode}</span>
+      <span className="text-[18px] font-semibold leading-[1.1] tracking-[-0.03em] text-foreground">{etape.structure}</span>
+      {etape.recit ?? etape.court ? (
+        <span className="text-[13px] leading-[1.4] tracking-[-0.01em] text-foreground-60">{etape.recit ?? etape.court}</span>
       ) : null}
-      <span className="mt-[4px] flex items-center gap-[6px]">
+      {etape.retenu ? (
+        <span className="mt-[2px] border-t border-white/10 pt-[9px] text-[13px] leading-[1.35] tracking-[-0.01em] text-foreground">
+          <span className="mr-[6px] font-mono text-[10px] uppercase tracking-[0.05em] text-accent">{lignes.retenu}</span>
+          {etape.retenu}
+        </span>
+      ) : null}
+      <span className="mt-[2px] flex items-center gap-[8px]">
         <span
-          className={`rounded-full px-[7px] py-[4px] font-mono text-[9px] uppercase leading-none tracking-[0.05em] ${
+          className={`rounded-tag px-[7px] py-[4px] font-mono text-[10px] uppercase leading-none tracking-[0.05em] ${
             p.enCours ? "bg-accent text-accent-ink" : "border border-white/15 text-foreground-60"
           }`}
         >
           {etape.nature}
         </span>
         {p.enCours ? (
-          <span className="flex items-center gap-[5px] font-mono text-[9px] uppercase leading-none tracking-[0.05em] text-accent">
+          <span className="flex items-center gap-[6px] font-mono text-[10px] uppercase leading-none tracking-[0.05em] text-accent">
             <span aria-hidden className="frise-pouls size-[6px] rounded-full bg-accent" />
-            {enCoursLabel}
+            {lignes.enCours}
           </span>
         ) : null}
       </span>
     </>
   );
-  const cls = `frise-carte flex w-[var(--carte)] flex-col gap-[6px] rounded-[14px] border p-[14px] no-underline backdrop-blur-[2px] transition-colors duration-200 ${
-    p.enCours ? "border-accent/60 bg-accent/[0.06]" : "border-white/10 bg-[#121212] hover:border-white/25"
+  const cls = `frise-carte flex w-[var(--carte)] flex-col gap-[8px] rounded-control border p-[14px] no-underline transition-colors duration-200 ${
+    p.enCours ? "border-accent/60 bg-[#141609]" : "border-white/10 bg-[#121212] hover:border-white/25"
   }`;
   return (
     <li
@@ -84,7 +97,7 @@ function Piste({
   etapes: EtapePlacee[];
   annees: number[];
   aujourdhui: number;
-  lignes: { formation: string; experience: string; enCours: string };
+  lignes: Lignes;
   remplissage?: MotionValue<number>;
 }) {
   const rangs = (l: EtapePlacee["ligne"]) => Math.max(1, ...etapes.filter((e) => e.ligne === l).map((e) => e.rang + 1));
@@ -93,38 +106,38 @@ function Piste({
     "--rangs-bas": rangs("experience"),
     width: `calc(var(--an) * ${annees.length})`,
   } as CSSProperties;
+  // L'année en cours : sa colonne contient « aujourd'hui ».
+  const anCourant = annees[Math.min(annees.length - 1, Math.floor(aujourdhui * annees.length))];
   return (
     <div
-      className="frise-piste relative flex-none [--an:300px] [--barre-ecart:18px] [--carte:180px] [--rail:34px] [--rangee:118px] tablet:[--an:340px] tablet:[--carte:200px] desktop:[--an:400px] desktop:[--carte:220px]"
+      className="frise-piste relative flex-none [--an:440px] [--barre-ecart:26px] [--carte:204px] [--rail:24px] [--rangee:236px] desktop:[--an:480px] desktop:[--carte:224px]"
       style={style}
     >
-      {/* Les années en grand, en fond de chaque colonne. */}
+      {/* Une colonne par année : un filet qui traverse toute la piste. */}
       {annees.map((an, i) => (
         <span
-          key={`fond-${an}`}
+          key={`colonne-${an}`}
           aria-hidden
-          className="pointer-events-none absolute bottom-0 select-none font-semibold leading-none tracking-[-0.06em] text-white/[0.03] [font-size:calc(var(--an)*0.3)]"
-          style={{ left: `calc(${(i / annees.length) * 100}% + 12px)` }}
-        >
-          {an}
-        </span>
+          className="pointer-events-none absolute inset-y-0 w-px bg-white/[0.06]"
+          style={{ left: `${(i / annees.length) * 100}%` }}
+        />
       ))}
 
       {/* Ligne du haut : la formation. */}
       <div className="relative h-[calc(var(--rail)+var(--rangs-haut)*var(--rangee))]">
-        <span className="absolute bottom-[var(--rail)] left-0 font-mono text-[11px] uppercase tracking-[0.04em] text-foreground-60">
+        <span className="absolute bottom-[var(--rail)] left-[12px] whitespace-nowrap desktop:left-auto desktop:right-[calc(100%+16px)] font-mono text-[11px] uppercase tracking-[0.04em] text-foreground-60">
           {lignes.formation}
         </span>
         <ul className="m-0 list-none p-0">
           {etapes.filter((e) => e.ligne === "formation").map((p) => (
-            <Carte key={p.etape.structure} p={p} enCoursLabel={lignes.enCours} />
+            <Carte key={p.etape.structure} p={p} lignes={lignes} />
           ))}
         </ul>
       </div>
 
       {/* L'axe des années, les barres de durée de part et d'autre. */}
-      <div className="relative h-[56px]">
-        <span aria-hidden className="absolute inset-x-0 top-1/2 h-px bg-white/12" />
+      <div className="relative h-[76px]">
+        <span aria-hidden className="absolute inset-x-0 top-1/2 h-px bg-white/15" />
         {remplissage ? (
           <motion.span
             aria-hidden
@@ -136,20 +149,21 @@ function Piste({
           <span
             key={`barre-${p.etape.structure}`}
             aria-hidden
-            className={`absolute h-[4px] rounded-full ${p.ligne === "formation" ? "top-[calc(50%-10px)]" : "top-[calc(50%+6px)]"} ${
-              p.enCours ? "bg-gradient-to-r from-accent to-accent/0" : p.ligne === "formation" ? "bg-white/45" : "bg-accent/80"
+            className={`absolute h-[6px] rounded-[2px] ${p.ligne === "formation" ? "top-[calc(50%-26px)]" : "top-[calc(50%+20px)]"} ${
+              p.enCours ? "bg-gradient-to-r from-accent to-accent/0" : p.ligne === "formation" ? "bg-white/50" : "bg-accent/80"
             }`}
-            style={{ left: `${p.debut * 100}%`, width: `max(4px, ${(p.fin - p.debut) * 100}%)` }}
+            style={{ left: `${p.debut * 100}%`, width: `max(6px, ${(p.fin - p.debut) * 100}%)` }}
           />
         ))}
         {annees.map((an, i) => (
           <span
             key={an}
-            className="absolute top-1/2 flex -translate-y-1/2 items-center gap-[8px]"
+            className={`absolute top-1/2 -translate-y-1/2 rounded-tag border bg-background px-[10px] py-[6px] text-[20px] font-semibold leading-none tracking-[-0.03em] tabular-nums ${
+              an === anCourant ? "border-accent/70 text-accent" : "border-white/20 text-foreground"
+            }`}
             style={{ left: `${(i / annees.length) * 100}%` }}
           >
-            <span aria-hidden className="h-[13px] w-px bg-white/40" />
-            <span className="bg-background pr-[6px] font-mono text-[12px] leading-none tracking-[0.02em] text-foreground">{an}</span>
+            {an}
           </span>
         ))}
         <span
@@ -161,12 +175,12 @@ function Piste({
 
       {/* Ligne du bas : l'expérience. */}
       <div className="relative h-[calc(var(--rail)+var(--rangs-bas)*var(--rangee))]">
-        <span className="absolute left-0 top-[var(--rail)] font-mono text-[11px] uppercase tracking-[0.04em] text-foreground-60">
+        <span className="absolute left-[12px] top-[var(--rail)] whitespace-nowrap desktop:left-auto desktop:right-[calc(100%+16px)] font-mono text-[11px] uppercase tracking-[0.04em] text-foreground-60">
           {lignes.experience}
         </span>
         <ul className="m-0 list-none p-0">
           {etapes.filter((e) => e.ligne === "experience").map((p) => (
-            <Carte key={p.etape.structure} p={p} enCoursLabel={lignes.enCours} />
+            <Carte key={p.etape.structure} p={p} lignes={lignes} />
           ))}
         </ul>
       </div>
@@ -178,12 +192,14 @@ type Props = {
   etapes: EtapePlacee[];
   annees: number[];
   aujourdhui: number;
-  lignes: { formation: string; experience: string; enCours: string };
+  lignes: Lignes;
   entete: React.ReactNode;
+  /** Ce qui précède les études : avant la piste sur ordinateur, au-dessus ailleurs. */
+  prologue?: React.ReactNode;
 };
 
 /** Ordinateur : la section se fige, le défilement vertical fait glisser la piste. */
-function FriseEpinglee({ etapes, annees, aujourdhui, lignes, entete }: Props) {
+function FriseEpinglee({ etapes, annees, aujourdhui, lignes, entete, prologue }: Props) {
   const cadre = useRef<HTMLDivElement>(null);
   const fenetre = useRef<HTMLDivElement>(null);
   const piste = useRef<HTMLDivElement>(null);
@@ -203,14 +219,19 @@ function FriseEpinglee({ etapes, annees, aujourdhui, lignes, entete }: Props) {
 
   const { scrollYProgress } = useScroll({ target: cadre, offset: ["start start", "end end"] });
   const x = useTransform(scrollYProgress, [0, 1], [0, -debord]);
-  const remplissage = useTransform(scrollYProgress, [0, 0.95], [0, aujourdhui]);
+  const remplissage = useTransform(scrollYProgress, [0.1, 0.95], [0, aujourdhui]);
 
   return (
     <div ref={cadre} className="relative" style={{ height: `calc(100vh + ${debord}px)` }}>
-      <div className="sticky top-0 flex h-screen flex-col justify-center gap-[48px] overflow-hidden">
+      <div className="sticky top-0 flex h-screen flex-col justify-center gap-[28px] overflow-hidden">
         {entete}
         <div ref={fenetre} className="relative">
-          <motion.div ref={piste} style={{ x }} className="w-max pl-[max(30px,calc((100vw-1440px)/2+30px))] pr-[260px]">
+          <motion.div
+            ref={piste}
+            style={{ x }}
+            className="flex w-max items-center gap-[150px] pl-[max(30px,calc((100vw-1440px)/2+30px))] pr-[260px]"
+          >
+            {prologue ? <div className="w-[500px] flex-none">{prologue}</div> : null}
             <Piste etapes={etapes} annees={annees} aujourdhui={aujourdhui} lignes={lignes} remplissage={remplissage} />
           </motion.div>
         </div>
@@ -230,19 +251,36 @@ export function FriseParcours(props: Props) {
     return () => mq.removeEventListener("change", suivre);
   }, []);
 
-  // Au doigt, la piste s'ouvre sur aujourd'hui : on remonte dans le temps.
+  // Au doigt, le récit est au-dessus et la piste se lit dans l'ordre : elle
+  // s'ouvre sur la première étape, pas sur une colonne vide.
   const glisse = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    const g = glisse.current;
-    if (g && !epingle) g.scrollLeft = g.scrollWidth;
+    if (epingle) return;
+    // Rendu sans condition quand la frise n'est pas épinglée.
+    const g = glisse.current as HTMLDivElement;
+    // La position de la première carte n'est juste qu'une fois la piste
+    // mise en page : on la reprend à chaque mesure, jusqu'à pouvoir ouvrir.
+    const ouvrir = () => {
+      const premiere = g.querySelector(".frise-carte") as HTMLElement;
+      const ecart = premiere.getBoundingClientRect().left - g.getBoundingClientRect().left + g.scrollLeft - 20;
+      if (ecart > 0) {
+        g.scrollLeft = ecart;
+        ro.disconnect();
+      }
+    };
+    const ro = new ResizeObserver(ouvrir);
+    ro.observe(g.firstElementChild as Element);
+    ouvrir();
+    return () => ro.disconnect();
   }, [epingle]);
 
   if (epingle) return <FriseEpinglee {...props} />;
 
-  const { etapes, annees, aujourdhui, lignes, entete } = props;
+  const { etapes, annees, aujourdhui, lignes, entete, prologue } = props;
   return (
     <div className="flex flex-col gap-[36px]">
       {entete}
+      {prologue ? <div className="px-[20px] tablet:px-[30px]">{prologue}</div> : null}
       <div ref={glisse} className="frise-glisse overflow-x-auto pb-[8px]">
         <div className="w-max px-[20px] tablet:px-[30px]">
           <Piste etapes={etapes} annees={annees} aujourdhui={aujourdhui} lignes={lignes} />

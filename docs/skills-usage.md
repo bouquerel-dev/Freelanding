@@ -596,3 +596,18 @@ Captures : `assets-site-eliottbouquerel/captures-2026-11-24/header/` (`avant-*`,
 Défaut trouvé sur le rendu capturé : le canevas, élément remplacé, gardait la
 taille de son tampon (×2 en Retina) malgré `inset: 0`, les étincelles partaient
 hors écran. Corrigé par `width/height: 100%`.
+
+### « Moi, c'est Eliott » : coins, années, récit, 2026-11-27
+
+Captures : `docs/captures/2026-11-27-moi-frise/` (`avant-*` en production, `etape1-*` premier rendu, `apres-*`). Bureau 1440 en trois positions du défilement, mobile 390.
+
+| Skill · règle | Constat sur le rendu | Ce qui a changé |
+|---|---|---|
+| impeccable · jetons du design system | Repères, natures et barres en `rounded-full` : des ellipses à 20-26 px de haut | Étiquettes en `rounded-tag` (squircle 10 px sous `corner-shape`, 8 px ailleurs), cartes en `rounded-control`, barres de 6 px à 2 px de rayon |
+| impeccable · hiérarchie par l'échelle | Années en mono 12 px sur l'axe, grandes années à 3 % d'opacité en bas | Années en 20 px gras dans un repère sur l'axe, l'année en cours en volt, un filet par colonne ; les années de fond sont retirées |
+| impeccable · densité sans mur de texte | Une ligne de trois mots par étape | Une phrase de récit et une leçon « Retenu » par étape, la nature en pied de carte |
+| impeccable · brand, point de vue | Rien sur la personne avant 2021 | « Avant le bac » ouvre la frise : trois verbes (démonter, jouer, optimiser) et la phrase qui les relie au métier ; terminale et robot sur l'axe |
+| emil-design-eng · rien qui saute | Au doigt, ouverture sur une colonne vide (2020) au premier rendu | Ouverture sur la première carte, recalculée à chaque mesure tant que la piste n'est pas mise en page |
+| li-human | Textes écrits à partir des faits donnés | `detect.py` : 51,7 puis 59,3 ; reste faible en CONCRET (aucun chiffre inventé), le concret est porté par les dates et les noms des cartes |
+
+Défaut trouvé sur le rendu : au doigt, la deuxième mesure ramenait la piste à 0 (écart relatif au cadre déjà défilé). Corrigé en ajoutant `scrollLeft` au calcul.
