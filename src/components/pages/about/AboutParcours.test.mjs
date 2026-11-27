@@ -22,8 +22,8 @@ describe("parcours de la page À propos", () => {
 
   it("annonce Bac+5, Bac+3 puis le bac, du plus récent au plus ancien", () => {
     const niveaux = formation?.etapes.map((etape) => etape.nature);
-    expect(niveaux).toEqual(["Bac+5", "Bac+3", "Bac"]);
-    expect(html.indexOf("IUT de Saint-Lô")).toBeLessThan(html.indexOf("Terminale"));
+    expect(niveaux).toEqual(["Bac+5", "Bac+3", "Bac STI2D"]);
+    expect(html.indexOf("IUT de Saint-Lô")).toBeLessThan(html.indexOf("Arcisse de Caumont"));
     expect(html.indexOf("MyDigitalSchool")).toBeLessThan(html.indexOf("IUT de Saint-Lô"));
   });
 

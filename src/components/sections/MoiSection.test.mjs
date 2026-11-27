@@ -39,7 +39,7 @@ describe("MoiSection", () => {
   });
 
   it("pose une année par colonne, de la première étape à l'année en cours", () => {
-    for (const an of [2020, 2021, 2022, 2023, 2024, 2025, 2026]) expect(html).toContain(`>${an}</span>`);
+    for (const an of [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026]) expect(html).toContain(`>${an}</span>`);
     expect(html).not.toContain(">2027</span>");
   });
 
@@ -57,8 +57,8 @@ describe("MoiSection", () => {
       expect(html).toContain(`>${item.texte}</span>`);
     }
     expect(html).toContain(`>${prologue.fil}</p>`);
-    const terminale = groupes.find((g) => g.titre === "Formation").etapes.find((e) => e.structure === "Terminale");
-    expect(terminale.recit).toContain("robot");
+    const terminale = groupes.find((g) => g.titre === "Formation").etapes.find((e) => e.nature === "Bac STI2D");
+    expect(terminale.recit).toContain("Arduino");
     for (const g of groupes) {
       for (const e of g.etapes) {
         if (e.recit) expect(html).toContain(e.recit);

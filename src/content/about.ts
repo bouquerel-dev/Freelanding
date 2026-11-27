@@ -133,7 +133,8 @@ export const aboutContent: AboutContent = {
             debut: "2024-09",
             fin: "2025-05",
             court: "Front-end",
-            recit: "Développeur front-end en alternance, à Courbevoie.",
+            recit: "Des interfaces pour l’outil des agents immobiliers, et surtout un support client par IA formé à leur métier et aux lois.",
+            retenu: "Une IA fiable se nourrit du métier.",
           },
           {
             periode: "Mars à juin 2024",
@@ -214,22 +215,24 @@ export const aboutContent: AboutContent = {
               "Photo et vidéo",
             ],
           },
-          /* AJOUTÉE LE 2026-11-27, fait donné par Eliott : en terminale, sa
-             classe a construit un robot et l’a programmé pour suivre un
-             circuit. Année déduite du BUT, entré en septembre 2021. Ni lycée
-             ni série : non donnés, à ne pas inventer. */
+          /* AJOUTÉE LE 2026-11-27, faits dictés par Eliott : seconde générale
+             avec l’option sciences de l’ingénieur, puis bac STI2D au lycée
+             Arcisse de Caumont, à Bayeux. En terminale, le robot de la classe,
+             c’est lui qui l’a programmé (Arduino) pour suivre un parcours.
+             Années déduites du BUT, entré en septembre 2021. */
           {
-            periode: "2020 à 2021",
-            structure: "Terminale",
-            role: "Projet du bac : un robot qui suit un circuit",
-            nature: "Bac",
-            debut: "2020-09",
+            periode: "2018 à 2021",
+            structure: "Lycée Arcisse de Caumont",
+            lieu: "Bayeux",
+            role: "Seconde option sciences de l’ingénieur, puis bac STI2D",
+            nature: "Bac STI2D",
+            debut: "2018-09",
             fin: "2021-07",
-            court: "Le robot du bac",
-            recit: "Avec ma classe, on a construit un robot, puis on l’a programmé pour qu’il suive un circuit tout seul.",
+            court: "Bac STI2D, le robot du bac",
+            recit: "En terminale, j’ai programmé en Arduino le robot construit avec ma classe, pour qu’il suive un parcours.",
             retenu: "Un programme se juge sur la piste.",
-            apport: "Construire une machine en équipe, puis la programmer pour qu’elle suive seule son circuit.",
-            domaines: ["Robotique", "Programmation", "Travail en équipe"],
+            apport: "Les sciences de l’ingénieur, et un robot programmé en Arduino pour qu’il suive seul un parcours.",
+            domaines: ["Sciences de l’ingénieur", "Arduino", "Robotique"],
           },
         ],
       },

@@ -110,7 +110,7 @@ function Piste({
   const anCourant = annees[Math.min(annees.length - 1, Math.floor(aujourdhui * annees.length))];
   return (
     <div
-      className="frise-piste relative flex-none [--an:440px] [--barre-ecart:26px] [--carte:204px] [--rail:24px] [--rangee:236px] desktop:[--an:480px] desktop:[--carte:224px]"
+      className="frise-piste relative flex-none [--an:440px] [--barre-ecart:26px] [--carte:204px] [--rail:24px] [--rangee:300px] desktop:[--an:480px] desktop:[--rangee:252px] desktop:[--carte:224px]"
       style={style}
     >
       {/* Une colonne par année : un filet qui traverse toute la piste. */}
@@ -136,7 +136,7 @@ function Piste({
       </div>
 
       {/* L'axe des années, les barres de durée de part et d'autre. */}
-      <div className="relative h-[76px]">
+      <div className="relative h-[68px]">
         <span aria-hidden className="absolute inset-x-0 top-1/2 h-px bg-white/15" />
         {remplissage ? (
           <motion.span
