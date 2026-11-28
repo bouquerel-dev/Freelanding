@@ -1,5 +1,21 @@
 [
   {
+    "slug": "ia-repondre-aux-mails",
+    "title": "Laisser l’IA répondre à vos mails clients, et garder la main",
+    "date": "2026-11-28",
+    "category": "Outils métier",
+    "description": "Votre boîte de réception déborde de questions clients ? Voici les mails qu’une IA peut rédiger seule, ceux qu’il faut relire, et le temps récupéré chaque jour.",
+    "readingTime": "8 min de lecture",
+    "tags": [
+      "ia pour répondre aux mails",
+      "ia service client",
+      "tri des mails ia",
+      "ia pour répondre aux messages"
+    ],
+    "alt": "Un casier de tri postal en traits blancs, des enveloppes dans ses cases ; une case verte vide d’où une enveloppe verte s’échappe vers la droite",
+    "validationId": "59dcfabd-d11f-4baa-9acd-7d2ea156b2e8"
+  },
+  {
     "slug": "compte-rendu-automatique",
     "title": "Le compte rendu automatique qui remplit aussi votre CRM",
     "date": "2026-11-27",

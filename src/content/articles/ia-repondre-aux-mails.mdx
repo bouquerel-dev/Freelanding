@@ -1,0 +1,102 @@
+Une IA peut rédiger la réponse à la plupart des mails que vos clients vous envoient, à trois conditions. Elle doit savoir de quoi parle le mail et de quel client il vient, elle doit pouvoir lire vos données (la commande, le stock, vos conditions de vente), et vous devez décider à l’avance ce qui part seul et ce qui attend votre relecture. Sans la deuxième condition, vous obtenez des réponses polies et vagues. Sans la troisième, une réponse finit un jour par promettre un délai que l’atelier ne tiendra pas.
+
+Je conçois et je branche seul ces automatisations pour des PME, du choix de la tâche à la mise en service. Si votre boîte de réception mange une partie de vos matinées, [prenons un appel en visio](/rdv?sujet=ia) : vous me montrez une journée de mails, je vous dis lesquels une IA peut préparer à votre place.
+
+## Quels mails une IA peut-elle traiter, et lesquels garder ?
+
+Tous les mails clients ne se valent pas. Le tri se fait sur ce qu’une erreur coûterait, pas sur la difficulté de la réponse.
+
+| Type de mail | Exemple | Ce que fait l’IA | Qui envoie |
+| --- | --- | --- | --- |
+| Question qui revient | « Livrez-vous le samedi ? » | Répond à partir de vos conditions écrites | L’IA, seule |
+| Suivi de commande | « Où en est ma commande 4512 ? » | Lit la commande et le transporteur, rédige | L’IA, seule ou après un coup d’œil |
+| Demande de devis | « Il me faudrait 30 panneaux en 2 m » | Extrait les quantités, prépare le brouillon | Vous, après relecture |
+| Réclamation | « Le colis est arrivé abîmé » | Rattache la commande, propose une réponse | Vous, toujours |
+| Mail sensible | Litige, résiliation, mise en demeure | Le signale en tête de liste, ne rédige rien | Vous, toujours |
+
+Je vous conseille de commencer avec une seule ligne en envoi automatique, la première, et de laisser tout le reste en brouillon pendant quelques semaines. Vous voyez ainsi où l’IA se trompe avant qu’un client le voie.
+
+## Comment l’IA comprend-elle un mail ?
+
+Elle suit le chemin qu’une personne de votre équipe suit, sauf qu’elle ne change pas d’écran.
+
+1. **Elle classe le mail** : question, commande, devis, réclamation, publicité, réponse automatique.
+2. **Elle le rattache** au bon client, par son adresse ou par un numéro de commande cité dans le texte.
+3. **Elle va chercher les données** dont la réponse a besoin : l’état de la commande, la date de livraison prévue, la ligne de vos conditions qui répond à la question.
+4. **Elle rédige** dans votre registre, en s’appuyant sur vos anciennes réponses.
+5. **Elle range le brouillon** dans la file de la bonne personne, avec le mail d’origine et les données utilisées à côté.
+
+<Figure src="/images/blog/corps/ia-repondre-aux-mails-1.jpg" alt="Une enveloppe passe par trois cercles alignés puis se scinde : une voie verte file à droite, une voie grise s’arrête devant une barre verticale avant de repartir" caption="Le mail est classé, rattaché au client et complété par vos données ; seules les questions simples partent seules, le reste attend votre relecture." />
+
+L’étape 3 fait toute la différence. Un assistant de messagerie qui ne voit que le mail répond « nous revenons vers vous rapidement ». Branché sur votre outil de commandes, il répond « votre commande est partie mardi, voici le suivi du transporteur ».
+
+## Combien de temps rend un brouillon relu ?
+
+Prenons une équipe qui reçoit 40 mails clients par jour. L’exemple est construit pour le calcul, remplacez ces chiffres par les vôtres.
+
+| | À la main | Avec un brouillon préparé |
+| --- | --- | --- |
+| Lire le mail | 1 min | 1 min |
+| Retrouver la commande ou la fiche client | 2 min | 0 min, elle est à côté du brouillon |
+| Écrire la réponse | 2 min | 30 s pour corriger |
+| Par mail | 5 min | 1 min 30 s |
+| Par jour, pour 40 mails | 3 h 20 | 1 h |
+
+Il reste 2 h 20 par jour, soit près de 12 heures sur une semaine de cinq jours. Le chiffre qui compte le plus, à mon avis, c’est le délai de réponse : un client qui demande où en est sa commande à 9 h a sa réponse avant 10 h, au lieu de la recevoir le lendemain.
+
+<Figure src="/images/blog/corps/ia-repondre-aux-mails-2.jpg" alt="Deux colonnes de blocs empilés : à gauche, une haute pile de trois blocs gris ; à droite, une pile basse de deux blocs gris surmontée d’un espace vide cerclé de vert" caption="La lecture du mail reste ; ce qui disparaît, c’est la recherche de la commande et l’écriture de zéro, et le temps libéré se voit en haut de la colonne." />
+
+## Que doit-il rester entre vos mains ?
+
+Trois choses, que je règle avec vous avant de brancher quoi que ce soit.
+
+**Ce qui engage l’entreprise.** Un prix, un délai, un geste commercial, une reconnaissance de faute : l’IA peut le proposer, une personne le valide. La règle s’écrit dans l’outil, elle ne dépend pas de la vigilance de celui qui relit le vendredi soir.
+
+**Ce que le client doit savoir.** Quand une IA répond seule à une personne, le règlement européen sur l’intelligence artificielle demande de le lui dire, sauf si c’est évident ([article 50 du règlement, service d’assistance de la Commission européenne](https://ai-act-service-desk.ec.europa.eu/fr/ai-act/article-50)). Une ligne en bas de la réponse suffit, et elle se pose une fois pour toutes dans le modèle de réponse.
+
+**Les données de vos clients.** Les noms, les adresses et les numéros de téléphone peuvent être masqués avant que le texte parte chez le fournisseur du modèle, puis remis en place dans le brouillon. L’abonnement au modèle est ouvert à votre nom, et le contrat de sous-traitance prévu par le RGPD se signe avec ce fournisseur, pas avec moi.
+
+## Assistant de messagerie, chatbot ou automatisation branchée sur vos outils ?
+
+| Critère | Assistant intégré à la messagerie | Chatbot de service client | Automatisation branchée sur vos outils |
+| --- | --- | --- | --- |
+| Ce qu’il connaît | Le mail ouvert | Une base de questions | Le mail, le client, ses commandes, vos conditions |
+| Classement de la boîte | Non, ou par mots-clés | Non, il répond sur le site | Oui, par type et par urgence |
+| Qui décide de l’envoi | Vous, mail par mail | Lui, toujours | Vous, par type de mail |
+| Journal de ce qui a été répondu | Non | Selon l’éditeur | Oui, mail par mail |
+| Coût | Inclus dans certains abonnements de messagerie | Abonnement mensuel | Un prix fixé au devis, puis le coût du modèle, plafonné |
+
+L’assistant intégré suffit à une personne seule qui veut écrire plus vite. Le chatbot répond sur votre site, mais il ne vide pas la boîte de réception. L’automatisation branchée prend l’avantage dès que plusieurs personnes se partagent les mails et que la réponse dépend de données rangées ailleurs.
+
+## Comment j’ai monté le mien
+
+J’utilise ce montage pour ma propre activité. Chaque mail qui arrive dans mes boîtes est classé par un modèle de langage, rattaché à la fiche du client ou du prospect, et sa réponse est rédigée en brouillon. Les noms et les coordonnées sont masqués avant l’envoi au modèle. Le coût est borné dans le code, à un millième de dollar par mail et cinq centimes par jour : une boucle qui s’emballe s’arrête d’elle-même. Rien ne part sans que je l’aie relu.
+
+Les réponses automatiques m’ont donné le plus de travail. Le message d’un service support qui annonce que la boîte n’est pas lue, ou le message d’absence qui donne une nouvelle adresse, ressemble à une vraie réponse. Mon outil les comptait comme telles, et il continuait de relancer une adresse que personne ne lisait. Il reconnaît maintenant ces réponses sans issue, arrête les relances, et quand le message indique une autre adresse, il la garde sur la fiche.
+
+C’est le même montage que j’installe chez vous, réglé sur vos types de mails et vos outils. Le détail de l’offre est sur la page [Automatisation et IA](/services/automatisation).
+
+## Par où commencer ?
+
+<Steps items={[
+  "**Exportez une semaine de mails clients** et classez-les à la main en cinq tas : question, suivi, devis, réclamation, sensible.",
+  "**Notez pour chaque tas l’outil que vous ouvrez** pour répondre : logiciel de commandes, tableur, agenda.",
+  "**Rassemblez vos vingt meilleures réponses**, celles que vous aimeriez voir partir à votre place.",
+  "**Prenez une heure en visio** avec ces trois documents : vous repartez avec la liste des mails qu’une IA peut préparer et un ordre de prix."
+]} />
+
+## Questions fréquentes
+
+**ChatGPT ne suffit-il pas ?**
+Pour écrire une réponse à partir d’un mail que vous collez, oui. Pour lire votre outil de commandes, classer toute la boîte et garder un journal, il faut le brancher sur vos outils, et c’est ce travail que je fais.
+
+**L’IA peut-elle inventer un délai ou un prix ?**
+Elle le peut si on la laisse écrire de mémoire. Dans le montage que je pose, elle ne cite qu’une donnée lue dans vos outils, et tout mail qui contient un prix ou un délai passe par la relecture.
+
+**Mes mails sortent-ils de l’entreprise ?**
+Le texte part chez le fournisseur du modèle pour être lu, données personnelles masquées. Vous choisissez ce fournisseur, et l’abonnement est à votre nom.
+
+**Faut-il changer de messagerie ?**
+Non. L’automatisation se branche sur votre boîte actuelle, et les brouillons peuvent se déposer dans cette boîte, là où vous lisez déjà vos mails.
+
+Pour regarder votre cas, [prenez rendez-vous en visio](/rdv?sujet=ia) avec une semaine de mails sous la main.
